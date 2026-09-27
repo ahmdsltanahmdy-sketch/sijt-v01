@@ -2158,5 +2158,22 @@
             triggerHaptic('light');
         }
     </script>
+// اضافه کردن موتور تبدیل متن به صوت
+function speakText(text) {
+    if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel(); // قطع صدای قبلی
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'fa-IR'; // زبان فارسی
+        utterance.rate = 0.9; // سرعت خواندن (کمی شمرده‌تر برای متون حقوقی)
+        window.speechSynthesis.speak(utterance);
+        showToast('در حال خواندن متن...', 'success');
+        triggerHaptic('medium');
+    } else {
+        showToast('مرورگر شما از پخش صوتی پشتیبانی نمی‌کند.', 'error');
+    }
+}
+function stopSpeaking() {
+    if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+}
 </body>
 </html>
