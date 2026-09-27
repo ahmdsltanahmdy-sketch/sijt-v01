@@ -10,7 +10,7 @@
         %22short_name%22:%20%22SIJT%22,
         %22start_url%22:%20%22.%22,
         %22display%22:%20%22standalone%22,
-        %22background_color%22:%20%22%230b0f19%22,
+        %22background_color%22:%20%22%23080c14%22,
         %22theme_color%22:%20%22%23c51b24%22,
         %22icons%22:[{%22src%22:%22https://raw.githubusercontent.com/ahmdsltanahmdy-sketch/sijt-v01/main/01.png%22,%22sizes%22:%22512x512%22,%22type%22:%22image/png%22}]
     }">
@@ -35,12 +35,16 @@
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
+        /* پس‌زمینه سایبرنتیک با گرید ظریف تکنولوژی */
         .mesh-bg {
-            background-color: #0b0f19;
+            background-color: #080c14;
             background-image: 
-                radial-gradient(at 10% 15%, rgba(197, 27, 36, 0.22) 0px, transparent 55%),
-                radial-gradient(at 90% 85%, rgba(245, 158, 11, 0.15) 0px, transparent 55%),
-                radial-gradient(at 50% 50%, rgba(11, 15, 25, 0.99) 0px, transparent 100%);
+                radial-gradient(at 10% 15%, rgba(197, 27, 36, 0.28) 0px, transparent 55%),
+                radial-gradient(at 90% 85%, rgba(245, 158, 11, 0.18) 0px, transparent 55%),
+                radial-gradient(at 50% 50%, rgba(8, 12, 20, 0.98) 0px, transparent 100%),
+                linear-gradient(rgba(245, 158, 11, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(245, 158, 11, 0.03) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 100%, 100% 100%, 32px 32px, 32px 32px;
         }
         .light .mesh-bg, body:not(.dark):not(.oled-mode) .mesh-bg {
             background-color: #f1f5f9;
@@ -53,9 +57,10 @@
             background-image: none !important;
         }
         body.oled-mode .ultra-glass {
-            background: rgba(10, 10, 10, 0.98) !important;
+            background: rgba(8, 8, 8, 0.98) !important;
             border: 1px solid rgba(255, 255, 255, 0.15) !important;
             color: #ffffff !important;
+            box-shadow: 0 0 20px rgba(197, 27, 36, 0.2) !important;
         }
 
         .noise-overlay {
@@ -70,19 +75,24 @@
             -webkit-text-fill-color: transparent;
         }
 
+        /* کارت‌ها با طراحی نئونی و گلس سایبرنتیک */
         .ultra-glass {
-            background: rgba(15, 23, 42, 0.97);
+            background: rgba(13, 19, 33, 0.92);
             backdrop-filter: blur(25px);
             -webkit-backdrop-filter: blur(25px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
+            border: 1px solid rgba(245, 158, 11, 0.25);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7), 0 0 15px rgba(197, 27, 36, 0.15);
             color: #ffffff;
             transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
+        .ultra-glass:hover {
+            border-color: rgba(245, 158, 11, 0.45);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8), 0 0 20px rgba(197, 27, 36, 0.25);
+        }
         .light .ultra-glass, body:not(.dark):not(.oled-mode) .ultra-glass {
             background: rgba(255, 255, 255, 0.99);
-            border: 1px solid rgba(0, 0, 0, 0.18);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+            border: 1px solid rgba(0, 0, 0, 0.16);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
             color: #0f172a !important;
         }
         .light .ultra-glass p, body:not(.dark):not(.oled-mode) .ultra-glass p,
@@ -91,10 +101,11 @@
         }
 
         .settings-glass {
-            background: rgba(15, 23, 42, 0.98);
+            background: rgba(13, 19, 33, 0.98);
             backdrop-filter: blur(30px);
-            border: 1px solid rgba(255, 255, 255, 0.25);
+            border: 1px solid rgba(245, 158, 11, 0.3);
             color: #ffffff;
+            box-shadow: 0 0 35px rgba(0, 0, 0, 0.9), 0 0 20px rgba(197, 27, 36, 0.3);
         }
         .light .settings-glass, body:not(.dark):not(.oled-mode) .settings-glass {
             background: rgba(255, 255, 255, 0.98);
@@ -102,14 +113,14 @@
             color: #0f172a;
         }
 
-        /* نوار ناوبری پایین با حداکثر کنتراست و خوانایی */
+        /* نوار ناوبری پایین با افکت نئونی و واکنش روان به اسکرول */
         .floating-nav {
-            background: rgba(15, 23, 42, 0.98) !important;
+            background: rgba(10, 15, 28, 0.96) !important;
             backdrop-filter: blur(30px) saturate(200%);
             -webkit-backdrop-filter: blur(30px) saturate(200%);
-            border: 1px solid rgba(255, 255, 255, 0.25);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), 0 0 15px rgba(197, 27, 36, 0.2);
-            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), padding 0.3s ease;
+            border: 1px solid rgba(245, 158, 11, 0.35);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8), 0 0 25px rgba(197, 27, 36, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), padding 0.3s ease, opacity 0.3s ease;
         }
         .light .floating-nav, body:not(.dark):not(.oled-mode) .floating-nav {
             background: #ffffff !important;
@@ -117,24 +128,26 @@
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15) !important;
         }
         .nav-scrolled-compact {
-            transform: translateY(6px) scale(0.97);
-            padding-top: 4px !important;
-            padding-bottom: 4px !important;
+            transform: translateY(8px) scale(0.96) !important;
+            padding-top: 3px !important;
+            padding-bottom: 3px !important;
+            opacity: 0.92;
         }
 
         .nav-btn {
             color: #cbd5e1;
-            transition: all 0.2s ease;
+            transition: all 0.25s ease;
         }
         .light .nav-btn, body:not(.dark):not(.oled-mode) .nav-btn {
             color: #334155 !important;
         }
         .nav-btn.active-tab {
-            color: #dc2626 !important;
+            color: #ef4444 !important;
             transform: scale(1.08) translateY(-2px);
+            filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.8));
         }
         .nav-btn.active-tab span {
-            color: #dc2626 !important;
+            color: #ef4444 !important;
             font-weight: 900 !important;
         }
 
@@ -142,7 +155,7 @@
             display: none; position: fixed; bottom: 0; left: 0; right: 0;
             z-index: 100; max-width: 28rem; margin: 0 auto;
             border-top-left-radius: 1.5rem; border-top-right-radius: 1.5rem;
-            padding: 1rem; box-shadow: 0 -10px 30px rgba(0,0,0,0.5);
+            padding: 1rem; box-shadow: 0 -10px 40px rgba(0,0,0,0.8), 0 0 25px rgba(197, 27, 36, 0.3);
             animation: slideUpDrawer 0.3s ease forwards;
         }
         @keyframes slideUpDrawer {
@@ -150,32 +163,40 @@
             to { transform: translateY(0); opacity: 1; }
         }
 
-        .glass-tab { background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.2); color: #ffffff !important; }
+        .glass-tab { background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(16px); border: 1px solid rgba(245, 158, 11, 0.25); color: #ffffff !important; }
         .header-bg {
             background-image: url('https://raw.githubusercontent.com/ahmdsltanahmdy-sketch/mizan-miniapp-new/main/photo_2026-09-15_10-06-27.jpg');
             background-size: cover; background-position: center;
         }
         .card-bg-glass {
-            background-image: linear-gradient(rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 0.99)), url('https://raw.githubusercontent.com/ahmdsltanahmdy-sketch/sijt-v01/main/01.png');
+            background-image: linear-gradient(rgba(10, 15, 28, 0.95), rgba(10, 15, 28, 0.99)), url('https://raw.githubusercontent.com/ahmdsltanahmdy-sketch/sijt-v01/main/01.png');
             background-size: cover; background-position: center;
-            border: 1px solid rgba(255, 255, 255, 0.2); color: #ffffff;
+            border: 1px solid rgba(245, 158, 11, 0.3); color: #ffffff;
+            box-shadow: 0 0 20px rgba(197, 27, 36, 0.25);
         }
 
+        /* هدر برنامه با ترنزیشن بسیار روان */
         #appHeader {
-            transition: backdrop-filter 0.4s ease, background-color 0.4s ease, transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease, background-color 0.4s ease, backdrop-filter 0.4s ease;
             will-change: transform, opacity;
         }
         #appHeader.scrolled-header {
-            background-color: rgba(11, 15, 25, 0.92) !important;
+            background-color: rgba(8, 12, 20, 0.95) !important;
             backdrop-filter: blur(25px) saturate(180%);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+            border-bottom: 1px solid rgba(245, 158, 11, 0.3);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.7);
         }
-        .header-hidden { transform: translateY(-100%); opacity: 0; pointer-events: none; }
+        .header-hidden {
+            transform: translateY(-100%) !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
+        }
+
         #backToTopBtn { position: fixed; bottom: 84px; right: 16px; z-index: 45; }
         .badge-dot {
             position: absolute; top: 2px; right: 4px;
             width: 7px; height: 7px; background-color: #ef4444;
-            border-radius: 50%; box-shadow: 0 0 6px #ef4444;
+            border-radius: 50%; box-shadow: 0 0 10px #ef4444, 0 0 5px #ef4444;
         }
 
         .zoomable-container {
@@ -190,16 +211,16 @@
             position: relative; width: 100%; aspect-ratio: 16/9;
             background: radial-gradient(circle at center, #1e293b 0%, #020617 100%);
             border-radius: 1.25rem; overflow: hidden;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.85), 0 0 25px rgba(197, 27, 36, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.85), 0 0 25px rgba(197, 27, 36, 0.4);
+            border: 1px solid rgba(245, 158, 11, 0.3);
         }
         .pro-video-wrapper video { width: 100%; height: 100%; object-fit: cover; }
 
         .cinematic-mode-box {
             max-width: 98vw !important; width: 98vw !important;
             background: rgba(5, 5, 5, 0.99) !important;
-            border: 1px solid rgba(245, 158, 11, 0.3) !important;
-            box-shadow: 0 0 60px rgba(0, 0, 0, 0.95), 0 0 30px rgba(197, 27, 36, 0.4) !important;
+            border: 1px solid rgba(245, 158, 11, 0.4) !important;
+            box-shadow: 0 0 60px rgba(0, 0, 0, 0.95), 0 0 30px rgba(197, 27, 36, 0.5) !important;
         }
         .cinematic-mode-box .pro-video-wrapper { aspect-ratio: 21/9 !important; max-height: 75vh; }
 
@@ -220,6 +241,7 @@
         .story-ring {
             background: linear-gradient(45deg, #f59e0b, #c51b24, #9333ea);
             padding: 2px; border-radius: 50%; display: inline-block; cursor: pointer;
+            box-shadow: 0 0 10px rgba(245, 158, 11, 0.4);
         }
 
         #toastContainer {
@@ -228,9 +250,9 @@
             pointer-events: none; width: 90%; max-width: 380px;
         }
         .toast-item {
-            background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.25); color: #fff;
-            padding: 12px 16px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            background: rgba(13, 19, 33, 0.96); backdrop-filter: blur(20px);
+            border: 1px solid rgba(245, 158, 11, 0.4); color: #fff;
+            padding: 12px 16px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.7), 0 0 15px rgba(197, 27, 36, 0.3);
             font-size: 11px; font-weight: bold; display: flex; align-items: center; justify-content: space-between;
             pointer-events: auto; animation: toastIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
@@ -241,6 +263,7 @@
 
         .typing-dot {
             width: 6px; height: 6px; background-color: #f59e0b; border-radius: 50%;
+            box-shadow: 0 0 6px #f59e0b;
             animation: typingAnimation 1.4s infinite ease-in-out both;
         }
         .typing-dot:nth-child(1) { animation-delay: -0.32s; }
@@ -251,7 +274,7 @@
         }
 
         .tour-overlay {
-            position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(10px);
+            position: fixed; inset: 0; background: rgba(0, 0, 0, 0.88); backdrop-filter: blur(10px);
             z-index: 250; align-items: center; justify-content: center; padding: 1.5rem;
             animation: fadeInScale 0.3s ease;
         }
@@ -260,11 +283,11 @@
 <body id="bodyRoot" class="mesh-bg text-slate-900 dark:text-slate-100 min-h-screen flex flex-col relative select-none">
 
     <!-- اسپلش اسکرین روان -->
-    <div id="splashScreen" class="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#0b0f19] transition-opacity duration-300">
+    <div id="splashScreen" class="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#080c14] transition-opacity duration-300">
         <div class="relative w-20 h-20 flex items-center justify-center mb-4">
             <div class="absolute inset-0 border-4 border-slate-800 rounded-full"></div>
             <div class="absolute inset-0 border-4 border-red-600 border-t-transparent rounded-full animate-spin"></div>
-            <i class="fa-solid fa-scale-balanced text-3xl text-amber-500"></i>
+            <i class="fa-solid fa-scale-balanced text-3xl text-amber-500 drop-shadow-[0_0_10px_rgba(245,158,11,0.6)]"></i>
         </div>
         <h1 class="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-amber-500 tracking-wider">SIJT</h1>
         <p class="text-xs text-slate-400 mt-2 font-bold animate-pulse">سامانه تخصصی حقوقی</p>
@@ -275,8 +298,8 @@
 
     <!-- تور راهنمای ورود -->
     <div id="onboardingModal" class="tour-overlay hidden flex">
-        <div class="ultra-glass rounded-3xl max-w-sm w-full p-5 relative shadow-2xl space-y-4 text-center border border-amber-500/30">
-            <div id="tourIconContainer" class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-red-600 to-amber-500 mx-auto flex items-center justify-center text-white text-2xl shadow-lg shadow-red-600/30">
+        <div class="ultra-glass rounded-3xl max-w-sm w-full p-5 relative shadow-2xl space-y-4 text-center border border-amber-500/40">
+            <div id="tourIconContainer" class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-red-600 to-amber-500 mx-auto flex items-center justify-center text-white text-2xl shadow-lg shadow-red-600/40">
                 <i id="tourStepIcon" class="fa-solid fa-scale-balanced"></i>
             </div>
             <h3 id="tourStepTitle" class="font-extrabold text-sm text-amber-300">به مینی‌اپ تخصصی SIJT خوش آمدید</h3>
@@ -376,7 +399,7 @@
         <div class="max-w-md mx-auto px-4 py-2.5 relative z-20">
             <div class="flex space-x-2 space-x-reverse relative items-center">
                 <div class="relative flex-grow">
-                    <input type="text" id="searchInput" oninput="handleUniversalSearch(this.value)" placeholder="جستجوی جامع در تمام بخش‌ها و اصطلاحات..." class="w-full bg-slate-900 text-amber-200 placeholder-slate-400 rounded-xl px-4 py-2.5 pr-9 pl-14 text-xs focus:outline-none border border-white/30 shadow-inner">
+                    <input type="text" id="searchInput" oninput="handleUniversalSearch(this.value)" placeholder="جستجوی جامع در تمام بخش‌ها و اصطلاحات..." class="w-full bg-slate-900/90 text-amber-200 placeholder-slate-400 rounded-xl px-4 py-2.5 pr-9 pl-14 text-xs focus:outline-none border border-amber-500/30 shadow-inner">
                     <i class="fa-solid fa-magnifying-glass absolute right-3 top-3.5 text-amber-300 text-xs"></i>
                     <button onclick="startVoiceDictation('searchInput')" title="جستجوی صوتی" class="absolute left-7 top-2.5 text-amber-400 hover:text-white p-1 text-xs"><i class="fa-solid fa-microphone"></i></button>
                     <button id="clearSearchBtn" onclick="clearSearchInput()" class="hidden absolute left-2 top-3 text-slate-300 hover:text-white text-xs"><i class="fa-solid fa-xmark"></i></button>
@@ -399,10 +422,10 @@
                 <span id="dictCounter" class="text-[9px] text-amber-300 font-bold"></span>
             </div>
             <div class="flex space-x-2 space-x-reverse overflow-x-auto hide-scrollbar pb-1 text-[11px]">
-                <button onclick="filterDictCategory('all', this); triggerHaptic('light');" class="dict-chip px-3 py-1.5 rounded-full bg-red-600 text-white font-bold flex-shrink-0 shadow">همه</button>
+                <button onclick="filterDictCategory('all', this); triggerHaptic('light');" class="dict-chip px-3 py-1.5 rounded-full bg-red-600 text-white font-bold flex-shrink-0 shadow shadow-red-600/30">همه</button>
                 <button onclick="filterDictCategory('مدنی', this); triggerHaptic('light');" class="dict-chip px-3 py-1.5 rounded-full bg-slate-800 text-slate-200 border border-white/15 flex-shrink-0">حقوق مدنی</button>
                 <button onclick="filterDictCategory('کیفری', this); triggerHaptic('light');" class="dict-chip px-3 py-1.5 rounded-full bg-slate-800 text-slate-200 border border-white/15 flex-shrink-0">کیفری</button>
-                <button onclick="filterDictCategory('bookmarks', this); triggerHaptic('light');" class="dict-chip px-3 py-1.5 rounded-full bg-amber-600 text-white font-bold flex-shrink-0 shadow"><i class="fa-solid fa-bookmark ml-1"></i>نشانک‌ها</button>
+                <button onclick="filterDictCategory('bookmarks', this); triggerHaptic('light');" class="dict-chip px-3 py-1.5 rounded-full bg-amber-600 text-white font-bold flex-shrink-0 shadow shadow-amber-600/30"><i class="fa-solid fa-bookmark ml-1"></i>نشانک‌ها</button>
             </div>
             <div id="dictionaryContainer" class="space-y-2 mt-2">
                 <div class="custom-skeleton h-20 w-full"></div>
@@ -452,7 +475,7 @@
                     <textarea id="questionInput" placeholder="سوال حقوقی خود را اینجا مطرح فرمایید..." class="w-full bg-slate-900 text-amber-200 rounded-2xl p-3 pl-8 text-xs h-24 resize-none border border-white/20 shadow-inner"></textarea>
                     <button onclick="startVoiceDictation('questionInput')" title="تایپ صوتی" class="absolute left-2.5 top-3 text-amber-400 hover:text-white text-xs"><i class="fa-solid fa-microphone"></i></button>
                 </div>
-                <button id="submitQuestionBtn" onclick="submitQuestion();" class="w-full bg-gradient-to-r from-red-600 to-red-700 py-2.5 text-xs font-bold text-white rounded-xl shadow-md flex items-center justify-center space-x-2 space-x-reverse"><span>ارسال سوال</span></button>
+                <button id="submitQuestionBtn" onclick="submitQuestion();" class="w-full bg-gradient-to-r from-red-600 to-red-700 py-2.5 text-xs font-bold text-white rounded-xl shadow-md flex items-center justify-center space-x-2 space-x-reverse shadow-red-600/30"><span>ارسال سوال</span></button>
                 <div id="userFaqsContainer" class="space-y-3 max-h-60 overflow-y-auto"></div>
             </div>
         </section>
@@ -476,9 +499,9 @@
                     <button onclick="sendQuickChat('شرایط شکایت کارگر بابت بیمه و اخراج در اداره کار چیست؟')" class="flex-shrink-0 px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-slate-200">حقوق کارگر و بیمه</button>
                 </div>
 
-                <div id="chatMessagesContainer" class="space-y-3 h-[46vh] overflow-y-auto p-3 bg-slate-900 rounded-2xl text-[11px] text-slate-100 shadow-inner"></div>
+                <div id="chatMessagesContainer" class="space-y-3 h-[46vh] overflow-y-auto p-3 bg-slate-900/90 rounded-2xl text-[11px] text-slate-100 shadow-inner"></div>
 
-                <div id="aiTypingIndicator" class="hidden flex items-center space-x-1.5 space-x-reverse bg-slate-800/90 text-slate-300 p-2.5 rounded-2xl w-fit border border-white/10">
+                <div id="aiTypingIndicator" class="hidden flex items-center space-x-1.5 space-x-reverse bg-slate-800/90 text-slate-300 p-2.5 rounded-2xl w-fit border border-amber-500/30">
                     <span class="typing-dot"></span>
                     <span class="typing-dot"></span>
                     <span class="typing-dot"></span>
@@ -488,7 +511,7 @@
                 <div class="flex space-x-2 space-x-reverse relative">
                     <textarea id="aiPromptInput" placeholder="مسئله یا ابهام حقوقی خود را بپرسید..." class="flex-grow bg-slate-900 text-amber-200 rounded-xl p-2.5 pl-8 text-xs h-14 resize-none border border-white/20 shadow-inner focus:outline-none"></textarea>
                     <button onclick="startVoiceDictation('aiPromptInput')" title="تایپ صوتی" class="absolute left-14 top-3 text-amber-400 hover:text-white text-xs p-1"><i class="fa-solid fa-microphone"></i></button>
-                    <button id="aiSendBtn" onclick="runAiAssistant();" class="bg-red-600 text-white px-4 rounded-xl text-xs font-bold shadow flex items-center justify-center hover:bg-red-700 transition"><i class="fa-solid fa-paper-plane"></i></button>
+                    <button id="aiSendBtn" onclick="runAiAssistant();" class="bg-red-600 text-white px-4 rounded-xl text-xs font-bold shadow shadow-red-600/40 flex items-center justify-center hover:bg-red-700 transition"><i class="fa-solid fa-paper-plane"></i></button>
                 </div>
             </div>
         </section>
@@ -656,7 +679,7 @@
         <i class="fa-solid fa-arrow-up text-xs"></i>
     </button>
 
-    <!-- مودال رسانه (سریال و اینفوگرافیک) -->
+    <!-- مودال رسانه -->
     <div id="mediaModal" class="fixed inset-0 bg-black/90 z-[110] hidden flex items-center justify-center p-4">
         <div id="mediaModalBox" class="ultra-glass rounded-3xl max-w-lg w-full p-4 relative shadow-2xl space-y-3 text-center">
             <button onclick="closeMediaModal()" class="absolute top-3 left-3 text-slate-300 p-2 z-10 hover:text-white"><i class="fa-solid fa-xmark text-base"></i></button>
@@ -713,7 +736,7 @@
     <script>
         const API_URL = 'https://script.google.com/macros/s/AKfycbyrMOSKpL5rwv5C9okpDQvbKE07-1JFP2ZE5xt7Xt4Y9sSvIUwbXZWU6ssTbBgQRgSZ/exec'; 
 
-        // همگام‌سازی بدون خطای نسخه ۶.۰ تلگرام
+        // تلگرام وب‌اپ
         const tg = window.Telegram?.WebApp;
         if (tg) {
             try {
@@ -748,7 +771,7 @@
         } else {
             document.documentElement.classList.add('dark');
             document.body.classList.add('dark');
-            updateMetaThemeColor('#0b0f19');
+            updateMetaThemeColor('#080c14');
         }
         if (localStorage.getItem('oled_mode') === 'true') {
             document.body.classList.add('oled-mode');
@@ -954,7 +977,6 @@
         // موتور هوشمند پردازش زبان طبیعی و فیلتر سوالات نامربوط و شوخی (Real AI)
         // =========================================================================
         const LegalNlpEngine = {
-            // واژگان صریح حقوقی جهت اعتبارسنجی ارتباط سوال با مباحث قضایی
             legalTerms: [
                 'قانون', 'حقوق', 'کیفری', 'مدنی', 'دادگاه', 'دادسرا', 'شورا', 'حل اختلاف', 'قاضی', 'وکیل', 'وکالت', 'موکل', 
                 'پرونده', 'دادخواست', 'شکواییه', 'لایحه', 'اظهارنامه', 'ابلاغ', 'ابلاغیه', 'ثنا', 'چک', 'صیاد', 'صیادی', 
@@ -1042,30 +1064,24 @@
             analyze: function(userQuery) {
                 const text = normalizeNumbers(userQuery);
 
-                // ۱. احوالپرسی و مکالمات متداول
                 if (/^(سلام|درود|خوبی|وقت بخیر|سلام علیکم|روز بخیر|صبح بخیر|عصر بخیر|سلام چطوری)/.test(text) && text.length < 35) {
                     return "سلام و درود! من دستیار هوشمند و تخصصی حقوقی SIJT هستم. برای بررسی و راهنمایی در خصوص دعاوی ملکی، کیفری، خانواده، مهریه، چک، مطالبات و قراردادها در خدمت شما هستم. لطفاً سوال حقوقی خود را بفرمایید.";
                 }
 
-                // ۲. معرفی و هویت
                 if (/^(تو کی هستی|اسمت چیه|چیکار میکنی|رباتی|هوش مصنوعی هستی)/.test(text)) {
                     return "من «دستیار هوش مصنوعی حقوقی SIJT» هستم. من برای پاسخگویی تخصصی به سوالات قضایی، تبیین مقررات قانونی ایران، چک صیادی، روابط کارگر و کارفرما، دعاوی خانواده و راهنمایی در خصوص مراجع دادگستری طراحی شده‌ام.";
                 }
 
-                // ۳. تشکر و بازخورد
                 if (/^(ممنون|مرسی|تشکر|دستت درد نکنه|سپاس|دمت گرم|خیلی ممنون)/.test(text) && text.length < 25) {
                     return "خواهش می‌کنم، انجام وظیفه بود! اگر هر ابهام، پرسش یا مسئله حقوقی دیگری دارید، با کمال میل در خدمتتان هستم.";
                 }
 
-                // ۴. بررسی وجود مفهوم یا کلیدواژه حقوقی در متن کاربر
                 const hasLegalIntent = this.legalTerms.some(term => text.includes(normalizeNumbers(term)));
 
-                // ۵. در صورتی که سوال کاملاً بی‌ربط، شوخی، متفرقه یا نامفهوم باشد
                 if (!hasLegalIntent) {
                     return "کاربر گرامی، این پرسش خارج از حیطه تخصصی و حقوقی این سامانه است.\n\nمن دستیار تخصصی حقوقی SIJT هستم و منحصراً به سوالات مربوط به قوانین موضوعه ایران، دعاوی حقوقی، کیفری، خانواده، کار، اسناد تجاری و دادگاهی پاسخ می‌دهم.\n\nلطفاً در صورتی که سوال یا ابهام حقوقی دارید، آن را مطرح فرمایید تا شما را دقیق راهنمایی کنم.";
                 }
 
-                // ۶. تطبیق با پایگاه دانش اختصاصی برای سوالات حقوقی معتبر
                 let bestMatch = null;
                 let maxScore = 0;
                 for (let item of this.knowledgeBase) {
@@ -1086,7 +1102,6 @@
                     return `### ⚖️ ${bestMatch.title}\n\n${bestMatch.content}\n\n---\n💡 *توصیه تخصصی:* برای تنظیم لوایح دقیق و ثبت دادخواست به همراه مدارک به دفاتر خدمات الکترونیک قضایی مراجعه نمایید.`;
                 }
 
-                // ۷. پاسخ عمومی و راهنمای ساختاریافته فقط برای سوالات حقوقی معتبری که در پایگاه الگو نبوده است
                 return `### ⚖️ تحلیل حقوقی در خصوص: «${userQuery}»\n\n` +
                     `در رابطه با این مسئله حقوقی، توجه به اصول و رویه قضایی زیر حائز اهمیت است:\n\n` +
                     `📌 **مرجع صالح و ادله اثباتی:**\n` +
@@ -1154,7 +1169,7 @@
                 const defStr = String(d.definition || '');
                 const isBookmarked = bookmarks.includes(termStr);
                 return `
-                    <div class="ultra-glass p-3.5 rounded-xl border border-white/15 space-y-1.5 shadow-md">
+                    <div class="ultra-glass p-3.5 rounded-xl space-y-1.5 shadow-md">
                         <div class="flex justify-between items-center">
                             <div class="font-black text-red-600 dark:text-red-400 text-xs" style="font-size: ${currentSize}">${termStr}</div>
                             <div class="flex space-x-2 space-x-reverse items-center text-xs">
@@ -1494,7 +1509,7 @@
                 const safeText = String(msg.text || '').replace(/'/g, "\\'");
                 return `
                     <div class="flex justify-${isUser ? 'end' : 'start'}">
-                        <div class="${isUser ? 'bg-red-600 text-white rounded-br-none' : 'bg-slate-800 text-slate-100 rounded-bl-none border border-white/10'} p-3 rounded-2xl max-w-[88%] shadow leading-relaxed font-medium" style="font-size: ${currentSize}">
+                        <div class="${isUser ? 'bg-red-600 text-white rounded-br-none shadow-red-600/30' : 'bg-slate-800 text-slate-100 rounded-bl-none border border-white/10'} p-3 rounded-2xl max-w-[88%] shadow leading-relaxed font-medium" style="font-size: ${currentSize}">
                             ${String(msg.text || '').replace(/\n/g, '<br>')}
                             ${!isUser ? `
                                 <div class="flex items-center space-x-3 space-x-reverse mt-2 pt-2 border-t border-white/10 text-[10px] text-slate-400">
@@ -1552,7 +1567,6 @@
                 }
             } catch(e) {}
 
-            // در صورت هرگونه خطا، قطعی اینترنت یا ۴۰۴، موتور هوشمند محلی پاسخ دقیق می‌دهد
             if (!botResponse || botResponse.includes('خطا') || botResponse.length < 10) {
                 botResponse = LegalNlpEngine.analyze(prompt);
             }
@@ -1576,6 +1590,8 @@
         // ==========================================
         // ناوبری و تغییر تب‌ها
         // ==========================================
+        const navTabs = ['dictionary-tab', 'legal-tab', 'laws-tab', 'cards-tab', 'lawyer-tab', 'chatbot-tab'];
+
         function switchTab(sectionId, btn) {
             document.querySelectorAll('.page-section').forEach(sec => sec.classList.add('hidden'));
             const targetSection = document.getElementById(sectionId);
@@ -1613,14 +1629,14 @@
             document.body.classList.toggle('dark', isDark);
             document.body.classList.toggle('light', !isDark);
             localStorage.setItem('mizan_theme', isDark ? 'dark' : 'light');
-            updateMetaThemeColor(isDark ? '#0b0f19' : '#f1f5f9');
+            updateMetaThemeColor(isDark ? '#080c14' : '#f1f5f9');
         }
 
         function toggleOledMode() {
             document.body.classList.toggle('oled-mode');
             const isOled = document.body.classList.contains('oled-mode');
             localStorage.setItem('oled_mode', isOled);
-            updateMetaThemeColor(isOled ? '#000000' : (document.body.classList.contains('dark') ? '#0b0f19' : '#f1f5f9'));
+            updateMetaThemeColor(isOled ? '#000000' : (document.body.classList.contains('dark') ? '#080c14' : '#f1f5f9'));
         }
 
         function toggleFullScreen() {
@@ -1967,7 +1983,7 @@
         }
 
         // بررسی وضعیت آنلاین/آفلاین
-        window.addEventListener('online', () => showToast('ارتباط با سرور برقرار شد', 'success'));
+        window.addEventListener('online', () => showToast('ارتباط با اینترنت برقرار شد', 'success'));
         window.addEventListener('offline', () => showToast('شما آفلاین هستید. نمایش دیتای کش', 'error'));
 
         // نصب بومی PWA
@@ -1993,7 +2009,103 @@
             }
         }
 
-        // راه‌اندازی اولیه بدون تداخل
+        // ==========================================
+        // مکانیزم اسکرول هدر و جمع‌شدن منوی پایین
+        // ==========================================
+        function initScrollHeaderEffect() {
+            const header = document.getElementById('appHeader');
+            const backToTopBtn = document.getElementById('backToTopBtn');
+            const navContainer = document.getElementById('mainNavContainer');
+            let lastScrollY = window.scrollY || window.pageYOffset;
+            let ticking = false;
+
+            window.addEventListener('scroll', () => {
+                if (!ticking) {
+                    window.requestAnimationFrame(() => {
+                        const currentScrollY = window.scrollY || window.pageYOffset;
+
+                        if (currentScrollY > 15) {
+                            header.classList.add('scrolled-header');
+                        } else {
+                            header.classList.remove('scrolled-header');
+                        }
+
+                        // مخفی شدن در اسکرول به پایین و آشکار شدن در اسکرول به بالا
+                        if (currentScrollY > lastScrollY && currentScrollY > 60) {
+                            header.classList.add('header-hidden');
+                            if (navContainer) navContainer.classList.add('nav-scrolled-compact');
+                        } else if (currentScrollY < lastScrollY || currentScrollY <= 60) {
+                            header.classList.remove('header-hidden');
+                            if (navContainer) navContainer.classList.remove('nav-scrolled-compact');
+                        }
+
+                        if (currentScrollY > 280) {
+                            if (backToTopBtn) backToTopBtn.classList.remove('hidden');
+                        } else {
+                            if (backToTopBtn) backToTopBtn.classList.add('hidden');
+                        }
+
+                        lastScrollY = Math.max(0, currentScrollY);
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+            }, { passive: true });
+        }
+
+        // ==========================================
+        // پشتیبانی از ژست‌های حرکتی سوایپ بین تب‌ها
+        // ==========================================
+        function initAppSwipeGestures() {
+            const main = document.getElementById('mainContentArea');
+            if (!main) return;
+            let touchStartX = 0;
+            let touchStartY = 0;
+            let isIgnored = false;
+
+            main.addEventListener('touchstart', e => {
+                if (!e.touches || e.touches.length === 0) return;
+                // جلوگیری از تداخل با المان‌های اسکرول افقی، ورودی‌ها و ویدیو
+                const scrollable = e.target.closest('.overflow-x-auto, input, textarea, select, video, .zoomable-container, audio, button');
+                if (scrollable) {
+                    isIgnored = true;
+                    return;
+                }
+                isIgnored = false;
+                touchStartX = e.touches[0].clientX;
+                touchStartY = e.touches[0].clientY;
+            }, { passive: true });
+
+            main.addEventListener('touchend', e => {
+                if (isIgnored || !e.changedTouches || e.changedTouches.length === 0) return;
+                const touchEndX = e.changedTouches[0].clientX;
+                const touchEndY = e.changedTouches[0].clientY;
+                const diffX = touchEndX - touchStartX;
+                const diffY = touchEndY - touchStartY;
+
+                // تشخیص سوایپ افقی با تقدم نسبت به اسکرول عمودی
+                if (Math.abs(diffX) > 65 && Math.abs(diffX) > Math.abs(diffY) * 1.5) {
+                    const activeSection = document.querySelector('.page-section:not(.hidden)');
+                    if (!activeSection) return;
+                    const currentTabId = activeSection.id;
+                    const currentIndex = navTabs.indexOf(currentTabId);
+                    if (currentIndex === -1) return;
+
+                    // راست به چپ (انگشت به سمت چپ) -> تب بعدی
+                    if (diffX < 0 && currentIndex < navTabs.length - 1) {
+                        switchTab(navTabs[currentIndex + 1]);
+                        triggerHaptic('light');
+                    } 
+                    // چپ به راست (انگشت به سمت راست) -> تب قبلی
+                    else if (diffX > 0 && currentIndex > 0) {
+                        switchTab(navTabs[currentIndex - 1]);
+                        triggerHaptic('light');
+                    }
+                }
+            }, { passive: true });
+        }
+
+        // راه‌اندازی اولیه
         window.addEventListener('DOMContentLoaded', () => {
             initApp();
             updateDateTime();
@@ -2002,18 +2114,10 @@
             renderChatUI();
             renderPersonalNotes();
             checkAndStartOnboardingTour();
+            initScrollHeaderEffect();
+            initAppSwipeGestures();
 
             setTimeout(hideSplashScreen, 1000);
-
-            window.addEventListener('scroll', () => {
-                const header = document.getElementById('appHeader');
-                const backBtn = document.getElementById('backToTopBtn');
-                if (window.scrollY > 20) header.classList.add('scrolled-header');
-                else header.classList.remove('scrolled-header');
-
-                if (window.scrollY > 300) backBtn.classList.remove('hidden');
-                else backBtn.classList.add('hidden');
-            }, { passive: true });
         });
     </script>
 </body>
