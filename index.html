@@ -6,31 +6,39 @@
     <title>SIJT - مینی‌اپ تخصصی حقوقی</title>
 
     <link rel="manifest" href="data:application/manifest+json;charset=utf-8,{
-        %22name%22: %22SIJT%22,
-        %22short_name%22: %22SIJT%22,
-        %22start_url%22: %22.%22,
-        %22display%22: %22standalone%22,
-        %22background_color%22: %22%230f172a%22,
-        %22theme_color%22: %22%23c51b24%22,
-        %22icons%22: [
+        %22name%22:%20%22SIJT%20Legal%22,
+        %22short_name%22:%20%22SIJT%22,
+        %22start_url%22:%20%22.%22,
+        %22display%22:%20%22standalone%22,
+        %22background_color%22:%20%22%230b0f19%22,
+        %22theme_color%22:%20%22%23c51b24%22,
+        %22icons%22:[
             {
-                %22src%22: %22https://raw.githubusercontent.com/ahmdsltanahmdy-sketch/sijt-v01/main/01.png%22,
-                %22sizes%22: %22512x512%22,
-                %22type%22: %22image/jpeg%22
+                %22src%22:%20%22https://raw.githubusercontent.com/ahmdsltanahmdy-sketch/sijt-v01/main/01.png%22,
+                %22sizes%22:%20%22512x512%22,
+                %22type%22:%20%22image/png%22
             }
         ]
     }">
 
     <link rel="icon" type="image/jpeg" href="https://raw.githubusercontent.com/ahmdsltanahmdy-sketch/sijt-v01/main/01.png">
     <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/ahmdsltanahmdy-sketch/sijt-v01/main/01.png">
-    <meta name="theme-color" content="#c51b24">
+    <meta id="metaThemeColor" name="theme-color" content="#c51b24">
 
-    <!-- Tailwind & FontAwesome & Lottie -->
+    <!-- Tailwind, Telegram WebApp SDK, FontAwesome & Lottie -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             darkMode: 'class',
-            theme: { extend: { colors: { mizan: { 600: '#c51b24', 700: '#9b131a' } } } }
+            theme: { 
+                extend: { 
+                    colors: { 
+                        mizan: { 600: '#c51b24', 700: '#9b131a' },
+                        cyber: { amber: '#f59e0b', crimson: '#ef4444', neon: '#06b6d4' }
+                    } 
+                } 
+            }
         }
     </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -44,13 +52,32 @@
         .mesh-bg {
             background-color: #0b0f19;
             background-image: 
-                radial-gradient(at 10% 15%, rgba(197, 27, 36, 0.22) 0px, transparent 55%),
-                radial-gradient(at 90% 85%, rgba(245, 158, 11, 0.15) 0px, transparent 55%),
+                radial-gradient(at 10% 15%, rgba(197, 27, 36, 0.25) 0px, transparent 55%),
+                radial-gradient(at 90% 85%, rgba(245, 158, 11, 0.18) 0px, transparent 55%),
                 radial-gradient(at 50% 50%, rgba(11, 15, 25, 0.99) 0px, transparent 100%);
         }
         .light .mesh-bg, body:not(.dark):not(.oled-mode) .mesh-bg {
             background-color: #f1f5f9;
             background-image: none;
+        }
+
+        /* Cybernetic Glow and Neon borders for Dark Mode */
+        body.dark .cyber-glow, body:not(.light) .cyber-glow {
+            box-shadow: 0 0 16px rgba(197, 27, 36, 0.35), inset 0 0 8px rgba(245, 158, 11, 0.15);
+            border: 1px solid rgba(245, 158, 11, 0.45);
+        }
+        body.dark .cyber-glow:hover, body:not(.light) .cyber-glow:hover {
+            box-shadow: 0 0 25px rgba(239, 68, 68, 0.55), inset 0 0 12px rgba(245, 158, 11, 0.3);
+        }
+        .cyber-card {
+            position: relative;
+            overflow: hidden;
+        }
+        body.dark .cyber-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(245, 158, 11, 0.6), transparent);
         }
 
         body.oled-mode {
@@ -79,20 +106,20 @@
         }
 
         .ultra-glass {
-            background: rgba(15, 23, 42, 0.97);
+            background: rgba(15, 23, 42, 0.95);
             backdrop-filter: blur(25px);
             -webkit-backdrop-filter: blur(25px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.18);
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
             color: #ffffff;
             transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .light .ultra-glass, body:not(.dark):not(.oled-mode) .ultra-glass {
-            background: rgba(255, 255, 255, 0.99);
+            background: rgba(255, 255, 255, 0.98);
             backdrop-filter: blur(25px);
             -webkit-backdrop-filter: blur(25px);
-            border: 1px solid rgba(0, 0, 0, 0.18);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+            border: 1px solid rgba(0, 0, 0, 0.12);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
             color: #0f172a !important;
         }
         .light .ultra-glass p, body:not(.dark):not(.oled-mode) .ultra-glass p,
@@ -252,7 +279,7 @@
 
         #toastContainer {
             position: fixed; top: 16px; left: 50%; transform: translateX(-50%);
-            z-index: 300; display: flex; flex-direction: column; gap: 8px;
+            z-index: 9999; display: flex; flex-direction: column; gap: 8px;
             pointer-events: none; width: 90%; max-width: 380px;
         }
         .toast-item {
@@ -269,7 +296,6 @@
             to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
-        /* استایل‌های تکمیلی تور راهنما، انیمیشن چت‌بات و Empty State */
         .typing-dot {
             width: 6px; height: 6px; background-color: #f59e0b; border-radius: 50%;
             animation: typingAnimation 1.4s infinite ease-in-out both;
@@ -289,6 +315,21 @@
     </style>
 </head>
 <body id="bodyRoot" class="mesh-bg text-slate-900 dark:text-slate-100 min-h-screen flex flex-col relative select-none">
+
+    <!-- اسپلش اسکرین حرفه‌ای با انیمیشن روان -->
+    <div id="splashScreen" class="fixed inset-0 z-[10000] flex flex-col items-center justify-center bg-[#0b0f19] transition-opacity duration-700 select-none">
+        <div class="relative w-24 h-24 flex items-center justify-center mb-5">
+            <div class="absolute inset-0 border-4 border-slate-800 rounded-3xl"></div>
+            <div class="absolute inset-0 border-4 border-red-600 border-t-amber-400 rounded-3xl animate-spin"></div>
+            <i class="fa-solid fa-scale-balanced text-3xl text-amber-400 drop-shadow-[0_0_10px_rgba(245,158,11,0.5)]"></i>
+        </div>
+        <h1 class="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-amber-400 to-amber-200 tracking-widest">SIJT</h1>
+        <p class="text-xs text-slate-400 mt-2 font-medium">مینی‌اپ تخصصی و دستیار هوشمند حقوقی</p>
+        <div class="mt-6 flex items-center space-x-1.5 space-x-reverse">
+            <span class="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></span>
+            <span class="text-[10px] text-slate-500">در حال اتصال و بارگذاری داده‌ها...</span>
+        </div>
+    </div>
 
     <div class="noise-overlay"></div>
     <div id="toastContainer"></div>
@@ -314,9 +355,25 @@
     <script>
         const API_URL = 'https://script.google.com/macros/s/AKfycbyrMOSKpL5rwv5C9okpDQvbKE07-1JFP2ZE5xt7Xt4Y9sSvIUwbXZWU6ssTbBgQRgSZ/exec'; 
 
+        // Telegram WebApp Setup
+        let tgUser = null;
+        if (window.Telegram && window.Telegram.WebApp) {
+            try {
+                window.Telegram.WebApp.ready();
+                window.Telegram.WebApp.expand();
+                if (window.Telegram.WebApp.initDataUnsafe && window.Telegram.WebApp.initDataUnsafe.user) {
+                    tgUser = window.Telegram.WebApp.initDataUnsafe.user;
+                }
+            } catch(e) {}
+        }
+
         let userId = localStorage.getItem('mizan_user_id');
         if (!userId) {
-            userId = 'user_' + Math.random().toString(36).substr(2, 9);
+            if (tgUser && tgUser.id) {
+                userId = 'tg_' + tgUser.id;
+            } else {
+                userId = 'user_' + Math.random().toString(36).substr(2, 9);
+            }
             localStorage.setItem('mizan_user_id', userId);
         }
 
@@ -341,6 +398,7 @@
         let microInteractionsEnabled = localStorage.getItem('micro_interactions') !== 'false';
         let tgSettings = { haptic: localStorage.getItem('tg_haptic') !== 'false' };
 
+        // Web Audio Synthesizer
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         function playClickSound() {
             if (!microInteractionsEnabled) return;
@@ -378,6 +436,64 @@
             container.appendChild(toast);
             setTimeout(() => { if(toast.parentElement) toast.remove(); }, 3500);
         }
+
+        // Dynamic Meta Theme Color Controller
+        function updateMetaThemeColor(color) {
+            const metaTheme = document.getElementById('metaThemeColor') || document.querySelector("meta[name=theme-color]");
+            if (metaTheme) metaTheme.setAttribute("content", color);
+            if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.setHeaderColor) {
+                try { window.Telegram.WebApp.setHeaderColor(color); } catch(e) {}
+            }
+        }
+
+        // Web Speech API: Text-to-Speech Engine
+        function speakText(text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                // Strip markdown formatting for cleaner speech
+                const cleanText = text.replace(/[*#_~`>]/g, '').trim();
+                const utterance = new SpeechSynthesisUtterance(cleanText);
+                utterance.lang = 'fa-IR';
+                utterance.rate = 0.95;
+                window.speechSynthesis.speak(utterance);
+                showToast('در حال پخش صوتی متن...', 'success');
+                triggerHaptic('light');
+            } else {
+                showToast('مرورگر شما از قابلیت خواندن صوتی پشتیبانی نمی‌کند', 'error');
+            }
+        }
+
+        function stopSpeaking() {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                showToast('پخش صدا متوقف شد');
+            }
+        }
+
+        // PWA Native Prompt Logic
+        let deferredPwaPrompt = null;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPwaPrompt = e;
+            const pwaContainer = document.getElementById('pwaInstallRow');
+            if (pwaContainer) pwaContainer.classList.remove('hidden');
+        });
+
+        function triggerPwaInstall() {
+            if (deferredPwaPrompt) {
+                deferredPwaPrompt.prompt();
+                deferredPwaPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        showToast('برنامه با موفقیت نصب شد', 'success');
+                        const pwaContainer = document.getElementById('pwaInstallRow');
+                        if (pwaContainer) pwaContainer.classList.add('hidden');
+                    }
+                    deferredPwaPrompt = null;
+                });
+            } else {
+                showToast('اپلیکیشن قبلاً نصب شده یا مرورگر اجازه نصب نمی‌دهد', 'error');
+            }
+        }
     </script>
 
     <!-- هدر برنامه -->
@@ -389,7 +505,7 @@
                     <span id="headerCalendarWidget" class="font-medium">تقویم...</span>
                 </div>
                 <div class="flex items-center space-x-1.5 space-x-reverse pl-4">
-                    <i class="fa-solid fa-cloud-sun text-amber-300 text-[9px]"></i>
+                    <i id="networkWeatherIcon" class="fa-solid fa-cloud-sun text-amber-300 text-[9px]"></i>
                     <span id="headerWeatherWidget" class="font-medium text-slate-300">تهران...</span>
                 </div>
             </div>
@@ -402,7 +518,12 @@
         </div>
 
         <!-- منوی تنظیمات -->
-        <div id="settingsDropdown" class="hidden absolute left-4 top-12 z-50 max-w-xs w-85 p-4 settings-glass rounded-3xl space-y-3 text-xs shadow-2xl max-h-[75vh] overflow-y-auto">
+        <div id="settingsDropdown" class="hidden absolute left-4 top-12 z-50 max-w-xs w-85 p-4 settings-glass rounded-3xl space-y-3 text-xs shadow-2xl max-h-[78vh] overflow-y-auto cyber-glow">
+            <!-- دکمه نصب PWA بومی در بخش تنظیمات -->
+            <div id="pwaInstallRow" class="hidden flex items-center justify-between pb-2 border-b border-white/20">
+                <span class="font-bold text-amber-300"><i class="fa-solid fa-mobile-screen-button ml-1"></i>نصب مستقیم برنامه:</span>
+                <button onclick="triggerPwaInstall();" class="bg-gradient-to-r from-red-600 to-amber-600 text-white px-3 py-1 rounded-xl font-bold shadow-md">نصب PWA</button>
+            </div>
             <div class="flex items-center justify-between pb-2 border-b border-white/20">
                 <span class="font-bold">حالت نمایش (روز / شب):</span>
                 <button onclick="toggleTheme();" class="bg-white/20 px-3 py-1 rounded-xl font-medium">تیره / روشن</button>
@@ -410,6 +531,10 @@
             <div class="flex items-center justify-between pb-2 border-b border-white/20">
                 <span class="font-bold">حالت مطالعه تاریک مطلق (OLED):</span>
                 <button onclick="toggleOledMode();" class="bg-red-600/40 text-red-200 px-3 py-1 rounded-xl font-medium">فعال/غیرفعال</button>
+            </div>
+            <div class="flex items-center justify-between pb-2 border-b border-white/20">
+                <span class="font-bold">توقف پخش صدای سیستم:</span>
+                <button onclick="stopSpeaking();" class="bg-amber-500/20 text-amber-300 px-3 py-1 rounded-xl font-medium"><i class="fa-solid fa-volume-xmark ml-1"></i>قطع صدا</button>
             </div>
             <div class="flex items-center justify-between pb-2 border-b border-white/20">
                 <span class="font-bold">تمام‌صفحه هوشمند:</span>
@@ -470,7 +595,7 @@
                     <i class="fa-solid fa-earth-americas text-sm"></i>
                 </button>
             </div>
-            <div id="liveSuggestionsBox" class="hidden absolute right-4 left-4 top-full mt-1.5 ultra-glass rounded-2xl shadow-2xl z-[100] max-h-72 overflow-y-auto p-2.5 space-y-1.5"></div>
+            <div id="liveSuggestionsBox" class="hidden absolute right-4 left-4 top-full mt-1.5 ultra-glass rounded-2xl shadow-2xl z-[100] max-h-72 overflow-y-auto p-2.5 space-y-1.5 cyber-glow"></div>
         </div>
     </header>
 
@@ -500,7 +625,7 @@
             <div id="legalSystemsContainer" class="space-y-3 content-box-stable">
                 <div class="custom-skeleton h-16 w-full"></div>
             </div>
-            <div class="ultra-glass p-4 rounded-2xl space-y-2 shadow-lg mt-4">
+            <div class="ultra-glass cyber-card p-4 rounded-2xl space-y-2 shadow-lg mt-4">
                 <h3 class="font-bold text-xs text-amber-300"><i class="fa-solid fa-circle-question ml-1"></i> راهنمای استعلام و ثبت چک صیادی</h3>
                 <p class="text-[10px] text-slate-300">برای ثبت، انتقال یا استعلام چک‌های صیادی جدید، از روش‌های رسمی بانک مرکزی استفاده کنید:</p>
                 <div class="space-y-1.5 pt-1 text-[11px]">
@@ -513,7 +638,7 @@
 
         <!-- تب ۳: مشاور -->
         <section id="lawyer-tab" class="page-section hidden space-y-4">
-            <div class="ultra-glass p-4 rounded-3xl space-y-4 shadow-xl">
+            <div class="ultra-glass cyber-glow p-4 rounded-3xl space-y-4 shadow-xl">
                 <h2 class="font-extrabold text-xs text-gradient">مشاور و وکیل آنلاین SIJT</h2>
                 <select id="questionCategory" class="w-full bg-slate-900 text-white rounded-xl p-2.5 text-xs border border-white/20">
                     <option value="حقوقی عمومی">حقوقی عمومی / قراردادها</option>
@@ -531,14 +656,19 @@
 
         <!-- تب ۴: چت‌بات (دستیار هوشمند حقوقی فوق‌پیشرفته SIJT - Real AI) -->
         <section id="chatbot-tab" class="page-section hidden space-y-3">
-            <div class="ultra-glass p-4 rounded-3xl space-y-3 shadow-xl">
+            <div class="ultra-glass cyber-glow p-4 rounded-3xl space-y-3 shadow-xl">
                 <div class="flex items-center justify-between pb-1 border-b border-white/10">
                     <h2 class="font-extrabold text-xs text-gradient flex items-center">
                         <i class="fa-solid fa-robot ml-1.5 text-red-500"></i> دستیار هوش مصنوعی حقوقی SIJT
                     </h2>
-                    <button onclick="clearChatHistory()" class="text-[10px] text-slate-400 hover:text-red-400 flex items-center space-x-1 space-x-reverse transition">
-                        <i class="fa-solid fa-trash-can"></i><span>پاکسازی</span>
-                    </button>
+                    <div class="flex items-center space-x-2 space-x-reverse">
+                        <button onclick="stopSpeaking()" title="قطع صدای هوش مصنوعی" class="text-[10px] text-amber-400 hover:text-amber-200 flex items-center space-x-1 space-x-reverse transition">
+                            <i class="fa-solid fa-volume-xmark"></i><span>سکوت</span>
+                        </button>
+                        <button onclick="clearChatHistory()" class="text-[10px] text-slate-400 hover:text-red-400 flex items-center space-x-1 space-x-reverse transition">
+                            <i class="fa-solid fa-trash-can"></i><span>پاکسازی</span>
+                        </button>
+                    </div>
                 </div>
 
                 <!-- موضوعات سریع و پیشنهادی -->
@@ -592,14 +722,14 @@
         <section id="tools-tab" class="page-section hidden space-y-3">
             <h2 class="font-black text-xs mb-2 text-gradient"><i class="fa-solid fa-toolbox ml-1 text-red-500"></i> ابزارهای هوشمند حقوقی</h2>
 
-            <div class="ultra-glass p-4 rounded-2xl space-y-3 shadow-lg">
+            <div class="ultra-glass cyber-card p-4 rounded-2xl space-y-3 shadow-lg">
                 <h3 class="font-bold text-xs text-amber-300"><i class="fa-solid fa-calculator ml-1"></i> محاسبه‌گر هزینه‌های دادرسی</h3>
                 <input type="number" id="claimAmountInput" placeholder="مبلغ خواسته به ریال..." class="w-full bg-slate-900 text-amber-200 placeholder-slate-400 rounded-xl px-3 py-2 text-xs border border-white/20 shadow-inner">
                 <button onclick="calculateCourtFee()" class="w-full bg-red-600 text-white py-2 rounded-xl text-xs font-bold shadow">محاسبه هزینه دادرسی</button>
                 <div id="feeResult" class="text-[11px] font-bold text-amber-300"></div>
             </div>
 
-            <div class="ultra-glass p-4 rounded-2xl space-y-3 shadow-lg">
+            <div class="ultra-glass cyber-card p-4 rounded-2xl space-y-3 shadow-lg">
                 <h3 class="font-bold text-xs text-amber-300"><i class="fa-solid fa-coins ml-1"></i> محاسبه‌گر جامع مهریه (تورم بانک مرکزی / ماده ۵۲۲)</h3>
                 <div class="grid grid-cols-2 gap-2">
                     <input type="number" id="mahariyehCoins" placeholder="تعداد سکه..." class="bg-slate-900 text-amber-200 placeholder-slate-400 rounded-xl px-3 py-2 text-xs border border-white/20">
@@ -610,7 +740,7 @@
                 <div id="mahariyehResult" class="text-[11px] font-bold text-amber-300 leading-relaxed"></div>
             </div>
 
-            <div class="ultra-glass p-4 rounded-2xl space-y-3 shadow-lg">
+            <div class="ultra-glass cyber-card p-4 rounded-2xl space-y-3 shadow-lg">
                 <h3 class="font-bold text-xs text-amber-300"><i class="fa-solid fa-chart-line ml-1"></i> محاسبه‌گر تأخیر تأدیه (ماده ۵۲۲ آ.د.م)</h3>
                 <div class="grid grid-cols-2 gap-2">
                     <input type="number" id="principalAmount" placeholder="اصل طلب (ریال)..." class="bg-slate-900 text-amber-200 placeholder-slate-400 rounded-xl px-3 py-2 text-xs border border-white/20 shadow-inner">
@@ -620,7 +750,7 @@
                 <div id="delayResult" class="text-[11px] font-bold text-amber-300"></div>
             </div>
 
-            <div class="ultra-glass p-4 rounded-2xl space-y-3 shadow-lg">
+            <div class="ultra-glass cyber-card p-4 rounded-2xl space-y-3 shadow-lg">
                 <h3 class="font-bold text-xs text-amber-300"><i class="fa-solid fa-file-contract ml-1"></i> تولیدکننده و فرم‌ساز قراردادهای هوشمند</h3>
                 <select id="contractType" class="w-full bg-slate-900 text-white rounded-xl p-2.5 text-xs border border-white/20">
                     <option value="rent">قرارداد اجاره مسکن</option>
@@ -636,7 +766,7 @@
                 <div id="contractOutputBox" class="hidden bg-slate-900 p-3 rounded-xl text-[10px] leading-relaxed text-slate-200 border border-white/10 space-y-2"></div>
             </div>
 
-            <div class="ultra-glass p-4 rounded-2xl space-y-3 shadow-lg">
+            <div class="ultra-glass cyber-card p-4 rounded-2xl space-y-3 shadow-lg">
                 <h3 class="font-bold text-xs text-amber-300"><i class="fa-solid fa-heart-pulse ml-1"></i> محاسبه‌گر دیه</h3>
                 <select id="diyehType" class="w-full bg-slate-900 text-white rounded-xl p-2.5 text-xs border border-white/20">
                     <option value="complete">دیه کامل یک مرد مسلمان (ماه غیرحرام)</option>
@@ -648,7 +778,7 @@
                 <div id="diyehResult" class="text-[11px] font-bold text-amber-300"></div>
             </div>
 
-            <div class="ultra-glass p-4 rounded-2xl space-y-3 shadow-lg">
+            <div class="ultra-glass cyber-card p-4 rounded-2xl space-y-3 shadow-lg">
                 <h3 class="font-bold text-xs text-amber-300"><i class="fa-solid fa-file-invoice-dollar ml-1"></i> محاسبه‌گر سهم‌الارث (طبقه اول)</h3>
                 <input type="number" id="estateAmount" placeholder="مبلغ کل ترکه به ریال..." class="w-full bg-slate-900 text-amber-200 placeholder-slate-400 rounded-xl px-3 py-2 text-xs border border-white/20 shadow-inner">
                 <select id="heirsType" class="w-full bg-slate-900 text-white rounded-xl p-2.5 text-xs border border-white/20">
@@ -807,7 +937,7 @@
             ],
             laws: [{ title: "قانون صدور چک", summary: "مقررات جدید", content: "تمامی چک‌ها باید ثبت شوند." }],
             shareCards: [{ title: "نکته قرارداد", text: "قرارداد را با دو شاهد امضا کنید." }],
-            about: [{ text: "مینی‌اپ تخصصی خبری و حقوقی SIJT.\nنسخه: 9.0.0 (مجهز به موتور هوش مصنوعی جامع حقوقی، تور راهنمای تعاملی و ژست‌های حرکتی)" }]
+            about: [{ text: "مینی‌اپ تخصصی خبری و حقوقی SIJT.\nنسخه: 10.0.0 (مجهز به موتور هوش مصنوعی جامع حقوقی، تور راهنما، دستیار صوتی و قابلیت‌های ابری)" }]
         };
 
         let appData = JSON.parse(localStorage.getItem('mizan_cache')) || fallbackData;
@@ -924,6 +1054,15 @@
                 }
             } catch (error) {
                 console.log("Using local IndexedDB cache.");
+            } finally {
+                // Fade out Splash Screen smoothly
+                setTimeout(() => {
+                    const splash = document.getElementById('splashScreen');
+                    if (splash) {
+                        splash.style.opacity = '0';
+                        setTimeout(() => splash.remove(), 700);
+                    }
+                }, 750);
             }
         }
 
@@ -944,7 +1083,32 @@
             registerServiceWorker();
             initAppSwipeGestures();
             checkAndStartOnboardingTour();
+            initNetworkStatusMonitor();
+
+            // Personal greeting if loaded inside Telegram
+            if (tgUser && tgUser.first_name) {
+                setTimeout(() => {
+                    showToast(`کاربر گرامی ${tgUser.first_name}، به SIJT خوش آمدید`);
+                }, 1600);
+            }
         });
+
+        // Online/Offline Detection
+        function initNetworkStatusMonitor() {
+            const updateOnlineState = () => {
+                const isOnline = navigator.onLine;
+                const weatherIcon = document.getElementById('networkWeatherIcon');
+                if (isOnline) {
+                    showToast('ارتباط با اینترنت برقرار شد', 'success');
+                    if (weatherIcon) weatherIcon.className = "fa-solid fa-cloud-sun text-amber-300 text-[9px]";
+                } else {
+                    showToast('شما آفلاین هستید. اطلاعات از حافظه موقت نمایش داده می‌شوند.', 'error');
+                    if (weatherIcon) weatherIcon.className = "fa-solid fa-triangle-exclamation text-red-500 text-[9px]";
+                }
+            };
+            window.addEventListener('online', updateOnlineState);
+            window.addEventListener('offline', updateOnlineState);
+        }
 
         function registerServiceWorker() {
             if ('serviceWorker' in navigator) {
@@ -1143,14 +1307,16 @@
 
             container.innerHTML = list.map(d => {
                 const isBookmarked = bookmarks.includes(d.term);
+                const safeDef = d.definition.replace(/'/g, "\\'");
                 return `
-                    <div class="ultra-glass p-3.5 rounded-xl border border-white/15 space-y-1.5 shadow-md">
+                    <div class="ultra-glass cyber-card p-3.5 rounded-xl border border-white/15 space-y-1.5 shadow-md">
                         <div class="flex justify-between items-center">
                             <div class="font-black text-red-600 dark:text-red-400 text-xs" style="font-size: ${currentSize}">${d.term}</div>
                             <div class="flex space-x-2 space-x-reverse items-center text-xs">
+                                <button onclick="speakText('${d.term} : ${safeDef}')" class="text-slate-400 hover:text-amber-400 p-1" title="شنیدن صوتی"><i class="fa-solid fa-volume-high"></i></button>
                                 <button onclick="toggleBookmark('${d.term}')" class="${isBookmarked ? 'text-amber-400' : 'text-slate-400'} hover:text-amber-400"><i class="fa-solid fa-bookmark"></i></button>
-                                <button onclick="nativeShare('${d.term}', '${d.definition}')" class="text-slate-400 hover:text-white" title="اشتراک‌گذاری"><i class="fa-solid fa-share-nodes"></i></button>
-                                <button onclick="copyToClipboard('${d.term}: ${d.definition}'); triggerHaptic('light'); showToast('کپی شد');" class="text-slate-400 hover:text-white"><i class="fa-solid fa-copy"></i></button>
+                                <button onclick="nativeShare('${d.term}', '${safeDef}')" class="text-slate-400 hover:text-white" title="اشتراک‌گذاری"><i class="fa-solid fa-share-nodes"></i></button>
+                                <button onclick="copyToClipboard('${d.term}: ${safeDef}'); triggerHaptic('light'); showToast('کپی شد');" class="text-slate-400 hover:text-white"><i class="fa-solid fa-copy"></i></button>
                             </div>
                         </div>
                         <p class="leading-relaxed font-semibold" style="font-size: ${currentSize}">${d.definition}</p>
@@ -1199,15 +1365,14 @@
             }
 
             if (!resultsHTML) {
-                box.innerHTML = `
+                resultsHTML = `
                     <div class="p-3 text-center space-y-1.5">
                         <div class="text-xs font-bold text-slate-300">موردی در مینی‌اپ یافت نشد</div>
                         <button onclick="document.getElementById('googleSearchInput').value='${q}'; openAdvancedSearchModal();" class="text-[10px] text-amber-400 hover:underline"><i class="fa-solid fa-magnifying-glass ml-1"></i>جستجوی مستقیم "${q}" در گوگل</button>
                     </div>
                 `;
-            } else {
-                box.innerHTML = resultsHTML;
             }
+            box.innerHTML = resultsHTML;
         }
 
         function selectSearchResult(tabId, keyword) {
@@ -1227,7 +1392,7 @@
             if (navigator.share) {
                 navigator.share({ title: title, text: text }).catch(() => {});
             } else {
-                navigator.clipboard.writeText(`${title}\n${text}`);
+                copyToClipboard(`${title}\n${text}`);
                 showToast('متن برای اشتراک‌گذاری کپی شد');
             }
         }
@@ -1235,7 +1400,7 @@
         function renderLegalSystems() {
             const c = document.getElementById('legalSystemsContainer');
             const currentSize = localStorage.getItem('mizan_font_size') || '12px';
-            if(c) c.innerHTML = (appData.legalSystems || []).map(s => `<div class="ultra-glass p-4 rounded-2xl flex justify-between items-center shadow"><span class="font-bold text-red-600 dark:text-red-400" style="font-size: ${currentSize}">${s.title}</span><a href="${s.url}" target="_blank" class="bg-red-600 text-white px-3 py-1.5 rounded-xl text-xs font-bold shadow">ورود</a></div>`).join('');
+            if(c) c.innerHTML = (appData.legalSystems || []).map(s => `<div class="ultra-glass cyber-card p-4 rounded-2xl flex justify-between items-center shadow"><span class="font-bold text-red-600 dark:text-red-400" style="font-size: ${currentSize}">${s.title}</span><a href="${s.url}" target="_blank" class="bg-red-600 text-white px-3 py-1.5 rounded-xl text-xs font-bold shadow">ورود</a></div>`).join('');
         }
 
         function renderLaws(filter = '') {
@@ -1245,7 +1410,19 @@
             const q = filter.trim();
             if(q.length > 0) list = list.filter(l => fuzzyMatch(q, l.title) || fuzzyMatch(q, l.content));
             const currentSize = localStorage.getItem('mizan_font_size') || '12px';
-            c.innerHTML = list.map(l => `<div class="ultra-glass p-4 rounded-2xl space-y-2 shadow-md"><h3 class="font-bold text-red-600 dark:text-red-400" style="font-size: ${currentSize}">${l.title}</h3><p class="font-bold text-amber-600 dark:text-amber-300" style="font-size: ${currentSize}">${l.summary || ''}</p><p class="leading-relaxed font-semibold" style="font-size: ${currentSize}">${l.content}</p></div>`).join('');
+            c.innerHTML = list.map(l => {
+                const safeContent = (l.content || '').replace(/'/g, "\\'");
+                return `
+                    <div class="ultra-glass cyber-card p-4 rounded-2xl space-y-2 shadow-md">
+                        <div class="flex justify-between items-center">
+                            <h3 class="font-bold text-red-600 dark:text-red-400" style="font-size: ${currentSize}">${l.title}</h3>
+                            <button onclick="speakText('${l.title}. ${safeContent}')" class="text-slate-400 hover:text-amber-400 p-1" title="شنیدن قانون"><i class="fa-solid fa-volume-high text-xs"></i></button>
+                        </div>
+                        <p class="font-bold text-amber-600 dark:text-amber-300" style="font-size: ${currentSize}">${l.summary || ''}</p>
+                        <p class="leading-relaxed font-semibold" style="font-size: ${currentSize}">${l.content}</p>
+                    </div>
+                `;
+            }).join('');
         }
 
         function renderShareCards() {
@@ -1257,13 +1434,24 @@
         function renderNews() {
             const c = document.getElementById('newsContainer');
             const currentSize = localStorage.getItem('mizan_font_size') || '12px';
-            if(c) c.innerHTML = (appData.news || []).map(n => `<div class="ultra-glass p-4 rounded-2xl space-y-1.5 shadow-md"><div class="text-[9px] text-slate-400">${n.date || ''}</div><h3 class="font-bold text-red-600 dark:text-red-400" style="font-size: ${currentSize}">${n.title}</h3><p class="leading-relaxed font-semibold" style="font-size: ${currentSize}">${n.summary}</p></div>`).join('');
+            if(c) c.innerHTML = (appData.news || []).map(n => `<div class="ultra-glass cyber-card p-4 rounded-2xl space-y-1.5 shadow-md"><div class="text-[9px] text-slate-400">${n.date || ''}</div><h3 class="font-bold text-red-600 dark:text-red-400" style="font-size: ${currentSize}">${n.title}</h3><p class="leading-relaxed font-semibold" style="font-size: ${currentSize}">${n.summary}</p></div>`).join('');
         }
 
         function renderPublicFaqs() {
             const c = document.getElementById('publicFaqContainer');
             const currentSize = localStorage.getItem('mizan_font_size') || '12px';
-            if(c) c.innerHTML = (appData.publicFaqs || []).map(pf => `<div class="ultra-glass p-4 rounded-3xl space-y-2 shadow-md"><div class="font-bold text-red-600 dark:text-red-400" style="font-size: ${currentSize}"><i class="fa-solid fa-question ml-1"></i> ${pf.question}</div><div class="bg-slate-200 dark:bg-black/50 p-3 rounded-2xl leading-relaxed font-semibold" style="font-size: ${currentSize}">${pf.answer}</div></div>`).join('');
+            if(c) c.innerHTML = (appData.publicFaqs || []).map(pf => {
+                const safeAns = (pf.answer || '').replace(/'/g, "\\'");
+                return `
+                    <div class="ultra-glass cyber-card p-4 rounded-3xl space-y-2 shadow-md">
+                        <div class="flex justify-between items-center">
+                            <div class="font-bold text-red-600 dark:text-red-400" style="font-size: ${currentSize}"><i class="fa-solid fa-question ml-1"></i> ${pf.question}</div>
+                            <button onclick="speakText('${safeAns}')" class="text-slate-400 hover:text-amber-400 p-1" title="شنیدن پاسخ"><i class="fa-solid fa-volume-high text-xs"></i></button>
+                        </div>
+                        <div class="bg-slate-200 dark:bg-black/50 p-3 rounded-2xl leading-relaxed font-semibold" style="font-size: ${currentSize}">${pf.answer}</div>
+                    </div>
+                `;
+            }).join('');
         }
 
         function renderInstagram() {
@@ -1274,25 +1462,25 @@
         function renderPodcasts() {
             const c = document.getElementById('podcastsContainer');
             const currentSize = localStorage.getItem('mizan_font_size') || '12px';
-            if(c) c.innerHTML = (appData.podcasts || []).map(p => `<div class="ultra-glass p-3.5 rounded-2xl space-y-2 shadow-md"><h4 class="font-bold text-red-600 dark:text-red-400" style="font-size: ${currentSize}">${p.title}</h4><audio controls class="w-full h-8" preload="none"><source src="${p.url}" type="audio/mpeg"></audio></div>`).join('');
+            if(c) c.innerHTML = (appData.podcasts || []).map(p => `<div class="ultra-glass cyber-card p-3.5 rounded-2xl space-y-2 shadow-md"><h4 class="font-bold text-red-600 dark:text-red-400" style="font-size: ${currentSize}">${p.title}</h4><audio controls class="w-full h-8" preload="none"><source src="${p.url}" type="audio/mpeg"></audio></div>`).join('');
         }
 
         function renderFiles() {
             const c = document.getElementById('filesContainer');
             const currentSize = localStorage.getItem('mizan_font_size') || '12px';
-            if(c) c.innerHTML = (appData.files || []).map(f => `<div class="ultra-glass p-4 rounded-2xl space-y-2 shadow-md"><img data-src="${f.image}" loading="lazy" class="w-full h-36 object-cover rounded-xl"><h3 class="font-bold text-red-600 dark:text-red-400" style="font-size: calc(${currentSize} + 2px)">${f.title}</h3><p class="leading-relaxed font-semibold" style="font-size: ${currentSize}">${f.description}</p></div>`).join('');
+            if(c) c.innerHTML = (appData.files || []).map(f => `<div class="ultra-glass cyber-card p-4 rounded-2xl space-y-2 shadow-md"><img data-src="${f.image}" loading="lazy" class="w-full h-36 object-cover rounded-xl"><h3 class="font-bold text-red-600 dark:text-red-400" style="font-size: calc(${currentSize} + 2px)">${f.title}</h3><p class="leading-relaxed font-semibold" style="font-size: ${currentSize}">${f.description}</p></div>`).join('');
         }
 
         function renderInfographics() {
             const c = document.getElementById('infographicsContainer');
             const currentSize = localStorage.getItem('mizan_font_size') || '12px';
-            if(c) c.innerHTML = (appData.infographics || []).map((inf, idx) => `<div onclick="openMediaModal(${idx}, 'infographic')" class="ultra-glass p-3 rounded-2xl text-center space-y-2 cursor-pointer transition hover:border-red-500 shadow-md"><img data-src="${inf.image}" loading="lazy" class="w-full h-28 object-cover rounded-xl"><h4 class="font-bold text-red-600 dark:text-red-400" style="font-size: ${currentSize}">${inf.title}</h4></div>`).join('');
+            if(c) c.innerHTML = (appData.infographics || []).map((inf, idx) => `<div onclick="openMediaModal(${idx}, 'infographic')" class="ultra-glass cyber-card p-3 rounded-2xl text-center space-y-2 cursor-pointer transition hover:border-red-500 shadow-md"><img data-src="${inf.image}" loading="lazy" class="w-full h-28 object-cover rounded-xl"><h4 class="font-bold text-red-600 dark:text-red-400" style="font-size: ${currentSize}">${inf.title}</h4></div>`).join('');
         }
 
         function renderSeries() {
             const c = document.getElementById('seriesContainer');
             const currentSize = localStorage.getItem('mizan_font_size') || '12px';
-            if(c) c.innerHTML = (appData.series || []).map((ser, idx) => `<div onclick="openMediaModal(${idx}, 'series')" class="ultra-glass p-3 rounded-2xl text-center space-y-2 cursor-pointer transition hover:border-red-500 shadow-md"><div class="relative w-full h-28 rounded-xl overflow-hidden bg-slate-900 group"><img data-src="${ser.image}" loading="lazy" class="w-full h-full object-cover"><div class="absolute inset-0 bg-black/40 flex items-center justify-center"><i class="fa-solid fa-play text-white text-base"></i></div></div><h4 class="font-bold text-red-600 dark:text-red-400 truncate" style="font-size: ${currentSize}">${ser.title}</h4></div>`).join('');
+            if(c) c.innerHTML = (appData.series || []).map((ser, idx) => `<div onclick="openMediaModal(${idx}, 'series')" class="ultra-glass cyber-card p-3 rounded-2xl text-center space-y-2 cursor-pointer transition hover:border-red-500 shadow-md"><div class="relative w-full h-28 rounded-xl overflow-hidden bg-slate-900 group"><img data-src="${ser.image}" loading="lazy" class="w-full h-full object-cover"><div class="absolute inset-0 bg-black/40 flex items-center justify-center"><i class="fa-solid fa-play text-white text-base"></i></div></div><h4 class="font-bold text-red-600 dark:text-red-400 truncate" style="font-size: ${currentSize}">${ser.title}</h4></div>`).join('');
         }
 
         function openMediaModal(idx, type) {
@@ -1383,7 +1571,7 @@
             const currentSize = localStorage.getItem('mizan_font_size') || '12px';
             if(c) {
                 const streams = appData.livestream || [];
-                c.innerHTML = streams.map(st => `<button onclick='playSelectedStream(${JSON.stringify(st)})' class="p-3 ultra-glass rounded-2xl text-right border hover:border-red-500 space-y-1 shadow"><div class="font-bold text-red-600 dark:text-red-400" style="font-size: ${currentSize}"><i class="fa-solid fa-tv ml-1"></i> ${st.title}</div><div class="text-[10px] opacity-80">${st.description}</div></button>`).join('');
+                c.innerHTML = streams.map(st => `<button onclick='playSelectedStream(${JSON.stringify(st)})' class="p-3 ultra-glass cyber-card rounded-2xl text-right border hover:border-red-500 space-y-1 shadow"><div class="font-bold text-red-600 dark:text-red-400" style="font-size: ${currentSize}"><i class="fa-solid fa-tv ml-1"></i> ${st.title}</div><div class="text-[10px] opacity-80">${st.description}</div></button>`).join('');
             }
         }
 
@@ -1550,7 +1738,7 @@
                 return;
             }
             container.innerHTML = notes.map((n, idx) => `
-                <div class="ultra-glass p-3 rounded-xl space-y-1 relative">
+                <div class="ultra-glass cyber-card p-3 rounded-xl space-y-1 relative">
                     <div class="flex justify-between items-center text-[10px]">
                         <span class="font-bold text-amber-300">${n.title}</span>
                         <div class="flex items-center space-x-2 space-x-reverse">
@@ -1580,7 +1768,7 @@
         }
 
         // =========================================================================
-        // موتور قدرتمند پردازش زبان طبیعی و هوش مصنوعی محلی SIJT (Real AI NLP Brain)
+        // موتور پردازش زبان طبیعی و هوش مصنوعی محلی SIJT (Local Legal NLP Brain)
         // =========================================================================
         const LegalNlpEngine = {
             nonLegalTopics: [
@@ -1594,7 +1782,7 @@
                     keywords: ['چک', 'صیاد', 'برگشت', 'برگشت چک', 'گواهی عدم پرداخت', 'سامانه صیاد', 'اجرائیه چک'],
                     patterns: [/چک.*(صیاد|برگشت|وصول|فرم)/, /اجرای.*چک/, /برگشت.*چک/],
                     title: 'راهنمای جامع پیگیری و وصول چک صیادی (ماده ۲۳ قانون صدور چک)',
-                    content: `مطابق با قانون جدید صدور چک، در صورتی که چک صیادی در موعد مقرر برگشت بخورد، دارنده از مزایای قانونی فوق‌العاده‌ای به شرح زیر بهره‌مند می‌شود:
+                    content: `مطابق با قانون جدید صدور چک، در صورتی که چک صیادی در موعد مقرر برگشت بخورد، دارنده از مزایای قانونی فوق‌العاده‌ای بهره‌مند می‌شود:
 📌 **اقدام مستقیم بدون نیاز به دادرسی ماهوی:**
 بر اساس **ماده ۲۳ قانون صدور چک**، دارنده می‌تواند با اخذ «گواهی عدم پرداخت با شناسه رهگیری» از بانک، مستقیماً از طریق دفاتر خدمات الکترونیک قضایی دادخواست صدور **اجرائیه دادگاه** ثبت کند؛ نیازی به طی کردن پروسه دادگاه بدوی و تجدیدنظر نیست.
 ⚖️ **مسدودی حساب‌های صادرکننده:**
@@ -1688,19 +1876,16 @@
             analyze: function(userQuery) {
                 const text = normalizeNumbers(userQuery);
 
-                // ۱. بررسی سلام و احوالپرسی
                 if (/^(سلام|درود|خوبی|وقت بخیر|سلام علیکم|روز بخیر)/.test(text) && text.length < 25) {
                     return "سلام و درود! من دستیار هوشمند و تخصصی حقوقی SIJT هستم. برای تحلیل دقیق مواد قانونی، پرونده‌های کیفری، دعاوی ملکی، خانواده، چک و اسناد تجاری در خدمت شما هستم. سوال حقوقی خود را بفرمایید.";
                 }
 
-                // ۲. بررسی سوالات کاملاً غیرحقوقی
                 for (let topic of this.nonLegalTopics) {
                     if (text.includes(topic) && !text.includes('حقوق') && !text.includes('قانون') && !text.includes('جرم') && !text.includes('دادگاه')) {
                         return `کاربر گرامی، حیطه تخصصی من منحصراً بر **قوانین و مقررات، حقوق مدنی، کیفری، خانواده، کار، ثبت و آیین دادرسی ایران** متمرکز است. لطفاً پرسش یا چالش حقوقی خود را مطرح فرمایید تا شما را دقیق راهنمایی کنم.`;
                     }
                 }
 
-                // ۳. جستجوی الگوهای تطبیقی در پایگاه دانش حقوقی
                 let bestMatch = null;
                 let maxScore = 0;
 
@@ -1722,7 +1907,6 @@
                     return `### ⚖️ ${bestMatch.title}\n\n${bestMatch.content}\n\n---\n💡 *توصیه تخصصی:* برای تنظیم دقیق لوایح و ثبت دادخواست، با همراه داشتن مدارک به نزدیک‌ترین دفتر خدمات الکترونیک قضایی مراجعه نمایید.`;
                 }
 
-                // ۴. پاسخ ترکیبی و تحلیل‌گر پویا برای سایر مسائل حقوقی
                 return `### ⚖️ تحلیل حقوقی تخصصی SIJT در خصوص: «${userQuery}»\n\n` +
                     `بر اساس اصول کلی قوانین موضوعه جمهوری اسلامی ایران، در خصوص مسئله مطروحه توجه به نکات زیر حائز اهمیت است:\n\n` +
                     `📌 **ماهیت دعوا و مرجع صالح:**\n` +
@@ -1735,7 +1919,7 @@
             }
         };
 
-        // رندر پیام‌های چت
+        // Render Chat with Speech, Copy, and Native Share Toolbar
         function renderChatUI() {
             const container = document.getElementById('chatMessagesContainer');
             if(!container) return;
@@ -1754,13 +1938,31 @@
                 return;
             }
             const currentSize = localStorage.getItem('mizan_font_size') || '12px';
-            container.innerHTML = chatConversationHistory.map(msg => `
-                <div class="flex justify-${msg.role === 'user' ? 'end' : 'start'}">
-                    <div class="${msg.role === 'user' ? 'bg-red-600 text-white rounded-br-none' : 'bg-slate-800 text-slate-100 rounded-bl-none border border-white/10'} p-3 rounded-2xl max-w-[88%] shadow leading-relaxed font-medium" style="font-size: ${currentSize}">
-                        ${msg.text.replace(/\n/g, '<br>')}
+            container.innerHTML = chatConversationHistory.map((msg, idx) => {
+                const isUser = msg.role === 'user';
+                const safeMsgText = msg.text.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+                
+                return `
+                    <div class="flex justify-${isUser ? 'end' : 'start'}">
+                        <div class="${isUser ? 'bg-red-600 text-white rounded-br-none' : 'bg-slate-800 text-slate-100 rounded-bl-none border border-white/10 cyber-card'} p-3 rounded-2xl max-w-[88%] shadow leading-relaxed font-medium" style="font-size: ${currentSize}">
+                            <div>${msg.text.replace(/\n/g, '<br>')}</div>
+                            ${!isUser ? `
+                                <div class="flex items-center space-x-3 space-x-reverse mt-2.5 pt-2 border-t border-white/10 text-[10px] text-slate-400">
+                                    <button onclick="speakText('${safeMsgText}')" class="hover:text-amber-400 flex items-center space-x-1 space-x-reverse transition" title="شنیدن صوتی">
+                                        <i class="fa-solid fa-volume-high"></i><span>شنیدن</span>
+                                    </button>
+                                    <button onclick="copyToClipboard('${safeMsgText}'); showToast('پاسخ با موفقیت کپی شد'); triggerHaptic('light');" class="hover:text-amber-400 flex items-center space-x-1 space-x-reverse transition" title="کپی متن">
+                                        <i class="fa-solid fa-copy"></i><span>کپی</span>
+                                    </button>
+                                    <button onclick="nativeShare('تحلیل حقوقی SIJT', '${safeMsgText}')" class="hover:text-amber-400 flex items-center space-x-1 space-x-reverse transition" title="اشتراک‌گذاری">
+                                        <i class="fa-solid fa-share-nodes"></i><span>ارسال</span>
+                                    </button>
+                                </div>
+                            ` : ''}
+                        </div>
                     </div>
-                </div>
-            `).join('');
+                `;
+            }).join('');
             container.scrollTop = container.scrollHeight;
         }
 
@@ -1770,6 +1972,7 @@
         }
 
         function clearChatHistory() {
+            stopSpeaking();
             chatConversationHistory = [];
             sessionStorage.removeItem('mizan_active_chat');
             renderChatUI();
@@ -1777,7 +1980,7 @@
             triggerHaptic('light');
         }
 
-        // اثر تایپینگ پیوسته و زنده (Typewriter Effect)
+        // Live Typewriter Effect
         function typeWriterEffect(targetMsgIndex, fullText, speed = 12) {
             let i = 0;
             const container = document.getElementById('chatMessagesContainer');
@@ -1831,7 +2034,7 @@
                 }
             } catch(e) {}
 
-            // اگر سرور پاسخ نداد یا خطای ارتباطی رخ داد، از هوش مصنوعی محلی استفاده می‌شود
+            // Fallback to local NLP Brain if network fails
             if (!botResponse || botResponse.includes('خطا') || botResponse.length < 10) {
                 botResponse = LegalNlpEngine.analyze(prompt);
             }
@@ -2010,7 +2213,6 @@
             });
         }
 
-        // ژست‌های حرکتی سوایپ بین تب‌ها (Swipe Gestures)
         function initAppSwipeGestures() {
             const main = document.getElementById('mainContentArea');
             let touchStartX = 0;
@@ -2027,18 +2229,15 @@
                 let diffX = touchEndX - touchStartX;
                 let diffY = touchEndY - touchStartY;
 
-                // بررسی جابجایی افقی معتبر و عدم تداخل با اسکرول عمودی
                 if (Math.abs(diffX) > 75 && Math.abs(diffX) > Math.abs(diffY) * 1.6) {
                     const currentTabId = Array.from(document.querySelectorAll('.page-section')).find(s => !s.classList.contains('hidden'))?.id;
                     const currentIndex = appTabs.indexOf(currentTabId);
                     if (currentIndex === -1) return;
 
                     if (diffX < 0 && currentIndex < appTabs.length - 1) {
-                        // سوایپ به چپ -> رفتن به تب بعدی
                         switchTab(appTabs[currentIndex + 1]);
                         triggerHaptic('light');
                     } else if (diffX > 0 && currentIndex > 0) {
-                        // سوایپ به راست -> بازگشت به تب قبلی
                         switchTab(appTabs[currentIndex - 1]);
                         triggerHaptic('light');
                     }
@@ -2066,32 +2265,43 @@
             document.body.classList.toggle('dark', isDark);
             document.body.classList.toggle('light', !isDark);
             localStorage.setItem('mizan_theme', isDark ? 'dark' : 'light');
+            updateMetaThemeColor(isDark ? '#0b0f19' : '#f1f5f9');
         }
 
         function toggleOledMode() {
             document.body.classList.toggle('oled-mode');
             const isOled = document.body.classList.contains('oled-mode');
             localStorage.setItem('oled_mode', isOled);
+            updateMetaThemeColor(isOled ? '#000000' : (document.body.classList.contains('dark') ? '#0b0f19' : '#f1f5f9'));
         }
 
         function manualRefresh() { localStorage.removeItem('mizan_cache'); location.reload(); }
-        function toggleNotificationsModal() { showToast('هیچ اعلان خوانده‌نشده‌ای وجود ندارد'); }
+        function toggleNotificationsModal() { showToast('هیچ اعلان جدیدی وجود ندارد'); }
         function toggleSettingsMenu(e) { e.stopPropagation(); document.getElementById('settingsDropdown').classList.toggle('hidden'); }
         function toggleFullScreen() { if(!document.fullscreenElement) document.documentElement.requestFullscreen(); else document.exitFullscreen(); }
 
         function openAboutModal() { 
-            let aboutText = "مینی‌اپ تخصصی خبری و حقوقی SIJT.";
+            let aboutText = "مینی‌اپ تخصصی خبری و حقوقی SIJT.\nنسخه: 10.0.0 (مجهز به موتور هوش مصنوعی جامع حقوقی، تور راهنمای تعاملی و دستیار صوتی)";
             if (appData && appData.about && appData.about[0] && appData.about[0].text) {
                 aboutText = appData.about[0].text;
             }
-            alert(aboutText); 
+            showToast(aboutText);
         }
 
-        function copyToClipboard(text) { navigator.clipboard.writeText(text); }
+        function copyToClipboard(text) { 
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text);
+            } else {
+                const ta = document.createElement('textarea');
+                ta.value = text;
+                document.body.appendChild(ta);
+                ta.select();
+                document.execCommand('copy');
+                ta.remove();
+            }
+        }
 
-        // ==========================================
-        // تور تعاملی راهنمای ورود (Onboarding Tour)
-        // ==========================================
+        // Onboarding Tour
         const tourSteps = [
             {
                 title: "به مینی‌اپ تخصصی SIJT خوش آمدید",
@@ -2105,7 +2315,7 @@
             },
             {
                 title: "دستیار هوش مصنوعی حقوقی (Real AI)",
-                desc: "در تب چت‌بات، هرگونه پرسش درباره مهریه، چک، تخلیه ملک، اداره کار و پرونده‌های کیفری را مطرح کرده و پاسخ تحلیلی بگیرید.",
+                desc: "در تب چت‌بات، هرگونه پرسش درباره مهریه، چک، تخلیه ملک، اداره کار و پرونده‌های کیفری را مطرح کرده و پاسخ صوتی یا متنی بگیرید.",
                 icon: "fa-solid fa-robot"
             },
             {
@@ -2158,22 +2368,5 @@
             triggerHaptic('light');
         }
     </script>
-// اضافه کردن موتور تبدیل متن به صوت
-function speakText(text) {
-    if ('speechSynthesis' in window) {
-        window.speechSynthesis.cancel(); // قطع صدای قبلی
-        const utterance = new SpeechSynthesisUtterance(text);
-        utterance.lang = 'fa-IR'; // زبان فارسی
-        utterance.rate = 0.9; // سرعت خواندن (کمی شمرده‌تر برای متون حقوقی)
-        window.speechSynthesis.speak(utterance);
-        showToast('در حال خواندن متن...', 'success');
-        triggerHaptic('medium');
-    } else {
-        showToast('مرورگر شما از پخش صوتی پشتیبانی نمی‌کند.', 'error');
-    }
-}
-function stopSpeaking() {
-    if ('speechSynthesis' in window) window.speechSynthesis.cancel();
-}
 </body>
 </html>
