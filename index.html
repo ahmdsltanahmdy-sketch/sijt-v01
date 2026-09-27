@@ -102,7 +102,7 @@
             color: #0f172a;
         }
 
-        /* نوار ناوبری پایین با حداکثر کنتراست */
+        /* نوار ناوبری پایین با حداکثر کنتراست و خوانایی */
         .floating-nav {
             background: rgba(15, 23, 42, 0.98) !important;
             backdrop-filter: blur(30px) saturate(200%);
@@ -259,7 +259,7 @@
 </head>
 <body id="bodyRoot" class="mesh-bg text-slate-900 dark:text-slate-100 min-h-screen flex flex-col relative select-none">
 
-    <!-- اسپلش اسکرین پایدار -->
+    <!-- اسپلش اسکرین روان -->
     <div id="splashScreen" class="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#0b0f19] transition-opacity duration-300">
         <div class="relative w-20 h-20 flex items-center justify-center mb-4">
             <div class="absolute inset-0 border-4 border-slate-800 rounded-full"></div>
@@ -389,7 +389,7 @@
         </div>
     </header>
 
-    <!-- بدنه اصلی برنامه و تب‌ها -->
+    <!-- بدنه اصلی برنامه -->
     <main id="mainContentArea" class="max-w-md mx-auto w-full p-4 flex-grow mb-32 transition-transform duration-200">
 
         <!-- تب ۱: اصطلاحات -->
@@ -457,7 +457,7 @@
             </div>
         </section>
 
-        <!-- تب ۶: چت‌بات هوش مصنوعی پیشرفته -->
+        <!-- تب ۶: چت‌بات هوش مصنوعی پیشرفته (Real AI) -->
         <section id="chatbot-tab" class="page-section hidden space-y-3">
             <div class="ultra-glass p-4 rounded-3xl space-y-3 shadow-xl">
                 <div class="flex items-center justify-between pb-1 border-b border-white/10">
@@ -518,8 +518,8 @@
             <div class="ultra-glass p-4 rounded-2xl space-y-3 shadow-lg">
                 <h3 class="font-bold text-xs text-amber-300"><i class="fa-solid fa-chart-line ml-1"></i> محاسبه‌گر تأخیر تأدیه (ماده ۵۲۲ آ.د.م)</h3>
                 <div class="grid grid-cols-2 gap-2">
-                    <input type="number" id="principalAmount" placeholder="اصل طلب (ریال)..." class="bg-slate-900 text-amber-200 placeholder-slate-400 rounded-xl px-3 py-2 text-xs border border-white/20">
-                    <input type="number" id="delayYears" placeholder="تعداد سال تأخیر..." class="bg-slate-900 text-amber-200 placeholder-slate-400 rounded-xl px-3 py-2 text-xs border border-white/20">
+                    <input type="number" id="principalAmount" placeholder="اصل طلب (ریال)..." class="bg-slate-900 text-amber-200 placeholder-slate-400 rounded-xl px-3 py-2 text-xs border border-white/20 shadow-inner">
+                    <input type="number" id="delayYears" placeholder="تعداد سال تأخیر..." class="bg-slate-900 text-amber-200 placeholder-slate-400 rounded-xl px-3 py-2 text-xs border border-white/20 shadow-inner">
                 </div>
                 <button onclick="calculateDelayCompensation()" class="w-full bg-red-600 text-white py-2 rounded-xl text-xs font-bold shadow">محاسبه خسارت کاهش ارزش</button>
                 <div id="delayResult" class="text-[11px] font-bold text-amber-300"></div>
@@ -656,7 +656,7 @@
         <i class="fa-solid fa-arrow-up text-xs"></i>
     </button>
 
-    <!-- مودال رسانه با کنترل مطمئن کلاس‌ها -->
+    <!-- مودال رسانه (سریال و اینفوگرافیک) -->
     <div id="mediaModal" class="fixed inset-0 bg-black/90 z-[110] hidden flex items-center justify-center p-4">
         <div id="mediaModalBox" class="ultra-glass rounded-3xl max-w-lg w-full p-4 relative shadow-2xl space-y-3 text-center">
             <button onclick="closeMediaModal()" class="absolute top-3 left-3 text-slate-300 p-2 z-10 hover:text-white"><i class="fa-solid fa-xmark text-base"></i></button>
@@ -713,7 +713,7 @@
     <script>
         const API_URL = 'https://script.google.com/macros/s/AKfycbyrMOSKpL5rwv5C9okpDQvbKE07-1JFP2ZE5xt7Xt4Y9sSvIUwbXZWU6ssTbBgQRgSZ/exec'; 
 
-        // تلگرام وب‌اپ با پشتیبانی ایمن از نسخه ۶.۰
+        // همگام‌سازی بدون خطای نسخه ۶.۰ تلگرام
         const tg = window.Telegram?.WebApp;
         if (tg) {
             try {
@@ -798,67 +798,6 @@
             toast.innerHTML = `<div class="flex items-center space-x-2 space-x-reverse">${icon}<span>${message}</span></div><button onclick="this.parentElement.remove()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>`;
             container.appendChild(toast);
             setTimeout(() => { if(toast.parentElement) toast.remove(); }, 3500);
-        }
-
-        // ==========================================
-        // سیستم پخش صوتی پایدار (Text-to-Speech)
-        // ==========================================
-        window._activeUtterance = null;
-        function speakText(text) {
-            if (!('speechSynthesis' in window)) {
-                showToast('مرورگر شما از پخش صوتی پشتیبانی نمی‌کند', 'error');
-                return;
-            }
-            try {
-                window.speechSynthesis.cancel();
-                window.speechSynthesis.resume();
-
-                const clean = String(text || '').replace(/[*#_~`>]/g, '').replace(/https?:\/\/\S+/g, '').trim();
-                if (!clean) return;
-
-                const utterance = new SpeechSynthesisUtterance(clean);
-                window._activeUtterance = utterance;
-
-                const voices = window.speechSynthesis.getVoices();
-                let voice = voices.find(v => v.lang.startsWith('fa') || v.lang.includes('persian') || v.lang.includes('farsi'));
-                if (!voice) {
-                    voice = voices.find(v => v.lang.startsWith('ar'));
-                }
-
-                if (voice) {
-                    utterance.voice = voice;
-                    utterance.lang = voice.lang;
-                } else {
-                    utterance.lang = 'fa-IR';
-                }
-
-                utterance.rate = 0.95;
-                utterance.pitch = 1.0;
-
-                utterance.onstart = () => showToast('در حال پخش صوتی متن...');
-                utterance.onend = () => { window._activeUtterance = null; };
-                utterance.onerror = () => {
-                    window._activeUtterance = null;
-                    showToast('خطا در پخش صوت دستگاه (پکیج صوتی یافت نشد)', 'error');
-                };
-
-                window.speechSynthesis.speak(utterance);
-
-                setTimeout(() => {
-                    if (window.speechSynthesis.paused) {
-                        window.speechSynthesis.resume();
-                    }
-                }, 100);
-            } catch(e) {
-                showToast('خطا در پخش صوت دستگاه', 'error');
-            }
-        }
-
-        function stopSpeaking() {
-            if ('speechSynthesis' in window) {
-                try { window.speechSynthesis.cancel(); } catch(e) {}
-            }
-            window._activeUtterance = null;
         }
 
         // ==========================================
@@ -951,7 +890,7 @@
         }
 
         // ==========================================
-        // بارگذاری اولیه بدون وقفه و همگام با گوگل شیت
+        // بارگذاری اولیه و همگام‌سازی با گوگل شیت
         // ==========================================
         async function initApp() {
             const cachedDbData = await getFromIndexedDB('app_data');
@@ -961,7 +900,6 @@
             renderAll();
             hideSplashScreen();
 
-            // ارتباط با گوگل‌شیت بدون تایم‌اوت مزاحم
             try {
                 const response = await fetch(API_URL + "?action=get_all&t=" + new Date().getTime(), { 
                     mode: 'cors', 
@@ -977,7 +915,7 @@
                     }
                 }
             } catch(err) {
-                console.log("ارتباط با گوگل شیت برقرار نشد. استفاده از حافظه لوکال.");
+                console.log("استفاده از پایگاه داده لوکال و بدون معطلی.");
             }
         }
 
@@ -1013,12 +951,23 @@
         }
 
         // =========================================================================
-        // موتور قدرتمند پردازش زبان طبیعی و هوش مصنوعی محلی SIJT (Real AI NLP Brain)
+        // موتور هوشمند پردازش زبان طبیعی و فیلتر سوالات نامربوط و شوخی (Real AI)
         // =========================================================================
         const LegalNlpEngine = {
-            nonLegalTopics: [
-                'هوا', 'ورزش', 'فوتبال', 'آشپزی', 'دستور پخت', 'فیلم سینمایی', 'موزیک', 'آهنگ',
-                'برنامه‌نویسی', 'کد نویسی', 'قیمت دلار', 'ارز دیجیتال', 'بیت کوین', 'پزشکی', 'دارو'
+            // واژگان صریح حقوقی جهت اعتبارسنجی ارتباط سوال با مباحث قضایی
+            legalTerms: [
+                'قانون', 'حقوق', 'کیفری', 'مدنی', 'دادگاه', 'دادسرا', 'شورا', 'حل اختلاف', 'قاضی', 'وکیل', 'وکالت', 'موکل', 
+                'پرونده', 'دادخواست', 'شکواییه', 'لایحه', 'اظهارنامه', 'ابلاغ', 'ابلاغیه', 'ثنا', 'چک', 'صیاد', 'صیادی', 
+                'سفته', 'برات', 'بانک', 'مهریه', 'نفقه', 'تمکین', 'طلاق', 'فسخ نکاح', 'حضانت', 'اجرت المثل', 'نحله', 'تخلیه', 
+                'اجاره', 'مستاجر', 'موجر', 'ودیعه', 'پول پیش', 'سرقفلی', 'حق کسب', 'ملک', 'زمین', 'قولنامه', 'مبایعه نامه', 
+                'سند', 'ثبت', 'افراز', 'تفکیک', 'مشاع', 'کارگر', 'کارفرما', 'بیمه', 'سنوات', 'عیدی', 'اداره کار', 'اخراج', 
+                'ترک کار', 'ماده ۱۴۸', 'خسارت', 'تاخیر تادیه', 'ماده ۵۲۲', 'دین', 'بدهی', 'بدهکار', 'طلبکار', 'کلاهبرداری', 
+                'سرقت', 'دزدی', 'خیانت در امانت', 'جعل', 'استفاده از سند مجعول', 'تهدید', 'توهین', 'افترا', 'دیه', 'قصاص', 
+                'ارش', 'ضرب و جرح', 'تصادف', 'افت قیمت', 'ارث', 'ترکه', 'انحصار وراثت', 'وصیت', 'ثلث', 'مهر و موم', 'اعسار', 
+                'تقسیط', 'ممنوع الخروج', 'جلب', 'حکم جلب', 'بازداشت', 'حبس', 'زندان', 'جزای نقدی', 'شلاق', 'ضمانت', 'کفالت', 
+                'وثیقه', 'تجدیدنظر', 'فرجام', 'اعاده دادرسی', 'واخواهی', 'اجرای احکام', 'مزایده', 'توقیف', 'پلاک ثبتی', 
+                'شهادت', 'شاهد', 'سوگند', 'اقرار', 'قرارداد', 'تعهد', 'شرط ضمن عقد', 'خیارات', 'غبن', 'تدلیس', 'اقاله', 
+                'انحلال', 'فسخ', 'بطلان', 'عدم پرداخت', 'برگشت چک', 'جرم', 'مجازات', 'تعلیق', 'شاکی', 'متهم', 'محکوم', 'خوانده', 'خواهان'
             ],
 
             knowledgeBase: [
@@ -1093,16 +1042,30 @@
             analyze: function(userQuery) {
                 const text = normalizeNumbers(userQuery);
 
-                if (/^(سلام|درود|خوبی|وقت بخیر|سلام علیکم|روز بخیر)/.test(text) && text.length < 25) {
-                    return "سلام و درود! من دستیار هوشمند و تخصصی حقوقی SIJT هستم. برای تحلیل دقیق پرونده‌ها، دعاوی کیفری، ملکی، خانواده، چک و اسناد تجاری در خدمت شما هستم. سوال حقوقی خود را بفرمایید.";
+                // ۱. احوالپرسی و مکالمات متداول
+                if (/^(سلام|درود|خوبی|وقت بخیر|سلام علیکم|روز بخیر|صبح بخیر|عصر بخیر|سلام چطوری)/.test(text) && text.length < 35) {
+                    return "سلام و درود! من دستیار هوشمند و تخصصی حقوقی SIJT هستم. برای بررسی و راهنمایی در خصوص دعاوی ملکی، کیفری، خانواده، مهریه، چک، مطالبات و قراردادها در خدمت شما هستم. لطفاً سوال حقوقی خود را بفرمایید.";
                 }
 
-                for (let topic of this.nonLegalTopics) {
-                    if (text.includes(topic) && !text.includes('حقوق') && !text.includes('قانون') && !text.includes('جرم') && !text.includes('دادگاه')) {
-                        return "کاربر گرامی، حیطه تخصصی من منحصراً بر قوانین و مقررات، حقوق مدنی، کیفری، خانواده، کار و آیین دادرسی ایران متمرکز است. لطفاً پرسش حقوقی خود را مطرح فرمایید.";
-                    }
+                // ۲. معرفی و هویت
+                if (/^(تو کی هستی|اسمت چیه|چیکار میکنی|رباتی|هوش مصنوعی هستی)/.test(text)) {
+                    return "من «دستیار هوش مصنوعی حقوقی SIJT» هستم. من برای پاسخگویی تخصصی به سوالات قضایی، تبیین مقررات قانونی ایران، چک صیادی، روابط کارگر و کارفرما، دعاوی خانواده و راهنمایی در خصوص مراجع دادگستری طراحی شده‌ام.";
                 }
 
+                // ۳. تشکر و بازخورد
+                if (/^(ممنون|مرسی|تشکر|دستت درد نکنه|سپاس|دمت گرم|خیلی ممنون)/.test(text) && text.length < 25) {
+                    return "خواهش می‌کنم، انجام وظیفه بود! اگر هر ابهام، پرسش یا مسئله حقوقی دیگری دارید، با کمال میل در خدمتتان هستم.";
+                }
+
+                // ۴. بررسی وجود مفهوم یا کلیدواژه حقوقی در متن کاربر
+                const hasLegalIntent = this.legalTerms.some(term => text.includes(normalizeNumbers(term)));
+
+                // ۵. در صورتی که سوال کاملاً بی‌ربط، شوخی، متفرقه یا نامفهوم باشد
+                if (!hasLegalIntent) {
+                    return "کاربر گرامی، این پرسش خارج از حیطه تخصصی و حقوقی این سامانه است.\n\nمن دستیار تخصصی حقوقی SIJT هستم و منحصراً به سوالات مربوط به قوانین موضوعه ایران، دعاوی حقوقی، کیفری، خانواده، کار، اسناد تجاری و دادگاهی پاسخ می‌دهم.\n\nلطفاً در صورتی که سوال یا ابهام حقوقی دارید، آن را مطرح فرمایید تا شما را دقیق راهنمایی کنم.";
+                }
+
+                // ۶. تطبیق با پایگاه دانش اختصاصی برای سوالات حقوقی معتبر
                 let bestMatch = null;
                 let maxScore = 0;
                 for (let item of this.knowledgeBase) {
@@ -1123,14 +1086,15 @@
                     return `### ⚖️ ${bestMatch.title}\n\n${bestMatch.content}\n\n---\n💡 *توصیه تخصصی:* برای تنظیم لوایح دقیق و ثبت دادخواست به همراه مدارک به دفاتر خدمات الکترونیک قضایی مراجعه نمایید.`;
                 }
 
-                return `### ⚖️ تحلیل حقوقی تخصصی در خصوص: «${userQuery}»\n\n` +
-                    `بر اساس اصول کلی قوانین موضوعه جمهوری اسلامی ایران، در خصوص این مسئله توجه به نکات زیر ضروری است:\n\n` +
+                // ۷. پاسخ عمومی و راهنمای ساختاریافته فقط برای سوالات حقوقی معتبری که در پایگاه الگو نبوده است
+                return `### ⚖️ تحلیل حقوقی در خصوص: «${userQuery}»\n\n` +
+                    `در رابطه با این مسئله حقوقی، توجه به اصول و رویه قضایی زیر حائز اهمیت است:\n\n` +
                     `📌 **مرجع صالح و ادله اثباتی:**\n` +
-                    `موضوع نیازمند بررسی ادله اثباتی (اسناد رسمی، اسناد عادی، شهادت شهود یا اظهارنامه رسمی) است. بسته به نوع دعوا، مرجع صالح شورای حل اختلاف (دعاوی مالی تا نصاب قانونی و تخلیه فوری)، دادگاه عمومی حقوقی یا دادسرا و دادگاه کیفری خواهد بود.\n\n` +
+                    `پیگیری این موضوع نیازمند گردآوری ادله (اسناد رسمی یا عادی، شهادت شهود، پرینت تراکنش‌های مالی یا امارات قضایی) است. بسته به نوع خواسته، مرجع صالح رسیدگی می‌تواند شورای حل اختلاف، دادگاه عمومی حقوقی یا دادسرا و دادگاه کیفری باشد.\n\n` +
                     `📋 **گام‌های قانونی پیشنهادی:**\n` +
-                    `۱. ارسال اظهارنامه رسمی قضایی جهت ابلاغ رسمی خواسته و ثبت تاریخ مطالبه حق.\n` +
-                    `۲. گردآوری قراردادها، رسیدها و مدارک هویتی معتبر.\n` +
-                    `۳. ثبت دادخواست یا شکواییه در دفاتر خدمات الکترونیک قضایی.`;
+                    `۱. در صورت امکان، ارسال اظهارنامه رسمی قضایی پیش از طرح دعوا جهت مطالبه رسمی حق.\n` +
+                    `۲. ضمیمه نمودن کلیه مدارک شناسایی و اسناد اثبات‌کننده ادعا.\n` +
+                    `۳. مراجعه به یکی از دفاتر خدمات الکترونیک قضایی و ثبت شکواییه یا دادخواست حقوقی.`;
             }
         };
 
@@ -1194,7 +1158,6 @@
                         <div class="flex justify-between items-center">
                             <div class="font-black text-red-600 dark:text-red-400 text-xs" style="font-size: ${currentSize}">${termStr}</div>
                             <div class="flex space-x-2 space-x-reverse items-center text-xs">
-                                <button onclick="speakText('${termStr}: ${defStr}')" class="text-slate-400 hover:text-amber-400" title="پخش صوتی"><i class="fa-solid fa-volume-high"></i></button>
                                 <button onclick="toggleBookmark('${termStr}')" class="${isBookmarked ? 'text-amber-400' : 'text-slate-400'} hover:text-amber-400"><i class="fa-solid fa-bookmark"></i></button>
                                 <button onclick="nativeShare('${termStr}', '${defStr}')" class="text-slate-400 hover:text-white"><i class="fa-solid fa-share-nodes"></i></button>
                                 <button onclick="copyToClipboard('${termStr}: ${defStr}'); triggerHaptic('light'); showToast('کپی شد');" class="text-slate-400 hover:text-white"><i class="fa-solid fa-copy"></i></button>
@@ -1249,10 +1212,7 @@
             const currentSize = localStorage.getItem('mizan_font_size') || '12px';
             c.innerHTML = (appData.laws || []).map(l => `
                 <div class="ultra-glass p-4 rounded-2xl space-y-2 shadow-md">
-                    <div class="flex justify-between items-center">
-                        <h3 class="font-bold text-red-600 dark:text-red-400" style="font-size: ${currentSize}">${String(l.title || '')}</h3>
-                        <button onclick="speakText('${String(l.title || '')}. ${String(l.content || '')}')" class="text-slate-400 hover:text-amber-400"><i class="fa-solid fa-volume-high"></i></button>
-                    </div>
+                    <h3 class="font-bold text-red-600 dark:text-red-400" style="font-size: ${currentSize}">${String(l.title || '')}</h3>
                     <p class="font-bold text-amber-600 dark:text-amber-300 text-[11px]">${String(l.summary || '')}</p>
                     <p class="leading-relaxed font-semibold text-slate-200" style="font-size: ${currentSize}">${String(l.content || '')}</p>
                 </div>`).join('');
@@ -1263,10 +1223,7 @@
             const currentSize = localStorage.getItem('mizan_font_size') || '12px';
             if(c) c.innerHTML = (appData.shareCards || []).map(card => `
                 <div class="card-bg-glass p-4 rounded-3xl space-y-2 shadow-xl">
-                    <div class="flex justify-between items-center">
-                        <span class="font-bold text-amber-300" style="font-size: ${currentSize}">${String(card.title || '')}</span>
-                        <button onclick="speakText('${String(card.text || '')}')" class="text-slate-300 hover:text-white"><i class="fa-solid fa-volume-high"></i></button>
-                    </div>
+                    <span class="font-bold text-amber-300" style="font-size: ${currentSize}">${String(card.title || '')}</span>
                     <p class="text-white leading-relaxed font-semibold" style="font-size: ${currentSize}">${String(card.text || '')}</p>
                 </div>`).join('');
         }
@@ -1291,10 +1248,7 @@
                 const answerText = String(pf.answer || '');
                 return `
                     <div class="ultra-glass p-4 rounded-3xl space-y-2 shadow-md">
-                        <div class="flex justify-between items-center">
-                            <div class="font-bold text-red-600 dark:text-red-400" style="font-size: ${currentSize}"><i class="fa-solid fa-question ml-1"></i> ${questionText}</div>
-                            <button onclick="speakText('${questionText}. پاسخ: ${answerText}')" class="text-slate-400 hover:text-amber-400"><i class="fa-solid fa-volume-high"></i></button>
-                        </div>
+                        <div class="font-bold text-red-600 dark:text-red-400" style="font-size: ${currentSize}"><i class="fa-solid fa-question ml-1"></i> ${questionText}</div>
                         <div class="bg-slate-900/60 p-3 rounded-2xl leading-relaxed font-semibold text-slate-200" style="font-size: ${currentSize}">${answerText}</div>
                     </div>`;
             }).join('');
@@ -1465,7 +1419,7 @@
         }
 
         // ==========================================
-        // جستجو و هوش مصنوعی
+        // جستجو و هوش مصنوعی چت‌بات
         // ==========================================
         function handleUniversalSearch(query) {
             const box = document.getElementById('liveSuggestionsBox');
@@ -1544,7 +1498,6 @@
                             ${String(msg.text || '').replace(/\n/g, '<br>')}
                             ${!isUser ? `
                                 <div class="flex items-center space-x-3 space-x-reverse mt-2 pt-2 border-t border-white/10 text-[10px] text-slate-400">
-                                    <button onclick="speakText('${safeText}')" class="hover:text-amber-400 transition flex items-center space-x-1 space-x-reverse"><i class="fa-solid fa-volume-high"></i><span>شنیدن</span></button>
                                     <button onclick="copyToClipboard('${safeText}'); showToast('پاسخ کپی شد');" class="hover:text-amber-400 transition flex items-center space-x-1 space-x-reverse"><i class="fa-solid fa-copy"></i><span>کپی</span></button>
                                     <button onclick="nativeShare('پاسخ هوش مصنوعی SIJT', '${safeText}')" class="hover:text-amber-400 transition flex items-center space-x-1 space-x-reverse"><i class="fa-solid fa-share-nodes"></i><span>اشتراک</span></button>
                                 </div>
@@ -1599,6 +1552,7 @@
                 }
             } catch(e) {}
 
+            // در صورت هرگونه خطا، قطعی اینترنت یا ۴۰۴، موتور هوشمند محلی پاسخ دقیق می‌دهد
             if (!botResponse || botResponse.includes('خطا') || botResponse.length < 10) {
                 botResponse = LegalNlpEngine.analyze(prompt);
             }
@@ -2013,7 +1967,7 @@
         }
 
         // بررسی وضعیت آنلاین/آفلاین
-        window.addEventListener('online', () => showToast('ارتباط با اینترنت برقرار شد', 'success'));
+        window.addEventListener('online', () => showToast('ارتباط با سرور برقرار شد', 'success'));
         window.addEventListener('offline', () => showToast('شما آفلاین هستید. نمایش دیتای کش', 'error'));
 
         // نصب بومی PWA
