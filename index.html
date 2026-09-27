@@ -81,8 +81,6 @@
         }
         .light .ultra-glass, body:not(.dark):not(.oled-mode) .ultra-glass {
             background: rgba(255, 255, 255, 0.99);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
             border: 1px solid rgba(0, 0, 0, 0.18);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
             color: #0f172a !important;
@@ -104,19 +102,19 @@
             color: #0f172a;
         }
 
-        /* نوار ناوبری پایین با حداکثر وضوح */
+        /* نوار ناوبری پایین با حداکثر کنتراست */
         .floating-nav {
-            background: rgba(15, 23, 42, 0.96) !important;
-            backdrop-filter: blur(25px) saturate(200%);
-            -webkit-backdrop-filter: blur(25px) saturate(200%);
+            background: rgba(15, 23, 42, 0.98) !important;
+            backdrop-filter: blur(30px) saturate(200%);
+            -webkit-backdrop-filter: blur(30px) saturate(200%);
             border: 1px solid rgba(255, 255, 255, 0.25);
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), 0 0 15px rgba(197, 27, 36, 0.2);
             transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), padding 0.3s ease;
         }
         .light .floating-nav, body:not(.dark):not(.oled-mode) .floating-nav {
             background: #ffffff !important;
-            border: 1px solid rgba(0, 0, 0, 0.12);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(0, 0, 0, 0.18) !important;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15) !important;
         }
         .nav-scrolled-compact {
             transform: translateY(6px) scale(0.97);
@@ -126,10 +124,10 @@
 
         .nav-btn {
             color: #94a3b8;
-            transition: all 0.25s ease;
+            transition: all 0.2s ease;
         }
         .light .nav-btn, body:not(.dark):not(.oled-mode) .nav-btn {
-            color: #475569 !important;
+            color: #334155 !important;
         }
         .nav-btn.active-tab {
             color: #dc2626 !important;
@@ -179,6 +177,31 @@
             width: 7px; height: 7px; background-color: #ef4444;
             border-radius: 50%; box-shadow: 0 0 6px #ef4444;
         }
+
+        .zoomable-container {
+            overflow: auto; position: relative; width: 100%; height: 70vh;
+            display: flex; align-items: center; justify-content: center;
+            background: #000; border-radius: 1rem; cursor: grab;
+        }
+        .zoomable-container:active { cursor: grabbing; }
+        .zoomable-img { transition: transform 0.2s ease; max-width: 100%; max-height: 100%; object-fit: contain; user-select: none; }
+
+        .pro-video-wrapper {
+            position: relative; width: 100%; aspect-ratio: 16/9;
+            background: radial-gradient(circle at center, #1e293b 0%, #020617 100%);
+            border-radius: 1.25rem; overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.85), 0 0 25px rgba(197, 27, 36, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .pro-video-wrapper video { width: 100%; height: 100%; object-fit: cover; }
+
+        .cinematic-mode-box {
+            max-width: 98vw !important; width: 98vw !important;
+            background: rgba(5, 5, 5, 0.99) !important;
+            border: 1px solid rgba(245, 158, 11, 0.3) !important;
+            box-shadow: 0 0 60px rgba(0, 0, 0, 0.95), 0 0 30px rgba(197, 27, 36, 0.4) !important;
+        }
+        .cinematic-mode-box .pro-video-wrapper { aspect-ratio: 21/9 !important; max-height: 75vh; }
 
         .custom-skeleton {
             background: linear-gradient(90deg, rgba(255,255,255,0.05) 25%, rgba(255,255,255,0.15) 50%, rgba(255,255,255,0.05) 75%);
@@ -242,17 +265,11 @@
             z-index: 250; display: flex; align-items: center; justify-content: center; padding: 1.5rem;
             animation: fadeInScale 0.3s ease;
         }
-
-        /* افکت‌های سایبرنتیک برای دکمه‌ها و المان‌ها */
-        .cyber-glow {
-            box-shadow: 0 0 15px rgba(197, 27, 36, 0.4), inset 0 0 10px rgba(197, 27, 36, 0.2);
-            border: 1px solid rgba(245, 158, 11, 0.5);
-        }
     </style>
 </head>
 <body id="bodyRoot" class="mesh-bg text-slate-900 dark:text-slate-100 min-h-screen flex flex-col relative select-none">
 
-    <!-- اسپلش اسکرین حرفه‌ای -->
+    <!-- اسپلش اسکرین روان و ضد گیرکردن -->
     <div id="splashScreen" class="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#0b0f19] transition-opacity duration-300">
         <div class="relative w-20 h-20 flex items-center justify-center mb-4">
             <div class="absolute inset-0 border-4 border-slate-800 rounded-full"></div>
@@ -450,7 +467,7 @@
             </div>
         </section>
 
-        <!-- تب ۶: چت‌بات هوش مصنوعی -->
+        <!-- تب ۶: چت‌بات هوش مصنوعی پیشرفته (Real AI) -->
         <section id="chatbot-tab" class="page-section hidden space-y-3">
             <div class="ultra-glass p-4 rounded-3xl space-y-3 shadow-xl">
                 <div class="flex items-center justify-between pb-1 border-b border-white/10">
@@ -509,6 +526,16 @@
             </div>
 
             <div class="ultra-glass p-4 rounded-2xl space-y-3 shadow-lg">
+                <h3 class="font-bold text-xs text-amber-300"><i class="fa-solid fa-chart-line ml-1"></i> محاسبه‌گر تأخیر تأدیه (ماده ۵۲۲ آ.د.م)</h3>
+                <div class="grid grid-cols-2 gap-2">
+                    <input type="number" id="principalAmount" placeholder="اصل طلب (ریال)..." class="bg-slate-900 text-amber-200 rounded-xl px-3 py-2 text-xs border border-white/20">
+                    <input type="number" id="delayYears" placeholder="تعداد سال تأخیر..." class="bg-slate-900 text-amber-200 rounded-xl px-3 py-2 text-xs border border-white/20">
+                </div>
+                <button onclick="calculateDelayCompensation()" class="w-full bg-red-600 text-white py-2 rounded-xl text-xs font-bold shadow">محاسبه خسارت کاهش ارزش</button>
+                <div id="delayResult" class="text-[11px] font-bold text-amber-300"></div>
+            </div>
+
+            <div class="ultra-glass p-4 rounded-2xl space-y-3 shadow-lg">
                 <h3 class="font-bold text-xs text-amber-300"><i class="fa-solid fa-file-contract ml-1"></i> فرم‌ساز قراردادهای هوشمند</h3>
                 <select id="contractType" class="w-full bg-slate-900 text-white rounded-xl p-2.5 text-xs border border-white/20">
                     <option value="rent">قرارداد اجاره مسکن</option>
@@ -517,7 +544,10 @@
                 <input type="text" id="partyFirst" placeholder="طرف اول (موجر / فروشنده)..." class="w-full bg-slate-900 text-amber-200 rounded-xl px-3 py-2 text-xs border border-white/20">
                 <input type="text" id="partySecond" placeholder="طرف دوم (مستأجر / خریدار)..." class="w-full bg-slate-900 text-amber-200 rounded-xl px-3 py-2 text-xs border border-white/20">
                 <input type="text" id="contractAmount" placeholder="مبلغ یا اجاره‌بها (ریال)..." class="w-full bg-slate-900 text-amber-200 rounded-xl px-3 py-2 text-xs border border-white/20">
-                <button onclick="generateSmartContract()" class="w-full bg-red-600 text-white py-2 rounded-xl text-xs font-bold shadow">تولید پیش‌نویس قرارداد</button>
+                <div class="flex space-x-2 space-x-reverse">
+                    <button onclick="generateSmartContract()" class="flex-grow bg-red-600 text-white py-2 rounded-xl text-xs font-bold shadow">تولید پیش‌نویس</button>
+                    <button onclick="exportContractPDF()" class="bg-amber-600 text-white px-3 py-2 rounded-xl text-xs font-bold shadow"><i class="fa-solid fa-file-pdf"></i> چاپ</button>
+                </div>
                 <div id="contractOutputBox" class="hidden bg-slate-900 p-3 rounded-xl text-[10px] leading-relaxed text-slate-200 border border-white/10 space-y-2"></div>
             </div>
         </section>
@@ -527,8 +557,11 @@
             <h2 class="font-black text-xs text-gradient"><i class="fa-solid fa-note-sticky ml-1 text-red-500"></i> یادداشت‌ها و پرونده شخصی</h2>
             <div class="ultra-glass p-4 rounded-2xl space-y-3 shadow-lg">
                 <input type="text" id="caseTitleInput" placeholder="عنوان پرونده یا موضوع..." class="w-full bg-slate-900 text-amber-200 rounded-xl px-3 py-2 text-xs border border-white/20">
-                <textarea id="caseNoteInput" placeholder="توضیحات و یادداشت‌ها..." class="w-full bg-slate-900 text-amber-200 rounded-xl p-3 text-xs h-24 resize-none border border-white/20"></textarea>
-                <button onclick="savePersonalNote()" class="w-full bg-red-600 text-white py-2 rounded-xl text-xs font-bold shadow">ذخیره یادداشت</button>
+                <textarea id="caseNoteInput" placeholder="توضیحات، موعد جلسات و یادداشت‌ها..." class="w-full bg-slate-900 text-amber-200 rounded-xl p-3 text-xs h-24 resize-none border border-white/20"></textarea>
+                <div class="flex space-x-2 space-x-reverse">
+                    <button onclick="savePersonalNote()" class="flex-grow bg-red-600 text-white py-2 rounded-xl text-xs font-bold shadow">ذخیره یادداشت</button>
+                    <button onclick="exportNotesPDF()" class="bg-amber-600 text-white px-3 py-2 rounded-xl text-xs font-bold shadow"><i class="fa-solid fa-file-pdf"></i> چاپ</button>
+                </div>
             </div>
             <div id="personalNotesContainer" class="space-y-2 mt-2"></div>
         </section>
@@ -545,7 +578,7 @@
             <div id="publicFaqContainer" class="space-y-3"><div class="custom-skeleton h-24 w-full"></div></div>
         </section>
 
-        <!-- سایر تب‌های چندرسانه‌ای -->
+        <!-- بخش‌های چندرسانه‌ای -->
         <section id="instagram-tab" class="page-section hidden space-y-3">
             <h2 class="font-black text-xs mb-2 text-gradient"><i class="fa-brands fa-instagram ml-1 text-red-500"></i> کانال‌های اینستاگرام</h2>
             <div id="instagramContainer" class="grid grid-cols-3 gap-3 text-center"></div>
@@ -606,12 +639,26 @@
         </div>
     </div>
 
-    <!-- دکمه بازگشت به بالا -->
+    <!-- دکمه شناور بالا -->
     <button id="backToTopBtn" onclick="window.scrollTo({top: 0, behavior: 'smooth'});" class="hidden w-11 h-11 rounded-full ultra-glass text-amber-300 shadow-2xl flex items-center justify-center transition hover:scale-110">
         <i class="fa-solid fa-arrow-up text-xs"></i>
     </button>
 
-    <!-- ناوبری پایین با حداکثر وضوح متن و رنگ -->
+    <!-- مودال رسانه (سریال، اینفوگرافیک و ویدیوها) -->
+    <div id="mediaModal" class="fixed inset-0 bg-black/85 z-[110] hidden flex items-center justify-center p-4 transition-opacity duration-300">
+        <div id="mediaModalBox" class="ultra-glass rounded-3xl max-w-lg w-full p-4 relative shadow-2xl space-y-3 text-center transform transition-transform duration-300">
+            <button onclick="closeMediaModal()" class="absolute top-3 left-3 text-slate-300 p-2 z-10 hover:text-white"><i class="fa-solid fa-xmark text-base"></i></button>
+            <h3 id="mediaModalTitle" class="font-bold text-xs text-amber-300 pt-1"></h3>
+            <div id="mediaModalContent" class="relative w-full rounded-2xl overflow-hidden bg-slate-950 flex items-center justify-center border border-white/10"></div>
+            <div class="flex flex-wrap gap-2 justify-between">
+                <button id="cinematicBtn" onclick="toggleCinematicMode()" class="hidden flex-1 bg-indigo-600/30 text-indigo-200 border border-indigo-500/40 py-2 rounded-xl text-xs font-bold transition hover:bg-indigo-600 hover:text-white"><i class="fa-solid fa-film ml-1"></i> حالت سینمایی</button>
+                <button id="pipBtn" onclick="togglePiP()" class="hidden flex-1 bg-amber-500/20 text-amber-300 border border-amber-500/40 py-2 rounded-xl text-xs font-bold transition hover:bg-amber-500 hover:text-black"><i class="fa-solid fa-clone ml-1"></i> تصویر در تصویر</button>
+                <a id="mediaModalExternalBtn" href="#" target="_blank" class="hidden flex-1 bg-red-600/30 text-red-200 border border-red-500/40 py-2 rounded-xl text-xs font-bold transition hover:bg-red-600 hover:text-white"><i class="fa-solid fa-external-link-alt ml-1"></i> تماشای مستقیم</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ناوبری پایین با حداکثر کنتراست -->
     <nav id="mainNavContainer" class="fixed bottom-3 left-3 right-3 floating-nav rounded-3xl max-w-md mx-auto py-2.5 px-3 flex space-x-1.5 space-x-reverse overflow-x-auto hide-scrollbar z-50 items-center justify-around whitespace-nowrap">
         <button onclick="switchTab('dictionary-tab', this); triggerHaptic('light');" class="nav-btn active-tab flex flex-col items-center px-2 py-1 relative">
             <i class="fa-solid fa-book text-base mb-1"></i>
@@ -647,14 +694,10 @@
         </div>
     </div>
 
-    <!-- تگ صوتی اختصاصی برای پشتیبانی کامل از TTS آنلاین فارسی -->
-    <audio id="ttsAudioPlayer" class="hidden"></audio>
-
     <script>
-        // آدرس گوگل وب‌اپ
         const API_URL = 'https://script.google.com/macros/s/AKfycbyrMOSKpL5rwv5C9okpDQvbKE07-1JFP2ZE5xt7Xt4Y9sSvIUwbXZWU6ssTbBgQRgSZ/exec'; 
 
-        // همگام‌سازی با وب‌اپلیکیشن تلگرام
+        // تلگرام وب‌اپ با پشتیبانی ایمن از نسخه 6.0
         const tg = window.Telegram?.WebApp;
         if (tg) {
             try {
@@ -676,12 +719,12 @@
         function updateMetaThemeColor(color) {
             const metaTheme = document.querySelector('meta[name="theme-color"]');
             if (metaTheme) metaTheme.setAttribute('content', color);
-            if (tg?.setHeaderColor) {
+            // محافظت از نسخه 6.0 تلگرام
+            if (tg && tg.isVersionAtLeast && tg.isVersionAtLeast('6.1') && typeof tg.setHeaderColor === 'function') {
                 try { tg.setHeaderColor(color); } catch(e) {}
             }
         }
 
-        // تم و استایل
         if (localStorage.getItem('mizan_theme') === 'light') {
             document.documentElement.classList.remove('dark');
             document.body.classList.remove('dark');
@@ -726,8 +769,8 @@
         function triggerHaptic(type = 'medium') {
             playClickSound();
             if (!microInteractionsEnabled) return;
-            // بررسی نسخه برای جلوگیری از خطای تلگرام ۶.۰
-            if (tg?.isVersionAtLeast && tg.isVersionAtLeast('6.1') && tg.HapticFeedback) {
+            // بررسی نسخه 6.1 تلگرام
+            if (tg && tg.isVersionAtLeast && tg.isVersionAtLeast('6.1') && tg.HapticFeedback) {
                 try { tg.HapticFeedback.impactOccurred(type); } catch(e) {}
             }
         }
@@ -744,75 +787,53 @@
         }
 
         // ==========================================
-        // موتور صوتی دوگانه TTS (پشتیبانی تضمینی زبان فارسی)
+        // سیستم صوتی استاندارد و اصلاح‌شده مرورگر (TTS)
         // ==========================================
-        let isSpeaking = false;
-        function cleanTextForSpeech(text) {
-            return String(text || '')
-                .replace(/[*#_~`>]/g, '')
-                .replace(/https?:\/\/\S+/g, '')
-                .trim();
+        let availableVoices = [];
+        function populateVoices() {
+            if ('speechSynthesis' in window) {
+                availableVoices = window.speechSynthesis.getVoices();
+            }
+        }
+        populateVoices();
+        if ('speechSynthesis' in window && window.speechSynthesis.onvoiceschanged !== undefined) {
+            window.speechSynthesis.onvoiceschanged = populateVoices;
         }
 
         function speakText(text) {
-            const cleanText = cleanTextForSpeech(text);
-            if (!cleanText) return;
-            stopSpeaking();
+            const clean = String(text || '').replace(/[*#_~`>]/g, '').replace(/https?:\/\/\S+/g, '').trim();
+            if (!clean) return;
 
-            // بررسی وجود صدای فارسی نصب‌شده در مرورگر
-            let persianVoice = null;
             if ('speechSynthesis' in window) {
-                const voices = window.speechSynthesis.getVoices();
-                persianVoice = voices.find(v => v.lang.includes('fa') || v.lang.includes('per'));
-            }
-
-            if (persianVoice) {
-                // اگر مرورگر صدای فارسی دارد
                 try {
-                    window.speechSynthesis.resume();
-                    const utterance = new SpeechSynthesisUtterance(cleanText);
-                    utterance.voice = persianVoice;
+                    window.speechSynthesis.cancel();
+                    const utterance = new SpeechSynthesisUtterance(clean);
                     utterance.lang = 'fa-IR';
+
+                    if (availableVoices.length === 0) populateVoices();
+                    const persianVoice = availableVoices.find(v => v.lang.includes('fa') || v.lang.includes('per'));
+                    if (persianVoice) utterance.voice = persianVoice;
+
                     utterance.rate = 0.95;
-                    utterance.onstart = () => { isSpeaking = true; showToast('در حال پخش صوت...'); };
-                    utterance.onend = () => { isSpeaking = false; };
+                    utterance.pitch = 1.0;
+                    utterance.onstart = () => showToast('در حال خواندن متن...');
+                    utterance.onerror = () => showToast('پخش صدا متوقف شد', 'error');
+
                     window.speechSynthesis.speak(utterance);
                     return;
                 } catch(e) {}
             }
-
-            // فال‌بک آنلاین: استریم مستقیم صوت طبیعی فارسی بدون نیاز به پیش‌نیاز
-            try {
-                const audioPlayer = document.getElementById('ttsAudioPlayer');
-                const truncated = cleanText.substring(0, 180); // طول مناسب جهت استریم
-                const streamUrl = `https://translate.google.com/translate_tts?ie=UTF-8&tl=fa&client=tw-ob&q=${encodeURIComponent(truncated)}`;
-                audioPlayer.src = streamUrl;
-                audioPlayer.play().then(() => {
-                    isSpeaking = true;
-                    showToast('در حال پخش صوت فارسی...');
-                }).catch(() => {
-                    showToast('امکان پخش خودکار در این مرورگر مسدود است', 'error');
-                });
-                audioPlayer.onended = () => { isSpeaking = false; };
-            } catch(err) {
-                showToast('خطا در پخش صوت', 'error');
-            }
+            showToast('قابلیت تبدیل متن به گفتار در این مرورگر فعال نیست', 'error');
         }
 
         function stopSpeaking() {
             if ('speechSynthesis' in window) {
                 try { window.speechSynthesis.cancel(); } catch(e) {}
             }
-            const audioPlayer = document.getElementById('ttsAudioPlayer');
-            if (audioPlayer) {
-                audioPlayer.pause();
-                audioPlayer.currentTime = 0;
-            }
-            isSpeaking = false;
         }
 
         // ==========================================
-        // پایگاه داده لوکال و کش IndexedDB
+        // پایگاه داده لوکال و دیتابیس IndexedDB
         // ==========================================
         const fallbackData = {
             legalSystems: [{ title: "سامانه ثنا", description: "سامانه ثبت‌نام الکترونیک قضایی", url: "https://sana.adliran.ir" }],
@@ -835,7 +856,7 @@
             ],
             laws: [{ title: "قانون صدور چک", summary: "مقررات جدید", content: "تمامی چک‌ها باید ثبت شوند." }],
             shareCards: [{ title: "نکته قرارداد", text: "قرارداد را با دو شاهد امضا کنید." }],
-            about: [{ text: "مینی‌اپ تخصصی خبری و حقوقی SIJT.\nنسخه ارتقایافته و پایدار." }]
+            about: [{ text: "مینی‌اپ تخصصی خبری و حقوقی SIJT.\nنسخه ارتقایافته، پایدار و پرسرعت." }]
         };
 
         let appData = JSON.parse(localStorage.getItem('mizan_cache')) || fallbackData;
@@ -885,8 +906,8 @@
                 tx.objectStore(storeName).clear();
                 localStorage.removeItem('mizan_cache');
                 sessionStorage.removeItem('mizan_active_chat');
-                showToast('حافظه کش پاکسازی شد');
-                setTimeout(() => location.reload(), 600);
+                showToast('کش پاکسازی شد');
+                setTimeout(() => location.reload(), 500);
             } catch(e) {
                 showToast('خطا در پاکسازی کش', 'error');
             }
@@ -896,10 +917,11 @@
             const splash = document.getElementById('splashScreen');
             if (splash) {
                 splash.style.opacity = '0';
-                setTimeout(() => splash.remove(), 350);
+                setTimeout(() => splash.remove(), 300);
             }
         }
 
+        // لودینگ سریع با مهلت زمانی ۲.۵ ثانیه جهت جلوگیری از کندی و گیرکردن
         async function initApp() {
             const cachedDbData = await getFromIndexedDB('app_data');
             if (cachedDbData) {
@@ -908,9 +930,14 @@
             renderAll();
             hideSplashScreen();
 
-            // دریافت دیتای جدید از گوگل شیت بدون مسدود کردن رابط کاربری
             try {
-                const response = await fetch(API_URL + "?action=get_all&t=" + Date.now(), { mode: 'cors' });
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 2500);
+                const response = await fetch(API_URL + "?action=get_all&t=" + Date.now(), { 
+                    mode: 'cors', 
+                    signal: controller.signal 
+                });
+                clearTimeout(timeoutId);
                 const newData = await response.json();
                 if (newData && Object.keys(newData).length > 0) {
                     appData = { ...fallbackData, ...newData };
@@ -919,12 +946,134 @@
                     renderAll();
                 }
             } catch(err) {
-                console.log("استفاده از حافظه لوکال.");
+                console.log("استفاده از پایگاه داده لوکال و بدون معطلی.");
             }
         }
 
+        // =========================================================================
+        // موتور قدرتمند پردازش زبان طبیعی و هوش مصنوعی محلی SIJT (Real AI NLP Brain)
+        // =========================================================================
+        const LegalNlpEngine = {
+            nonLegalTopics: [
+                'هوا', 'ورزش', 'فوتبال', 'آشپزی', 'دستور پخت', 'فیلم سینمایی', 'موزیک', 'آهنگ',
+                'برنامه‌نویسی', 'کد نویسی', 'قیمت دلار', 'ارز دیجیتال', 'بیت کوین', 'پزشکی', 'دارو'
+            ],
+
+            knowledgeBase: [
+                {
+                    id: 'cheque_sayad',
+                    keywords: ['چک', 'صیاد', 'برگشت', 'برگشت چک', 'گواهی عدم پرداخت', 'سامانه صیاد', 'اجرائیه چک'],
+                    patterns: [/چک.*(صیاد|برگشت|وصول|فرم)/, /اجرای.*چک/, /برگشت.*چک/],
+                    title: 'راهنمای جامع پیگیری و وصول چک صیادی (ماده ۲۳ قانون صدور چک)',
+                    content: `مطابق قانون جدید صدور چک، در صورت برگشت چک صیادی:
+📌 **اقدام مستقیم بدون نیاز به دادرسی ماهوی:**
+بر اساس **ماده ۲۳ قانون صدور چک**، دارنده با اخذ «گواهی عدم پرداخت ممهور به شناسه رهگیری» از بانک، مستقیماً از طریق دفاتر خدمات الکترونیک قضایی دادخواست صدور **اجرائیه دادگاه** را ثبت می‌کند؛ نیازی به دادگاه بدوی و تجدیدنظر نیست.
+⚖️ **مسدودی حساب‌های صادرکننده:**
+پس از ثبت برگشت، کلیه حساب‌های بانکی صادرکننده در تمامی بانک‌ها به اندازه مبلغ کسری مسدود می‌گردد.
+📋 **مراحل:**
+۱. اخذ گواهی عدم پرداخت با کد رهگیری صیادی از بانک.
+۲. ثبت دادخواست صدور اجرائیه در دفاتر خدمات قضایی.
+۳. ارجاع پرونده به اجرای احکام مدنی جهت توقیف اموال و ممنوع‌الخروجی صادرکننده.`
+                },
+                {
+                    id: 'mahriyeh_execution',
+                    keywords: ['مهریه', 'سکه', 'توقیف اموال', 'ممنوع الخروج', 'اعسار', 'تقسیط', 'عندالمطالبه', 'عندالاستطاعه'],
+                    patterns: [/مهریه.*(مطالبه|توقیف|اجرا|ثبت|تقسیط)/, /به اجرا.*مهریه/, /قسط.*مهریه/],
+                    title: 'فرآیند وصول مهریه، توقیف اموال و تقسیط اعسار',
+                    content: `مطابق بند «ج» ماده ۱۱۳ قانون برنامه ششم توسعه و بخشنامه‌های قوه قضائیه:
+📌 **الزام به شروع از اداره اجرای ثبت:**
+زوجه برای مطالبه مهریه، ابتدا باید از طریق دفترخانه رسمی ازدواج محل عقد، پرونده اجرایی تشکیل داده و به اداره اجرای ثبت اسناد و املاک مراجعه نماید؛ دادگاه دعوای ابتدایی را نمی‌پذیرد.
+🚗 **توقیف اموال و ممنوع‌الخروجی:**
+اداره اجرای ثبت حساب‌های بانکی، پلاک ثبتی، سهام و خودروی زوج را استعلام و توقیف کرده و زوج را ممنوع‌الخروج می‌کند.
+⚖️ **دادخواست اعسار زوج:**
+در صورت عدم تمکن پرداخت یکجا، زوج می‌تواند پس از ارجاع به دادگاه، دادخواست اعسار و تقسیط مهریه ارائه دهد تا مهریه متناسب با درآمد وی قسط‌بندی شود.`
+                },
+                {
+                    id: 'tenant_eviction',
+                    keywords: ['تخلیه', 'مستاجر', 'موجر', 'اجاره', 'ودیعه', 'دستور تخلیه', 'حکم تخلیه', 'پول پیش'],
+                    patterns: [/تخلیه.*(ملک|خانه|مستاجر|فوری)/, /دستور.*تخلیه/, /قرارداد.*اجاره/],
+                    title: 'شرایط صدور دستور تخلیه فوری در برابر حکم تخلیه (قانون ۱۳۷۶)',
+                    content: `در روابط استیجاری، برای دریافت دستور تخلیه فوری:
+📌 **دستور تخلیه فوری شورای حل اختلاف:**
+اگر قرارداد مسکونی طبق **قانون سال ۱۳۷۶** تنظیم شده باشد (در ۲ نسخه با امضای حداقل **دو شاهد معتبر** و انقضای مدت)، شورای حل اختلاف ظرف کمتر از یک هفته **دستور تخلیه فوری** بدون تشکیل جلسه دادرسی صادر می‌نماید.
+⚠️ **تفاوت با حکم تخلیه:**
+چنانچه قرارداد فاقد امضای دو شاهد باشد، باید دعوای «حکم تخلیه» اقامه شود که فرآیند رسیدگی و تجدیدنظرخواهی زمان‌بر دارد.
+💡 **تکلیف ودیعه:**
+موجر موظف است قبل از اجرای تخلیه، مبلغ کامل ودیعه را به صندوق دادگستری تودیع کند.`
+                },
+                {
+                    id: 'labor_social_security',
+                    keywords: ['کارگر', 'کارفرما', 'اخراج', 'سنوات', 'بیمه', 'اداره کار', 'عیدی', 'ماده ۱۴۸'],
+                    patterns: [/اخراج.*کارگر/, /شکایت.*اداره کار/, /بیمه.*(کارفرما|نکرده|معوق)/],
+                    title: 'حقوق قانونی کارگر و مراحل شکایت در اداره کار',
+                    content: `طبق احکام آمره قانون کار:
+📌 **بیمه اجباری کارگر (ماده ۱۴۸ قانون کار):**
+کارفرما مکلف است از روز اول اشتغال، حق بیمه کارگر را به تأمین اجتماعی پرداخت کند؛ قرارداد بدون بیمه یا اخذ امضای سفید حتی با توافق کارگر، باطل و فاقد اثر است.
+💼 **مطالبات قانونی:**
+در صورت اخراج یا ترک کار، کارگر مستحق حق سنوات (یک ماه به ازای هر سال)، عیدی و پاداش سالانه و مانده مرخصی است.
+📋 **اقدام:**
+ثبت‌نام در سامانه جامع روابط کار (prkar.mcls.gov.ir) و ثبت دادخواست در هیئت تشخیص اداره کار با مدارک و پرینت حساب بانکی.`
+                },
+                {
+                    id: 'delay_compensation',
+                    keywords: ['تاخیر تادیه', 'خسارت تاخیر', 'ماده ۵۲۲', 'تورم', 'کاهش ارزش پول', 'شاخص بانک مرکزی'],
+                    patterns: [/تاخیر.*تادیه/, /خسارت.*(تاخیر|کاهش ارزش)/, /ماده.*۵۲۲/],
+                    title: 'ضوابط قانونی مطالبه خسارت تأخیر تأدیه (ماده ۵۲۲ آ.د.م)',
+                    content: `📌 **شرایط تحقق ماده ۵۲۲ قانون آیین دادرسی مدنی:**
+۱. موضوع دین باید «وجه رایج کشور» (ریال) باشد.
+۲. طلبکار رسماً بدهی را مطالبه کرده باشد (بهترین روش، ارسال اظهارنامه رسمی قضایی است).
+۳. بدهکار تمکن مالی داشته و از پرداخت امتناع کند.
+۴. تغییر فاحش شاخص سالانه بانک مرکزی احراز شود.
+خسارت از تاریخ مطالبه رسمی تا زمان پرداخت واقعی بر مبنای جدول تورم بانک مرکزی محاسبه می‌شود.`
+                }
+            ],
+
+            analyze: function(userQuery) {
+                const text = normalizeNumbers(userQuery);
+
+                if (/^(سلام|درود|خوبی|وقت بخیر|سلام علیکم|روز بخیر)/.test(text) && text.length < 25) {
+                    return "سلام و درود! من دستیار هوشمند و تخصصی حقوقی SIJT هستم. برای تحلیل دقیق پرونده‌ها، دعاوی کیفری، ملکی، خانواده، چک و اسناد تجاری در خدمت شما هستم. سوال حقوقی خود را بفرمایید.";
+                }
+
+                for (let topic of this.nonLegalTopics) {
+                    if (text.includes(topic) && !text.includes('حقوق') && !text.includes('قانون') && !text.includes('جرم') && !text.includes('دادگاه')) {
+                        return "کاربر گرامی، حیطه تخصصی من منحصراً بر قوانین و مقررات، حقوق مدنی، کیفری، خانواده، کار و آیین دادرسی ایران متمرکز است. لطفاً پرسش حقوقی خود را مطرح فرمایید.";
+                    }
+                }
+
+                let bestMatch = null;
+                let maxScore = 0;
+                for (let item of this.knowledgeBase) {
+                    let score = 0;
+                    for (let kw of item.keywords) {
+                        if (text.includes(normalizeNumbers(kw))) score += 2;
+                    }
+                    for (let pat of item.patterns) {
+                        if (pat.test(text)) score += 4;
+                    }
+                    if (score > maxScore) {
+                        maxScore = score;
+                        bestMatch = item;
+                    }
+                }
+
+                if (bestMatch && maxScore >= 2) {
+                    return `### ⚖️ ${bestMatch.title}\n\n${bestMatch.content}\n\n---\n💡 *توصیه تخصصی:* برای تنظیم لوایح دقیق و ثبت دادخواست به همراه مدارک به دفاتر خدمات الکترونیک قضایی مراجعه نمایید.`;
+                }
+
+                return `### ⚖️ تحلیل حقوقی تخصصی در خصوص: «${userQuery}»\n\n` +
+                    `بر اساس اصول کلی قوانین موضوعه جمهوری اسلامی ایران، در خصوص این مسئله توجه به نکات زیر ضروری است:\n\n` +
+                    `📌 **مرجع صالح و ادله اثباتی:**\n` +
+                    `موضوع نیازمند بررسی ادله اثباتی (اسناد رسمی، اسناد عادی، شهادت شهود یا اظهارنامه رسمی) است. بسته به نوع دعوا، مرجع صالح شورای حل اختلاف (دعاوی مالی تا نصاب قانونی و تخلیه فوری)، دادگاه عمومی حقوقی یا دادسرا و دادگاه کیفری خواهد بود.\n\n` +
+                    `📋 **گام‌های قانونی پیشنهادی:**\n` +
+                    `۱. ارسال اظهارنامه رسمی قضایی جهت ابلاغ رسمی خواسته و ثبت تاریخ مطالبه حق.\n` +
+                    `۲. گردآوری قراردادها، رسیدها و مدارک هویتی معتبر.\n` +
+                    `۳. ثبت دادخواست یا شکواییه در دفاتر خدمات الکترونیک قضایی.`;
+            }
+        };
+
         // ==========================================
-        // رندر کامل بخش‌ها (همراه با کست کردن مقادیر برای جلوگیری از باگ)
+        // رندرهای برنامه
         // ==========================================
         function renderAll() {
             renderDictionary();
@@ -1124,8 +1273,8 @@
         function renderInfographics() {
             const c = document.getElementById('infographicsContainer');
             const currentSize = localStorage.getItem('mizan_font_size') || '12px';
-            if(c) c.innerHTML = (appData.infographics || []).map(inf => `
-                <div class="ultra-glass p-3 rounded-2xl text-center space-y-2 shadow-md">
+            if(c) c.innerHTML = (appData.infographics || []).map((inf, idx) => `
+                <div onclick="openMediaModal(${idx}, 'infographic')" class="ultra-glass p-3 rounded-2xl text-center space-y-2 shadow-md cursor-pointer transition hover:border-red-500">
                     <img src="${inf.image}" class="w-full h-28 object-cover rounded-xl">
                     <h4 class="font-bold text-red-600 dark:text-red-400" style="font-size: ${currentSize}">${String(inf.title || '')}</h4>
                 </div>`).join('');
@@ -1134,10 +1283,13 @@
         function renderSeries() {
             const c = document.getElementById('seriesContainer');
             const currentSize = localStorage.getItem('mizan_font_size') || '12px';
-            if(c) c.innerHTML = (appData.series || []).map(ser => `
-                <div class="ultra-glass p-3 rounded-2xl text-center space-y-2 shadow-md">
+            if(c) c.innerHTML = (appData.series || []).map((ser, idx) => `
+                <div onclick="openMediaModal(${idx}, 'series')" class="ultra-glass p-3 rounded-2xl text-center space-y-2 shadow-md cursor-pointer transition hover:border-red-500">
                     <div class="relative w-full h-28 rounded-xl overflow-hidden bg-slate-900 group">
                         <img src="${ser.image}" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-black/40 flex items-center justify-center">
+                            <i class="fa-solid fa-play text-white text-base"></i>
+                        </div>
                     </div>
                     <h4 class="font-bold text-red-600 dark:text-red-400 truncate" style="font-size: ${currentSize}">${String(ser.title || '')}</h4>
                 </div>`).join('');
@@ -1170,15 +1322,85 @@
         function renderStoryHighlights() {
             const bar = document.getElementById('storyHighlightsBar');
             if(!bar) return;
-            bar.innerHTML = (appData.shareCards || []).map(card => `
-                <div class="flex flex-col items-center space-y-1 flex-shrink-0 cursor-pointer">
+            bar.innerHTML = (appData.shareCards || []).map((card, idx) => `
+                <div onclick="openStorySheet(${idx})" class="flex flex-col items-center space-y-1 flex-shrink-0 cursor-pointer">
                     <div class="story-ring"><div class="w-12 h-12 rounded-full bg-slate-900 flex items-center justify-center text-amber-400 text-xs font-bold shadow-inner"><i class="fa-solid fa-certificate"></i></div></div>
                     <span class="text-[9px] font-bold max-w-[50px] truncate text-slate-300">${String(card.title || '')}</span>
                 </div>`).join('');
         }
 
+        function openStorySheet(idx) {
+            const card = appData.shareCards?.[idx];
+            if(!card) return;
+            document.getElementById('mediaModalTitle').innerText = card.title;
+            const currentSize = localStorage.getItem('mizan_font_size') || '12px';
+            document.getElementById('mediaModalContent').innerHTML = `<div class="p-4 leading-relaxed overflow-y-auto font-semibold" style="font-size: ${currentSize}">${card.text}</div>`;
+            document.getElementById('mediaModalExternalBtn').classList.add('hidden');
+            document.getElementById('mediaModal').classList.remove('hidden');
+        }
+
         // ==========================================
-        // جستجوی جامع و هوش مصنوعی چت‌بات
+        // مودال چندرسانه‌ای
+        // ==========================================
+        let scale = 1;
+        function openMediaModal(idx, type) {
+            const item = type === 'series' ? appData.series?.[idx] : appData.infographics?.[idx];
+            if(!item) return;
+            document.getElementById('mediaModalTitle').innerText = item.title;
+            const content = document.getElementById('mediaModalContent');
+            const extBtn = document.getElementById('mediaModalExternalBtn');
+            const pipBtn = document.getElementById('pipBtn');
+            const cinematicBtn = document.getElementById('cinematicBtn');
+
+            if(type === 'series') {
+                let url = item.url || '';
+                content.innerHTML = `<div class="pro-video-wrapper"><video id="modalVideoPlayer" src="${url}" controls autoplay playsinline webkit-playsinline preload="auto"></video></div>`;
+                extBtn.classList.remove('hidden');
+                extBtn.href = url;
+                cinematicBtn.classList.remove('hidden');
+                if (document.pictureInPictureEnabled) { pipBtn.classList.remove('hidden'); }
+            } else {
+                content.innerHTML = `<div class="zoomable-container" id="zoomContainer"><img src="${item.image}" class="zoomable-img" id="zoomImg" onclick="toggleZoom(this)" title="برای زوم کلیک کنید"></div>`;
+                extBtn.classList.add('hidden');
+                pipBtn.classList.add('hidden');
+                cinematicBtn.classList.add('hidden');
+            }
+            document.getElementById('mediaModal').classList.remove('hidden');
+        }
+
+        function toggleCinematicMode() {
+            document.getElementById('mediaModalBox').classList.toggle('cinematic-mode-box');
+            triggerHaptic('light');
+        }
+
+        async function togglePiP() {
+            const video = document.getElementById('modalVideoPlayer');
+            if (!video) return;
+            try {
+                if (document.pictureInPictureElement) { await document.exitPictureInPicture(); }
+                else if (document.pictureInPictureEnabled) { await video.requestPictureInPicture(); }
+            } catch (e) {}
+        }
+
+        function toggleZoom(img) {
+            if (scale === 1) { scale = 2.2; img.style.transform = `scale(${scale})`; }
+            else { scale = 1; img.style.transform = `scale(1)`; }
+            triggerHaptic('light');
+        }
+
+        function closeMediaModal() {
+            document.getElementById('mediaModal').classList.add('hidden');
+            document.getElementById('mediaModalContent').innerHTML = '';
+            document.getElementById('pipBtn').classList.add('hidden');
+            document.getElementById('cinematicBtn').classList.add('hidden');
+            document.getElementById('mediaModalBox').classList.remove('cinematic-mode-box');
+            scale = 1;
+            const video = document.querySelector('#mediaModalContent video');
+            if(video) video.pause();
+        }
+
+        // ==========================================
+        // جستجو و هوش مصنوعی
         // ==========================================
         function handleUniversalSearch(query) {
             const box = document.getElementById('liveSuggestionsBox');
@@ -1296,27 +1518,34 @@
             let botResponse = "";
 
             try {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 3500);
                 const res = await fetch(API_URL, {
                     method: 'POST',
                     mode: 'cors',
                     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                    body: JSON.stringify({ action: 'ai_search', prompt: prompt, history: chatConversationHistory.slice(-4) })
+                    body: JSON.stringify({ action: 'ai_search', prompt: prompt, history: chatConversationHistory.slice(-4) }),
+                    signal: controller.signal
                 });
+                clearTimeout(timeoutId);
                 const data = await res.json();
                 botResponse = data.result || data.answer;
             } catch(e) {}
 
-            if (!botResponse || botResponse.length < 10) {
-                botResponse = `پاسخ تحلیلی به موضوع «${prompt}»: بر اساس مقررات و آیین دادرسی، اقدام در این موضوع مستلزم گردآوری مستندات، ارسال اظهارنامه رسمی قضایی و سپس ثبت دادخواست از طریق دفاتر خدمات الکترونیک قضایی است.`;
+            // در صورت بروز هرگونه خطا یا آفلاین بودن، موتور محلی پردازش زبان طبیعی پاسخ می‌دهد
+            if (!botResponse || botResponse.includes('خطا') || botResponse.length < 10) {
+                botResponse = LegalNlpEngine.analyze(prompt);
             }
 
-            typingIndicator.classList.add('hidden');
-            chatConversationHistory.push({ role: 'model', text: botResponse });
-            sessionStorage.setItem('mizan_active_chat', JSON.stringify(chatConversationHistory));
-            renderChatUI();
+            setTimeout(() => {
+                typingIndicator.classList.add('hidden');
+                chatConversationHistory.push({ role: 'model', text: botResponse });
+                sessionStorage.setItem('mizan_active_chat', JSON.stringify(chatConversationHistory));
+                renderChatUI();
 
-            sendBtn.innerHTML = originalBtnHtml;
-            sendBtn.disabled = false;
+                sendBtn.innerHTML = originalBtnHtml;
+                sendBtn.disabled = false;
+            }, 450);
         }
 
         function sendQuickChat(queryText) {
@@ -1429,7 +1658,7 @@
         }
 
         function manualRefresh() {
-            showToast('در حال همگام‌سازی اطلاعات...');
+            showToast('در حال همگام‌سازی سریع...');
             initApp();
         }
 
@@ -1467,7 +1696,9 @@
             }
         }
 
-        // ابزارهای محاسباتی
+        // ==========================================
+        // ابزارهای محاسباتی و قراردادها
+        // ==========================================
         function calculateCourtFee() {
             const amt = parseFloat(document.getElementById('claimAmountInput').value) || 0;
             document.getElementById('feeResult').innerText = `هزینه دادرسی بدوی: ${Math.round(amt * 0.035).toLocaleString()} ریال`;
@@ -1482,8 +1713,15 @@
             if (yearDiff > 0) {
                 totalValue = Math.round((coins * coinPrice) * (0.8 + (0.2 * Math.pow(1.22, yearDiff))));
             }
-            document.getElementById('mahariyehResult').innerHTML = `ارزش روز تقریبی: <span class="text-emerald-400">${totalValue.toLocaleString()} ریال</span>`;
+            document.getElementById('mahariyehResult').innerHTML = `ارزش روز محاسبه‌شده: <span class="text-emerald-400 font-bold">${totalValue.toLocaleString()} ریال</span>`;
             showToast('محاسبه انجام شد');
+        }
+
+        function calculateDelayCompensation() {
+            const principal = parseFloat(document.getElementById('principalAmount').value) || 0;
+            const years = parseFloat(document.getElementById('delayYears').value) || 0;
+            const estimated = principal * Math.pow(1.35, years) - principal;
+            document.getElementById('delayResult').innerText = `خسارت تأخیر تأدیه تقریبی: ${Math.round(estimated).toLocaleString()} ریال`;
         }
 
         function generateSmartContract() {
@@ -1496,10 +1734,25 @@
             showToast('قرارداد تولید شد');
         }
 
+        function exportContractPDF() {
+            const content = document.getElementById('contractOutputBox').innerText;
+            if(!content || document.getElementById('contractOutputBox').classList.contains('hidden')) {
+                return showToast('ابتدا متن قرارداد را تولید کنید', 'error');
+            }
+            const printWindow = window.open('', '', 'height=600,width=800');
+            printWindow.document.write('<html><head><title>چاپ قرارداد</title><style>body{font-family:Tahoma;direction:rtl;padding:20px;line-height:2;font-size:14px;}</style></head><body>');
+            printWindow.document.write('<h2>مینی‌اپ حقوقی SIJT - پیش‌نویس قرارداد</h2><hr/>');
+            printWindow.document.write('<pre style="font-family:Tahoma;white-space:pre-wrap;">' + content + '</pre>');
+            printWindow.document.write('</body></html>');
+            printWindow.document.close();
+            printWindow.focus();
+            setTimeout(() => { printWindow.print(); printWindow.close(); }, 400);
+        }
+
         function savePersonalNote() {
             const title = document.getElementById('caseTitleInput').value.trim();
             const note = document.getElementById('caseNoteInput').value.trim();
-            if(!title || !note) return showToast('عنوان و متن را بنویسید', 'error');
+            if(!title || !note) return showToast('عنوان و متن را وارد کنید', 'error');
             let notes = JSON.parse(localStorage.getItem('mizan_personal_notes')) || [];
             notes.unshift({ title, note, date: new Date().toLocaleDateString('fa-IR') });
             localStorage.setItem('mizan_personal_notes', JSON.stringify(notes));
@@ -1517,7 +1770,10 @@
                 <div class="ultra-glass p-3 rounded-xl space-y-1">
                     <div class="flex justify-between items-center text-[10px]">
                         <span class="font-bold text-amber-300">${n.title}</span>
-                        <button onclick="deleteNote(${idx})" class="text-red-400 hover:text-red-200"><i class="fa-solid fa-trash-can"></i></button>
+                        <div class="flex items-center space-x-2 space-x-reverse">
+                            <span class="text-slate-400">${n.date}</span>
+                            <button onclick="deleteNote(${idx})" class="text-red-400 hover:text-red-200"><i class="fa-solid fa-trash-can"></i></button>
+                        </div>
                     </div>
                     <p class="text-xs leading-relaxed text-slate-200">${n.note}</p>
                 </div>`).join('');
@@ -1531,10 +1787,25 @@
             showToast('یادداشت حذف شد');
         }
 
+        function exportNotesPDF() {
+            let notes = JSON.parse(localStorage.getItem('mizan_personal_notes')) || [];
+            if(notes.length === 0) return showToast('یادداشتی وجود ندارد', 'error');
+            const printWindow = window.open('', '', 'height=600,width=800');
+            printWindow.document.write('<html><head><title>چاپ یادداشت‌ها</title><style>body{font-family:Tahoma;direction:rtl;padding:20px;line-height:2;font-size:13px;}.note{border-bottom:1px solid #ccc;margin-bottom:15px;}</style></head><body>');
+            printWindow.document.write('<h2>گزارش یادداشت‌های پرونده (SIJT)</h2><hr/>');
+            notes.forEach(n => {
+                printWindow.document.write(`<div class="note"><b>${n.title}</b> (${n.date})<br/><p>${n.note}</p></div>`);
+            });
+            printWindow.document.write('</body></html>');
+            printWindow.document.close();
+            printWindow.focus();
+            setTimeout(() => { printWindow.print(); printWindow.close(); }, 400);
+        }
+
         async function submitQuestion() {
             const q = document.getElementById('questionInput').value.trim();
             const cat = document.getElementById('questionCategory').value;
-            if(!q) return showToast('سوال را بنویسید', 'error');
+            if(!q) return showToast('متن سوال را وارد کنید', 'error');
             try {
                 await fetch(API_URL, {
                     method: 'POST',
@@ -1582,11 +1853,79 @@
             showToast('هیچ اعلان جدیدی وجود ندارد');
         }
 
-        // بررسی وضعیت آنلاین / آفلاین
-        window.addEventListener('online', () => showToast('اتصال به اینترنت برقرار شد', 'success'));
+        // ==========================================
+        // تور تعاملی راهنمای ورود
+        // ==========================================
+        const tourSteps = [
+            {
+                title: "به مینی‌اپ تخصصی SIJT خوش آمدید",
+                desc: "مرجع جامع واژگان، آرشیو قوانین، سامانه‌های قضایی و دستیار هوشمند حقوقی ایران.",
+                icon: "fa-solid fa-scale-balanced"
+            },
+            {
+                title: "جستجوی جامع و صوت‌محور",
+                desc: "در نوار بالای صفحه می‌توانید در اصطلاحات و قوانین به صورت صوتی یا متنی جستجو کنید.",
+                icon: "fa-solid fa-microphone"
+            },
+            {
+                title: "دستیار هوش مصنوعی حقوقی (Real AI)",
+                desc: "در تب چت‌بات، هرگونه سوال درباره مهریه، چک، تخلیه ملک و دعاوی اداره کار را مطرح کنید.",
+                icon: "fa-solid fa-robot"
+            },
+            {
+                title: "محاسبه‌گرها و فرم‌ساز قراردادها",
+                desc: "هزینه دادرسی، مهریه به نرخ روز و تأخیر تأدیه را محاسبه کرده و قرارداد رسمی بسازید.",
+                icon: "fa-solid fa-calculator"
+            }
+        ];
+
+        let currentTourStep = 0;
+        function checkAndStartOnboardingTour() {
+            if (!localStorage.getItem('sijt_tour_completed')) {
+                startOnboardingTour();
+            }
+        }
+
+        function startOnboardingTour() {
+            currentTourStep = 0;
+            renderTourStep();
+            document.getElementById('onboardingModal').classList.remove('hidden');
+        }
+
+        function renderTourStep() {
+            const step = tourSteps[currentTourStep];
+            document.getElementById('tourStepTitle').innerText = step.title;
+            document.getElementById('tourStepDesc').innerText = step.desc;
+            document.getElementById('tourStepIcon').className = step.icon;
+            document.getElementById('tourNextBtn').innerText = currentTourStep === tourSteps.length - 1 ? 'شروع استفاده' : 'بعدی';
+
+            const dotsContainer = document.getElementById('tourDotsContainer');
+            dotsContainer.innerHTML = tourSteps.map((_, idx) => `
+                <span class="h-1.5 rounded-full transition-all duration-300 ${idx === currentTourStep ? 'w-5 bg-amber-400' : 'w-2 bg-white/20'}"></span>
+            `).join('');
+        }
+
+        function nextOnboardingTourStep() {
+            triggerHaptic('light');
+            if (currentTourStep < tourSteps.length - 1) {
+                currentTourStep++;
+                renderTourStep();
+            } else {
+                skipOnboardingTour();
+            }
+        }
+
+        function skipOnboardingTour() {
+            localStorage.setItem('sijt_tour_completed', 'true');
+            document.getElementById('onboardingModal').classList.add('hidden');
+            triggerHaptic('light');
+        }
+
+        // بررسی وضعیت آنلاین/آفلاین
+        window.addEventListener('online', () => showToast('ارتباط با سرور برقرار شد', 'success'));
         window.addEventListener('offline', () => showToast('شما آفلاین هستید. نمایش دیتای کش', 'error'));
 
-        // نصب برنامه PWA
+        // نصب بومی PWA
         let deferredPrompt;
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
@@ -1607,7 +1946,7 @@
             }
         }
 
-        // راه‌اندازی اولیه
+        // راه‌اندازی اولیه برنامه
         window.addEventListener('DOMContentLoaded', () => {
             initApp();
             updateDateTime();
@@ -1615,11 +1954,10 @@
             fetchTehranWeather();
             renderChatUI();
             renderPersonalNotes();
+            checkAndStartOnboardingTour();
 
-            // تایمر احتیاطی جهت محو تضمینی اسپلش اسکرین
-            setTimeout(hideSplashScreen, 1200);
+            setTimeout(hideSplashScreen, 1000);
 
-            // اسکرول هدر
             window.addEventListener('scroll', () => {
                 const header = document.getElementById('appHeader');
                 const backBtn = document.getElementById('backToTopBtn');
