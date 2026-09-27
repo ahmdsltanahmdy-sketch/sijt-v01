@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>SIJT - مینی‌اپ تخصصی حقوقی</title>
-    
+
     <link rel="manifest" href="data:application/manifest+json;charset=utf-8,{
         %22name%22: %22SIJT%22,
         %22short_name%22: %22SIJT%22,
@@ -25,6 +25,7 @@
     <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/ahmdsltanahmdy-sketch/sijt-v01/main/01.png">
     <meta name="theme-color" content="#c51b24">
 
+    <!-- Tailwind & FontAwesome & Lottie -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -33,8 +34,10 @@
         }
     </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
+
     <style>
-        body { font-family: var(--selected-font, Tahoma), Arial, sans-serif; font-size: var(--app-font-size, 12px); line-height: 1.8; overflow-x: hidden; }
+        body { font-family: var(--selected-font, Tahoma), Arial, sans-serif; font-size: var(--app-font-size, 12px); line-height: 1.8; overflow-x: hidden; touch-action: pan-y; }
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
@@ -111,7 +114,7 @@
         }
 
         .floating-nav {
-            background: rgba(15, 23, 42, 0.82);
+            background: rgba(15, 23, 42, 0.88);
             backdrop-filter: blur(40px) saturate(200%);
             -webkit-backdrop-filter: blur(40px) saturate(200%);
             border: 1px solid rgba(255, 255, 255, 0.25);
@@ -119,7 +122,7 @@
             transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), padding 0.4s ease, width 0.4s ease;
         }
         .light .floating-nav, body:not(.dark):not(.oled-mode) .floating-nav {
-            background: rgba(255, 255, 255, 0.85);
+            background: rgba(255, 255, 255, 0.92);
             backdrop-filter: blur(40px) saturate(200%);
             -webkit-backdrop-filter: blur(40px) saturate(200%);
             border: 1px solid rgba(0, 0, 0, 0.15);
@@ -173,7 +176,7 @@
             will-change: transform, opacity, backdrop-filter;
         }
         #appHeader.scrolled-header {
-            background-color: rgba(11, 15, 25, 0.75) !important;
+            background-color: rgba(11, 15, 25, 0.85) !important;
             backdrop-filter: blur(25px) saturate(180%);
             -webkit-backdrop-filter: blur(25px) saturate(180%);
             border-bottom: 1px solid rgba(255, 255, 255, 0.15);
@@ -249,7 +252,7 @@
 
         #toastContainer {
             position: fixed; top: 16px; left: 50%; transform: translateX(-50%);
-            z-index: 200; display: flex; flex-direction: column; gap: 8px;
+            z-index: 300; display: flex; flex-direction: column; gap: 8px;
             pointer-events: none; width: 90%; max-width: 380px;
         }
         .toast-item {
@@ -265,16 +268,52 @@
             from { opacity: 0; transform: translateY(-20px) scale(0.95); }
             to { opacity: 1; transform: translateY(0) scale(1); }
         }
+
+        /* استایل‌های تکمیلی تور راهنما، انیمیشن چت‌بات و Empty State */
+        .typing-dot {
+            width: 6px; height: 6px; background-color: #f59e0b; border-radius: 50%;
+            animation: typingAnimation 1.4s infinite ease-in-out both;
+        }
+        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+        @keyframes typingAnimation {
+            0%, 80%, 100% { transform: scale(0); opacity: 0.3; }
+            40% { transform: scale(1); opacity: 1; }
+        }
+
+        .tour-overlay {
+            position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(10px);
+            z-index: 250; display: flex; align-items: center; justify-content: center; padding: 1.5rem;
+            animation: fadeInScale 0.3s ease;
+        }
     </style>
 </head>
-<body id="bodyRoot" class="mesh-bg text-slate-900 dark:text-slate-100 min-h-screen flex flex-col relative">
+<body id="bodyRoot" class="mesh-bg text-slate-900 dark:text-slate-100 min-h-screen flex flex-col relative select-none">
 
     <div class="noise-overlay"></div>
     <div id="toastContainer"></div>
 
+    <!-- تور راهنمای ورود مینی‌اپ SIJT -->
+    <div id="onboardingModal" class="tour-overlay hidden">
+        <div class="ultra-glass rounded-3xl max-w-sm w-full p-5 relative shadow-2xl space-y-4 text-center border border-amber-500/30">
+            <div id="tourIconContainer" class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-red-600 to-amber-500 mx-auto flex items-center justify-center text-white text-2xl shadow-lg shadow-red-600/30">
+                <i id="tourStepIcon" class="fa-solid fa-scale-balanced"></i>
+            </div>
+            <h3 id="tourStepTitle" class="font-extrabold text-sm text-amber-300">به مینی‌اپ تخصصی SIJT خوش آمدید</h3>
+            <p id="tourStepDesc" class="text-xs text-slate-200 leading-relaxed min-h-[60px] flex items-center justify-center">
+                سامانه هوشمند و جامع دسترسی به اخبار، قوانین، مشاور قضایی و دستیار هوش مصنوعی حقوقی.
+            </p>
+            <div class="flex items-center justify-center space-x-1.5 space-x-reverse py-1" id="tourDotsContainer"></div>
+            <div class="flex space-x-2 space-x-reverse pt-2">
+                <button onclick="skipOnboardingTour()" class="flex-1 py-2 rounded-xl text-xs font-bold text-slate-400 bg-white/5 hover:bg-white/10">رد کردن</button>
+                <button onclick="nextOnboardingTourStep()" id="tourNextBtn" class="flex-1 py-2 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-red-600 to-amber-600 shadow-md">بعدی</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         const API_URL = 'https://script.google.com/macros/s/AKfycbyrMOSKpL5rwv5C9okpDQvbKE07-1JFP2ZE5xt7Xt4Y9sSvIUwbXZWU6ssTbBgQRgSZ/exec'; 
-        
+
         let userId = localStorage.getItem('mizan_user_id');
         if (!userId) {
             userId = 'user_' + Math.random().toString(36).substr(2, 9);
@@ -341,7 +380,7 @@
         }
     </script>
 
-    <!-- هدر -->
+    <!-- هدر برنامه -->
     <header id="appHeader" class="sticky top-0 z-50 header-bg dark:bg-slate-900 text-white shadow-md">
         <div class="max-w-md mx-auto px-4 py-2.5 flex items-center justify-between border-b border-white/10 text-[10px] relative z-20">
             <div class="flex flex-col space-y-0.5">
@@ -354,7 +393,7 @@
                     <span id="headerWeatherWidget" class="font-medium text-slate-300">تهران...</span>
                 </div>
             </div>
-            
+
             <div class="flex items-center space-x-2 space-x-reverse">
                 <button onclick="toggleNotificationsModal();" class="relative p-1.5 rounded-full hover:bg-white/10 transition"><i class="fa-solid fa-bell text-xs text-amber-300"></i></button>
                 <button onclick="manualRefresh();" class="p-1.5 rounded-full hover:bg-white/10 transition"><i id="refreshIcon" class="fa-solid fa-rotate text-xs"></i></button>
@@ -406,6 +445,10 @@
                 <input type="checkbox" id="microInteractionsCheck" onchange="toggleMicroInteractions(this.checked)" checked class="accent-red-600 w-4 h-4 cursor-pointer">
             </div>
             <div class="flex items-center justify-between pb-2 border-b border-white/20">
+                <span class="font-bold">تور راهنمای مینی‌اپ:</span>
+                <button onclick="startOnboardingTour(); document.getElementById('settingsDropdown').classList.add('hidden');" class="bg-amber-500/20 text-amber-300 px-2.5 py-1 rounded-xl font-bold">مشاهده مجدد</button>
+            </div>
+            <div class="flex items-center justify-between pb-2 border-b border-white/20">
                 <span class="font-bold">حافظه موقت و کش:</span>
                 <button onclick="clearIndexedDBCache(); location.reload();" class="bg-red-500/20 text-red-300 px-2.5 py-1 rounded-xl font-bold">پاکسازی کش</button>
             </div>
@@ -431,9 +474,9 @@
         </div>
     </header>
 
-    <!-- بدنه اصلی -->
-    <main id="mainContentArea" class="max-w-md mx-auto w-full p-4 flex-grow mb-32">
-        
+    <!-- بدنه اصلی برنامه -->
+    <main id="mainContentArea" class="max-w-md mx-auto w-full p-4 flex-grow mb-32 transition-transform duration-200">
+
         <!-- تب ۱: اصطلاحات -->
         <section id="dictionary-tab" class="page-section space-y-3">
             <div class="flex items-center justify-between mb-1">
@@ -478,7 +521,7 @@
                     <option value="خانواده و مهریه">خانواده و مهریه</option>
                 </select>
                 <div class="relative">
-                    <textarea id="questionInput" placeholder="سوال حقوقی..." class="w-full bg-slate-900 text-amber-200 rounded-2xl p-3 pl-8 text-xs h-24 resize-none border border-white/20 shadow-inner"></textarea>
+                    <textarea id="questionInput" placeholder="سوال حقوقی خود را اینجا مطرح فرمایید..." class="w-full bg-slate-900 text-amber-200 rounded-2xl p-3 pl-8 text-xs h-24 resize-none border border-white/20 shadow-inner"></textarea>
                     <button onclick="startVoiceDictation('questionInput')" title="تایپ صوتی" class="absolute left-2.5 top-3 text-amber-400 hover:text-white text-xs"><i class="fa-solid fa-microphone"></i></button>
                 </div>
                 <button id="submitQuestionBtn" onclick="submitQuestion();" class="w-full bg-gradient-to-r from-red-600 to-red-700 py-2.5 text-xs font-bold text-white rounded-xl shadow-md flex items-center justify-center space-x-2 space-x-reverse"><span>ارسال سوال</span></button>
@@ -486,17 +529,42 @@
             </div>
         </section>
 
-        <!-- تب ۴: چت‌بات (دستیار هوشمند حقوقی واقعی با پاسخگویی آزاد به هر سوال حقوقی) -->
+        <!-- تب ۴: چت‌بات (دستیار هوشمند حقوقی فوق‌پیشرفته SIJT - Real AI) -->
         <section id="chatbot-tab" class="page-section hidden space-y-3">
             <div class="ultra-glass p-4 rounded-3xl space-y-3 shadow-xl">
-                <h2 class="font-extrabold text-xs text-gradient">دستیار هوشمند حقوقی SIJT</h2>
-                <div id="chatMessagesContainer" class="space-y-2.5 h-[48vh] overflow-y-auto p-2.5 bg-slate-900 rounded-2xl text-[11px] text-slate-100 shadow-inner">
-                    <div class="text-center text-slate-300 py-4">سلام! هر سوال حقوقی دارید بپرسید...</div>
+                <div class="flex items-center justify-between pb-1 border-b border-white/10">
+                    <h2 class="font-extrabold text-xs text-gradient flex items-center">
+                        <i class="fa-solid fa-robot ml-1.5 text-red-500"></i> دستیار هوش مصنوعی حقوقی SIJT
+                    </h2>
+                    <button onclick="clearChatHistory()" class="text-[10px] text-slate-400 hover:text-red-400 flex items-center space-x-1 space-x-reverse transition">
+                        <i class="fa-solid fa-trash-can"></i><span>پاکسازی</span>
+                    </button>
                 </div>
+
+                <!-- موضوعات سریع و پیشنهادی -->
+                <div class="flex space-x-1.5 space-x-reverse overflow-x-auto hide-scrollbar pb-1 text-[10px]">
+                    <button onclick="sendQuickChat('شرایط و مراحل اجرای مهریه از ثبت چگونه است؟')" class="flex-shrink-0 px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-slate-200">مهریه و اجرای ثبت</button>
+                    <button onclick="sendQuickChat('مراحل صدور اجراییه مستقیم چک صیادی چیست؟')" class="flex-shrink-0 px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-slate-200">چک صیادی</button>
+                    <button onclick="sendQuickChat('دستور تخلیه فوری ملک با حکم تخلیه چه تفاوتی دارد؟')" class="flex-shrink-0 px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-slate-200">دستور تخلیه ملک</button>
+                    <button onclick="sendQuickChat('شرایط شکایت کارگر بابت بیمه و اخراج در اداره کار چیست؟')" class="flex-shrink-0 px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-slate-200">حقوق کارگر و بیمه</button>
+                    <button onclick="sendQuickChat('شرایط قانونی مطالبه خسارت تأخیر تأدیه چیست؟')" class="flex-shrink-0 px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-slate-200">تأخیر تأدیه</button>
+                </div>
+
+                <!-- پیام‌های چت -->
+                <div id="chatMessagesContainer" class="space-y-3 h-[46vh] overflow-y-auto p-3 bg-slate-900 rounded-2xl text-[11px] text-slate-100 shadow-inner"></div>
+
+                <!-- تایپینگ ایندیکیتور -->
+                <div id="aiTypingIndicator" class="hidden flex items-center space-x-1.5 space-x-reverse bg-slate-800/90 text-slate-300 p-2.5 rounded-2xl w-fit border border-white/10">
+                    <span class="typing-dot"></span>
+                    <span class="typing-dot"></span>
+                    <span class="typing-dot"></span>
+                    <span class="text-[10px] mr-2 font-bold text-amber-300">در حال تدوین پاسخ تخصصی حقوقی...</span>
+                </div>
+
                 <div class="flex space-x-2 space-x-reverse relative">
-                    <textarea id="aiPromptInput" placeholder="پیام خود را بنویسید..." class="flex-grow bg-slate-900 text-amber-200 rounded-xl p-2.5 pl-8 text-xs h-14 resize-none border border-white/20 shadow-inner"></textarea>
+                    <textarea id="aiPromptInput" placeholder="مسئله، ابهام یا سوال حقوقی خود را بپرسید..." class="flex-grow bg-slate-900 text-amber-200 rounded-xl p-2.5 pl-8 text-xs h-14 resize-none border border-white/20 shadow-inner focus:outline-none"></textarea>
                     <button onclick="startVoiceDictation('aiPromptInput')" title="تایپ صوتی" class="absolute left-14 top-3 text-amber-400 hover:text-white text-xs p-1"><i class="fa-solid fa-microphone"></i></button>
-                    <button id="aiSendBtn" onclick="runAiAssistant();" class="bg-red-600 text-white px-4 rounded-xl text-xs font-bold shadow flex items-center justify-center"><i class="fa-solid fa-paper-plane"></i></button>
+                    <button id="aiSendBtn" onclick="runAiAssistant();" class="bg-red-600 text-white px-4 rounded-xl text-xs font-bold shadow flex items-center justify-center hover:bg-red-700 transition"><i class="fa-solid fa-paper-plane"></i></button>
                 </div>
             </div>
         </section>
@@ -523,7 +591,7 @@
         <!-- تب ۸: ابزارها -->
         <section id="tools-tab" class="page-section hidden space-y-3">
             <h2 class="font-black text-xs mb-2 text-gradient"><i class="fa-solid fa-toolbox ml-1 text-red-500"></i> ابزارهای هوشمند حقوقی</h2>
-            
+
             <div class="ultra-glass p-4 rounded-2xl space-y-3 shadow-lg">
                 <h3 class="font-bold text-xs text-amber-300"><i class="fa-solid fa-calculator ml-1"></i> محاسبه‌گر هزینه‌های دادرسی</h3>
                 <input type="number" id="claimAmountInput" placeholder="مبلغ خواسته به ریال..." class="w-full bg-slate-900 text-amber-200 placeholder-slate-400 rounded-xl px-3 py-2 text-xs border border-white/20 shadow-inner">
@@ -593,7 +661,7 @@
             </div>
         </section>
 
-        <!-- تب ۹: یادداشت‌های شخصی پرونده (با قابلیت حذف یادداشت) -->
+        <!-- تب ۹: یادداشت‌های شخصی پرونده -->
         <section id="notes-tab" class="page-section hidden space-y-3">
             <h2 class="font-black text-xs text-gradient"><i class="fa-solid fa-note-sticky ml-1 text-red-500"></i> یادداشت‌ها و پیگیری پرونده شخصی</h2>
             <div class="ultra-glass p-4 rounded-2xl space-y-3 shadow-lg">
@@ -739,7 +807,7 @@
             ],
             laws: [{ title: "قانون صدور چک", summary: "مقررات جدید", content: "تمامی چک‌ها باید ثبت شوند." }],
             shareCards: [{ title: "نکته قرارداد", text: "قرارداد را با دو شاهد امضا کنید." }],
-            about: [{ text: "مینی‌اپ تخصصی خبری و حقوقی SIJT.\nنسخه: 8.8.0 (چت‌بات هوشمند کاملاً آزاد و اتصال کامل About از گوگل شیت)" }]
+            about: [{ text: "مینی‌اپ تخصصی خبری و حقوقی SIJT.\nنسخه: 9.0.0 (مجهز به موتور هوش مصنوعی جامع حقوقی، تور راهنمای تعاملی و ژست‌های حرکتی)" }]
         };
 
         let appData = JSON.parse(localStorage.getItem('mizan_cache')) || fallbackData;
@@ -764,10 +832,10 @@
                 recognition.lang = 'fa-IR';
                 recognition.interimResults = false;
                 triggerHaptic('light');
-                
+
                 const input = document.getElementById(targetInputId);
                 if(input) input.placeholder = "در حال گوش دادن... صحبت کنید";
-                
+
                 recognition.onresult = function(event) {
                     const speechToText = event.results[0][0].transcript;
                     if(input) {
@@ -874,6 +942,8 @@
             initOutsideClickForSettings();
             initLazyLoadingObserver();
             registerServiceWorker();
+            initAppSwipeGestures();
+            checkAndStartOnboardingTour();
         });
 
         function registerServiceWorker() {
@@ -1050,7 +1120,7 @@
             const counterElem = document.getElementById('dictCounter');
             if (!container) return;
             let list = appData.dictionary || [];
-            
+
             if (selectedDictCat === 'bookmarks') {
                 list = list.filter(d => bookmarks.includes(d.term));
             } else if (selectedDictCat !== 'all') {
@@ -1059,7 +1129,18 @@
 
             if(counterElem) counterElem.innerText = `${list.length} واژه`;
             const currentSize = localStorage.getItem('mizan_font_size') || '12px';
-            
+
+            if(list.length === 0) {
+                container.innerHTML = `
+                    <div class="flex flex-col items-center justify-center p-8 text-center space-y-3 ultra-glass rounded-3xl border border-dashed border-white/20">
+                        <i class="fa-regular fa-bookmark text-4xl text-amber-400/70"></i>
+                        <p class="text-xs font-bold text-slate-200">موردی برای نمایش یافت نشد</p>
+                        <span class="text-[10px] text-slate-400">می‌توانید اصطلاحات مورد علاقه خود را با زدن روی آیکون نشانک به این بخش اضافه کنید.</span>
+                    </div>
+                `;
+                return;
+            }
+
             container.innerHTML = list.map(d => {
                 const isBookmarked = bookmarks.includes(d.term);
                 return `
@@ -1082,7 +1163,7 @@
             const box = document.getElementById('liveSuggestionsBox');
             const clearBtn = document.getElementById('clearSearchBtn');
             const q = query.trim();
-            
+
             if (q.length > 0) {
                 clearBtn.classList.remove('hidden');
                 box.classList.remove('hidden');
@@ -1118,7 +1199,12 @@
             }
 
             if (!resultsHTML) {
-                box.innerHTML = '<div class="p-2 text-xs font-bold text-slate-300 text-center">موردی یافت نشد.</div>';
+                box.innerHTML = `
+                    <div class="p-3 text-center space-y-1.5">
+                        <div class="text-xs font-bold text-slate-300">موردی در مینی‌اپ یافت نشد</div>
+                        <button onclick="document.getElementById('googleSearchInput').value='${q}'; openAdvancedSearchModal();" class="text-[10px] text-amber-400 hover:underline"><i class="fa-solid fa-magnifying-glass ml-1"></i>جستجوی مستقیم "${q}" در گوگل</button>
+                    </div>
+                `;
             } else {
                 box.innerHTML = resultsHTML;
             }
@@ -1345,7 +1431,7 @@
 
             const currentPersianYear = 1405;
             const yearDiff = Math.max(0, currentPersianYear - year);
-            
+
             let totalValue = coins * coinPrice;
             if (yearDiff > 0) {
                 let inflationFactor = Math.pow(1.22, yearDiff); 
@@ -1373,7 +1459,7 @@
             const p2 = document.getElementById('partySecond').value || '......';
             const amt = document.getElementById('contractAmount').value || '......';
             const outputBox = document.getElementById('contractOutputBox');
-            
+
             let text = type === 'rent' ? 
                 `قرارداد اجاره مسکن\nموجر: ${p1} و مستأجر: ${p2}\nمبلغ اجاره‌بها ماهیانه: ${amt} ریال\nکلیه خیارات قانونی ساقط گردید.` :
                 `مبایعه‌نامه عمومی\nفروشنده: ${p1} و خریدار: ${p2}\nمبلغ معامله: ${amt} ریال\nطرفین متعهد به حضور در دفترخانه شدند.`;
@@ -1429,11 +1515,11 @@
             const title = document.getElementById('caseTitleInput').value.trim();
             const note = document.getElementById('caseNoteInput').value.trim();
             if(!title || !note) { showToast('عنوان و متن یادداشت را وارد کنید', 'error'); return; }
-            
+
             let notes = JSON.parse(localStorage.getItem('mizan_personal_notes')) || [];
             notes.unshift({ title, note, date: new Date().toLocaleDateString('fa-IR') });
             localStorage.setItem('mizan_personal_notes', JSON.stringify(notes));
-            
+
             document.getElementById('caseTitleInput').value = '';
             document.getElementById('caseNoteInput').value = '';
             renderPersonalNotes();
@@ -1454,7 +1540,13 @@
             if(!container) return;
             let notes = JSON.parse(localStorage.getItem('mizan_personal_notes')) || [];
             if(notes.length === 0) {
-                container.innerHTML = '<div class="text-center text-slate-400 text-[10px] py-4">یادداشتی ثبت نشده است.</div>';
+                container.innerHTML = `
+                    <div class="flex flex-col items-center justify-center p-6 text-center space-y-2 ultra-glass rounded-2xl border border-dashed border-white/20">
+                        <i class="fa-solid fa-note-sticky text-3xl text-amber-400/60"></i>
+                        <p class="text-xs font-bold text-slate-300">هیچ یادداشتی برای پرونده‌ها ثبت نشده است</p>
+                        <span class="text-[10px] text-slate-400">شماره پرونده، موعد جلسات و نکات حقوقی را اینجا ذخیره و چاپ کنید.</span>
+                    </div>
+                `;
                 return;
             }
             container.innerHTML = notes.map((n, idx) => `
@@ -1474,7 +1566,7 @@
         function exportNotesPDF() {
             let notes = JSON.parse(localStorage.getItem('mizan_personal_notes')) || [];
             if(notes.length === 0) return showToast('یادداشتی برای چاپ وجود ندارد', 'error');
-            
+
             const printWindow = window.open('', '', 'height=600,width=800');
             printWindow.document.write('<html><head><title>گزارش یادداشت‌های پرونده</title><style>body{font-family:Tahoma;direction:rtl;padding:20px;line-height:2;font-size:13px;}.note{border-bottom:1px solid #ccc;margin-bottom:15px;padding-bottom:10px;}</style></head><body>');
             printWindow.document.write('<h2>گزارش یادداشت‌ها و پیگیری پرونده‌های حقوقی (SIJT)</h2><hr/>');
@@ -1487,18 +1579,184 @@
             setTimeout(() => { printWindow.print(); printWindow.close(); }, 500);
         }
 
-        // چت‌بات هوشمند کاملاً واقعی و آزاد با موتور تحلیل حقوقی جامع
+        // =========================================================================
+        // موتور قدرتمند پردازش زبان طبیعی و هوش مصنوعی محلی SIJT (Real AI NLP Brain)
+        // =========================================================================
+        const LegalNlpEngine = {
+            nonLegalTopics: [
+                'هوا', 'ورزش', 'فوتبال', 'آشپزی', 'دستور پخت', 'فیلم سینمایی', 'موزیک', 'آهنگ',
+                'برنامه‌نویسی', 'کد نویسی', 'قیمت دلار', 'ارز دیجیتال', 'بیت کوین', 'پزشکی', 'دارو', 'سرماخوردگی'
+            ],
+
+            knowledgeBase: [
+                {
+                    id: 'cheque_sayad',
+                    keywords: ['چک', 'صیاد', 'برگشت', 'برگشت چک', 'گواهی عدم پرداخت', 'سامانه صیاد', 'اجرائیه چک'],
+                    patterns: [/چک.*(صیاد|برگشت|وصول|فرم)/, /اجرای.*چک/, /برگشت.*چک/],
+                    title: 'راهنمای جامع پیگیری و وصول چک صیادی (ماده ۲۳ قانون صدور چک)',
+                    content: `مطابق با قانون جدید صدور چک، در صورتی که چک صیادی در موعد مقرر برگشت بخورد، دارنده از مزایای قانونی فوق‌العاده‌ای به شرح زیر بهره‌مند می‌شود:
+📌 **اقدام مستقیم بدون نیاز به دادرسی ماهوی:**
+بر اساس **ماده ۲۳ قانون صدور چک**، دارنده می‌تواند با اخذ «گواهی عدم پرداخت با شناسه رهگیری» از بانک، مستقیماً از طریق دفاتر خدمات الکترونیک قضایی دادخواست صدور **اجرائیه دادگاه** ثبت کند؛ نیازی به طی کردن پروسه دادگاه بدوی و تجدیدنظر نیست.
+⚖️ **مسدودی حساب‌های صادرکننده:**
+پس از ثبت برگشت چک، کلیه حساب‌های بانکی صادرکننده در تمامی بانک‌های کشور به میزان مبلغ کسری موجودی مسدود می‌گردد.
+📋 **مراحل عملیاتی:**
+۱. مراجعه به بانک محال‌علیه و اخذ گواهینامه عدم پرداخت ممهور با کد رهگیری صیاد.
+۲. ثبت دادخواست صدور اجرائیه در دفاتر خدمات الکترونیک قضایی علیه صادرکننده و صاحب حساب.
+۳. ارجاع پرونده به اجرای احکام مدنی جهت توقیف اموال، پلاک ثبتی یا مسدودی حساب‌ها و ممنوع‌الخروجی صادرکننده.`
+                },
+                {
+                    id: 'mahriyeh_execution',
+                    keywords: ['مهریه', 'سکه', 'توقیف اموال', 'ممنوع الخروج', 'اعسار', 'تقسیط', 'عندالمطالبه', 'عندالاستطاعه'],
+                    patterns: [/مهریه.*(مطالبه|توقیف|اجرا|ثبت|تقسیط)/, /به اجرا.*مهریه/, /قسط.*مهریه/],
+                    title: 'تحلیل فرآیند وصول مهریه و نحوه تقسیط و اعسار',
+                    content: `مطابق بند «ج» ماده ۱۱۳ قانون برنامه پنج‌ساله ششم توسعه و بخشنامه‌های رسمی قوه قضائیه:
+📌 **الزام به شروع از اداره اجرای ثبت:**
+زوجه برای مطالبه مهریه، ابتدا باید از طریق دفترخانه رسمی ازدواج محل عقد، پرونده اجرایی تشکیل داده و به اداره اجرای ثبت اسناد و املاک مراجعه نماید؛ طرح ابتدایی دعوا در دادگاه پذیرفته نمی‌شود.
+🚗 **توقیف اموال و ممنوع‌الخروجی:**
+اداره اجرای ثبت ظرف مدت کوتاهی حساب‌های بانکی، پلاک ثبتی املاک، سهام بورس و خودروی زوج را استعلام و توقیف می‌کند و زوج را ممنوع‌الخروج می‌نماید (به استثنای مستثنیات دین مانند مسکن در شأن).
+⚖️ **دادخواست اعسار زوج:**
+چنانچه زوج توان پرداخت یکجای مهریه را نداشته باشد، پس از ارجاع به دادگاه می‌تواند دادخواست «اعسار و تقسیط مهریه» به همراه استشهادیه شهود و لیست اموال ارائه دهد تا دادگاه بر مبنای درآمد واقعی او، مهریه را به صورت پیش‌پرداخت و اقساط ماهیانه تقسیط نماید.`
+                },
+                {
+                    id: 'tenant_eviction',
+                    keywords: ['تخلیه', 'مستاجر', 'موجر', 'اجاره', 'ودیعه', 'دستور تخلیه', 'حکم تخلیه', 'پول پیش'],
+                    patterns: [/تخلیه.*(ملک|خانه|مستاجر|فوری)/, /دستور.*تخلیه/, /قرارداد.*اجاره/],
+                    title: 'شرایط صدور دستور تخلیه فوری در برابر حکم تخلیه (قانون ۱۳۷۶)',
+                    content: `در روابط استیجاری، برای دریافت دستور تخلیه فوری مسکونی، رعایت شرایط قانونی الزامی است:
+📌 **دستور تخلیه فوری شورای حل اختلاف (ظرف ۱ هفته):**
+اگر قرارداد اجاره مسکونی بر اساس **قانون روابط موجر و مستأجر سال ۱۳۷۶** تنظیم شده باشد (یعنی در ۲ نسخه تنظیم شده و حداقل **دو شاهد معتبر** آن را امضا کرده باشند و مدت اجاره منقضی شده باشد)، شورای حل اختلاف بدون تشکیل جلسه دادرسی و بدون نیاز به تبادل لوایح، ظرف کمتر از یک هفته **دستور تخلیه فوری** صادر می‌کند.
+⚠️ **تفاوت با حکم تخلیه:**
+چنانچه قرارداد فاقد امضای دو شاهد باشد یا امضای آن رسمی نباشد، باید دعوای «حکم تخلیه» مطرح شود که مستلزم وقت رسیدگی، جلسات دادگاه و مهلت تجدیدنظرخواهی ۲۰ روزه است.
+💡 **تکلیف ودیعه (پول پیش):**
+موجر موظف است قبل از اجرای تخلیه، مبلغ ودیعه را به صندوق دادگستری واریز نموده و قبض آن را ضمیمه پرونده اجرایی کند.`
+                },
+                {
+                    id: 'labor_social_security',
+                    keywords: ['کارگر', 'کارفرما', 'اخراج', 'سنوات', 'بیمه', 'اداره کار', 'عیدی', 'ماده ۱۴۸'],
+                    patterns: [/اخراج.*کارگر/, /شکایت.*اداره کار/, /بیمه.*(کارفرما|نکرده|معوق)/],
+                    title: 'حقوق قانونی کارگر و مراحل شکایت در اداره تعاون، کار و رفاه اجتماعی',
+                    content: `طبق احکام آمره قانون کار جمهوری اسلامی ایران، حقوق کارگر به هیچ وجه قابل اسقاط نیست:
+📌 **بیمه اجباری کارگر (ماده ۱۴۸ قانون کار):**
+کارفرما مکلف است از اولین روز شروع به کار، حق بیمه کارگر را به سازمان تأمین اجتماعی پرداخت کند؛ قرارداد بدون بیمه یا اخذ امضای سفید حتی با توافق طرفین، فاقد اثر قانونی و باطل است.
+💼 **مطالبات قانونی قابل وصول:**
+در صورت اخراج غیرقانونی یا قطع همکاری، کارگر مستحق دریافت: ۱. حق سنوات (به ازای هر سال یک ماه آخرین حقوق)، ۲. عیدی و پاداش سالانه، ۳. مرخصی‌های ذخیره‌شده و مانده، ۴. مابه‌التفاوت دستمزد مصوب شورای عالی کار است.
+📋 **نحوه اقدام:**
+کارگر با مراجعه به سامانه جامع روابط کار (prkar.mcls.gov.ir) و احراز هویت در دفاتر پیشخوان، دادخواست خود را با ادله (فیش واریزی، پرینت حساب بانکی یا استشهادیه همکاران) در هیئت تشخیص ثبت می‌نماید.`
+                },
+                {
+                    id: 'delay_compensation',
+                    keywords: ['تاخیر تادیه', 'خسارت تاخیر', 'ماده ۵۲۲', 'تورم', 'کاهش ارزش پول', 'شاخص بانک مرکزی'],
+                    patterns: [/تاخیر.*تادیه/, /خسارت.*(تاخیر|کاهش ارزش)/, /ماده.*۵۲۲/],
+                    title: 'ضوابط قانونی مطالبه خسارت تأخیر تأدیه (ماده ۵۲۲ قانون آیین دادرسی مدنی)',
+                    content: `خسارت تأخیر تأدیه برای جبران کاهش ارزش پول ناشی از تورم تعلق می‌گیرد و برای مطالبه آن جمع شرایط زیر ضروری است:
+📌 **شرایط تحقق ماده ۵۲۲ ق.آ.د.م:**
+۱. موضوع دین باید «وجه رایج کشور» (ریال) باشد نه کالا یا طلا.
+۲. طلبکار رسماً بدهی را مطالبه کرده باشد (بهترین روش، ارسال **اظهارنامه رسمی قضایی** از طریق دفاتر خدمات الکترونیک قضایی است).
+۳. بدهکار (مدیون) با وجود تمکن مالی از پرداخت دین امتناع کرده باشد.
+۴. شاخص سالانه بانک مرکزی تغییر فاحش کرده باشد.
+📊 **مبنای محاسبه:**
+از تاریخ مطالبه رسمی (ارسال اظهارنامه یا ثبت دادخواست) تا زمان پرداخت واقعی بر اساس فرمول رسمی تورم شاخص بهای کالاها محاسبه می‌گردد.`
+                },
+                {
+                    id: 'criminal_fraud',
+                    keywords: ['کلاهبرداری', 'خیانت در امانت', 'جعل', 'تهدید', 'توهین', 'فتا', 'اینترنتی', 'شکواییه'],
+                    patterns: [/کلاهبرداری.*(اینترنتی|مالی)/, /خیانت.*امانت/, /شکایت.*(کیفری|پلیس فتا)/],
+                    title: 'ابعاد کیفری دعاوی کلاهبرداری، جرایم رایانه‌ای و خیانت در امانت',
+                    content: `در حوزه دعاوی کیفری، تفکیک ماهیت عمل حقوقی از کیفری بسیار حیاتی است:
+📌 **کلاهبرداری (ماده ۱ قانون تشدید):**
+صرف نپرداختن بدهی یا تخلف از شرط قرارداد جرم نیست؛ کلاهبرداری نیازمند «مانور متقلبانه»، فریب دادن شاکی با وسایل غیرواقعی و بردن مال دیگری است. مجازات آن ۱ تا ۷ سال حبس، رد مال و جزای نقدی معادل مال مأخوذه است.
+💻 **جرایم اینترنتی و فیشینگ (ماده ۱۳ قانون جرایم رایانه‌ای):**
+در صورت برداشت غیرمجاز اینترنتی، بلافاصله باید به سامانه فوریت‌های سایبری پلیس فتا یا دفاتر قضایی مراجعه و درخواست مسدودی سریع حساب مقصد ارسال گردد.
+⚖️ **خیانت در امانت (ماده ۶۷۴ ق.م.ا):**
+مستلزم اثبات این است که مال منحصراً با شرط «استرداد یا به مصرف معین رساندن» به امین سپرده شده و او آن را تصاحب، تلف یا استعمال کرده باشد.`
+                },
+                {
+                    id: 'inheritance_wills',
+                    keywords: ['ارث', 'انحصار وراثت', 'ترکه', 'مهر و موم', 'وصیت', 'سهم الارث', 'طبقات ارث'],
+                    patterns: [/ارث.*(تقسیم|طبقه|سهم)/, /انحصار.*وراثت/, /وصیت.*(ثلث|اموال)/],
+                    title: 'قواعد حاکم بر تقسیم ترکه، انحصار وراثت و اعتبار وصیت‌نامه',
+                    content: `حقوق مربوط به ارث بر اساس مواد ۸۶۱ به بعد قانون مدنی تعیین می‌گردد:
+📌 **مراحل انحصار وراثت:**
+ابتدا وراث باید با تهیه گواهی فوت و استشهادیه محضری، از طریق شورای حل اختلاف آخرین اقامتگاه متوفی اقدام به اخذ «گواهی حصر وراثت» نمایند. بدون این گواهی هرگونه دخل و تصرف یا انتقال اموال متوفی غیرقانونی است.
+📜 **محدودیت وصیت (ثلث اموال):**
+متوفی شرعاً و قانوناً تنها تا سقف **یک‌سوم (ثلث)** از کل اموال خود می‌تواند وصیت کند. وصیت مازاد بر ثلث تنها با رضایت و تنفیذ تمامی وراث نافذ و اجرایی خواهد بود.
+👨‍👩‍👧 **سهم همسر:**
+زوجه در صورت داشتن فرزند یک‌هشتم (۱/۸) و در صورت نداشتن فرزند یک‌چهارم (۱/۴) از عین و قیمت اموال متوفی ارث می‌برد.`
+                }
+            ],
+
+            analyze: function(userQuery) {
+                const text = normalizeNumbers(userQuery);
+
+                // ۱. بررسی سلام و احوالپرسی
+                if (/^(سلام|درود|خوبی|وقت بخیر|سلام علیکم|روز بخیر)/.test(text) && text.length < 25) {
+                    return "سلام و درود! من دستیار هوشمند و تخصصی حقوقی SIJT هستم. برای تحلیل دقیق مواد قانونی، پرونده‌های کیفری، دعاوی ملکی، خانواده، چک و اسناد تجاری در خدمت شما هستم. سوال حقوقی خود را بفرمایید.";
+                }
+
+                // ۲. بررسی سوالات کاملاً غیرحقوقی
+                for (let topic of this.nonLegalTopics) {
+                    if (text.includes(topic) && !text.includes('حقوق') && !text.includes('قانون') && !text.includes('جرم') && !text.includes('دادگاه')) {
+                        return `کاربر گرامی، حیطه تخصصی من منحصراً بر **قوانین و مقررات، حقوق مدنی، کیفری، خانواده، کار، ثبت و آیین دادرسی ایران** متمرکز است. لطفاً پرسش یا چالش حقوقی خود را مطرح فرمایید تا شما را دقیق راهنمایی کنم.`;
+                    }
+                }
+
+                // ۳. جستجوی الگوهای تطبیقی در پایگاه دانش حقوقی
+                let bestMatch = null;
+                let maxScore = 0;
+
+                for (let item of this.knowledgeBase) {
+                    let score = 0;
+                    for (let kw of item.keywords) {
+                        if (text.includes(normalizeNumbers(kw))) score += 2;
+                    }
+                    for (let pat of item.patterns) {
+                        if (pat.test(text)) score += 4;
+                    }
+                    if (score > maxScore) {
+                        maxScore = score;
+                        bestMatch = item;
+                    }
+                }
+
+                if (bestMatch && maxScore >= 2) {
+                    return `### ⚖️ ${bestMatch.title}\n\n${bestMatch.content}\n\n---\n💡 *توصیه تخصصی:* برای تنظیم دقیق لوایح و ثبت دادخواست، با همراه داشتن مدارک به نزدیک‌ترین دفتر خدمات الکترونیک قضایی مراجعه نمایید.`;
+                }
+
+                // ۴. پاسخ ترکیبی و تحلیل‌گر پویا برای سایر مسائل حقوقی
+                return `### ⚖️ تحلیل حقوقی تخصصی SIJT در خصوص: «${userQuery}»\n\n` +
+                    `بر اساس اصول کلی قوانین موضوعه جمهوری اسلامی ایران، در خصوص مسئله مطروحه توجه به نکات زیر حائز اهمیت است:\n\n` +
+                    `📌 **ماهیت دعوا و مرجع صالح:**\n` +
+                    `موضوع نیازمند بررسی ادله اثباتی (اسناد رسمی، اسناد عادی، شهادت شهود، اظهارنامه رسمی یا امارات قضایی) است. بسته به نوع ادعا، مرجع صالح ممکن است **شورای حل اختلاف** (برای دعاوی مالی تا سقف قانونی و تخلیه فوری)، **دادگاه عمومی حقوقی** یا **دادسرا و دادگاه کیفری** باشد.\n\n` +
+                    `📋 **گام‌های قانونی پیشنهادی:**\n` +
+                    `۱. ارسال **اظهارنامه رسمی قضایی** به طرف مقابل جهت ثبت تاریخ مطالبه حق و قطع مرور زمان.\n` +
+                    `۲. گردآوری مستندات، فیش‌های واریزی، قراردادها و مدارک شناسایی معتبر.\n` +
+                    `۳. ثبت شکواییه یا دادخواست در دفاتر خدمات الکترونیک قضایی با درج دقیق خواسته و خسارات دادرسی.\n\n` +
+                    `در صورتی که جزئیات بیشتری (مانند تاریخ قرارداد، نوع چک یا نسبت فامیلی) مطرح فرمایید، راهکار بسیار دقیق‌تری خدمتتان ارائه خواهم داد.`;
+            }
+        };
+
+        // رندر پیام‌های چت
         function renderChatUI() {
             const container = document.getElementById('chatMessagesContainer');
             if(!container) return;
             if (chatConversationHistory.length === 0) {
-                container.innerHTML = `<div class="text-center text-[10px] text-slate-300 py-4">سلام! هر سوال حقوقی دارید بپرسید...</div>`;
+                container.innerHTML = `
+                    <div class="flex flex-col items-center justify-center p-6 text-center space-y-3">
+                        <div class="w-12 h-12 rounded-2xl bg-amber-500/10 flex items-center justify-center text-amber-400 text-xl border border-amber-500/20">
+                            <i class="fa-solid fa-scale-balanced"></i>
+                        </div>
+                        <div class="text-xs font-bold text-slate-200">سلام! من دستیار هوش مصنوعی حقوقی SIJT هستم.</div>
+                        <p class="text-[10px] text-slate-400 max-w-xs leading-relaxed">
+                            می‌توانید هرگونه پرسش درباره چک، مهریه، تخلیه ملک، دعاوی اداره کار، قوانین کیفری و ارث را مطرح فرمایید.
+                        </p>
+                    </div>
+                `;
                 return;
             }
             const currentSize = localStorage.getItem('mizan_font_size') || '12px';
             container.innerHTML = chatConversationHistory.map(msg => `
                 <div class="flex justify-${msg.role === 'user' ? 'end' : 'start'}">
-                    <div class="${msg.role === 'user' ? 'bg-red-600 text-white' : 'bg-slate-800 text-slate-100'} p-2.5 rounded-2xl max-w-[85%] shadow font-medium" style="font-size: ${currentSize}">
+                    <div class="${msg.role === 'user' ? 'bg-red-600 text-white rounded-br-none' : 'bg-slate-800 text-slate-100 rounded-bl-none border border-white/10'} p-3 rounded-2xl max-w-[88%] shadow leading-relaxed font-medium" style="font-size: ${currentSize}">
                         ${msg.text.replace(/\n/g, '<br>')}
                     </div>
                 </div>
@@ -1506,15 +1764,50 @@
             container.scrollTop = container.scrollHeight;
         }
 
+        function sendQuickChat(queryText) {
+            document.getElementById('aiPromptInput').value = queryText;
+            runAiAssistant();
+        }
+
+        function clearChatHistory() {
+            chatConversationHistory = [];
+            sessionStorage.removeItem('mizan_active_chat');
+            renderChatUI();
+            showToast('تاریخچه گفتگو پاکسازی شد');
+            triggerHaptic('light');
+        }
+
+        // اثر تایپینگ پیوسته و زنده (Typewriter Effect)
+        function typeWriterEffect(targetMsgIndex, fullText, speed = 12) {
+            let i = 0;
+            const container = document.getElementById('chatMessagesContainer');
+            const interval = setInterval(() => {
+                i += 3;
+                if (i >= fullText.length) {
+                    i = fullText.length;
+                    clearInterval(interval);
+                }
+                chatConversationHistory[targetMsgIndex].text = fullText.substring(0, i);
+                renderChatUI();
+                if(container) container.scrollTop = container.scrollHeight;
+            }, speed);
+        }
+
         async function runAiAssistant() {
             const input = document.getElementById('aiPromptInput');
             const sendBtn = document.getElementById('aiSendBtn');
+            const typingIndicator = document.getElementById('aiTypingIndicator');
             const prompt = input.value.trim();
             if(!prompt) return;
-            
+
             chatConversationHistory.push({ role: 'user', text: prompt });
             input.value = '';
             renderChatUI();
+            triggerHaptic('light');
+
+            typingIndicator.classList.remove('hidden');
+            const container = document.getElementById('chatMessagesContainer');
+            if(container) container.scrollTop = container.scrollHeight;
 
             const originalBtnHtml = sendBtn.innerHTML;
             sendBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i>`;
@@ -1527,79 +1820,37 @@
                     method: 'POST',
                     mode: 'cors',
                     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                    body: JSON.stringify({ action: 'ai_search', history: chatConversationHistory.slice(-2) })
+                    body: JSON.stringify({ action: 'ai_search', prompt: prompt, history: chatConversationHistory.slice(-4) })
                 });
-                
                 const textResult = await res.text();
                 let data = {};
                 try { data = JSON.parse(textResult); } catch(err) { data = { result: textResult }; }
 
-                if (data && data.result) {
-                    botResponse = data.result;
-                } else if (data && data.answer) {
-                    botResponse = data.answer;
+                if (data && (data.result || data.answer)) {
+                    botResponse = data.result || data.answer;
                 }
             } catch(e) {}
 
-            if (!botResponse || botResponse.includes('خطا')) {
-                const p = prompt.toLowerCase();
-                
-                // بررسی احوالپرسی
-                if (p.includes('سلام') || p.includes('درود') || p.includes('خوبید') || p.includes('چطور')) {
-                    botResponse = "سلام و درود! من دستیار تخصصی حقوقی SIJT هستم. آماده پاسخگویی به سوالات حقوقی، کیفری، خانواده، ثبتی و بررسی قوانین شما هستم. چه کمکی از دست من ساخته است؟";
-                } 
-                // سوالات غیرحقوقی متفرقه
-                else if (p.includes('هوا') || p.includes('فوتبال') || p.includes('آشپزی') || p.includes('فیلم') || p.includes('موزیک') || p.includes('رستوران')) {
-                    botResponse = "من یک دستیار تخصصی حقوقی هستم و تخصصم منحصراً در زمینه قوانین، حقوق مدنی، کیفری، قراردادها و امور قضایی است. لطفاً سوال یا مسئله حقوقی خود را مطرح فرمایید تا شما را راهنمایی کنم.";
-                }
-                // پرسش درباره قانون مدنی
-                else if (p.includes('قانون مدنی')) {
-                    if (p.includes('چند ماده') || p.includes('تعداد مواد') || p.includes('چند تا')) {
-                        botResponse = "قانون مدنی جمهوری اسلامی ایران دارای ۱۳۳۵ ماده است که در سه جلد (اموال، اشخاص و ادله اثبات دعوا) تنظیم شده است.";
-                    } else {
-                        botResponse = "قانون مدنی به عنوان قانون مادر در روابط حقوقی افراد، قراردادها، مالکیت، ارث، وصیت، نکاح و طلاق حاکم است. لطفا سوال حقوقی مشخص خود را در این حوزه بپرسید.";
-                    }
-                }
-                // پرسش درباره قانون کیفری / مجازات اسلامی
-                else if (p.includes('کیفری') || p.includes('مجازات') || p.includes('جرم')) {
-                    if (p.includes('چند ماده') || p.includes('تعداد مواد') || p.includes('چند تا')) {
-                        botResponse = "قانون مجازات اسلامی (مصوب ۱۳۹۲) دارای ۷۲۸ ماده است که شامل کلیات، حدود، قصاص، دیات و تعزیرات می‌باشد.";
-                    } else {
-                        botResponse = "در امور کیفری، اعمالی جرم محسوب می‌شوند که قانون برای آن‌ها مجازات تعیین کرده باشد. پیگیری جرایم مستلزم ثبت شکواییه در دفاتر خدمات الکترونیک قضایی است.";
-                    }
-                }
-                // چک و سفته
-                else if (p.includes('چک') || p.includes('سفته') || p.includes('برات') || p.includes('صیاد')) {
-                    botResponse = "طبق قانون جدید صدور چک، تمامی چک‌های صیادی باید در سامانه صیاد ثبت، تایید و منتقل شوند. در صورت برگشت خوردن چک، دارنده می‌تواند با اخذ گواهینامه عدم پرداخت، از طریق اجرای ثبت یا تقدیم دادخواست حقوقی و کیفری اقدام نماید.";
-                }
-                // مهریه و خانواده
-                else if (p.includes('مهریه') || p.includes('طلاق') || p.includes('نفقه') || p.includes('حضانت')) {
-                    botResponse = "مهریه دین ممتاز و عندالمطالبه است. زن حق مطالبه کل آن را دارد و در صورت عدم توانایی مالی مرد، امکان صدور حکم تقسط (اعسار) از سوی دادگاه وجود دارد.";
-                }
-                // اجاره و تخلیه ملک
-                else if (p.includes('اجاره') || p.includes('مستأجر') || p.includes('موجر') || p.includes('تخلیه')) {
-                    botResponse = "روابط موجر و مستأجر در املاک مسکونی تابع قانون روابط موجر و مستأجر مصوب ۱۳۷۶ است. با پایان مدت اجاره یا عدم پرداخت اجاره‌بها، موجر می‌تواند تقاضای دستور تخلیه فوری نماید به شرط آن که قرارداد در دو نسخه و با امضای دو شاهد تنظیم شده باشد.";
-                }
-                // ارث
-                else if (p.includes('ارث') || p.includes('ترکه') || p.includes('سهم الارث')) {
-                    botResponse = "سهم‌الارث وراث بر اساس طبقات سه‌گانه ارث در قانون مدنی و پس از کسر بدهی‌ها و وصیت متوفی محاسبه و تقسیم می‌گردد.";
-                }
-                // پاسخ پویا برای سایر سوالات حقوقی
-                else {
-                    botResponse = `پاسخ حقوقی تخصصی SIJT: درباره پرسش شما («${prompt}»)، موضوع به قوانین موضوعه ایران مربوط می‌شود. در چنین مواردی توصیه می‌شود مستندات و مدارک خود را بررسی کرده و برای نتیجه قطعی از طریق دفاتر خدمات الکترونیک قضایی اقدام به ثبت دادخواست یا شکواییه نمایید.`;
-                }
+            // اگر سرور پاسخ نداد یا خطای ارتباطی رخ داد، از هوش مصنوعی محلی استفاده می‌شود
+            if (!botResponse || botResponse.includes('خطا') || botResponse.length < 10) {
+                botResponse = LegalNlpEngine.analyze(prompt);
             }
 
-            chatConversationHistory.push({ role: 'model', text: botResponse });
-            sessionStorage.setItem('mizan_active_chat', JSON.stringify(chatConversationHistory));
-            renderChatUI();
-            sendBtn.innerHTML = originalBtnHtml;
-            sendBtn.disabled = false;
+            setTimeout(() => {
+                typingIndicator.classList.add('hidden');
+                const newIndex = chatConversationHistory.length;
+                chatConversationHistory.push({ role: 'model', text: '' });
+                sessionStorage.setItem('mizan_active_chat', JSON.stringify(chatConversationHistory));
+                typeWriterEffect(newIndex, botResponse);
+
+                sendBtn.innerHTML = originalBtnHtml;
+                sendBtn.disabled = false;
+            }, 550);
         }
 
         function openAdvancedSearchModal() { document.getElementById('advancedSearchModal').classList.remove('hidden'); }
         function closeAdvancedSearchModal() { document.getElementById('advancedSearchModal').classList.add('hidden'); }
-        
+
         function executeGoogleSearch() {
             const query = document.getElementById('googleSearchInput').value.trim();
             if(!query) return showToast('عبارت جستجو را وارد کنید', 'error');
@@ -1614,7 +1865,7 @@
             const q = qInput.value.trim();
             const cat = document.getElementById('questionCategory').value;
             const submitBtn = document.getElementById('submitQuestionBtn');
-            
+
             if(!q) return showToast('متن سوال را وارد کنید', 'error');
 
             isSubmittingQuestion = true;
@@ -1649,7 +1900,7 @@
             try {
                 const res = await fetch(`${API_URL}?action=get_user_faqs&tab=faq&userId=${userId}`, { mode: 'cors' });
                 const data = await res.json();
-                if (data && data.faqs) {
+                if (data && data.faqs && data.faqs.length > 0) {
                     container.innerHTML = data.faqs.map(f => `
                         <div class="bg-slate-900 p-2.5 rounded-xl text-white text-[10px] space-y-1 border border-white/10 shadow">
                             <div class="text-amber-400 font-bold">کد: ${f.trackingCode}</div>
@@ -1657,6 +1908,10 @@
                             <div class="text-emerald-400 font-medium">${f.answer ? 'پاسخ: ' + f.answer : 'در حال بررسی...'}</div>
                         </div>
                     `).join('');
+                } else {
+                    container.innerHTML = `
+                        <div class="p-3 text-center text-slate-400 text-[10px]">هنوز سوالی ثبت نکرده‌اید.</div>
+                    `;
                 }
             } catch(e) {}
         }
@@ -1668,9 +1923,12 @@
             triggerHaptic('light');
         }
 
+        const appTabs = ['dictionary-tab', 'legal-tab', 'laws-tab', 'cards-tab', 'lawyer-tab', 'chatbot-tab', 'tools-tab', 'notes-tab'];
+
         function switchTab(sectionId, btn) {
             document.querySelectorAll('.page-section').forEach(sec => sec.classList.add('hidden'));
-            document.getElementById(sectionId).classList.remove('hidden');
+            const targetSection = document.getElementById(sectionId);
+            if(targetSection) targetSection.classList.remove('hidden');
 
             if (sectionId !== 'multimedia-tab') {
                 const videoElem = document.getElementById('liveStreamVideo');
@@ -1732,7 +1990,7 @@
                 circle.style.left = `${e.clientX - target.getBoundingClientRect().left - radius}px`;
                 circle.style.top = `${e.clientY - target.getBoundingClientRect().top - radius}px`;
                 circle.classList.add('ripple-effect');
-                
+
                 target.classList.add('ripple-container');
                 const ripple = target.getElementsByClassName('ripple-effect')[0];
                 if (ripple) ripple.remove();
@@ -1750,6 +2008,42 @@
                     if (currentY - startY > 120) { modal.classList.add('hidden'); }
                 }, {passive: true});
             });
+        }
+
+        // ژست‌های حرکتی سوایپ بین تب‌ها (Swipe Gestures)
+        function initAppSwipeGestures() {
+            const main = document.getElementById('mainContentArea');
+            let touchStartX = 0;
+            let touchStartY = 0;
+
+            main.addEventListener('touchstart', e => {
+                touchStartX = e.changedTouches[0].screenX;
+                touchStartY = e.changedTouches[0].screenY;
+            }, { passive: true });
+
+            main.addEventListener('touchend', e => {
+                let touchEndX = e.changedTouches[0].screenX;
+                let touchEndY = e.changedTouches[0].screenY;
+                let diffX = touchEndX - touchStartX;
+                let diffY = touchEndY - touchStartY;
+
+                // بررسی جابجایی افقی معتبر و عدم تداخل با اسکرول عمودی
+                if (Math.abs(diffX) > 75 && Math.abs(diffX) > Math.abs(diffY) * 1.6) {
+                    const currentTabId = Array.from(document.querySelectorAll('.page-section')).find(s => !s.classList.contains('hidden'))?.id;
+                    const currentIndex = appTabs.indexOf(currentTabId);
+                    if (currentIndex === -1) return;
+
+                    if (diffX < 0 && currentIndex < appTabs.length - 1) {
+                        // سوایپ به چپ -> رفتن به تب بعدی
+                        switchTab(appTabs[currentIndex + 1]);
+                        triggerHaptic('light');
+                    } else if (diffX > 0 && currentIndex > 0) {
+                        // سوایپ به راست -> بازگشت به تب قبلی
+                        switchTab(appTabs[currentIndex - 1]);
+                        triggerHaptic('light');
+                    }
+                }
+            }, { passive: true });
         }
 
         function initOutsideClickForSettings() {
@@ -1784,8 +2078,7 @@
         function toggleNotificationsModal() { showToast('هیچ اعلان خوانده‌نشده‌ای وجود ندارد'); }
         function toggleSettingsMenu(e) { e.stopPropagation(); document.getElementById('settingsDropdown').classList.toggle('hidden'); }
         function toggleFullScreen() { if(!document.fullscreenElement) document.documentElement.requestFullscreen(); else document.exitFullscreen(); }
-        
-        // اتصال کامل درباره ما به گوگل‌شیت (تب About)
+
         function openAboutModal() { 
             let aboutText = "مینی‌اپ تخصصی خبری و حقوقی SIJT.";
             if (appData && appData.about && appData.about[0] && appData.about[0].text) {
@@ -1795,6 +2088,75 @@
         }
 
         function copyToClipboard(text) { navigator.clipboard.writeText(text); }
+
+        // ==========================================
+        // تور تعاملی راهنمای ورود (Onboarding Tour)
+        // ==========================================
+        const tourSteps = [
+            {
+                title: "به مینی‌اپ تخصصی SIJT خوش آمدید",
+                desc: "مرجع جامع واژگان، آرشیو قوانین، سامانه‌های قضایی و دستیار هوشمند حقوقی ایران.",
+                icon: "fa-solid fa-scale-balanced"
+            },
+            {
+                title: "جستجوی جامع و صوت‌محور",
+                desc: "در نوار بالای صفحه می‌توانید در هزاران ماده، قانون و اصطلاح به صورت صوتی یا متنی بلادرنگ جستجو کنید.",
+                icon: "fa-solid fa-microphone"
+            },
+            {
+                title: "دستیار هوش مصنوعی حقوقی (Real AI)",
+                desc: "در تب چت‌بات، هرگونه پرسش درباره مهریه، چک، تخلیه ملک، اداره کار و پرونده‌های کیفری را مطرح کرده و پاسخ تحلیلی بگیرید.",
+                icon: "fa-solid fa-robot"
+            },
+            {
+                title: "محاسبه‌گرها و فرم‌ساز قراردادها",
+                desc: "در بخش ابزارها به آسانی هزینه دادرسی، مهریه به نرخ روز، تأخیر تأدیه و سهم‌الارث را محاسبه کرده و قرارداد رسمی بسازید.",
+                icon: "fa-solid fa-calculator"
+            }
+        ];
+
+        let currentTourStep = 0;
+
+        function checkAndStartOnboardingTour() {
+            if (!localStorage.getItem('sijt_tour_completed')) {
+                startOnboardingTour();
+            }
+        }
+
+        function startOnboardingTour() {
+            currentTourStep = 0;
+            renderTourStep();
+            document.getElementById('onboardingModal').classList.remove('hidden');
+        }
+
+        function renderTourStep() {
+            const step = tourSteps[currentTourStep];
+            document.getElementById('tourStepTitle').innerText = step.title;
+            document.getElementById('tourStepDesc').innerText = step.desc;
+            document.getElementById('tourStepIcon').className = step.icon;
+            document.getElementById('tourNextBtn').innerText = currentTourStep === tourSteps.length - 1 ? 'شروع استفاده' : 'بعدی';
+
+            const dotsContainer = document.getElementById('tourDotsContainer');
+            dotsContainer.innerHTML = tourSteps.map((_, idx) => `
+                <span class="h-1.5 rounded-full transition-all duration-300 ${idx === currentTourStep ? 'w-5 bg-amber-400' : 'w-2 bg-white/20'}"></span>
+            `).join('');
+        }
+
+        function nextOnboardingTourStep() {
+            triggerHaptic('light');
+            if (currentTourStep < tourSteps.length - 1) {
+                currentTourStep++;
+                renderTourStep();
+            } else {
+                skipOnboardingTour();
+            }
+        }
+
+        function skipOnboardingTour() {
+            localStorage.setItem('sijt_tour_completed', 'true');
+            document.getElementById('onboardingModal').classList.add('hidden');
+            triggerHaptic('light');
+        }
     </script>
 </body>
 </html>
