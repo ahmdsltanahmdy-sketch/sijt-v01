@@ -102,7 +102,7 @@
             color: #0f172a;
         }
 
-        /* نوار ناوبری پایین با حداکثر وضوح */
+        /* نوار ناوبری پایین با حداکثر کنتراست */
         .floating-nav {
             background: rgba(15, 23, 42, 0.98) !important;
             backdrop-filter: blur(30px) saturate(200%);
@@ -183,6 +183,7 @@
             display: flex; align-items: center; justify-content: center;
             background: #000; border-radius: 1rem; cursor: grab;
         }
+        .zoomable-container:active { cursor: grabbing; }
         .zoomable-img { transition: transform 0.2s ease; max-width: 100%; max-height: 100%; object-fit: contain; user-select: none; }
 
         .pro-video-wrapper {
@@ -258,7 +259,7 @@
 </head>
 <body id="bodyRoot" class="mesh-bg text-slate-900 dark:text-slate-100 min-h-screen flex flex-col relative select-none">
 
-    <!-- اسپلش اسکرین روان و ضد گیرکردن -->
+    <!-- اسپلش اسکرین پایدار -->
     <div id="splashScreen" class="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#0b0f19] transition-opacity duration-300">
         <div class="relative w-20 h-20 flex items-center justify-center mb-4">
             <div class="absolute inset-0 border-4 border-slate-800 rounded-full"></div>
@@ -272,8 +273,8 @@
     <div class="noise-overlay"></div>
     <div id="toastContainer"></div>
 
-    <!-- تور راهنمای ورود مینی‌اپ SIJT -->
-    <div id="onboardingModal" style="display: none;" class="tour-overlay">
+    <!-- تور راهنمای ورود -->
+    <div id="onboardingModal" class="tour-overlay hidden flex">
         <div class="ultra-glass rounded-3xl max-w-sm w-full p-5 relative shadow-2xl space-y-4 text-center border border-amber-500/30">
             <div id="tourIconContainer" class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-red-600 to-amber-500 mx-auto flex items-center justify-center text-white text-2xl shadow-lg shadow-red-600/30">
                 <i id="tourStepIcon" class="fa-solid fa-scale-balanced"></i>
@@ -314,7 +315,7 @@
         <!-- منوی تنظیمات -->
         <div id="settingsDropdown" class="hidden absolute left-4 top-12 z-50 max-w-xs w-80 p-4 settings-glass rounded-3xl space-y-3 text-xs shadow-2xl max-h-[75vh] overflow-y-auto">
             <div id="installPwaBox" class="hidden flex items-center justify-between pb-2 border-b border-white/20">
-                <span class="font-bold text-amber-300">نصب اپلیکیشن بومی:</span>
+                <span class="font-bold text-amber-300">نصب اپلیکیشن:</span>
                 <button onclick="installPWA();" class="bg-amber-500/20 text-amber-300 px-3 py-1 rounded-xl font-bold"><i class="fa-solid fa-download ml-1"></i> نصب</button>
             </div>
             <div class="flex items-center justify-between pb-2 border-b border-white/20">
@@ -371,7 +372,7 @@
             </div>
         </div>
 
-        <!-- نوار جستجوی جامع هدر -->
+        <!-- نوار جستجو هدر -->
         <div class="max-w-md mx-auto px-4 py-2.5 relative z-20">
             <div class="flex space-x-2 space-x-reverse relative items-center">
                 <div class="relative flex-grow">
@@ -388,7 +389,7 @@
         </div>
     </header>
 
-    <!-- بدنه اصلی برنامه -->
+    <!-- بدنه اصلی برنامه و تب‌ها -->
     <main id="mainContentArea" class="max-w-md mx-auto w-full p-4 flex-grow mb-32 transition-transform duration-200">
 
         <!-- تب ۱: اصطلاحات -->
@@ -456,7 +457,7 @@
             </div>
         </section>
 
-        <!-- تب ۶: چت‌بات هوش مصنوعی پیشرفته (Real AI) -->
+        <!-- تب ۶: چت‌بات هوش مصنوعی پیشرفته -->
         <section id="chatbot-tab" class="page-section hidden space-y-3">
             <div class="ultra-glass p-4 rounded-3xl space-y-3 shadow-xl">
                 <div class="flex items-center justify-between pb-1 border-b border-white/10">
@@ -517,8 +518,8 @@
             <div class="ultra-glass p-4 rounded-2xl space-y-3 shadow-lg">
                 <h3 class="font-bold text-xs text-amber-300"><i class="fa-solid fa-chart-line ml-1"></i> محاسبه‌گر تأخیر تأدیه (ماده ۵۲۲ آ.د.م)</h3>
                 <div class="grid grid-cols-2 gap-2">
-                    <input type="number" id="principalAmount" placeholder="اصل طلب (ریال)..." class="bg-slate-900 text-amber-200 placeholder-slate-400 rounded-xl px-3 py-2 text-xs border border-white/20 shadow-inner">
-                    <input type="number" id="delayYears" placeholder="تعداد سال تأخیر..." class="bg-slate-900 text-amber-200 placeholder-slate-400 rounded-xl px-3 py-2 text-xs border border-white/20 shadow-inner">
+                    <input type="number" id="principalAmount" placeholder="اصل طلب (ریال)..." class="bg-slate-900 text-amber-200 placeholder-slate-400 rounded-xl px-3 py-2 text-xs border border-white/20">
+                    <input type="number" id="delayYears" placeholder="تعداد سال تأخیر..." class="bg-slate-900 text-amber-200 placeholder-slate-400 rounded-xl px-3 py-2 text-xs border border-white/20">
                 </div>
                 <button onclick="calculateDelayCompensation()" class="w-full bg-red-600 text-white py-2 rounded-xl text-xs font-bold shadow">محاسبه خسارت کاهش ارزش</button>
                 <div id="delayResult" class="text-[11px] font-bold text-amber-300"></div>
@@ -636,12 +637,10 @@
             <button onclick="toggleMoreDrawer(event)" class="text-slate-300 hover:text-white p-1"><i class="fa-solid fa-xmark text-sm"></i></button>
         </div>
         <div class="grid grid-cols-3 gap-2 text-center text-[10px]">
-            <button onclick="switchTab('laws-tab'); toggleMoreDrawer();" class="p-2.5 rounded-2xl bg-white/5 hover:bg-white/10 flex flex-col items-center space-y-1"><i class="fa-solid fa-gavel text-sm"></i><span>قوانین</span></button>
-            <button onclick="switchTab('cards-tab'); toggleMoreDrawer();" class="p-2.5 rounded-2xl bg-white/5 hover:bg-white/10 flex flex-col items-center space-y-1"><i class="fa-solid fa-id-card text-sm"></i><span>کارت‌ها</span></button>
-            <button onclick="switchTab('news-tab'); toggleMoreDrawer();" class="p-2.5 rounded-2xl bg-white/5 hover:bg-white/10 flex flex-col items-center space-y-1"><i class="fa-solid fa-bullhorn text-sm"></i><span>اخبار</span></button>
-            <button onclick="switchTab('chatbot-tab'); toggleMoreDrawer();" class="p-2.5 rounded-2xl bg-white/5 hover:bg-white/10 flex flex-col items-center space-y-1"><i class="fa-solid fa-robot text-sm"></i><span>چت‌بات</span></button>
-            <button onclick="switchTab('notes-tab'); toggleMoreDrawer();" class="p-2.5 rounded-2xl bg-white/5 hover:bg-white/10 flex flex-col items-center space-y-1"><i class="fa-solid fa-note-sticky text-sm"></i><span>یادداشت‌ها</span></button>
+            <button onclick="switchTab('chatbot-tab'); toggleMoreDrawer();" class="p-2.5 rounded-2xl bg-white/5 hover:bg-white/10 flex flex-col items-center space-y-1"><i class="fa-solid fa-robot text-sm"></i><span>چت‌بات AI</span></button>
             <button onclick="switchTab('tools-tab'); toggleMoreDrawer();" class="p-2.5 rounded-2xl bg-white/5 hover:bg-white/10 flex flex-col items-center space-y-1"><i class="fa-solid fa-toolbox text-sm"></i><span>ابزارها</span></button>
+            <button onclick="switchTab('notes-tab'); toggleMoreDrawer();" class="p-2.5 rounded-2xl bg-white/5 hover:bg-white/10 flex flex-col items-center space-y-1"><i class="fa-solid fa-note-sticky text-sm"></i><span>یادداشت‌ها</span></button>
+            <button onclick="switchTab('news-tab'); toggleMoreDrawer();" class="p-2.5 rounded-2xl bg-white/5 hover:bg-white/10 flex flex-col items-center space-y-1"><i class="fa-solid fa-bullhorn text-sm"></i><span>اخبار</span></button>
             <button onclick="switchTab('public-faq-tab'); toggleMoreDrawer();" class="p-2.5 rounded-2xl bg-white/5 hover:bg-white/10 flex flex-col items-center space-y-1"><i class="fa-solid fa-clipboard-question text-sm"></i><span>بانک سوال</span></button>
             <button onclick="switchTab('instagram-tab'); toggleMoreDrawer();" class="p-2.5 rounded-2xl bg-white/5 hover:bg-white/10 flex flex-col items-center space-y-1"><i class="fa-brands fa-instagram text-sm"></i><span>اینستاگرام</span></button>
             <button onclick="switchTab('podcasts-tab'); toggleMoreDrawer();" class="p-2.5 rounded-2xl bg-white/5 hover:bg-white/10 flex flex-col items-center space-y-1"><i class="fa-solid fa-podcast text-sm"></i><span>پادکست</span></button>
@@ -652,13 +651,13 @@
         </div>
     </div>
 
-    <!-- دکمه شناور بالا -->
+    <!-- دکمه بازگشت به بالا -->
     <button id="backToTopBtn" onclick="window.scrollTo({top: 0, behavior: 'smooth'});" class="hidden w-11 h-11 rounded-full ultra-glass text-amber-300 shadow-2xl flex items-center justify-center transition hover:scale-110">
         <i class="fa-solid fa-arrow-up text-xs"></i>
     </button>
 
-    <!-- مودال رسانه با کنترل مستقیم Display -->
-    <div id="mediaModal" style="display: none;" class="fixed inset-0 bg-black/90 z-[110] items-center justify-center p-4">
+    <!-- مودال رسانه با کنترل مطمئن کلاس‌ها -->
+    <div id="mediaModal" class="fixed inset-0 bg-black/90 z-[110] hidden flex items-center justify-center p-4">
         <div id="mediaModalBox" class="ultra-glass rounded-3xl max-w-lg w-full p-4 relative shadow-2xl space-y-3 text-center">
             <button onclick="closeMediaModal()" class="absolute top-3 left-3 text-slate-300 p-2 z-10 hover:text-white"><i class="fa-solid fa-xmark text-base"></i></button>
             <h3 id="mediaModalTitle" class="font-bold text-xs text-amber-300 pt-1"></h3>
@@ -671,7 +670,7 @@
         </div>
     </div>
 
-    <!-- ناوبری پایین با حداکثر کنتراست -->
+    <!-- ناوبری پایین ۶ گزینه‌ای با حداکثر کنتراست -->
     <nav id="mainNavContainer" class="fixed bottom-3 left-3 right-3 floating-nav rounded-3xl max-w-md mx-auto py-2.5 px-3 flex space-x-1.5 space-x-reverse overflow-x-auto hide-scrollbar z-50 items-center justify-around whitespace-nowrap">
         <button onclick="switchTab('dictionary-tab', this); triggerHaptic('light');" class="nav-btn active-tab flex flex-col items-center px-2 py-1 relative">
             <i class="fa-solid fa-book text-base mb-1"></i>
@@ -681,13 +680,17 @@
             <i class="fa-solid fa-scale-balanced text-base mb-1"></i>
             <span class="text-[10px] font-bold">سامانه‌ها</span>
         </button>
+        <button onclick="switchTab('laws-tab', this); triggerHaptic('light');" class="nav-btn flex flex-col items-center px-2 py-1 relative">
+            <i class="fa-solid fa-gavel text-base mb-1"></i>
+            <span class="text-[10px] font-bold">قوانین</span>
+        </button>
+        <button onclick="switchTab('cards-tab', this); triggerHaptic('light');" class="nav-btn flex flex-col items-center px-2 py-1 relative">
+            <i class="fa-solid fa-id-card text-base mb-1"></i>
+            <span class="text-[10px] font-bold">کارت‌ها</span>
+        </button>
         <button onclick="switchTab('lawyer-tab', this); triggerHaptic('light'); loadUserFaqs();" class="nav-btn flex flex-col items-center px-2 py-1 relative">
             <i class="fa-solid fa-user-tie text-base mb-1"></i>
             <span class="text-[10px] font-bold">مشاور</span>
-        </button>
-        <button onclick="switchTab('chatbot-tab', this); triggerHaptic('light');" class="nav-btn flex flex-col items-center px-2 py-1 relative">
-            <i class="fa-solid fa-robot text-base mb-1"></i>
-            <span class="text-[10px] font-bold">دستیار AI</span>
         </button>
         <button onclick="toggleMoreDrawer(event);" class="nav-btn flex flex-col items-center px-2 py-1 relative">
             <i class="fa-solid fa-bars-staggered text-base mb-1"></i>
@@ -710,7 +713,7 @@
     <script>
         const API_URL = 'https://script.google.com/macros/s/AKfycbyrMOSKpL5rwv5C9okpDQvbKE07-1JFP2ZE5xt7Xt4Y9sSvIUwbXZWU6ssTbBgQRgSZ/exec'; 
 
-        // همگام‌سازی بدون خطای نسخه 6.0 تلگرام
+        // تلگرام وب‌اپ با پشتیبانی ایمن از نسخه ۶.۰
         const tg = window.Telegram?.WebApp;
         if (tg) {
             try {
@@ -732,7 +735,6 @@
         function updateMetaThemeColor(color) {
             const metaTheme = document.querySelector('meta[name="theme-color"]');
             if (metaTheme) metaTheme.setAttribute('content', color);
-            // محافظت قطعی از نسخه 6.0 تلگرام
             if (tg && typeof tg.isVersionAtLeast === 'function' && tg.isVersionAtLeast('6.1') && typeof tg.setHeaderColor === 'function') {
                 try { tg.setHeaderColor(color); } catch(e) {}
             }
@@ -801,7 +803,7 @@
         // ==========================================
         // سیستم پخش صوتی پایدار (Text-to-Speech)
         // ==========================================
-        window.activeUtterance = null;
+        window._activeUtterance = null;
         function speakText(text) {
             if (!('speechSynthesis' in window)) {
                 showToast('مرورگر شما از پخش صوتی پشتیبانی نمی‌کند', 'error');
@@ -815,12 +817,12 @@
                 if (!clean) return;
 
                 const utterance = new SpeechSynthesisUtterance(clean);
-                window.activeUtterance = utterance; // جلوگیری از باگ Garbage Collection در کروم
+                window._activeUtterance = utterance;
 
                 const voices = window.speechSynthesis.getVoices();
                 let voice = voices.find(v => v.lang.startsWith('fa') || v.lang.includes('persian') || v.lang.includes('farsi'));
                 if (!voice) {
-                    voice = voices.find(v => v.lang.startsWith('ar')); // فال‌بک تلفظ صحیح رسم‌الخط در گوشی‌های فاقد پکیج فارسی
+                    voice = voices.find(v => v.lang.startsWith('ar'));
                 }
 
                 if (voice) {
@@ -833,20 +835,15 @@
                 utterance.rate = 0.95;
                 utterance.pitch = 1.0;
 
-                utterance.onstart = () => {
-                    showToast('در حال پخش صوتی متن...');
-                };
-                utterance.onend = () => {
-                    window.activeUtterance = null;
-                };
+                utterance.onstart = () => showToast('در حال پخش صوتی متن...');
+                utterance.onend = () => { window._activeUtterance = null; };
                 utterance.onerror = () => {
-                    window.activeUtterance = null;
-                    showToast('پخش صوت متوقف شد', 'error');
+                    window._activeUtterance = null;
+                    showToast('خطا در پخش صوت دستگاه (پکیج صوتی یافت نشد)', 'error');
                 };
 
                 window.speechSynthesis.speak(utterance);
 
-                // حل باگ معلق ماندن صدا در کروم اندروید
                 setTimeout(() => {
                     if (window.speechSynthesis.paused) {
                         window.speechSynthesis.resume();
@@ -861,11 +858,11 @@
             if ('speechSynthesis' in window) {
                 try { window.speechSynthesis.cancel(); } catch(e) {}
             }
-            window.activeUtterance = null;
+            window._activeUtterance = null;
         }
 
         // ==========================================
-        // پایگاه داده لوکال و دیتابیس IndexedDB
+        // داده‌های اولیه و پایگاه داده لوکال
         // ==========================================
         const fallbackData = {
             legalSystems: [{ title: "سامانه ثنا", description: "سامانه ثبت‌نام الکترونیک قضایی", url: "https://sana.adliran.ir" }],
@@ -938,7 +935,7 @@
                 tx.objectStore(storeName).clear();
                 localStorage.removeItem('mizan_cache');
                 sessionStorage.removeItem('mizan_active_chat');
-                showToast('کش پاکسازی شد');
+                showToast('حافظه کش پاکسازی شد');
                 setTimeout(() => location.reload(), 500);
             } catch(e) {
                 showToast('خطا در پاکسازی کش', 'error');
@@ -953,7 +950,9 @@
             }
         }
 
-        // بارگذاری اولیه بدون معطلی و با کش محلی
+        // ==========================================
+        // بارگذاری اولیه بدون وقفه و همگام با گوگل شیت
+        // ==========================================
         async function initApp() {
             const cachedDbData = await getFromIndexedDB('app_data');
             if (cachedDbData) {
@@ -962,16 +961,12 @@
             renderAll();
             hideSplashScreen();
 
+            // ارتباط با گوگل‌شیت بدون تایم‌اوت مزاحم
             try {
-                const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), 3000);
-                const response = await fetch(API_URL + "?action=get_all&t=" + Date.now(), { 
-                    mode: 'cors',
-                    redirect: 'follow',
-                    signal: controller.signal 
+                const response = await fetch(API_URL + "?action=get_all&t=" + new Date().getTime(), { 
+                    mode: 'cors', 
+                    redirect: "follow" 
                 });
-                clearTimeout(timeoutId);
-
                 if (response.ok) {
                     const newData = await response.json();
                     if (newData && Object.keys(newData).length > 0) {
@@ -982,57 +977,39 @@
                     }
                 }
             } catch(err) {
-                console.log("استفاده از پایگاه داده لوکال و بدون معطلی.");
+                console.log("ارتباط با گوگل شیت برقرار نشد. استفاده از حافظه لوکال.");
             }
         }
 
-        // دکمه تازه‌سازی سریع با اطلاع‌رسانی دقیق به کاربر
         async function manualRefresh() {
             const icon = document.getElementById('refreshIcon');
             if (icon) icon.classList.add('fa-spin');
-            showToast('در حال ارتباط با سرور و به‌روزرسانی...');
+            showToast('در حال همگام‌سازی با گوگل شیت...');
 
-            let fetchedData = null;
             try {
-                const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), 4000);
-                const response = await fetch(API_URL + "?action=get_all&t=" + Date.now(), {
-                    mode: 'cors',
-                    redirect: 'follow',
-                    signal: controller.signal
+                const response = await fetch(API_URL + "?action=get_all&t=" + new Date().getTime(), { 
+                    mode: 'cors', 
+                    redirect: "follow" 
                 });
-                clearTimeout(timeoutId);
-
                 if (response.ok) {
-                    const data = await response.json();
-                    if (data && Object.keys(data).length > 0) {
-                        fetchedData = data;
+                    const newData = await response.json();
+                    if (newData && Object.keys(newData).length > 0) {
+                        appData = { ...fallbackData, ...newData };
+                        await saveToIndexedDB('app_data', appData);
+                        localStorage.setItem('mizan_cache', JSON.stringify(appData));
+                        renderAll();
+                        showToast('اطلاعات با موفقیت از گوگل شیت به‌روزرسانی شد', 'success');
+                    } else {
+                        showToast('اطلاعات جدیدی یافت نشد', 'error');
                     }
                 } else {
-                    throw new Error('HTTP ' + response.status);
+                    showToast(`خطای سرور (${response.status}). نمایش اطلاعات محلی`, 'error');
                 }
             } catch (err) {
-                console.warn("Server refresh warning:", err.message);
-            }
-
-            if (fetchedData) {
-                appData = { ...fallbackData, ...fetchedData };
-                await saveToIndexedDB('app_data', appData);
-                localStorage.setItem('mizan_cache', JSON.stringify(appData));
-                showToast('اطلاعات با موفقیت از سرور به‌روزرسانی شد', 'success');
-            } else {
-                const cached = await getFromIndexedDB('app_data');
-                if (cached) appData = { ...fallbackData, ...cached };
-                showToast('سرور در دسترس نبود؛ اطلاعات از حافظه دستگاه بارگذاری شد', 'error');
-            }
-
-            renderAll();
-            updateDateTime();
-            fetchTehranWeather();
-
-            setTimeout(() => {
+                showToast('خطا در ارتباط با سرور گوگل شیت', 'error');
+            } finally {
                 if (icon) icon.classList.remove('fa-spin');
-            }, 600);
+            }
         }
 
         // =========================================================================
@@ -1158,7 +1135,7 @@
         };
 
         // ==========================================
-        // رندرهای کامل بخش‌ها
+        // رندرهای برنامه
         // ==========================================
         function renderAll() {
             renderDictionary();
@@ -1422,11 +1399,11 @@
             const currentSize = localStorage.getItem('mizan_font_size') || '12px';
             document.getElementById('mediaModalContent').innerHTML = `<div class="p-4 leading-relaxed overflow-y-auto font-semibold" style="font-size: ${currentSize}">${card.text}</div>`;
             document.getElementById('mediaModalExternalBtn').classList.add('hidden');
-            document.getElementById('mediaModal').style.display = 'flex';
+            document.getElementById('mediaModal').classList.remove('hidden');
         }
 
         // ==========================================
-        // مودال چندرسانه‌ای ویدیو و تصویر
+        // مودال ویدیو و تصویر
         // ==========================================
         let scale = 1;
         function openMediaModal(idx, type) {
@@ -1454,7 +1431,7 @@
                 pipBtn.classList.add('hidden');
                 cinematicBtn.classList.add('hidden');
             }
-            modal.style.display = 'flex';
+            modal.classList.remove('hidden');
         }
 
         function toggleCinematicMode() {
@@ -1479,7 +1456,7 @@
 
         function closeMediaModal() {
             const modal = document.getElementById('mediaModal');
-            modal.style.display = 'none';
+            modal.classList.add('hidden');
             document.getElementById('mediaModalContent').innerHTML = '';
             document.getElementById('pipBtn').classList.add('hidden');
             document.getElementById('cinematicBtn').classList.add('hidden');
@@ -1488,7 +1465,7 @@
         }
 
         // ==========================================
-        // جستجو و هوش مصنوعی چت‌بات
+        // جستجو و هوش مصنوعی
         // ==========================================
         function handleUniversalSearch(query) {
             const box = document.getElementById('liveSuggestionsBox');
@@ -1606,23 +1583,22 @@
             let botResponse = "";
 
             try {
-                const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), 3500);
                 const res = await fetch(API_URL, {
                     method: 'POST',
                     mode: 'cors',
                     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                    body: JSON.stringify({ action: 'ai_search', prompt: prompt, history: chatConversationHistory.slice(-4) }),
-                    signal: controller.signal
+                    body: JSON.stringify({ action: 'ai_search', prompt: prompt, history: chatConversationHistory.slice(-4) })
                 });
-                clearTimeout(timeoutId);
                 if (res.ok) {
-                    const data = await res.json();
-                    botResponse = data.result || data.answer;
+                    const textResult = await res.text();
+                    let data = {};
+                    try { data = JSON.parse(textResult); } catch(err) { data = { result: textResult }; }
+                    if (data && (data.result || data.answer)) {
+                        botResponse = data.result || data.answer;
+                    }
                 }
             } catch(e) {}
 
-            // در صورت هرگونه خطا، قطعی اینترنت یا ۴۰۴ سرور، موتور هوش مصنوعی محلی فوراً پاسخ تحلیلی می‌دهد
             if (!botResponse || botResponse.includes('خطا') || botResponse.length < 10) {
                 botResponse = LegalNlpEngine.analyze(prompt);
             }
@@ -1644,7 +1620,7 @@
         }
 
         // ==========================================
-        // ناوبری و رویدادهای عمومی
+        // ناوبری و تغییر تب‌ها
         // ==========================================
         function switchTab(sectionId, btn) {
             document.querySelectorAll('.page-section').forEach(sec => sec.classList.add('hidden'));
@@ -1736,15 +1712,18 @@
         }
 
         async function fetchTehranWeather() {
+            const widget = document.getElementById('headerWeatherWidget');
             try {
                 const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=35.6892&longitude=51.3890&current_weather=true');
-                const data = await res.json();
-                if (data?.current_weather) {
-                    document.getElementById('headerWeatherWidget').innerText = `تهران ${Math.round(data.current_weather.temperature)}°C`;
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data?.current_weather && widget) {
+                        widget.innerText = `تهران ${Math.round(data.current_weather.temperature)}°C`;
+                        return;
+                    }
                 }
-            } catch(e) {
-                document.getElementById('headerWeatherWidget').innerText = `تهران ۲۴°C`;
-            }
+            } catch(e) {}
+            if (widget) widget.innerText = `تهران ۲۴°C`;
         }
 
         function copyToClipboard(text) { navigator.clipboard.writeText(text); }
@@ -2000,7 +1979,7 @@
             currentTourStep = 0;
             renderTourStep();
             const modal = document.getElementById('onboardingModal');
-            if (modal) modal.style.display = 'flex';
+            if (modal) modal.classList.remove('hidden');
         }
 
         function renderTourStep() {
@@ -2029,12 +2008,12 @@
         function skipOnboardingTour() {
             localStorage.setItem('sijt_tour_completed', 'true');
             const modal = document.getElementById('onboardingModal');
-            if (modal) modal.style.display = 'none';
+            if (modal) modal.classList.add('hidden');
             triggerHaptic('light');
         }
 
         // بررسی وضعیت آنلاین/آفلاین
-        window.addEventListener('online', () => showToast('ارتباط با سرور برقرار شد', 'success'));
+        window.addEventListener('online', () => showToast('ارتباط با اینترنت برقرار شد', 'success'));
         window.addEventListener('offline', () => showToast('شما آفلاین هستید. نمایش دیتای کش', 'error'));
 
         // نصب بومی PWA
@@ -2056,7 +2035,7 @@
                     deferredPrompt = null;
                 });
             } else {
-                showToast('برای نصب، از منوی مرورگر گزینه Add to Home Screen را بزنید');
+                showToast('از منوی مرورگر گزینه Add to Home Screen را بزنید');
             }
         }
 
