@@ -3,25 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SIJT - مینی‌اپ تخصصی حقوقی (پرو مکس کامل)</title>
-
-    <link rel="manifest" href="data:application/manifest+json;charset=utf-8,{
-        %22name%22:%20%22SIJT%22,
-        %22short_name%22:%20%22SIJT%22,
-        %22start_url%22:%20%22.%22,
-        %22display%22:%20%22standalone%22,
-        %22background_color%22:%20%22%23080c14%22,
-        %22theme_color%22:%20%22%23c51b24%22,
-        %22icons%22:[{%22src%22:%22https://raw.githubusercontent.com/ahmdsltanahmdy-sketch/sijt-v01/main/01.png%22,%22sizes%22:%22512x512%22,%22type%22:%22image/png%22}]
-    }">
+    <title>SIJT - مینی‌اپ تخصصی حقوقی (نسخه کامل)</title>
 
     <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/ahmdsltanahmdy-sketch/sijt-v01/main/01.png">
-    <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/ahmdsltanahmdy-sketch/sijt-v01/main/01.png">
     <meta name="theme-color" content="#c51b24">
 
     <!-- کتابخانه‌ها -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -31,10 +21,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        :root { --selected-font: Tahoma; --app-font-size: 12px; --line-height: 1.8; }
+        :root { --selected-font: Tahoma; --app-font-size: 12px; --line-height: 1.8; --player-color: #080c14; }
         body { font-family: var(--selected-font), Arial, sans-serif; font-size: var(--app-font-size); overflow-x: hidden; touch-action: pan-y; }
         
-        /* اعمال قطعی فاصله خطوط روی تمام متون */
         .page-section p, .page-section span:not(.fa-solid):not(.fa-brands):not(.fa-regular), .page-section div, .page-section h2, .page-section h3, .page-section h4 {
             line-height: var(--line-height) !important;
         }
@@ -42,7 +31,6 @@
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-        /* پس‌زمینه سایبرنتیک */
         .mesh-bg {
             background-color: #080c14;
             background-image: 
@@ -57,7 +45,6 @@
         body.oled-mode { background-color: #000000 !important; color: #f8fafc !important; background-image: none !important; }
         body.oled-mode .ultra-glass { background: rgba(8, 8, 8, 0.98) !important; border: 1px solid rgba(255, 255, 255, 0.15) !important; color: #ffffff !important; box-shadow: 0 0 20px rgba(197, 27, 36, 0.2) !important; }
 
-        /* حالت High Contrast */
         body.high-contrast { background-color: #000 !important; color: #ffff00 !important; background-image: none !important; }
         body.high-contrast .ultra-glass, body.high-contrast .settings-glass { background: #000 !important; border: 2px solid #ffff00 !important; color: #ffff00 !important; box-shadow: none !important; }
         body.high-contrast p, body.high-contrast span, body.high-contrast h2, body.high-contrast h3, body.high-contrast div { color: #ffff00 !important; }
@@ -66,7 +53,6 @@
         .noise-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.025'/%3E%3C/svg%3E"); pointer-events: none; z-index: 999; }
         .text-gradient { background: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
-        /* کارت‌ها با طراحی نئونی و 3D Tilt */
         .ultra-glass { background: rgba(13, 19, 33, 0.92); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border: 1px solid rgba(245, 158, 11, 0.25); box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7), 0 0 15px rgba(197, 27, 36, 0.15); color: #ffffff; transition: transform 0.1s, border-color 0.3s, box-shadow 0.3s; transform-style: preserve-3d; }
         .ultra-glass:hover { border-color: rgba(245, 158, 11, 0.45); box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8), 0 0 25px rgba(197, 27, 36, 0.3); }
         .ultra-glass-content { transform: translateZ(20px); }
@@ -76,26 +62,25 @@
         .settings-glass { background: rgba(13, 19, 33, 0.98); backdrop-filter: blur(30px); border: 1px solid rgba(245, 158, 11, 0.3); color: #ffffff; box-shadow: 0 0 35px rgba(0, 0, 0, 0.9), 0 0 20px rgba(197, 27, 36, 0.3); }
         .light .settings-glass, body:not(.dark):not(.oled-mode) .settings-glass { background: rgba(255, 255, 255, 0.98); border: 1px solid rgba(0, 0, 0, 0.15); color: #0f172a; }
 
-        /* نوار ناوبری پایین */
         .floating-nav { background: rgba(10, 15, 28, 0.96) !important; backdrop-filter: blur(30px) saturate(200%); -webkit-backdrop-filter: blur(30px) saturate(200%); border: 1px solid rgba(245, 158, 11, 0.35); box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8), 0 0 25px rgba(197, 27, 36, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.12); transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), padding 0.3s ease, opacity 0.3s ease; }
         .light .floating-nav, body:not(.dark):not(.oled-mode) .floating-nav { background: #ffffff !important; border: 1px solid #cbd5e1 !important; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15) !important; }
         .nav-scrolled-compact { transform: translateY(8px) scale(0.96) !important; padding-top: 3px !important; padding-bottom: 3px !important; opacity: 0.92; }
-        .nav-btn { color: #cbd5e1; transition: all 0.25s ease; }
+        .nav-btn { color: #cbd5e1; transition: all 0.25s ease; cursor: pointer; }
         .light .nav-btn, body:not(.dark):not(.oled-mode) .nav-btn { color: #64748b !important; }
         .nav-btn.active-tab { color: #ef4444 !important; transform: scale(1.08) translateY(-2px); filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.8)); }
         .nav-btn.active-tab span { color: #ef4444 !important; font-weight: 900 !important; }
 
-        /* کشوها و مودال‌ها */
         #moreDrawer, #navEditorDrawer, #lawBottomSheet { display: none; position: fixed; bottom: 0; left: 0; right: 0; z-index: 100; max-width: 28rem; margin: 0 auto; border-top-left-radius: 1.5rem; border-top-right-radius: 1.5rem; padding: 1rem; box-shadow: 0 -10px 40px rgba(0,0,0,0.8), 0 0 25px rgba(197, 27, 36, 0.3); animation: slideUpDrawer 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         @keyframes slideUpDrawer { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        .glass-tab { background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(16px); border: 1px solid rgba(245, 158, 11, 0.25); color: #ffffff !important; }
+        
+        .glass-tab { background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(16px); border: 1px solid rgba(245, 158, 11, 0.25); color: #ffffff !important; cursor: pointer; }
         .header-bg { background-image: url('https://raw.githubusercontent.com/ahmdsltanahmdy-sketch/mizan-miniapp-new/main/photo_2026-09-15_10-06-27.jpg'); background-size: cover; background-position: center; }
-        #appHeader { transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease, background-color 0.4s ease, backdrop-filter 0.4s ease; will-change: transform, opacity; }
+        #appHeader { transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease, background-color 0.4s ease, backdrop-filter 0.4s ease; will-change: transform, opacity; z-index: 50; }
         #appHeader.scrolled-header { background-color: rgba(8, 12, 20, 0.95) !important; backdrop-filter: blur(25px) saturate(180%); border-bottom: 1px solid rgba(245, 158, 11, 0.3); box-shadow: 0 10px 25px rgba(0,0,0,0.7); }
         .header-hidden { transform: translateY(-100%) !important; opacity: 0 !important; pointer-events: none !important; }
-        #backToTopBtn { position: fixed; bottom: 84px; right: 16px; z-index: 45; }
+        
+        #backToTopBtn { position: fixed; bottom: 84px; right: 16px; z-index: 45; cursor: pointer; }
 
-        /* Media & PiP - با قابلیت Pan & Zoom بومی جاوااسکریپت */
         .zoomable-container { overflow: hidden; position: relative; width: 100%; height: 70vh; display: flex; align-items: center; justify-content: center; background: #000; border-radius: 1rem; touch-action: none; }
         .zoomable-img { max-width: 100%; max-height: 100%; object-fit: contain; cursor: zoom-in; transition: transform 0.2s ease-out; transform-origin: center center; }
         .pro-video-wrapper { position: relative; width: 100%; aspect-ratio: 16/9; background: radial-gradient(circle at center, #1e293b 0%, #020617 100%); border-radius: 1.25rem; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.85), 0 0 25px rgba(197, 27, 36, 0.4); border: 1px solid rgba(245, 158, 11, 0.3); }
@@ -105,7 +90,6 @@
         #floatingPipContainer video { width: 100%; height: 100%; object-fit: cover; }
         .pip-close-btn { position: absolute; top: 4px; right: 4px; background: rgba(0,0,0,0.6); color: #fff; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; z-index: 10; font-size: 10px; cursor: pointer; }
 
-        /* Floating Audio Player */
         #floatingAudioPlayer { position: fixed; bottom: 70px; left: 12px; right: 12px; max-width: 400px; margin: 0 auto; background: var(--player-color, rgba(13, 19, 33, 0.95)); backdrop-filter: blur(20px); border: 1px solid rgba(245, 158, 11, 0.4); border-radius: 20px; padding: 10px 15px; display: none; align-items: center; justify-content: space-between; box-shadow: 0 -10px 30px rgba(0,0,0,0.7), 0 0 20px rgba(197,27,36,0.3); z-index: 49; transform: translateY(150%); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), background 0.5s ease; }
         #floatingAudioPlayer.show { display: flex; transform: translateY(0); }
         .cinematic-mode-box { max-width: 98vw !important; width: 98vw !important; background: rgba(5, 5, 5, 0.99) !important; border: 1px solid rgba(245, 158, 11, 0.4) !important; box-shadow: 0 0 60px rgba(0, 0, 0, 0.95), 0 0 30px rgba(197, 27, 36, 0.5) !important; }
@@ -143,11 +127,12 @@
         .tree-branch { display: flex; flex-direction: column; align-items: center; position: relative; width:100%; }
         .tree-branch::before { content: ''; position: absolute; top: -10px; left: 50%; width: 2px; height: 10px; background: #f59e0b; }
 
-        /* لودینگ هوش مصنوعی */
         .typing-dot { width: 6px; height: 6px; background-color: #f59e0b; border-radius: 50%; margin: 0 2px; animation: typingAnimation 1.4s infinite ease-in-out both; }
         .typing-dot:nth-child(1) { animation-delay: -0.32s; }
         .typing-dot:nth-child(2) { animation-delay: -0.16s; }
         @keyframes typingAnimation { 0%, 80%, 100% { transform: scale(0); opacity: 0.3; } 40% { transform: scale(1); opacity: 1; } }
+        
+        .search-highlight { border-color: #f59e0b !important; box-shadow: 0 0 25px rgba(245, 158, 11, 0.6) !important; transition: all 0.5s ease; }
     </style>
 </head>
 <body id="bodyRoot" class="mesh-bg text-slate-900 dark:text-slate-100 min-h-screen flex flex-col relative select-none">
@@ -232,7 +217,6 @@
 
         <!-- منوی تنظیمات -->
         <div id="settingsDropdown" class="hidden absolute left-4 top-12 z-50 max-w-xs w-80 p-4 settings-glass rounded-3xl space-y-3 text-xs shadow-2xl max-h-[80vh] overflow-y-auto">
-            
             <div id="installPwaBox" class="hidden flex items-center justify-between pb-2 border-b border-white/20">
                 <span class="font-bold text-amber-300">نصب اپلیکیشن:</span>
                 <button onclick="installPWA();" class="bg-amber-100 text-amber-700 dark:bg-amber-500/20 dark:text-amber-300 px-3 py-1 rounded-xl font-bold"><i class="fa-solid fa-download ml-1"></i> نصب</button>
@@ -327,8 +311,8 @@
                 <span id="dictCounter" class="text-[9px] text-amber-500 dark:text-amber-300 font-bold"></span>
             </div>
             <div class="flex space-x-2 space-x-reverse overflow-x-auto hide-scrollbar pb-1 text-[11px]">
-                <button onclick="filterDictCategory('all', this); triggerHaptic('light');" class="dict-chip px-3 py-1.5 rounded-full bg-red-600 text-white font-bold flex-shrink-0 shadow shadow-red-600/30">همه واژگان</button>
-                <button onclick="filterDictCategory('bookmarks', this); triggerHaptic('light');" class="dict-chip px-3 py-1.5 rounded-full bg-slate-200 text-slate-700 dark:bg-slate-800 dark:text-slate-200 border border-slate-300 dark:border-white/15 flex-shrink-0"><i class="fa-solid fa-bookmark ml-1"></i>نشانک‌های من</button>
+                <button onclick="filterDictCategory('all', this); triggerHaptic('light');" class="dict-chip px-3 py-1.5 rounded-full bg-red-600 text-white font-bold flex-shrink-0 shadow shadow-red-600/30 cursor-pointer">همه واژگان</button>
+                <button onclick="filterDictCategory('bookmarks', this); triggerHaptic('light');" class="dict-chip px-3 py-1.5 rounded-full bg-slate-200 text-slate-700 dark:bg-slate-800 dark:text-slate-200 border border-slate-300 dark:border-white/15 flex-shrink-0 cursor-pointer"><i class="fa-solid fa-bookmark ml-1"></i>نشانک‌های من</button>
             </div>
             <div id="dictionaryContainer" class="space-y-2 mt-2"><div class="custom-skeleton h-20 w-full"></div></div>
             <div id="dictLoadingObserver" class="h-4 w-full"></div>
@@ -360,6 +344,7 @@
             <h2 class="font-black text-xs text-gradient"><i class="fa-solid fa-id-card ml-1 text-red-500"></i> کارت‌های حقوقی</h2>
             <div class="flex space-x-3 space-x-reverse overflow-x-auto hide-scrollbar py-2" id="storyHighlightsBar"></div>
             <div id="shareCardsContainer" class="space-y-3 mt-2"><div class="custom-skeleton h-32 w-full"></div></div>
+            <div id="cardsLoadingObserver" class="h-4 w-full"></div>
         </section>
 
         <!-- تب ۵: مشاور آنلاین -->
@@ -374,14 +359,13 @@
                     </select>
                     <div class="relative mb-2">
                         <textarea id="questionInput" placeholder="سوال حقوقی خود را اینجا مطرح فرمایید..." class="w-full bg-white dark:bg-slate-900 text-slate-800 dark:text-amber-200 rounded-2xl p-3 pl-8 text-xs h-24 resize-none border border-slate-300 dark:border-white/20 shadow-inner"></textarea>
-                        <button onclick="startVoiceDictation('questionInput')" class="absolute left-2.5 top-3 text-amber-500 hover:text-amber-600 dark:text-amber-400 dark:hover:text-white text-xs"><i class="fa-solid fa-microphone"></i></button>
+                        <button onclick="startVoiceDictation('questionInput')" class="absolute left-2.5 top-3 text-amber-500 hover:text-amber-600 dark:text-amber-400 dark:hover:text-white text-xs cursor-pointer"><i class="fa-solid fa-microphone"></i></button>
                     </div>
-                    <button id="submitQuestionBtn" onclick="submitQuestion();" class="w-full bg-gradient-to-r from-red-600 to-red-700 py-2.5 text-xs font-bold text-white rounded-xl shadow-md">ارسال سوال</button>
+                    <button id="submitQuestionBtn" onclick="submitQuestion();" class="w-full bg-gradient-to-r from-red-600 to-red-700 py-2.5 text-xs font-bold text-white rounded-xl shadow-md cursor-pointer">ارسال سوال</button>
                     <div id="userFaqsContainer" class="space-y-3 max-h-60 overflow-y-auto mt-3"></div>
                 </div>
             </div>
         </section>
-
         <!-- تب ۶: چت‌بات هوش مصنوعی پیشرفته -->
         <section id="chatbot-tab" class="page-section hidden space-y-3">
             <div class="ultra-glass p-4 rounded-3xl space-y-3 shadow-xl flex flex-col h-[70vh]">
@@ -389,15 +373,15 @@
                     <h2 class="font-extrabold text-xs text-gradient flex items-center">
                         <i class="fa-solid fa-robot ml-1.5 text-red-500"></i> دستیار هوشمند حقوقی
                     </h2>
-                    <button onclick="clearChatHistory()" class="text-[10px] text-slate-500 hover:text-red-500 dark:text-slate-400 dark:hover:text-red-400 flex items-center space-x-1 space-x-reverse transition">
+                    <button onclick="clearChatHistory()" class="text-[10px] text-slate-500 hover:text-red-500 dark:text-slate-400 dark:hover:text-red-400 flex items-center space-x-1 space-x-reverse transition cursor-pointer">
                         <i class="fa-solid fa-trash-can"></i><span>پاکسازی</span>
                     </button>
                 </div>
 
                 <div class="flex space-x-1.5 space-x-reverse overflow-x-auto hide-scrollbar pb-1 text-[10px]">
-                    <button onclick="sendQuickChat('تفاوت چک صیادی با قانون سال ۱۳۹۶ چیست؟')" class="flex-shrink-0 px-2.5 py-1 rounded-lg bg-slate-200 dark:bg-white/10 hover:bg-slate-300 dark:hover:bg-white/20 text-slate-700 dark:text-slate-200">مقایسه قانون چک</button>
-                    <button onclick="sendQuickChat('مراحل اجرای مستقیم مهریه چگونه است؟')" class="flex-shrink-0 px-2.5 py-1 rounded-lg bg-slate-200 dark:bg-white/10 hover:bg-slate-300 dark:hover:bg-white/20 text-slate-700 dark:text-slate-200">اجرای مهریه</button>
-                    <button onclick="sendQuickChat('هزینه دادرسی چقدر است؟')" class="flex-shrink-0 px-2.5 py-1 rounded-lg bg-slate-200 dark:bg-white/10 hover:bg-slate-300 dark:hover:bg-white/20 text-slate-700 dark:text-slate-200">محاسبه هزینه</button>
+                    <button onclick="sendQuickChat('تفاوت چک صیادی با قانون سال ۱۳۹۶ چیست؟')" class="flex-shrink-0 px-2.5 py-1 rounded-lg bg-slate-200 dark:bg-white/10 hover:bg-slate-300 dark:hover:bg-white/20 text-slate-700 dark:text-slate-200 cursor-pointer">مقایسه قانون چک</button>
+                    <button onclick="sendQuickChat('مراحل اجرای مستقیم مهریه چگونه است؟')" class="flex-shrink-0 px-2.5 py-1 rounded-lg bg-slate-200 dark:bg-white/10 hover:bg-slate-300 dark:hover:bg-white/20 text-slate-700 dark:text-slate-200 cursor-pointer">اجرای مهریه</button>
+                    <button onclick="sendQuickChat('هزینه دادرسی چقدر است؟')" class="flex-shrink-0 px-2.5 py-1 rounded-lg bg-slate-200 dark:bg-white/10 hover:bg-slate-300 dark:hover:bg-white/20 text-slate-700 dark:text-slate-200 cursor-pointer">محاسبه هزینه</button>
                 </div>
 
                 <div id="chatMessagesContainer" class="space-y-3 flex-grow overflow-y-auto p-3 bg-slate-100 dark:bg-slate-900/90 rounded-2xl text-[11px] text-slate-800 dark:text-slate-100 shadow-inner"></div>
@@ -409,11 +393,12 @@
 
                 <div class="flex space-x-2 space-x-reverse relative pt-2 border-t border-slate-200 dark:border-white/10">
                     <textarea id="aiPromptInput" placeholder="مسئله یا ابهام حقوقی (با ذکر زمان/سال)..." class="flex-grow bg-white dark:bg-slate-900 text-slate-800 dark:text-amber-200 rounded-xl p-2.5 pl-8 text-xs h-14 resize-none border border-slate-300 dark:border-white/20 focus:outline-none"></textarea>
-                    <button onclick="startVoiceDictation('aiPromptInput')" class="absolute left-14 top-5 text-amber-500 hover:text-amber-600 dark:text-amber-400 dark:hover:text-white text-xs p-1"><i class="fa-solid fa-microphone"></i></button>
-                    <button id="aiSendBtn" onclick="runAiAssistant();" class="bg-red-600 text-white px-4 rounded-xl text-xs font-bold shadow hover:bg-red-700 transition"><i class="fa-solid fa-paper-plane"></i></button>
+                    <button onclick="startVoiceDictation('aiPromptInput')" class="absolute left-14 top-5 text-amber-500 hover:text-amber-600 dark:text-amber-400 dark:hover:text-white text-xs p-1 cursor-pointer"><i class="fa-solid fa-microphone"></i></button>
+                    <button id="aiSendBtn" onclick="runAiAssistant();" class="bg-red-600 text-white px-4 rounded-xl text-xs font-bold shadow hover:bg-red-700 transition cursor-pointer"><i class="fa-solid fa-paper-plane"></i></button>
                 </div>
             </div>
         </section>
+
         <!-- تب ۷: ابزارها -->
         <section id="tools-tab" class="page-section hidden space-y-4">
             <h2 class="font-black text-xs mb-2 text-gradient"><i class="fa-solid fa-toolbox ml-1 text-red-500"></i> ابزارهای پیشرفته حقوقی</h2>
@@ -422,8 +407,8 @@
                 <div class="ultra-glass-content">
                     <h3 class="font-bold text-xs text-amber-600 dark:text-amber-300"><i class="fa-solid fa-scale-unbalanced ml-1"></i> محاسبه‌گر حق‌الوکاله و تمبر مالیاتی</h3>
                     <input type="number" id="lawyerClaimAmount" placeholder="مبلغ خواسته (ریال)..." class="w-full bg-white dark:bg-slate-900 text-slate-800 dark:text-amber-200 rounded-xl px-3 py-2 text-xs border border-slate-300 dark:border-white/20 mb-2">
-                    <button onclick="calculateLawyerFee()" class="w-full bg-red-600 text-white py-2 rounded-xl text-xs font-bold shadow">محاسبه تعرفه و مالیات</button>
-                    <div id="lawyerFeeResult" class="text-[11px] font-bold text-amber-700 dark:text-amber-300 mt-2 space-y-1 leading-loose"></div>
+                    <button onclick="calculateLawyerFee()" class="w-full bg-red-600 text-white py-2 rounded-xl text-xs font-bold shadow cursor-pointer">محاسبه تعرفه و مالیات</button>
+                    <div id="lawyerFeeResult" class="text-[11px] font-bold text-amber-700 dark:text-amber-300 mt-2 space-y-1"></div>
                 </div>
             </div>
 
@@ -436,7 +421,7 @@
                         <option value="husband_2sons">شوهر + ۲ پسر</option>
                         <option value="only_parents">فقط پدر و مادر</option>
                     </select>
-                    <button onclick="calculateInheritanceVisual()" class="w-full bg-indigo-600 text-white py-2 rounded-xl text-xs font-bold shadow">رسم نمودار تقسیم ترکه</button>
+                    <button onclick="calculateInheritanceVisual()" class="w-full bg-indigo-600 text-white py-2 rounded-xl text-xs font-bold shadow cursor-pointer">رسم نمودار تقسیم ترکه</button>
                     <div id="inheritanceTreeResult" class="tree-container hidden"></div>
                 </div>
             </div>
@@ -444,7 +429,7 @@
             <div class="ultra-glass p-4 rounded-2xl space-y-3 shadow-lg">
                 <h3 class="font-bold text-xs text-amber-600 dark:text-amber-300"><i class="fa-solid fa-calculator ml-1"></i> محاسبه‌گر هزینه‌های دادرسی</h3>
                 <input type="number" id="courtFeeInput" placeholder="مبلغ خواسته به ریال..." class="w-full bg-white dark:bg-slate-900 text-slate-800 dark:text-amber-200 rounded-xl px-3 py-2 text-xs border border-slate-300 dark:border-white/20">
-                <button onclick="calculateCourtFee()" class="w-full bg-red-600 text-white py-2 rounded-xl text-xs font-bold shadow">محاسبه هزینه دادرسی</button>
+                <button onclick="calculateCourtFee()" class="w-full bg-red-600 text-white py-2 rounded-xl text-xs font-bold shadow cursor-pointer">محاسبه هزینه دادرسی</button>
                 <div id="feeResult" class="text-[11px] font-bold text-amber-700 dark:text-amber-300 mt-2"></div>
             </div>
 
@@ -455,7 +440,7 @@
                     <input type="number" id="marriageYear" placeholder="سال عقد (مثلا 1395)..." class="bg-white dark:bg-slate-900 text-slate-800 dark:text-amber-200 rounded-xl px-3 py-2 text-xs border border-slate-300 dark:border-white/20">
                 </div>
                 <input type="number" id="currentCoinPrice" placeholder="قیمت روز هر سکه (ریال)..." class="w-full bg-white dark:bg-slate-900 text-slate-800 dark:text-amber-200 rounded-xl px-3 py-2 text-xs border border-slate-300 dark:border-white/20 mt-2">
-                <button onclick="calculateBankCentralMahariyeh()" class="w-full bg-red-600 text-white py-2 rounded-xl text-xs font-bold shadow mt-2">محاسبه ارزش روز مهریه</button>
+                <button onclick="calculateBankCentralMahariyeh()" class="w-full bg-red-600 text-white py-2 rounded-xl text-xs font-bold shadow mt-2 cursor-pointer">محاسبه ارزش روز مهریه</button>
                 <div id="mahariyehResult" class="text-[11px] font-bold text-amber-700 dark:text-amber-300 mt-2"></div>
             </div>
 
@@ -465,7 +450,7 @@
                     <input type="number" id="principalAmount" placeholder="اصل طلب (ریال)..." class="bg-white dark:bg-slate-900 text-slate-800 dark:text-amber-200 rounded-xl px-3 py-2 text-xs border border-slate-300 dark:border-white/20">
                     <input type="number" id="delayYears" placeholder="تعداد سال تأخیر..." class="bg-white dark:bg-slate-900 text-slate-800 dark:text-amber-200 rounded-xl px-3 py-2 text-xs border border-slate-300 dark:border-white/20">
                 </div>
-                <button onclick="calculateDelayCompensation()" class="w-full bg-red-600 text-white py-2 rounded-xl text-xs font-bold shadow mt-2">محاسبه خسارت کاهش ارزش</button>
+                <button onclick="calculateDelayCompensation()" class="w-full bg-red-600 text-white py-2 rounded-xl text-xs font-bold shadow mt-2 cursor-pointer">محاسبه خسارت کاهش ارزش</button>
                 <div id="delayResult" class="text-[11px] font-bold text-amber-700 dark:text-amber-300 mt-2"></div>
             </div>
 
@@ -479,10 +464,10 @@
                 <input type="text" id="partySecond" placeholder="طرف دوم..." class="w-full bg-white dark:bg-slate-900 text-slate-800 dark:text-amber-200 rounded-xl px-3 py-2 text-xs border border-slate-300 dark:border-white/20 mt-2">
                 <input type="text" id="contractAmount" placeholder="مبلغ (ریال)..." class="w-full bg-white dark:bg-slate-900 text-slate-800 dark:text-amber-200 rounded-xl px-3 py-2 text-xs border border-slate-300 dark:border-white/20 mt-2">
                 <div class="flex space-x-2 space-x-reverse mt-2">
-                    <button onclick="generateSmartContract()" class="flex-grow bg-red-600 text-white py-2 rounded-xl text-xs font-bold shadow">تولید پیش‌نویس</button>
-                    <button onclick="exportContractPDF()" class="bg-amber-600 text-white px-3 py-2 rounded-xl text-xs font-bold shadow"><i class="fa-solid fa-print"></i></button>
+                    <button onclick="generateSmartContract()" class="flex-grow bg-red-600 text-white py-2 rounded-xl text-xs font-bold shadow cursor-pointer">تولید پیش‌نویس</button>
+                    <button onclick="exportContractPDF()" class="bg-amber-600 text-white px-3 py-2 rounded-xl text-xs font-bold shadow cursor-pointer"><i class="fa-solid fa-print"></i></button>
                 </div>
-                <div id="contractOutputBox" class="hidden bg-slate-100 dark:bg-slate-900 p-3 rounded-xl text-[10px] leading-relaxed text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-white/10 space-y-2 mt-2"></div>
+                <div id="contractOutputBox" class="hidden bg-slate-100 dark:bg-slate-900 p-3 rounded-xl text-[10px] text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-white/10 space-y-2 mt-2"></div>
             </div>
         </section>
 
@@ -493,8 +478,8 @@
                 <input type="text" id="caseTitleInput" placeholder="عنوان پرونده..." class="w-full bg-white dark:bg-slate-900 text-slate-800 dark:text-amber-200 rounded-xl px-3 py-2 text-xs border border-slate-300 dark:border-white/20">
                 <textarea id="caseNoteInput" placeholder="توضیحات..." class="w-full bg-white dark:bg-slate-900 text-slate-800 dark:text-amber-200 rounded-xl p-3 text-xs h-24 resize-none border border-slate-300 dark:border-white/20"></textarea>
                 <div class="flex space-x-2 space-x-reverse">
-                    <button onclick="savePersonalNote()" class="flex-grow bg-red-600 text-white py-2 rounded-xl text-xs font-bold shadow">ذخیره</button>
-                    <button onclick="exportNotesPDF()" class="bg-amber-600 text-white px-3 py-2 rounded-xl text-xs font-bold shadow"><i class="fa-solid fa-print"></i></button>
+                    <button onclick="savePersonalNote()" class="flex-grow bg-red-600 text-white py-2 rounded-xl text-xs font-bold shadow cursor-pointer">ذخیره</button>
+                    <button onclick="exportNotesPDF()" class="bg-amber-600 text-white px-3 py-2 rounded-xl text-xs font-bold shadow cursor-pointer"><i class="fa-solid fa-print"></i></button>
                 </div>
             </div>
             <div id="personalNotesContainer" class="space-y-2 mt-2"></div>
@@ -511,6 +496,7 @@
         <section id="public-faq-tab" class="page-section hidden space-y-3">
             <h2 class="font-black text-xs text-gradient"><i class="fa-solid fa-clipboard-question ml-1 text-red-500"></i> بانک سوالات عمومی</h2>
             <div id="publicFaqContainer" class="space-y-3"><div class="custom-skeleton h-24 w-full"></div></div>
+            <div id="faqLoadingObserver" class="h-4 w-full"></div>
         </section>
 
         <!-- تب ۱۱: اینستاگرام -->
@@ -523,12 +509,14 @@
         <section id="podcasts-tab" class="page-section hidden space-y-3">
             <h2 class="font-black text-xs text-gradient mb-2"><i class="fa-solid fa-podcast ml-1 text-red-500"></i> پادکست‌های حقوقی</h2>
             <div id="podcastsContainer" class="space-y-3"></div>
+            <div id="podcastsLoadingObserver" class="h-4 w-full"></div>
         </section>
 
         <!-- تب ۱۳: پرونده‌های ویژه -->
         <section id="files-tab" class="page-section hidden space-y-3">
             <h2 class="font-black text-xs text-gradient mb-2"><i class="fa-solid fa-folder-open ml-1 text-red-500"></i> پرونده‌های ویژه</h2>
             <div id="filesContainer" class="space-y-3"></div>
+            <div id="filesLoadingObserver" class="h-4 w-full"></div>
         </section>
         
         <!-- تب ۱۴: پخش زنده -->
@@ -557,11 +545,11 @@
 
     </main>
 
-    <!-- Drawers & Modals -->
+    <!-- کشوها و منوهای شناور -->
     <div id="moreDrawer" class="settings-glass rounded-t-3xl p-4 shadow-2xl space-y-3">
         <div class="flex justify-between items-center pb-2 border-b border-slate-300 dark:border-white/10">
             <span class="font-bold text-xs text-amber-600 dark:text-amber-300"><i class="fa-solid fa-layer-group ml-1"></i> سایر بخش‌ها</span>
-            <button onclick="toggleMoreDrawer()" class="text-slate-500 hover:text-slate-800 dark:text-slate-300 dark:hover:text-white p-1"><i class="fa-solid fa-xmark text-sm"></i></button>
+            <button onclick="toggleMoreDrawer()" class="text-slate-500 hover:text-slate-800 dark:text-slate-300 dark:hover:text-white p-1 cursor-pointer"><i class="fa-solid fa-xmark text-sm"></i></button>
         </div>
         <div class="grid grid-cols-3 gap-2 text-center text-[10px]" id="moreDrawerGrid"></div>
     </div>
@@ -569,35 +557,35 @@
     <div id="navEditorDrawer" class="settings-glass rounded-t-3xl p-4 shadow-2xl space-y-3">
         <div class="flex justify-between items-center pb-2 border-b border-slate-300 dark:border-white/10">
             <span class="font-bold text-xs text-amber-600 dark:text-amber-300">انتخاب ۵ تب اصلی</span>
-            <button onclick="closeNavEditor()" class="text-slate-500 hover:text-slate-800 dark:text-slate-300 dark:hover:text-white p-1"><i class="fa-solid fa-xmark text-sm"></i></button>
+            <button onclick="closeNavEditor()" class="text-slate-500 hover:text-slate-800 dark:text-slate-300 dark:hover:text-white p-1 cursor-pointer"><i class="fa-solid fa-xmark text-sm"></i></button>
         </div>
         <p class="text-[9px] text-slate-500 dark:text-slate-300">حداکثر ۵ مورد را برای نوار پایین انتخاب کنید:</p>
         <div id="navEditorList" class="grid grid-cols-2 gap-2 text-[10px]"></div>
-        <button onclick="saveNavConfig()" class="w-full bg-amber-600 text-white py-2 rounded-xl mt-2 font-bold shadow">ذخیره تنظیمات</button>
+        <button onclick="saveNavConfig()" class="w-full bg-amber-600 text-white py-2 rounded-xl mt-2 font-bold shadow cursor-pointer">ذخیره تنظیمات</button>
     </div>
 
     <div id="lawBottomSheet" class="settings-glass rounded-t-3xl p-5 shadow-2xl space-y-3">
         <div class="flex justify-between items-center pb-2 border-b border-amber-500/30">
             <span id="lawBsTitle" class="font-black text-xs text-red-500">عنوان</span>
-            <button onclick="closeLawBottomSheet()" class="text-slate-500 hover:text-slate-800 dark:text-slate-300 dark:hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            <button onclick="closeLawBottomSheet()" class="text-slate-500 hover:text-slate-800 dark:text-slate-300 dark:hover:text-white cursor-pointer"><i class="fa-solid fa-xmark text-lg"></i></button>
         </div>
         <div id="lawBsContent" class="text-xs leading-loose font-semibold text-slate-700 dark:text-slate-200 max-h-60 overflow-y-auto pr-1">متن توضیحات...</div>
     </div>
 
-    <button id="backToTopBtn" onclick="window.scrollTo({top: 0, behavior: 'smooth'});" class="hidden w-11 h-11 rounded-full ultra-glass text-amber-600 dark:text-amber-300 shadow-2xl flex items-center justify-center transition hover:scale-110">
+    <button id="backToTopBtn" onclick="window.scrollTo({top: 0, behavior: 'smooth'});" class="hidden w-11 h-11 rounded-full ultra-glass text-amber-600 dark:text-amber-300 shadow-2xl flex items-center justify-center transition hover:scale-110 cursor-pointer">
         <i class="fa-solid fa-arrow-up text-xs"></i>
     </button>
 
     <!-- مودال رسانه -->
     <div id="mediaModal" class="fixed inset-0 bg-black/90 z-[110] hidden flex items-center justify-center p-4">
         <div id="mediaModalBox" class="ultra-glass rounded-3xl max-w-lg w-full p-4 relative shadow-2xl space-y-3 text-center">
-            <button onclick="closeMediaModal()" class="absolute top-3 left-3 text-slate-300 p-2 z-10 hover:text-white"><i class="fa-solid fa-xmark text-base"></i></button>
+            <button onclick="closeMediaModal()" class="absolute top-3 left-3 text-slate-300 p-2 z-10 hover:text-white cursor-pointer"><i class="fa-solid fa-xmark text-base"></i></button>
             <h3 id="mediaModalTitle" class="font-bold text-xs text-amber-300 pt-1"></h3>
             <div id="mediaModalContent" class="relative w-full rounded-2xl overflow-hidden bg-slate-950 flex items-center justify-center border border-white/10"></div>
             <div class="flex flex-wrap gap-2 justify-between">
-                <button id="cinematicBtn" onclick="toggleCinematicMode()" class="hidden flex-1 bg-indigo-600/30 text-indigo-200 border border-indigo-500/40 py-2 rounded-xl text-[10px] font-bold"><i class="fa-solid fa-film"></i> سینمایی</button>
-                <button id="pipBtn" onclick="openNativePiP()" class="hidden flex-1 bg-amber-500/20 text-amber-300 border border-amber-500/40 py-2 rounded-xl text-[10px] font-bold"><i class="fa-solid fa-clone"></i> PiP شناور</button>
-                <a id="mediaModalExternalBtn" href="#" target="_blank" rel="noopener noreferrer" class="hidden flex-1 bg-red-600/30 text-red-200 border border-red-500/40 py-2 rounded-xl text-[10px] font-bold flex items-center justify-center"><i class="fa-solid fa-external-link-alt ml-1"></i> لینک وب</a>
+                <button id="cinematicBtn" onclick="toggleCinematicMode()" class="hidden flex-1 bg-indigo-600/30 text-indigo-200 border border-indigo-500/40 py-2 rounded-xl text-[10px] font-bold cursor-pointer"><i class="fa-solid fa-film"></i> سینمایی</button>
+                <button id="pipBtn" onclick="openNativePiP()" class="hidden flex-1 bg-amber-500/20 text-amber-300 border border-amber-500/40 py-2 rounded-xl text-[10px] font-bold cursor-pointer"><i class="fa-solid fa-clone"></i> PiP شناور</button>
+                <a id="mediaModalExternalBtn" href="#" target="_blank" rel="noopener noreferrer" class="hidden flex-1 bg-red-600/30 text-red-200 border border-red-500/40 py-2 rounded-xl text-[10px] font-bold flex items-center justify-center cursor-pointer"><i class="fa-solid fa-external-link-alt ml-1"></i> لینک وب</a>
             </div>
         </div>
     </div>
@@ -606,19 +594,48 @@
 
     <div id="advancedSearchModal" class="fixed inset-0 bg-black/80 z-[120] hidden flex items-center justify-center p-4">
         <div class="ultra-glass rounded-3xl max-w-sm w-full p-4 relative shadow-2xl space-y-3 text-center">
-            <button onclick="closeAdvancedSearchModal();" class="absolute top-3 left-3 text-slate-300 p-2"><i class="fa-solid fa-xmark text-base"></i></button>
+            <button onclick="closeAdvancedSearchModal();" class="absolute top-3 left-3 text-slate-300 p-2 cursor-pointer"><i class="fa-solid fa-xmark text-base"></i></button>
             <h3 class="font-bold text-xs text-red-500 pt-1">جستجوی پیشرفته وب</h3>
-            <input type="text" id="googleSearchInput" placeholder="عبارت جستجو..." class="w-full bg-slate-900 text-amber-200 rounded-xl px-3 py-2.5 text-xs border border-white/20">
-            <button onclick="executeGoogleSearch()" class="w-full bg-red-600 text-white py-2.5 rounded-xl text-xs font-bold shadow">جستجو در گوگل</button>
+            <input type="text" id="googleSearchInput" placeholder="عبارت جستجو..." class="w-full bg-white dark:bg-slate-900 text-slate-800 dark:text-amber-200 rounded-xl px-3 py-2.5 text-xs border border-slate-300 dark:border-white/20">
+            <button onclick="executeGoogleSearch()" class="w-full bg-red-600 text-white py-2.5 rounded-xl text-xs font-bold shadow cursor-pointer">جستجو در گوگل</button>
         </div>
     </div>
-
     <script>
+        // اتصال سراسری به آبجکت window برای جلوگیری از باگ عدم شناسایی در HTML
         const API_URL = 'https://script.google.com/macros/s/AKfycbyrMOSKpL5rwv5C9okpDQvbKE07-1JFP2ZE5xt7Xt4Y9sSvIUwbXZWU6ssTbBgQRgSZ/exec'; 
-        
-        // --- Telegram & Config ---
+        let appData = {};
+        let bookmarks = [];
+        let chatConversationHistory = [];
+        let userNav = ['dictionary-tab', 'legal-tab', 'laws-tab', 'cards-tab', 'lawyer-tab'];
+
+        // مدیریت ذخیره‌سازی ابری تلگرام به همراه فال‌بک
         const tg = window.Telegram?.WebApp;
         if (tg) { try { tg.ready(); tg.expand(); } catch(e) {} }
+
+        window.AppStorage = {
+            async set(key, value) {
+                const str = JSON.stringify(value);
+                localStorage.setItem(key, str);
+                if (tg?.CloudStorage) {
+                    return new Promise(res => {
+                        try { tg.CloudStorage.setItem(key, str, res); } catch(e) { res(null); }
+                    });
+                }
+            },
+            async get(key) {
+                if (tg?.CloudStorage) {
+                    return new Promise(res => {
+                        try {
+                            tg.CloudStorage.getItem(key, (err, val) => {
+                                if (!err && val) { res(JSON.parse(val)); }
+                                else { res(JSON.parse(localStorage.getItem(key))); }
+                            });
+                        } catch(e) { res(JSON.parse(localStorage.getItem(key))); }
+                    });
+                }
+                return JSON.parse(localStorage.getItem(key));
+            }
+        };
 
         let userId = localStorage.getItem('mizan_user_id');
         if(!userId) {
@@ -626,55 +643,54 @@
             localStorage.setItem('mizan_user_id', userId);
         }
 
-        function updateMetaThemeColor(color) {
+        window.updateMetaThemeColor = function(color) {
             const metaTheme = document.querySelector('meta[name="theme-color"]');
             if (metaTheme) metaTheme.setAttribute('content', color);
             if (tg?.isVersionAtLeast?.('6.1') && tg.setHeaderColor) { try { tg.setHeaderColor(color); } catch(e) {} }
-        }
+        };
 
-        function initThemes() {
+        window.initThemes = function() {
             if (localStorage.getItem('mizan_theme') === 'light') {
-                document.documentElement.classList.remove('dark'); document.body.classList.add('light'); updateMetaThemeColor('#f8fafc');
+                document.documentElement.classList.remove('dark'); document.body.classList.add('light'); window.updateMetaThemeColor('#f8fafc');
             } else {
-                document.documentElement.classList.add('dark'); updateMetaThemeColor('#080c14');
+                document.documentElement.classList.add('dark'); window.updateMetaThemeColor('#080c14');
             }
-            if (localStorage.getItem('oled_mode') === 'true') { document.body.classList.add('oled-mode'); updateMetaThemeColor('#000000'); }
+            if (localStorage.getItem('oled_mode') === 'true') { document.body.classList.add('oled-mode'); window.updateMetaThemeColor('#000000'); }
             if (localStorage.getItem('high_contrast') === 'true') { document.body.classList.add('high-contrast'); }
             
             document.documentElement.style.setProperty('--selected-font', localStorage.getItem('mizan_font') || 'Tahoma');
             document.documentElement.style.setProperty('--app-font-size', localStorage.getItem('mizan_font_size') || '12px');
             document.documentElement.style.setProperty('--line-height', localStorage.getItem('mizan_line_height') || '1.8');
-        }
-        initThemes();
+        };
+        window.initThemes();
 
-        function toggleTheme() {
+        window.toggleTheme = function() {
             const isDark = document.documentElement.classList.toggle('dark');
             document.body.classList.toggle('light', !isDark);
             localStorage.setItem('mizan_theme', isDark ? 'dark' : 'light');
-            updateMetaThemeColor(isDark ? '#080c14' : '#f8fafc');
-        }
-        function toggleOledMode() { document.body.classList.toggle('oled-mode'); localStorage.setItem('oled_mode', document.body.classList.contains('oled-mode')); }
-        function toggleHighContrast() { document.body.classList.toggle('high-contrast'); localStorage.setItem('high_contrast', document.body.classList.contains('high-contrast')); }
-        function changeFontFamily(val) { document.documentElement.style.setProperty('--selected-font', val); localStorage.setItem('mizan_font', val); }
-        function changeAppFontSize(val) { document.documentElement.style.setProperty('--app-font-size', val); localStorage.setItem('mizan_font_size', val); }
-        function changeLineHeight(val) { document.documentElement.style.setProperty('--line-height', val); localStorage.setItem('mizan_line_height', val); }
-        function changeCalendarType(type) { localStorage.setItem('mizan_calendar', type); updateDateTime(); }
+            window.updateMetaThemeColor(isDark ? '#080c14' : '#f8fafc');
+        };
+        window.toggleOledMode = function() { document.body.classList.toggle('oled-mode'); localStorage.setItem('oled_mode', document.body.classList.contains('oled-mode')); };
+        window.toggleHighContrast = function() { document.body.classList.toggle('high-contrast'); localStorage.setItem('high_contrast', document.body.classList.contains('high-contrast')); };
+        window.changeFontFamily = function(val) { document.documentElement.style.setProperty('--selected-font', val); localStorage.setItem('mizan_font', val); };
+        window.changeAppFontSize = function(val) { document.documentElement.style.setProperty('--app-font-size', val); localStorage.setItem('mizan_font_size', val); };
+        window.changeLineHeight = function(val) { document.documentElement.style.setProperty('--line-height', val); localStorage.setItem('mizan_line_height', val); };
+        window.changeCalendarType = function(type) { localStorage.setItem('mizan_calendar', type); window.updateDateTime(); };
         
-        async function clearIndexedDBCache() {
+        window.clearIndexedDBCache = async function() {
             localStorage.removeItem('mizan_cache'); sessionStorage.removeItem('mizan_active_chat');
-            showToast('حافظه کش پاکسازی شد'); setTimeout(() => location.reload(), 500);
-        }
-        function toggleMicroInteractions(enabled) {
+            window.showToast('حافظه کش پاکسازی شد'); setTimeout(() => location.reload(), 500);
+        };
+        window.toggleMicroInteractions = function(enabled) {
             microInteractionsEnabled = enabled; localStorage.setItem('micro_interactions', enabled);
-            showToast(enabled ? 'افکت‌های صوتی فعال شدند' : 'افکت‌ها غیرفعال شدند');
-        }
-        function openAboutModal() { alert("مینی‌اپ تخصصی و هوشمند حقوقی SIJT\nنسخه ۳.۰ (پرو مکس کامل)"); }
-        function toggleNotificationsModal() { showToast('در حال حاضر اعلان جدیدی ندارید', 'success'); triggerHaptic('light'); }
+            window.showToast(enabled ? 'افکت‌های صوتی فعال شدند' : 'افکت‌ها غیرفعال شدند');
+        };
+        window.openAboutModal = function() { alert("مینی‌اپ تخصصی و هوشمند حقوقی SIJT\nطراحی پرو مکس"); };
+        window.toggleNotificationsModal = function() { window.showToast('در حال حاضر اعلان جدیدی ندارید', 'success'); window.triggerHaptic('light'); };
 
-        // --- Audio & Haptics ---
         let microInteractionsEnabled = localStorage.getItem('micro_interactions') !== 'false';
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        function playClickSound() {
+        window.playClickSound = function() {
             if (!microInteractionsEnabled) return;
             try {
                 if (audioCtx.state === 'suspended') audioCtx.resume();
@@ -683,19 +699,19 @@
                 gain.gain.setValueAtTime(0.02, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
                 osc.connect(gain); gain.connect(audioCtx.destination); osc.start(); osc.stop(audioCtx.currentTime + 0.05);
             } catch(e) {}
-        }
-        function triggerHaptic(type = 'medium') {
-            playClickSound();
+        };
+        window.triggerHaptic = function(type = 'medium') {
+            window.playClickSound();
             try { if (microInteractionsEnabled && tg && tg.HapticFeedback && tg.isVersionAtLeast && tg.isVersionAtLeast('6.1')) { tg.HapticFeedback.impactOccurred(type); } } catch(e) {}
-        }
-        function showToast(message, type = 'success') {
+        };
+        window.showToast = function(message, type = 'success') {
             const container = document.getElementById('toastContainer');
             const t = document.createElement('div'); t.className = 'toast-item';
             t.innerHTML = `<div class="flex items-center space-x-2 space-x-reverse">${type === 'error' ? '⚠️' : '✅'}<span>${message}</span></div>`;
             container.appendChild(t); setTimeout(() => { if(t.parentElement) t.remove(); }, 3000);
-        }
+        };
 
-        function updateDateTime() {
+        window.updateDateTime = function() {
             const now = new Date();
             const calType = localStorage.getItem('mizan_calendar') || 'persian';
             const calElem = document.getElementById('headerCalendarWidget');
@@ -704,8 +720,8 @@
                 else if(calType === 'lunar') { calElem.innerText = now.toLocaleDateString('fa-IR-u-ca-islamic-umalqura', { year: 'numeric', month: 'long', day: 'numeric' }); }
                 else { calElem.innerText = now.toLocaleDateString('fa-IR', { calendar: 'persian', year: 'numeric', month: 'long', day: 'numeric' }); }
             }
-        }
-        async function fetchTehranWeather() {
+        };
+        window.fetchTehranWeather = async function() {
             const widget = document.getElementById('headerWeatherWidget');
             try {
                 const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=35.6892&longitude=51.3890&current_weather=true');
@@ -715,26 +731,24 @@
                 }
             } catch(e) {}
             if (widget) widget.innerText = `تهران ۲۴°C`;
-        }
+        };
 
-        // --- PWA Installation ---
         let deferredPrompt;
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault(); deferredPrompt = e;
             const pwaBox = document.getElementById('installPwaBox');
             if(pwaBox) pwaBox.classList.remove('hidden');
         });
-        function installPWA() {
+        window.installPWA = function() {
             if (deferredPrompt) {
                 deferredPrompt.prompt();
                 deferredPrompt.userChoice.then((choiceResult) => {
-                    if (choiceResult.outcome === 'accepted') showToast('برنامه با موفقیت نصب شد');
+                    if (choiceResult.outcome === 'accepted') window.showToast('برنامه با موفقیت نصب شد');
                     deferredPrompt = null;
                 });
-            } else { showToast('از منوی مرورگر گزینه Add to Home Screen را بزنید'); }
-        }
+            } else { window.showToast('از منوی مرورگر گزینه Add to Home Screen را بزنید'); }
+        };
 
-        // --- Nav Customization ---
         const ALL_TABS = [
             { id: 'dictionary-tab', icon: 'fa-book', label: 'اصطلاحات' },
             { id: 'legal-tab', icon: 'fa-scale-balanced', label: 'سامانه‌ها' },
@@ -753,43 +767,43 @@
             { id: 'infographics-tab', icon: 'fa-image', label: 'اینفوگرافی' },
             { id: 'series-tab', icon: 'fa-film', label: 'سریال' }
         ];
-        let userNav = JSON.parse(localStorage.getItem('mizan_custom_nav')) || ['dictionary-tab', 'legal-tab', 'laws-tab', 'cards-tab', 'lawyer-tab'];
 
-        function renderBottomNav() {
+        window.renderBottomNav = function() {
             const nav = document.getElementById('mainNavContainer');
             const drawer = document.getElementById('moreDrawerGrid');
+            if(!nav || !drawer) return;
             nav.innerHTML = ''; drawer.innerHTML = '';
             
             ALL_TABS.forEach(tab => {
                 if(userNav.includes(tab.id)) {
-                    nav.innerHTML += `<button onclick="switchTab('${tab.id}', this); triggerHaptic('light');" class="nav-btn flex flex-col items-center px-2 py-1"><i class="fa-solid ${tab.icon} text-base mb-1"></i><span class="text-[10px] font-bold">${tab.label}</span></button>`;
+                    nav.innerHTML += `<button onclick="switchTab('${tab.id}', this); triggerHaptic('light');" class="nav-btn flex flex-col items-center px-2 py-1 cursor-pointer"><i class="fa-solid ${tab.icon} text-base mb-1"></i><span class="text-[10px] font-bold">${tab.label}</span></button>`;
                 } else {
-                    drawer.innerHTML += `<button onclick="switchTab('${tab.id}'); toggleMoreDrawer();" class="p-2.5 rounded-2xl bg-slate-200 dark:bg-white/5 hover:bg-slate-300 dark:hover:bg-white/10 flex flex-col items-center space-y-1 text-slate-700 dark:text-slate-200"><i class="fa-solid ${tab.icon} text-sm"></i><span>${tab.label}</span></button>`;
+                    drawer.innerHTML += `<button onclick="switchTab('${tab.id}'); toggleMoreDrawer();" class="p-2.5 rounded-2xl bg-slate-200 dark:bg-white/5 hover:bg-slate-300 dark:hover:bg-white/10 flex flex-col items-center space-y-1 text-slate-700 dark:text-slate-200 cursor-pointer"><i class="fa-solid ${tab.icon} text-sm"></i><span>${tab.label}</span></button>`;
                 }
             });
-            nav.innerHTML += `<button onclick="toggleMoreDrawer();" class="nav-btn flex flex-col items-center px-2 py-1"><i class="fa-solid fa-bars-staggered text-base mb-1"></i><span class="text-[10px] font-bold">بیشتر</span></button>`;
+            nav.innerHTML += `<button onclick="toggleMoreDrawer();" class="nav-btn flex flex-col items-center px-2 py-1 cursor-pointer"><i class="fa-solid fa-bars-staggered text-base mb-1"></i><span class="text-[10px] font-bold">بیشتر</span></button>`;
             
             const activeSec = document.querySelector('.page-section:not(.hidden)');
             if(activeSec) {
                 const btn = Array.from(nav.querySelectorAll('button')).find(b => b.getAttribute('onclick')?.includes(activeSec.id));
                 if(btn) btn.classList.add('active-tab');
             }
-        }
+        };
 
-        function openNavEditor() {
+        window.openNavEditor = function() {
             const list = document.getElementById('navEditorList');
-            list.innerHTML = ALL_TABS.map(t => `<label class="flex items-center space-x-2 space-x-reverse bg-slate-100 dark:bg-white/10 p-2 rounded-xl text-slate-800 dark:text-white"><input type="checkbox" value="${t.id}" ${userNav.includes(t.id)?'checked':''} class="nav-editor-cb accent-amber-500 w-4 h-4"><span><i class="fa-solid ${t.icon} ml-1"></i>${t.label}</span></label>`).join('');
+            list.innerHTML = ALL_TABS.map(t => `<label class="flex items-center space-x-2 space-x-reverse bg-slate-100 dark:bg-white/10 p-2 rounded-xl text-slate-800 dark:text-white cursor-pointer"><input type="checkbox" value="${t.id}" ${userNav.includes(t.id)?'checked':''} class="nav-editor-cb accent-amber-500 w-4 h-4 cursor-pointer"><span><i class="fa-solid ${t.icon} ml-1"></i>${t.label}</span></label>`).join('');
             document.getElementById('navEditorDrawer').style.display = 'block';
-        }
-        function closeNavEditor() { document.getElementById('navEditorDrawer').style.display = 'none'; }
-        function saveNavConfig() {
+        };
+        window.closeNavEditor = function() { document.getElementById('navEditorDrawer').style.display = 'none'; };
+        window.saveNavConfig = async function() {
             const checked = Array.from(document.querySelectorAll('.nav-editor-cb:checked')).map(cb => cb.value);
-            if(checked.length > 5 || checked.length < 1) return showToast('بین ۱ تا ۵ تب انتخاب کنید', 'error');
-            userNav = checked; localStorage.setItem('mizan_custom_nav', JSON.stringify(userNav));
-            renderBottomNav(); closeNavEditor(); showToast('نوار پایین بروز شد');
-        }
+            if(checked.length > 5 || checked.length < 1) return window.showToast('بین ۱ تا ۵ تب انتخاب کنید', 'error');
+            userNav = checked; 
+            await AppStorage.set('mizan_custom_nav', userNav);
+            window.renderBottomNav(); window.closeNavEditor(); window.showToast('نوار پایین بروز شد');
+        };
 
-        // --- Data & AI Knowledge Base ---
         const fallbackData = {
             dictionary: [
                 { term: "تجدیدنظر", definition: "اعتراض به رای دادگاه بدوی در دادگاه تجدیدنظر استان.", category: "کیفری" },
@@ -837,15 +851,17 @@
             }
         ];
 
-        let appData = JSON.parse(localStorage.getItem('mizan_cache')) || fallbackData;
-        let bookmarks = JSON.parse(localStorage.getItem('mizan_bookmarks')) || [];
-        let chatConversationHistory = JSON.parse(sessionStorage.getItem('mizan_active_chat')) || [];
-
-        async function initApp() {
-            renderBottomNav(); renderAll(); initPullToRefresh(); initTiltEffect(); updateDateTime();
-            setInterval(updateDateTime, 1000); fetchTehranWeather();
+        window.initApp = async function() {
+            userNav = (await AppStorage.get('mizan_custom_nav')) || ['dictionary-tab', 'legal-tab', 'laws-tab', 'cards-tab', 'lawyer-tab'];
+            bookmarks = (await AppStorage.get('mizan_bookmarks')) || [];
             
-            setTimeout(() => { document.getElementById('splashScreen').style.opacity = '0'; setTimeout(()=> document.getElementById('splashScreen').remove(), 300); }, 1000);
+            window.renderBottomNav(); window.renderAll(); window.initPullToRefresh(); window.initTiltEffect(); window.updateDateTime();
+            setInterval(window.updateDateTime, 1000); window.fetchTehranWeather();
+            
+            setTimeout(() => { 
+                const s = document.getElementById('splashScreen');
+                if(s) { s.style.opacity = '0'; setTimeout(()=> s.remove(), 300); }
+            }, 1000);
 
             try {
                 const res = await fetch(API_URL + "?action=get_all&t=" + Date.now(), { mode: 'cors' });
@@ -853,70 +869,48 @@
                     const newData = await res.json();
                     if(newData && Object.keys(newData).length > 0) {
                         appData = { ...fallbackData, ...newData };
-                        localStorage.setItem('mizan_cache', JSON.stringify(appData));
-                        renderAll();
+                        await AppStorage.set('mizan_cache', appData);
+                        window.renderAll();
                     }
-                } else {
-                    throw new Error('Server not ok');
-                }
-            } catch(e) { console.log("اتصال به سرور برقرار نشد، استفاده از دیتای آفلاین"); }
+                } else { throw new Error(); }
+            } catch(e) { 
+                appData = (await AppStorage.get('mizan_cache')) || fallbackData;
+            }
             
-            renderPersonalNotes();
-            setupNewsObserver();
-            initAppSwipeGestures();
-            if(document.getElementById('userFaqsContainer')) loadUserFaqs();
-            
-            if (!localStorage.getItem('sijt_tour_completed')) startOnboardingTour();
-        }
+            window.renderPersonalNotes();
+            window.setupInfiniteScrolls();
+            window.initAppSwipeGestures();
+            if(document.getElementById('userFaqsContainer')) window.loadUserFaqs();
+            if (!localStorage.getItem('sijt_tour_completed')) window.startOnboardingTour();
+        };
 
-        async function manualRefresh() {
+        window.manualRefresh = async function() {
             const icon = document.getElementById('refreshIcon');
             if(icon) icon.classList.add('fa-spin');
-            showToast('در حال همگام‌سازی...');
+            window.showToast('در حال همگام‌سازی...');
             try {
                 const res = await fetch(API_URL + "?action=get_all&t=" + Date.now());
-                if (!res.ok) throw new Error('Server returned ' + res.status);
+                if (!res.ok) throw new Error();
                 const newData = await res.json();
                 if(newData && Object.keys(newData).length > 0) {
                     appData = { ...fallbackData, ...newData };
-                    localStorage.setItem('mizan_cache', JSON.stringify(appData));
-                    renderAll(); showToast('به‌روز شد');
+                    await AppStorage.set('mizan_cache', appData);
+                    window.renderAll(); window.showToast('به‌روز شد');
                 }
-            } catch(e) { showToast('ارتباط برقرار نشد. نمایش دیتای محلی', 'error'); }
+            } catch(e) { window.showToast('ارتباط با سرور برقرار نشد. نمایش دیتای پایدار محلی', 'error'); }
             finally { if(icon) icon.classList.remove('fa-spin'); }
-        }
+        };
 
-        // --- Tour Logic ---
-        const tourSteps = [
-            { title: "به مینی‌اپ تخصصی SIJT خوش آمدید", desc: "مرجع جامع واژگان، آرشیو قوانین، سامانه‌های قضایی و دستیار هوشمند.", icon: "fa-solid fa-scale-balanced" },
-            { title: "جستجوی جامع و فازی", desc: "در نوار بالا به صورت صوتی یا متنی در اصطلاحات، قوانین و سوالات بگردید.", icon: "fa-solid fa-magnifying-glass" },
-            { title: "دستیار هوشمند حقوقی", desc: "در تب چت‌بات، سوالات خود را بپرسید تا با مستندات قانونی پاسخ بگیرید.", icon: "fa-solid fa-robot" },
-            { title: "شخصی‌سازی منو", desc: "از تنظیمات هدر، می‌توانید ۵ تب پرکاربرد خود را در نوار پایین پین کنید.", icon: "fa-solid fa-pen-to-square" }
-        ];
-        let currentTourStep = 0;
-        function startOnboardingTour() { currentTourStep = 0; renderTourStep(); document.getElementById('onboardingModal').classList.remove('hidden'); document.getElementById('onboardingModal').style.display = 'flex'; }
-        function renderTourStep() {
-            const step = tourSteps[currentTourStep];
-            document.getElementById('tourStepTitle').innerText = step.title;
-            document.getElementById('tourStepDesc').innerText = step.desc;
-            document.getElementById('tourStepIcon').className = step.icon;
-            document.getElementById('tourNextBtn').innerText = currentTourStep === tourSteps.length - 1 ? 'شروع استفاده' : 'بعدی';
-            document.getElementById('tourDotsContainer').innerHTML = tourSteps.map((_, idx) => `<span class="h-1.5 rounded-full transition-all duration-300 ${idx === currentTourStep ? 'w-5 bg-amber-400' : 'w-2 bg-white/20'}"></span>`).join('');
-        }
-        function nextOnboardingTourStep() { triggerHaptic('light'); if (currentTourStep < tourSteps.length - 1) { currentTourStep++; renderTourStep(); } else skipOnboardingTour(); }
-        function skipOnboardingTour() { localStorage.setItem('sijt_tour_completed', 'true'); document.getElementById('onboardingModal').classList.add('hidden'); document.getElementById('onboardingModal').style.display = 'none'; triggerHaptic('light'); }
-
-        // --- Renderers ---
-        let pageLimits = { dict: 10, laws: 10, news: 10 };
-        function renderAll() {
-            renderDictionary(true); renderLegalSystems(); renderLaws(true); renderShareCards();
-            renderNews(true); renderPublicFaqs(); renderInstagram(); renderPodcasts();
-            renderFiles(); renderInfographics(); renderSeries(); renderLiveChannels(); renderStoryHighlights();
-            initTiltEffect(); 
-        }
+        let pageLimits = { dict: 10, laws: 10, news: 10, faq: 10, cards: 5, podcasts: 10, files: 5 };
+        window.renderAll = function() {
+            window.renderDictionary(true); window.renderLegalSystems(); window.renderLaws(true); window.renderShareCards(true);
+            window.renderNews(true); window.renderPublicFaqs(true); window.renderInstagram(); window.renderPodcasts(true);
+            window.renderFiles(true); window.renderInfographics(); window.renderSeries(); window.renderLiveChannels(); window.renderStoryHighlights();
+            window.initTiltEffect(); 
+        };
 
         let selectedDictCat = 'all';
-        function filterDictCategory(cat, btn) {
+        window.filterDictCategory = function(cat, btn) {
             selectedDictCat = cat;
             document.querySelectorAll('.dict-chip').forEach(b => {
                 b.classList.remove('bg-red-600', 'bg-amber-600', 'text-white', 'font-bold', 'shadow');
@@ -924,18 +918,18 @@
             });
             btn.classList.remove('bg-slate-200', 'dark:bg-slate-800', 'text-slate-700', 'dark:text-slate-200');
             btn.classList.add(cat === 'bookmarks' ? 'bg-amber-600' : 'bg-red-600', 'text-white', 'font-bold', 'shadow');
-            renderDictionary(true);
-        }
+            window.renderDictionary(true);
+        };
 
-        function toggleBookmark(term) {
+        window.toggleBookmark = async function(term) {
             const index = bookmarks.indexOf(term);
-            if (index > -1) { bookmarks.splice(index, 1); showToast('نشانک حذف شد'); } 
-            else { bookmarks.push(term); showToast('نشانک ذخیره شد'); }
-            localStorage.setItem('mizan_bookmarks', JSON.stringify(bookmarks));
-            renderDictionary(); triggerHaptic('light');
-        }
+            if (index > -1) { bookmarks.splice(index, 1); window.showToast('نشانک حذف شد'); } 
+            else { bookmarks.push(term); window.showToast('نشانک ذخیره شد'); }
+            await AppStorage.set('mizan_bookmarks', bookmarks);
+            window.renderDictionary(); window.triggerHaptic('light');
+        };
 
-        function renderDictionary(reset = false) {
+        window.renderDictionary = function(reset = false) {
             if(reset) pageLimits.dict = 15;
             const c = document.getElementById('dictionaryContainer'); if(!c) return;
             let list = appData.dictionary || [];
@@ -958,14 +952,14 @@
                     <p class="font-semibold text-slate-700 dark:text-slate-100">${d.definition}</p>
                 </div>`;
             }).join('');
-        }
+        };
 
-        function renderLegalSystems() {
+        window.renderLegalSystems = function() {
             const c = document.getElementById('legalSystemsContainer');
             if(c) c.innerHTML = (appData.legalSystems || []).map(s => `<div class="ultra-glass p-4 rounded-2xl flex justify-between items-center shadow"><span class="font-bold text-red-600">${s.title}</span><a href="${s.url}" target="_blank" class="bg-red-600 text-white px-3 py-1.5 rounded-xl text-xs font-bold shadow">ورود</a></div>`).join('');
-        }
+        };
 
-        function renderLaws(reset = false) {
+        window.renderLaws = function(reset = false) {
             if(reset) pageLimits.laws = 10;
             const c = document.getElementById('lawsContainer'); if(!c) return;
             const list = (appData.laws || []).slice(0, pageLimits.laws);
@@ -975,114 +969,116 @@
             c.innerHTML = list.map(l => {
                 let content = String(l.content || '');
                 if(terms.length > 0) content = content.replace(regex, match => `<span class="glossary-term" onclick="openLawBottomSheet('${match}')">${match}</span>`);
-                return `<div class="ultra-glass p-4 rounded-2xl shadow-md ultra-glass-content space-y-2"><h3 class="font-bold text-red-600 dark:text-red-500">${l.title}</h3><p class="font-semibold text-[11px] text-amber-600 dark:text-amber-400">${l.summary}</p><p class="font-semibold text-slate-800 dark:text-slate-100">${content}</p></div>`;
+                return `<div class="ultra-glass p-4 rounded-2xl shadow-md ultra-glass-content space-y-2"><h3 class="font-bold text-red-600 dark:text-red-500">${l.title}</h3><p class="font-semibold text-[11px] text-amber-600 dark:text-amber-400">${l.summary}</p><p class="font-semibold leading-loose text-slate-800 dark:text-slate-100">${content}</p></div>`;
             }).join('');
-        }
+        };
 
-        function renderShareCards() {
-            const c = document.getElementById('shareCardsContainer');
-            if(c) c.innerHTML = (appData.shareCards || []).map(card => `<div class="ultra-glass p-4 rounded-3xl space-y-2 shadow-xl"><span class="font-bold text-amber-600 dark:text-amber-300">${card.title}</span><p class="font-semibold text-slate-800 dark:text-white">${card.text}</p></div>`).join('');
-        }
+        window.renderShareCards = function(reset = false) {
+            if(reset) pageLimits.cards = 5;
+            const c = document.getElementById('shareCardsContainer'); if(!c) return;
+            const list = (appData.shareCards || []).slice(0, pageLimits.cards);
+            c.innerHTML = list.map(card => `<div class="ultra-glass p-4 rounded-3xl space-y-2 shadow-xl ultra-glass-content"><span class="font-bold text-amber-600 dark:text-amber-300">${card.title}</span><p class="font-semibold text-slate-800 dark:text-white">${card.text}</p></div>`).join('');
+        };
 
-        function renderNews(reset = false) {
+        window.renderNews = function(reset = false) {
             if(reset) pageLimits.news = 10;
             const c = document.getElementById('newsContainer'); if(!c) return;
             const list = (appData.news || []).slice(0, pageLimits.news);
-            c.innerHTML = list.map(n => `<div class="ultra-glass p-4 rounded-2xl space-y-1.5 shadow-md ultra-glass-content"><div class="text-[9px] text-slate-500 dark:text-slate-400">${n.date||''}</div><h3 class="font-bold text-red-600 dark:text-red-500">${n.title}</h3><p class="font-semibold text-slate-700 dark:text-slate-200">${n.summary}</p></div>`).join('');
-        }
+            c.innerHTML = list.map(n => `<div class="ultra-glass p-4 rounded-2xl space-y-1.5 shadow-md ultra-glass-content"><div class="text-[9px] text-slate-500 dark:text-slate-400">${n.date||''}</div><h3 class="font-bold text-red-600 dark:text-red-500">${n.title}</h3><p class="font-semibold text-slate-700 dark:text-slate-200 leading-relaxed">${n.summary}</p></div>`).join('');
+        };
 
-        function renderPublicFaqs() {
-            const c = document.getElementById('publicFaqContainer');
-            if(c) c.innerHTML = (appData.publicFaqs || []).map(pf => `<div class="ultra-glass p-4 rounded-3xl space-y-2 shadow-md"><div class="font-bold text-red-600"><i class="fa-solid fa-question ml-1"></i> ${pf.question}</div><div class="bg-slate-100 dark:bg-slate-900/60 p-3 rounded-2xl font-semibold text-slate-700 dark:text-slate-200">${pf.answer}</div></div>`).join('');
-        }
+        window.renderPublicFaqs = function(reset = false) {
+            if(reset) pageLimits.faq = 10;
+            const c = document.getElementById('publicFaqContainer'); if(!c) return;
+            const list = (appData.publicFaqs || []).slice(0, pageLimits.faq);
+            c.innerHTML = list.map(pf => `<div class="ultra-glass p-4 rounded-3xl space-y-2 shadow-md ultra-glass-content"><div class="font-bold text-red-600"><i class="fa-solid fa-question ml-1"></i> ${pf.question}</div><div class="bg-slate-100 dark:bg-slate-900/60 p-3 rounded-2xl font-semibold text-slate-700 dark:text-slate-200">${pf.answer}</div></div>`).join('');
+        };
 
-        function renderInstagram() {
+        window.renderInstagram = function() {
             const c = document.getElementById('instagramContainer');
             if(c) c.innerHTML = (appData.instagram || []).map(ig => `<a href="${ig.url}" target="_blank" class="flex flex-col items-center space-y-1"><div class="w-16 h-16 rounded-full p-1 bg-gradient-to-tr from-amber-500 to-red-600 flex items-center justify-center shadow-md"><img src="${ig.image}" class="w-full h-full object-cover rounded-full"></div><span class="text-[10px] font-bold text-slate-700 dark:text-slate-200">${ig.title}</span></a>`).join('');
-        }
+        };
 
-        function renderPodcasts() {
-            const c = document.getElementById('podcastsContainer');
-            if(c) c.innerHTML = (appData.podcasts || []).map(p => `<div class="ultra-glass p-3 rounded-2xl shadow-md flex justify-between items-center"><span class="font-bold text-red-600">${p.title}</span><button onclick="playAudio('${p.url}', '${p.title}', '${p.image||''}')" class="bg-amber-500 text-white dark:text-black px-4 py-1.5 rounded-full text-[10px] font-bold shadow hover:scale-105 transition"><i class="fa-solid fa-play ml-1"></i>پخش</button></div>`).join('');
-        }
+        window.renderPodcasts = function(reset = false) {
+            if(reset) pageLimits.podcasts = 10;
+            const c = document.getElementById('podcastsContainer'); if(!c) return;
+            const list = (appData.podcasts || []).slice(0, pageLimits.podcasts);
+            c.innerHTML = list.map(p => `<div class="ultra-glass p-3 rounded-2xl shadow-md flex justify-between items-center ultra-glass-content"><span class="font-bold text-red-600">${p.title}</span><button onclick="playAudio('${p.url}', '${p.title}', '${p.image||''}')" class="bg-amber-500 text-white dark:text-black px-4 py-1.5 rounded-full text-[10px] font-bold shadow hover:scale-105 transition cursor-pointer"><i class="fa-solid fa-play ml-1"></i>پخش</button></div>`).join('');
+        };
 
-        function renderFiles() {
-            const c = document.getElementById('filesContainer');
-            if(c) c.innerHTML = (appData.files || []).map(f => `<div class="ultra-glass p-4 rounded-2xl space-y-2 shadow-md"><img src="${f.image}" class="w-full h-36 object-cover rounded-xl"><h3 class="font-bold text-red-600">${f.title}</h3><p class="font-semibold text-slate-700 dark:text-slate-200">${f.description}</p></div>`).join('');
-        }
+        window.renderFiles = function(reset = false) {
+            if(reset) pageLimits.files = 5;
+            const c = document.getElementById('filesContainer'); if(!c) return;
+            const list = (appData.files || []).slice(0, pageLimits.files);
+            c.innerHTML = list.map(f => `<div class="ultra-glass p-4 rounded-2xl space-y-2 shadow-md ultra-glass-content"><img src="${f.image}" class="w-full h-36 object-cover rounded-xl"><h3 class="font-bold text-red-600">${f.title}</h3><p class="font-semibold text-slate-700 dark:text-slate-200">${f.description}</p><a href="${f.url}" target="_blank" class="block w-full text-center bg-red-600 text-white py-2 rounded-xl text-xs font-bold mt-2 shadow cursor-pointer"><i class="fa-solid fa-download ml-1"></i>دانلود فایل</a></div>`).join('');
+        };
 
-        function renderInfographics() {
+        window.renderInfographics = function() {
             const c = document.getElementById('infographicsContainer');
             if(c) c.innerHTML = (appData.infographics || []).map((inf, idx) => `<div onclick="openMediaModal(${idx}, 'infographic')" class="ultra-glass p-3 rounded-2xl text-center space-y-2 shadow-md cursor-pointer transition hover:border-red-500"><img src="${inf.image}" class="w-full h-28 object-cover rounded-xl"><h4 class="font-bold text-red-600">${inf.title}</h4></div>`).join('');
-        }
+        };
 
-        function renderSeries() {
+        window.renderSeries = function() {
             const c = document.getElementById('seriesContainer');
             if(c) c.innerHTML = (appData.series || []).map((ser, idx) => `<div onclick="openMediaModal(${idx}, 'series')" class="ultra-glass p-3 rounded-2xl text-center space-y-2 shadow-md cursor-pointer transition hover:border-red-500"><div class="relative w-full h-28 rounded-xl overflow-hidden bg-slate-900"><img src="${ser.image}" class="w-full h-full object-cover"><div class="absolute inset-0 bg-black/40 flex items-center justify-center"><i class="fa-solid fa-play text-white text-base"></i></div></div><h4 class="font-bold text-red-600 truncate">${ser.title}</h4></div>`).join('');
-        }
+        };
 
-        function renderLiveChannels() {
+        window.renderLiveChannels = function() {
             const c = document.getElementById('liveChannelsSelector');
-            if(c) c.innerHTML = (appData.livestream || []).map(st => `<button onclick="playVideo('${st.url}')" class="p-3 ultra-glass rounded-2xl text-right border hover:border-red-500 space-y-1 shadow"><div class="font-bold text-red-600"><i class="fa-solid fa-tv ml-1"></i> ${st.title}</div><div class="text-[10px] opacity-80 text-slate-600 dark:text-slate-300">${st.description}</div></button>`).join('');
-        }
+            if(c) c.innerHTML = (appData.livestream || []).map(st => `<button onclick="playVideo('${st.url}')" class="p-3 ultra-glass rounded-2xl text-right border hover:border-red-500 space-y-1 shadow cursor-pointer"><div class="font-bold text-red-600"><i class="fa-solid fa-tv ml-1"></i> ${st.title}</div><div class="text-[10px] opacity-80 text-slate-600 dark:text-slate-300">${st.description}</div></button>`).join('');
+        };
 
-        function renderStoryHighlights() {
+        window.renderStoryHighlights = function() {
             const bar = document.getElementById('storyHighlightsBar');
             if(bar) bar.innerHTML = (appData.shareCards || []).map((card, idx) => `<div onclick="openStorySheet(${idx})" class="flex flex-col items-center space-y-1 flex-shrink-0 cursor-pointer"><div class="story-ring"><div class="w-12 h-12 rounded-full bg-slate-100 dark:bg-slate-900 flex items-center justify-center text-amber-500 dark:text-amber-400 text-xs font-bold shadow-inner"><i class="fa-solid fa-certificate"></i></div></div><span class="text-[9px] font-bold max-w-[50px] truncate text-slate-600 dark:text-slate-300">${card.title}</span></div>`).join('');
-        }
+        };
 
-        // --- Observers for Infinite Scroll ---
-        const scrollObserver = new IntersectionObserver((entries) => {
-            entries.forEach(e => {
-                if(e.isIntersecting) {
-                    if(e.target.id === 'dictLoadingObserver') { pageLimits.dict += 10; renderDictionary(); }
-                    if(e.target.id === 'lawsLoadingObserver') { pageLimits.laws += 5; renderLaws(); }
-                }
-            });
-        });
-        setTimeout(() => {
-            const dobs = document.getElementById('dictLoadingObserver'); if(dobs) scrollObserver.observe(dobs);
-            const lobs = document.getElementById('lawsLoadingObserver'); if(lobs) scrollObserver.observe(lobs);
-        }, 1000);
-
-        function setupNewsObserver() {
-            const nObs = document.getElementById('newsLoadingObserver');
-            if(nObs) {
-                const newsObserver = new IntersectionObserver((entries) => {
-                    entries.forEach(e => { if(e.isIntersecting) { pageLimits.news += 5; renderNews(); } });
+        window.setupInfiniteScrolls = function() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(e => {
+                    if(e.isIntersecting) {
+                        if(e.target.id === 'dictLoadingObserver') { pageLimits.dict += 10; window.renderDictionary(); }
+                        if(e.target.id === 'lawsLoadingObserver') { pageLimits.laws += 5; window.renderLaws(); }
+                        if(e.target.id === 'newsLoadingObserver') { pageLimits.news += 5; window.renderNews(); }
+                        if(e.target.id === 'faqLoadingObserver') { pageLimits.faq += 5; window.renderPublicFaqs(); }
+                        if(e.target.id === 'cardsLoadingObserver') { pageLimits.cards += 5; window.renderShareCards(); }
+                        if(e.target.id === 'podcastsLoadingObserver') { pageLimits.podcasts += 5; window.renderPodcasts(); }
+                        if(e.target.id === 'filesLoadingObserver') { pageLimits.files += 5; window.renderFiles(); }
+                    }
                 });
-                newsObserver.observe(nObs);
-            }
-        }
+            });
+            setTimeout(() => {
+                ['dictLoadingObserver', 'lawsLoadingObserver', 'newsLoadingObserver', 'faqLoadingObserver', 'cardsLoadingObserver', 'podcastsLoadingObserver', 'filesLoadingObserver'].forEach(id => {
+                    const el = document.getElementById(id); if(el) observer.observe(el);
+                });
+            }, 800);
+        };
 
-        // --- Smart Glossary Tooltip ---
-        function openLawBottomSheet(term) {
+        window.openLawBottomSheet = function(term) {
             const found = (appData.dictionary || []).find(d => d.term === term);
             if(found) {
                 document.getElementById('lawBsTitle').innerText = found.term; document.getElementById('lawBsContent').innerText = found.definition;
-                document.getElementById('lawBottomSheet').style.display = 'block'; triggerHaptic('medium');
+                document.getElementById('lawBottomSheet').style.display = 'block'; window.triggerHaptic('medium');
             }
-        }
-        function closeLawBottomSheet() { document.getElementById('lawBottomSheet').style.display = 'none'; }
+        };
+        window.closeLawBottomSheet = function() { document.getElementById('lawBottomSheet').style.display = 'none'; };
 
-        // --- Personal Notes ---
-        function savePersonalNote() {
+        window.savePersonalNote = async function() {
             const title = document.getElementById('caseTitleInput').value.trim();
             const note = document.getElementById('caseNoteInput').value.trim();
-            if(!title || !note) return showToast('عنوان و متن را وارد کنید', 'error');
+            if(!title || !note) return window.showToast('عنوان و متن را وارد کنید', 'error');
             
-            let notes = JSON.parse(localStorage.getItem('mizan_personal_notes')) || [];
+            let notes = (await AppStorage.get('mizan_personal_notes')) || [];
             notes.unshift({ title, note, date: new Date().toLocaleDateString('fa-IR') });
-            localStorage.setItem('mizan_personal_notes', JSON.stringify(notes));
+            await AppStorage.set('mizan_personal_notes', notes);
             
             document.getElementById('caseTitleInput').value = ''; document.getElementById('caseNoteInput').value = '';
-            renderPersonalNotes(); showToast('یادداشت با موفقیت ذخیره شد'); triggerHaptic('light');
-        }
+            window.renderPersonalNotes(); window.showToast('یادداشت ذخیره شد'); window.triggerHaptic('light');
+        };
 
-        function renderPersonalNotes() {
-            const container = document.getElementById('personalNotesContainer');
-            if(!container) return;
-            let notes = JSON.parse(localStorage.getItem('mizan_personal_notes')) || [];
+        window.renderPersonalNotes = async function() {
+            const container = document.getElementById('personalNotesContainer'); if(!container) return;
+            let notes = (await AppStorage.get('mizan_personal_notes')) || [];
             if(notes.length === 0) { container.innerHTML = `<div class="text-center p-4 text-xs text-slate-500 dark:text-slate-400">یادداشتی یافت نشد.</div>`; return; }
             container.innerHTML = notes.map((n, idx) => `
                 <div class="ultra-glass p-3 rounded-xl space-y-1 shadow-md">
@@ -1090,35 +1086,44 @@
                         <span class="font-bold text-amber-600 dark:text-amber-300">${n.title}</span>
                         <div class="flex items-center space-x-2 space-x-reverse">
                             <span class="text-slate-500 dark:text-slate-400">${n.date}</span>
-                            <button onclick="deleteNote(${idx})" class="text-red-500 hover:text-red-600 dark:text-red-400 dark:hover:text-red-200 transition"><i class="fa-solid fa-trash-can"></i></button>
+                            <button onclick="deleteNote(${idx})" class="text-red-500 hover:text-red-600 dark:text-red-400 dark:hover:text-red-200 transition cursor-pointer"><i class="fa-solid fa-trash-can"></i></button>
                         </div>
                     </div>
                     <p class="text-xs leading-relaxed text-slate-700 dark:text-slate-200">${n.note}</p>
                 </div>`).join('');
-        }
+        };
 
-        function deleteNote(idx) {
-            let notes = JSON.parse(localStorage.getItem('mizan_personal_notes')) || [];
-            notes.splice(idx, 1); localStorage.setItem('mizan_personal_notes', JSON.stringify(notes));
-            renderPersonalNotes(); showToast('یادداشت حذف شد'); triggerHaptic('medium');
-        }
+        window.deleteNote = async function(idx) {
+            let notes = (await AppStorage.get('mizan_personal_notes')) || [];
+            notes.splice(idx, 1); await AppStorage.set('mizan_personal_notes', notes);
+            window.renderPersonalNotes(); window.showToast('یادداشت حذف شد'); window.triggerHaptic('medium');
+        };
 
-        function exportNotesPDF() {
-            let notes = JSON.parse(localStorage.getItem('mizan_personal_notes')) || [];
-            if(notes.length === 0) return showToast('یادداشتی برای چاپ وجود ندارد', 'error');
-            const printWindow = window.open('', '', 'height=600,width=800');
-            printWindow.document.write('<html><head><title>چاپ یادداشت‌های پرونده</title><style>body{font-family:Tahoma;direction:rtl;padding:20px;line-height:2;font-size:13px;}.note{border-bottom:1px solid #ccc;margin-bottom:15px;padding-bottom:10px;}h2{color:#c51b24;}</style></head><body>');
-            printWindow.document.write('<h2>گزارش یادداشت‌های شخصی (SIJT)</h2><hr/>');
-            notes.forEach(n => { printWindow.document.write(`<div class="note"><b>${n.title}</b> <span style="color:#666;font-size:10px;">(${n.date})</span><br/><p>${n.note}</p></div>`); });
-            printWindow.document.write('</body></html>'); printWindow.document.close(); printWindow.focus();
-            setTimeout(() => { printWindow.print(); printWindow.close(); }, 400);
-        }
+        window.exportNotesPDF = async function() {
+            let notes = (await AppStorage.get('mizan_personal_notes')) || [];
+            if(notes.length === 0) return window.showToast('یادداشتی برای چاپ وجود ندارد', 'error');
+            
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = `
+                <div style="font-family:Tahoma; direction:rtl; padding:20px; text-align:right;">
+                    <h2 style="color:#c51b24; border-bottom:2px solid #c51b24; padding-bottom:10px;">گزارش یادداشت‌های شخصی پرونده</h2>
+                    ${notes.map(n => `<div style="border-bottom:1px solid #ccc; margin-bottom:15px; padding-bottom:10px;">
+                        <h4 style="margin-bottom:5px;">${n.title} <span style="color:#666; font-size:10px;">(${n.date})</span></h4>
+                        <p style="line-height:2; font-size:12px;">${n.note}</p>
+                    </div>`).join('')}
+                </div>`;
+                
+            window.showToast('در حال تولید فایل PDF...');
+            try {
+                const opt = { margin: 10, filename: 'My_Notes.pdf', image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2 }, jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' } };
+                html2pdf().set(opt).from(tempDiv).save();
+            } catch(e) { window.showToast('خطا در تولید PDF', 'error'); }
+        };
 
-        // --- FAQs (Online Lawyer) ---
-        async function submitQuestion() {
+        window.submitQuestion = async function() {
             const q = document.getElementById('questionInput').value.trim();
             const cat = document.getElementById('questionCategory').value;
-            if(!q) return showToast('متن سوال را وارد کنید', 'error');
+            if(!q) return window.showToast('متن سوال را وارد کنید', 'error');
             
             document.getElementById('submitQuestionBtn').innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
             try {
@@ -1126,13 +1131,13 @@
                     method: 'POST', mode: 'cors', headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                     body: JSON.stringify({ action: 'add_faq', tab: 'faq', userId: userId, category: cat, question: q })
                 });
-                document.getElementById('questionInput').value = ''; showToast('سوال با موفقیت برای وکیل ارسال شد');
-                loadUserFaqs(); triggerHaptic('light');
-            } catch(e) { showToast('سوال در حافظه موقت ثبت شد'); }
+                document.getElementById('questionInput').value = ''; window.showToast('سوال برای وکیل ارسال شد');
+                window.loadUserFaqs(); window.triggerHaptic('light');
+            } catch(e) { window.showToast('ارتباط با سرور برقرار نشد، ثبت موقت', 'error'); }
             document.getElementById('submitQuestionBtn').innerHTML = 'ارسال سوال';
-        }
+        };
 
-        async function loadUserFaqs() {
+        window.loadUserFaqs = async function() {
             const container = document.getElementById('userFaqsContainer'); if(!container) return;
             try {
                 const res = await fetch(`${API_URL}?action=get_user_faqs&tab=faq&userId=${userId}`, { mode: 'cors' });
@@ -1146,10 +1151,9 @@
                         </div>`).join('');
                 }
             } catch(e) {}
-        }
+        };
 
-        // --- Smart Swipe Gestures (Restricted to Custom Nav) ---
-        function initAppSwipeGestures() {
+        window.initAppSwipeGestures = function() {
             const main = document.getElementById('mainContentArea'); if (!main) return;
             let touchStartX = 0; let touchStartY = 0; let isIgnored = false;
 
@@ -1168,18 +1172,16 @@
                 if (Math.abs(diffX) > 65 && Math.abs(diffX) > Math.abs(diffY) * 1.5) {
                     const activeSection = document.querySelector('.page-section:not(.hidden)');
                     if (!activeSection) return;
-                    // محدود کردن سوایپ فقط به تب‌های پین شده
                     const currentIndex = userNav.indexOf(activeSection.id);
                     if (currentIndex === -1) return;
 
-                    if (diffX < 0 && currentIndex < userNav.length - 1) { switchTab(userNav[currentIndex + 1]); triggerHaptic('light'); } 
-                    else if (diffX > 0 && currentIndex > 0) { switchTab(userNav[currentIndex - 1]); triggerHaptic('light'); }
+                    if (diffX < 0 && currentIndex < userNav.length - 1) { window.switchTab(userNav[currentIndex + 1]); window.triggerHaptic('light'); } 
+                    else if (diffX > 0 && currentIndex > 0) { window.switchTab(userNav[currentIndex - 1]); window.triggerHaptic('light'); }
                 }
             }, { passive: true });
-        }
+        };
 
-        // --- Advanced Tools ---
-        function calculateInheritanceVisual() {
+        window.calculateInheritanceVisual = function() {
             const estate = parseFloat(document.getElementById('estateAmount').value) || 0;
             const type = document.getElementById('heirsType').value;
             const tree = document.getElementById('inheritanceTreeResult');
@@ -1203,10 +1205,10 @@
                 branches = `<div class="tree-branch"><div class="tree-node">مادر (۱/۳)<br>${mom.toLocaleString()}</div></div>
                             <div class="tree-branch"><div class="tree-node">پدر (۲/۳)<br>${dad.toLocaleString()}</div></div>`;
             }
-            tree.innerHTML += `<div class="tree-branches">${branches}</div>`; triggerHaptic('light');
-        }
+            tree.innerHTML += `<div class="tree-branches">${branches}</div>`; window.triggerHaptic('light');
+        };
 
-        function calculateLawyerFee() {
+        window.calculateLawyerFee = function() {
             const claim = parseFloat(document.getElementById('lawyerClaimAmount').value) || 0;
             let fee = 0;
             if(claim <= 500000000) fee = claim * 0.08;
@@ -1220,14 +1222,14 @@
                 <div class="bg-slate-100 dark:bg-slate-900 p-2 rounded-xl text-slate-800 dark:text-slate-200">تمبر مالیاتی (۵٪): <span class="text-red-500 dark:text-red-400 font-bold">${Math.round(tax).toLocaleString()}</span> ریال</div>
                 <div class="bg-slate-100 dark:bg-slate-900 p-2 rounded-xl text-slate-800 dark:text-slate-200">صندوق حمایت و تعاون: <span class="text-amber-600 dark:text-amber-400 font-bold">${Math.round(hemaayat+taavon).toLocaleString()}</span> ریال</div>
             `;
-            triggerHaptic('medium');
-        }
+            window.triggerHaptic('medium');
+        };
         
-        function calculateCourtFee() {
+        window.calculateCourtFee = function() {
             const amt = parseFloat(document.getElementById('courtFeeInput').value) || 0;
             document.getElementById('feeResult').innerText = `هزینه دادرسی بدوی: ${Math.round(amt * 0.035).toLocaleString()} ریال`;
-        }
-        function calculateBankCentralMahariyeh() {
+        };
+        window.calculateBankCentralMahariyeh = function() {
             const coins = parseFloat(document.getElementById('mahariyehCoins').value) || 0;
             const year = parseInt(document.getElementById('marriageYear').value) || 1395;
             let coinPrice = parseFloat(document.getElementById('currentCoinPrice').value) || 450000000;
@@ -1235,43 +1237,65 @@
             let totalValue = coins * coinPrice;
             if (yearDiff > 0) totalValue = Math.round((coins * coinPrice) * (0.8 + (0.2 * Math.pow(1.22, yearDiff))));
             document.getElementById('mahariyehResult').innerHTML = `ارزش روز محاسبه‌شده: <span class="text-emerald-500 font-bold">${totalValue.toLocaleString()} ریال</span>`;
-            showToast('محاسبه انجام شد');
-        }
-        function calculateDelayCompensation() {
+            window.showToast('محاسبه انجام شد');
+        };
+        window.calculateDelayCompensation = function() {
             const principal = parseFloat(document.getElementById('principalAmount').value) || 0;
             const years = parseFloat(document.getElementById('delayYears').value) || 0;
             const estimated = principal * Math.pow(1.35, years) - principal;
             document.getElementById('delayResult').innerText = `خسارت تأخیر تأدیه تقریبی: ${Math.round(estimated).toLocaleString()} ریال`;
-        }
-        function calculateDiyeh() {
+        };
+        window.calculateDiyeh = function() {
             const type = document.getElementById('diyehType').value;
             let base = 1600000000;
             if(type === 'haram') base *= 1.33; if(type === 'finger') base *= 0.1; if(type === 'eye') base *= 0.5;
             document.getElementById('diyehResult').innerText = `مبلغ تقریبی دیه: ${Math.round(base).toLocaleString()} ریال`;
-        }
+        };
 
-        function generateSmartContract() {
+        window.generateSmartContract = function() {
             const p1 = document.getElementById('partyFirst').value || '......';
             const p2 = document.getElementById('partySecond').value || '......';
             const amt = document.getElementById('contractAmount').value || '......';
             const box = document.getElementById('contractOutputBox');
             box.innerText = `پیش‌نویس قرارداد رسمی\nطرف اول: ${p1}\nطرف دوم: ${p2}\nمبلغ: ${amt} ریال\nکلیه خیارات اسقاط گردید.`;
-            box.classList.remove('hidden'); showToast('قرارداد تولید شد');
-        }
-        function exportContractPDF() {
+            box.classList.remove('hidden'); window.showToast('قرارداد تولید شد');
+        };
+        window.exportContractPDF = function() {
             const content = document.getElementById('contractOutputBox').innerText;
-            if(!content || document.getElementById('contractOutputBox').classList.contains('hidden')) { return showToast('ابتدا متن قرارداد را تولید کنید', 'error'); }
-            const printWindow = window.open('', '', 'height=600,width=800');
-            printWindow.document.write('<html><head><title>چاپ قرارداد</title><style>body{font-family:Tahoma;direction:rtl;padding:20px;line-height:2;font-size:14px;}</style></head><body>');
-            printWindow.document.write('<h2>مینی‌اپ حقوقی SIJT - پیش‌نویس قرارداد</h2><hr/>');
-            printWindow.document.write('<pre style="font-family:Tahoma;white-space:pre-wrap;">' + content + '</pre>');
-            printWindow.document.write('</body></html>'); printWindow.document.close(); printWindow.focus();
-            setTimeout(() => { printWindow.print(); printWindow.close(); }, 400);
+            if(!content || document.getElementById('contractOutputBox').classList.contains('hidden')) { return window.showToast('ابتدا متن قرارداد را تولید کنید', 'error'); }
+            
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = `<div style="font-family:Tahoma; direction:rtl; padding:20px; text-align:right;">
+                <h2 style="color:#c51b24; border-bottom:2px solid #c51b24; padding-bottom:10px;">پیش‌نویس قرارداد (SIJT)</h2>
+                <pre style="font-family:Tahoma; white-space:pre-wrap; line-height:2; font-size:14px;">${content}</pre>
+            </div>`;
+                
+            window.showToast('در حال تولید فایل PDF...');
+            try {
+                const opt = { margin: 10, filename: 'Contract.pdf', html2canvas: { scale: 2 }, jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' } };
+                html2pdf().set(opt).from(tempDiv).save();
+            } catch(e) { window.showToast('خطا در تولید PDF', 'error'); }
+        };
+
+        window.copyToClipboard = function(text) { navigator.clipboard.writeText(text); };
+
+        function normalizeText(str) {
+            if (!str) return '';
+            let s = String(str).toLowerCase()
+                .replace(/[\u064B-\u065F\u0670]/g, '')
+                .replace(/[يى]/g, 'ی')
+                .replace(/[ك]/g, 'ک')
+                .replace(/[ۀة]/g, 'ه')
+                .replace(/\u200c/g, ' ')
+                .replace(/[\s\t\n]+/g, ' ');
+            const persianNumbers = [/۰/g, /۱/g, /۲/g, /۳/g, /۴/g, /۵/g, /۶/g, /۷/g, /۸/g, /۹/g];
+            const arabicNumbers  = [/٠/g, /١/g, /٢/g, /٣/g, /٤/g, /٥/g, /٦/g, /٧/g, /٨/g, /٩/g];
+            for (let i = 0; i < 10; i++) {
+                s = s.replace(persianNumbers[i], i).replace(arabicNumbers[i], i);
+            }
+            return s.trim();
         }
 
-        function copyToClipboard(text) { navigator.clipboard.writeText(text); }
-
-        // --- Extended Universal Search + Smart Navigation ---
         function levenshtein(a, b) {
             const matrix = Array(b.length + 1).fill(null).map(() => Array(a.length + 1).fill(null));
             for (let i = 0; i <= a.length; i += 1) matrix[0][i] = i;
@@ -1285,19 +1309,18 @@
             return matrix[b.length][a.length];
         }
 
-        function handleUniversalSearch(query) {
+        window.handleUniversalSearch = function(query) {
             const box = document.getElementById('liveSuggestionsBox');
             const clearBtn = document.getElementById('clearSearchBtn');
-            const q = query.toLowerCase().trim();
+            const q = normalizeText(query);
             if (q.length === 0) { clearBtn.classList.add('hidden'); box.classList.add('hidden'); return; }
             clearBtn.classList.remove('hidden'); box.classList.remove('hidden');
 
             let resultsHTML = '';
             
-            // Dictionary Fuzzy Search
             let dictMatches = (appData.dictionary || []).map(d => ({
-                item: d, dist: Math.min(levenshtein(q, d.term), levenshtein(q, d.term.substring(0, q.length)))
-            })).filter(m => m.dist < 3 || m.item.term.includes(q)).sort((a,b) => a.dist - b.dist).slice(0,3);
+                item: d, dist: Math.min(levenshtein(q, normalizeText(d.term)), levenshtein(q, normalizeText(d.term).substring(0, q.length)))
+            })).filter(m => m.dist < 3 || normalizeText(m.item.term).includes(q)).sort((a,b) => a.dist - b.dist).slice(0,2);
 
             if(dictMatches.length > 0) {
                 resultsHTML += `<div class="text-[10px] font-bold text-amber-500 dark:text-amber-400 pb-1 border-b border-slate-200 dark:border-white/10"><i class="fa-solid fa-book ml-1"></i> اصطلاحات</div>`;
@@ -1306,9 +1329,8 @@
                 });
             }
 
-            // Universal Categorized Search Helper
             const searchCat = (dataArr, tabId, icon, titleLabel, fields) => {
-                const matches = (dataArr || []).filter(item => fields.some(f => String(item[f]||'').toLowerCase().includes(q))).slice(0,3);
+                const matches = (dataArr || []).filter(item => fields.some(f => normalizeText(item[f]).includes(q))).slice(0,2);
                 if(matches.length > 0) {
                     resultsHTML += `<div class="text-[10px] font-bold text-amber-500 dark:text-amber-400 pt-2 pb-1 border-b border-slate-200 dark:border-white/10"><i class="fa-solid ${icon} ml-1"></i> ${titleLabel}</div>`;
                     matches.forEach(m => {
@@ -1326,138 +1348,260 @@
             searchCat(appData.files, 'files-tab', 'fa-folder-open', 'پرونده‌ها', ['title', 'description']);
             searchCat(appData.infographics, 'infographics-tab', 'fa-image', 'اینفوگرافیک', ['title']);
             searchCat(appData.series, 'series-tab', 'fa-film', 'سریال‌ها', ['title']);
+            searchCat(appData.legalSystems, 'legal-tab', 'fa-scale-balanced', 'سامانه‌ها', ['title', 'description']);
             
             box.innerHTML = resultsHTML || `<div class="p-2 text-xs text-slate-500 dark:text-slate-400 text-center">موردی یافت نشد</div>`;
-        }
+        };
 
-        function gotoSection(tabId, titleText) {
-            // مخفی کردن نوار جستجو
+        window.gotoSection = function(tabId, titleText) {
             document.getElementById('liveSuggestionsBox').classList.add('hidden');
             document.getElementById('clearSearchBtn').classList.add('hidden');
             document.getElementById('searchInput').value = '';
             
-            // جابجایی تب
-            switchTab(tabId);
+            window.requestAnimationFrame(() => {
+                window.switchTab(tabId);
+                setTimeout(() => {
+                    const tab = document.getElementById(tabId);
+                    if (!tab) return;
+                    const elements = Array.from(tab.querySelectorAll('h2, h3, h4, span, div, p')).filter(el => el.textContent.includes(titleText));
+                    if(elements.length > 0) {
+                        const card = elements[0].closest('.ultra-glass, .bg-slate-100, .bg-slate-900') || elements[0];
+                        card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        card.classList.add('search-highlight');
+                        setTimeout(() => card.classList.remove('search-highlight'), 2000);
+                        window.triggerHaptic('medium');
+                    }
+                }, 100);
+            });
+        };
 
-            // اطمینان از لود شدن کامل لیست‌ها برای تب‌های دارای اسکرول
-            if (tabId === 'dictionary-tab') { pageLimits.dict = 9999; renderDictionary(); }
-            if (tabId === 'laws-tab') { pageLimits.laws = 9999; renderLaws(); }
-            if (tabId === 'news-tab') { pageLimits.news = 9999; renderNews(); }
-
-            // پیدا کردن المان و اسکرول/هایلایت روی آن
-            setTimeout(() => {
-                const tab = document.getElementById(tabId);
-                if (!tab) return;
-                
-                // جستجوی متن داخل تب
-                const elements = Array.from(tab.querySelectorAll('h2, h3, h4, span, div, p')).filter(el => el.textContent.includes(titleText));
-                if(elements.length > 0) {
-                    // یافتن کارت والد
-                    const card = elements[0].closest('.ultra-glass, .bg-slate-100, .bg-slate-900') || elements[0];
-                    card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    
-                    // افکت هایلایت
-                    const origBorder = card.style.borderColor;
-                    const origBoxShadow = card.style.boxShadow;
-                    card.style.borderColor = '#f59e0b';
-                    card.style.boxShadow = '0 0 20px rgba(245, 158, 11, 0.5)';
-                    card.style.transition = 'all 0.5s ease';
-                    
-                    setTimeout(() => {
-                        card.style.borderColor = origBorder;
-                        card.style.boxShadow = origBoxShadow;
-                    }, 2000);
-                    triggerHaptic('medium');
-                }
-            }, 300);
-        }
-
-        function clearSearchInput() { document.getElementById('searchInput').value = ''; document.getElementById('liveSuggestionsBox').classList.add('hidden'); document.getElementById('clearSearchBtn').classList.add('hidden'); }
-        function startVoiceDictation(targetInputId) {
-            if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) { return showToast('جستجوی صوتی پشتیبانی نمی‌شود', 'error'); }
+        window.clearSearchInput = function() { document.getElementById('searchInput').value = ''; document.getElementById('liveSuggestionsBox').classList.add('hidden'); document.getElementById('clearSearchBtn').classList.add('hidden'); };
+        window.startVoiceDictation = function(targetInputId) {
+            if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) { return window.showToast('جستجوی صوتی پشتیبانی نمی‌شود', 'error'); }
             try {
                 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
                 const recognition = new SpeechRecognition();
                 recognition.lang = 'fa-IR'; recognition.start();
                 recognition.onresult = function(event) {
                     const text = event.results[0][0].transcript; const input = document.getElementById(targetInputId);
-                    if(input) { input.value = text; if(targetInputId === 'searchInput') handleUniversalSearch(text); }
+                    if(input) { input.value = text; if(targetInputId === 'searchInput') window.handleUniversalSearch(text); }
                 };
-            } catch(e) { showToast('خطا در دسترسی به میکروفون', 'error'); }
-        }
+            } catch(e) { window.showToast('خطا در دسترسی به میکروفون', 'error'); }
+        };
 
-        // --- Touch Panning for Zoomed Images ---
-        let panX = 0, panY = 0, isPanning = false, startPanX, startPanY;
-        function toggleZoom(img) {
-            if (img.classList.contains('zoomed')) {
-                img.classList.remove('zoomed'); panX = 0; panY = 0;
-                img.style.transform = `translate(0px, 0px) scale(1)`;
-                img.style.cursor = 'zoom-in';
+        // --- مدیا، پخش زنده و ویدیو ---
+        window.playVideo = function(url) {
+            const vid = document.getElementById('liveStreamVideo');
+            if(vid) {
+                vid.src = url; 
+                vid.play().catch(e => console.log('Autoplay restriction handled'));
+                document.getElementById('liveStreamPlaceholder').classList.add('hidden'); 
+                window.triggerHaptic('light'); 
+            }
+        };
+
+        window.openMediaModal = function(idx, type) {
+            const list = type === 'series' ? appData.series : appData.infographics;
+            const item = list[idx]; if(!item) return;
+            document.getElementById('mediaModalTitle').innerText = item.title;
+            const content = document.getElementById('mediaModalContent');
+            const extBtn = document.getElementById('mediaModalExternalBtn');
+            const pipBtn = document.getElementById('pipBtn');
+            const cinBtn = document.getElementById('cinematicBtn');
+
+            if(type === 'series') {
+                content.innerHTML = `<div class="pro-video-wrapper"><video id="modalVideoPlayer" src="${item.url}" controls autoplay playsinline webkit-playsinline></video></div>`;
+                extBtn.classList.remove('hidden'); extBtn.setAttribute('href', item.url);
+                cinBtn.classList.remove('hidden');
+                if (document.pictureInPictureEnabled) { pipBtn.classList.remove('hidden'); }
             } else {
-                img.classList.add('zoomed');
-                img.style.transform = `translate(0px, 0px) scale(2.5)`;
-                img.style.cursor = 'grab';
+                content.innerHTML = `<div class="zoomable-container"><img src="${item.image}" class="zoomable-img" onclick="toggleZoom(this)"></div>`;
+                extBtn.classList.add('hidden'); pipBtn.classList.add('hidden'); cinBtn.classList.add('hidden');
             }
-            triggerHaptic('light');
-        }
-        
-        document.addEventListener('touchstart', (e) => {
-            if(e.target.classList.contains('zoomed')) {
-                isPanning = true; startPanX = e.touches[0].clientX - panX; startPanY = e.touches[0].clientY - panY;
-            }
-        }, {passive: false});
-        document.addEventListener('touchmove', (e) => {
-            if(isPanning && e.target.classList.contains('zoomed')) {
-                e.preventDefault(); 
-                panX = e.touches[0].clientX - startPanX; panY = e.touches[0].clientY - startPanY;
-                e.target.style.transform = `translate(${panX}px, ${panY}px) scale(2.5)`;
-            }
-        }, {passive: false});
-        document.addEventListener('touchend', () => isPanning = false);
-        
-        document.addEventListener('mousedown', (e) => {
-            if(e.target.classList.contains('zoomed')) {
-                isPanning = true; e.target.style.cursor = 'grabbing';
-                startPanX = e.clientX - panX; startPanY = e.clientY - panY;
-            }
-        });
-        document.addEventListener('mousemove', (e) => {
-            if(isPanning && e.target.classList.contains('zoomed')) {
-                e.preventDefault(); panX = e.clientX - startPanX; panY = e.clientY - startPanY;
-                e.target.style.transform = `translate(${panX}px, ${panY}px) scale(2.5)`;
-            }
-        });
-        document.addEventListener('mouseup', (e) => { if(isPanning) { isPanning = false; if(e.target.classList.contains('zoomed')) e.target.style.cursor = 'grab'; } });
-        document.addEventListener('mouseleave', () => isPanning = false);
+            document.getElementById('mediaModal').classList.remove('hidden');
+        };
 
-        // --- Audio Color Extraction ---
+        window.closeMediaModal = function() {
+            document.getElementById('mediaModal').classList.add('hidden');
+            const vid = document.getElementById('modalVideoPlayer');
+            if(vid) { vid.pause(); vid.src = ""; }
+            document.getElementById('mediaModalContent').innerHTML = '';
+        };
+
+        window.toggleCinematicMode = function() { document.getElementById('mediaModalBox').classList.toggle('cinematic-mode-box'); window.triggerHaptic('light'); };
+
+        let pipDiv = document.getElementById('floatingPipContainer');
+        let isDragging = false, startX, startY;
+        pipDiv.addEventListener('touchstart', e => { isDragging = true; startX = e.touches[0].clientX - pipDiv.offsetLeft; startY = e.touches[0].clientY - pipDiv.offsetTop; }, {passive:true});
+        pipDiv.addEventListener('touchmove', e => { if(!isDragging) return; e.preventDefault(); pipDiv.style.left = (e.touches[0].clientX - startX) + 'px'; pipDiv.style.top = (e.touches[0].clientY - startY) + 'px'; pipDiv.style.right = 'auto'; pipDiv.style.bottom = 'auto'; }, {passive:false});
+        pipDiv.addEventListener('touchend', () => isDragging = false);
+
+        window.openNativePiP = function() {
+            const vid = document.getElementById('modalVideoPlayer');
+            if(vid) { pipDiv.appendChild(vid); pipDiv.style.display = 'block'; window.closeMediaModal(); }
+        };
+        window.closePiP = function() { pipDiv.style.display = 'none'; pipDiv.innerHTML = '<div class="pip-close-btn" onclick="closePiP()"><i class="fa-solid fa-xmark"></i></div>'; };
+
+        // --- پادکست و رنگ کاور ---
         function getAverageColor(imgUrl, callback) {
+            if(!imgUrl) return callback('#080c14');
             const img = new Image();
-            img.crossOrigin = "Anonymous"; 
+            img.crossOrigin = "anonymous"; 
             img.src = imgUrl;
             img.onload = function() {
                 try {
                     const canvas = document.createElement('canvas'); const ctx = canvas.getContext('2d');
-                    canvas.width = img.width; canvas.height = img.height; ctx.drawImage(img, 0, 0);
-                    const data = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+                    canvas.width = 16; canvas.height = 16; ctx.drawImage(img, 0, 0, 16, 16);
+                    const data = ctx.getImageData(0, 0, 16, 16).data;
                     let r = 0, g = 0, b = 0, count = 0;
-                    for (let i = 0; i < data.length; i += 16) { r += data[i]; g += data[i+1]; b += data[i+2]; count++; }
-                    // Darken for UI contrast
-                    callback(`rgb(${Math.floor((r/count)*0.5)}, ${Math.floor((g/count)*0.5)}, ${Math.floor((b/count)*0.5)})`);
-                } catch(e) { callback('rgba(13, 19, 33, 0.95)'); } 
+                    for (let i = 0; i < data.length; i += 4) { r += data[i]; g += data[i+1]; b += data[i+2]; count++; }
+                    callback(`rgb(${Math.floor((r/count)*0.4)}, ${Math.floor((g/count)*0.4)}, ${Math.floor((b/count)*0.4)})`);
+                } catch(e) { callback('#080c14'); } 
             };
-            img.onerror = () => callback('rgba(13, 19, 33, 0.95)');
+            img.onerror = () => callback('#080c14');
         }
 
-        // --- General ---
-        function initPullToRefresh() {
+        let audioElm = document.getElementById('mainAudioObj');
+        window.playAudio = function(url, title, imgUrl) {
+            audioElm.src = url; audioElm.play().catch(e => console.log('Audio autoplay prevented'));
+            document.getElementById('playerTitle').innerText = title;
+            const player = document.getElementById('floatingAudioPlayer'); player.classList.add('show');
+            document.getElementById('playerPlayBtn').innerHTML = '<i class="fa-solid fa-circle-pause"></i>';
+            if(imgUrl) {
+                document.getElementById('playerThumb').innerHTML = `<img src="${imgUrl}" class="w-full h-full object-cover">`;
+                getAverageColor(imgUrl, (color) => { player.style.background = color; });
+            }
+        };
+        window.toggleAudioPlay = function() {
+            if(audioElm.paused) { audioElm.play(); document.getElementById('playerPlayBtn').innerHTML = '<i class="fa-solid fa-circle-pause"></i>'; }
+            else { audioElm.pause(); document.getElementById('playerPlayBtn').innerHTML = '<i class="fa-solid fa-circle-play"></i>'; }
+        };
+        window.updateAudioProgress = function() { if(audioElm.duration) document.getElementById('playerProgress').style.width = ((audioElm.currentTime / audioElm.duration) * 100) + '%'; };
+        window.closeAudioPlayer = function() { audioElm.pause(); document.getElementById('floatingAudioPlayer').classList.remove('show'); };
+
+        // --- بزرگنمایی و حرکت اینفوگرافیک ---
+        let panX = 0, panY = 0, isPanning = false, startPanX, startPanY;
+        window.toggleZoom = function(img) {
+            if (img.classList.contains('zoomed')) {
+                img.classList.remove('zoomed'); panX = 0; panY = 0;
+                img.style.transform = `translate(0px, 0px) scale(1)`; img.style.cursor = 'zoom-in';
+            } else {
+                img.classList.add('zoomed');
+                img.style.transform = `translate(0px, 0px) scale(2.5)`; img.style.cursor = 'grab';
+            }
+            window.triggerHaptic('light');
+        };
+        document.addEventListener('touchstart', (e) => { if(e.target.classList.contains('zoomed')) { isPanning = true; startPanX = e.touches[0].clientX - panX; startPanY = e.touches[0].clientY - panY; } }, {passive: false});
+        document.addEventListener('touchmove', (e) => { if(isPanning && e.target.classList.contains('zoomed')) { e.preventDefault(); panX = e.touches[0].clientX - startPanX; panY = e.touches[0].clientY - startPanY; e.target.style.transform = `translate(${panX}px, ${panY}px) scale(2.5)`; } }, {passive: false});
+        document.addEventListener('touchend', () => isPanning = false);
+
+        // --- چت‌بات هوش مصنوعی و اتصال به LLM ---
+        const LegalNlpEngine = {
+            analyze: function(text, history) {
+                let out = "";
+                const normalized = text.toLowerCase().trim();
+                
+                if (/^(سلام|درود|خوبی|وقت بخیر|سلام علیکم|روز بخیر|صبح بخیر|عصر بخیر)/.test(normalized) && normalized.length < 35) {
+                    return "سلام و درود! من دستیار هوشمند و تخصصی حقوقی SIJT هستم. برای بررسی و راهنمایی در خصوص دعاوی ملکی، کیفری، خانواده، مهریه، چک، مطالبات و قراردادها در خدمت شما هستم. لطفاً سوال خود را مطرح بفرمایید.";
+                }
+                if (/^(تو کی هستی|اسمت چیه|چیکار میکنی|رباتی|هوش مصنوعی)/.test(normalized)) {
+                    return "من «دستیار هوش مصنوعی حقوقی SIJT» هستم و برای پاسخگویی به سوالات قضایی، تنظیم لوایح و بررسی قوانین طراحی شده‌ام.";
+                }
+
+                const contextBlock = history.slice(-3).map(h => h.text).join(' ') + " " + text;
+                
+                if(contextBlock.includes('1396') || contextBlock.includes('۱۳۹۶') || contextBlock.includes('قدیم') || contextBlock.includes('97')) {
+                    out += "⏳ **تحلیل زمانی:** با توجه به اینکه سند مربوط به قبل از سال ۱۴۰۰ است، تابع قوانین سابق می‌باشد. در مورد چک، صدور اجراییه مستقیم (ماده ۲۳) امکان‌پذیر نیست و باید دعوای مطالبه وجه مطرح شود.\n\n";
+                } else if(text.includes('چک') && (text.includes('صیاد') || text.includes('جدید') || text.includes('۱۴۰۰'))) {
+                    out += "⏳ **تحلیل زمانی:** بر اساس قانون جدید صدور چک (چک‌های صیادی بنفش)، روند اجرای ثبت بسیار تسریع شده است.\n\n";
+                }
+                
+                let hasWidget = false;
+                if(text.includes('هزینه') && text.includes('دادرسی')) {
+                    out += "برای محاسبه دقیق هزینه دادرسی، از ویجت تعاملی زیر استفاده نمایید:\n[WIDGET:COURT_FEE]";
+                    hasWidget = true;
+                }
+                
+                if(!hasWidget) {
+                    let matched = false;
+                    for (let item of aiKnowledgeBase) {
+                        let score = 0;
+                        for (let kw of item.keywords) { if (contextBlock.includes(kw)) score += 2; }
+                        for (let pat of item.patterns) { if (pat.test(contextBlock)) score += 4; }
+                        if (score >= 4) { out += `### ⚖️ ${item.title}\n\n${item.content}`; matched = true; break; }
+                    }
+                    if(!matched) {
+                        out += "با توجه به رویه قضایی، برای پیگیری این موضوع باید ابتدا ادله اثبات دعوا (مانند اسناد، شهادت شهود یا تراکنش‌های مالی) را گردآوری کرده و سپس از طریق یکی از دفاتر خدمات الکترونیک قضایی، دادخواست یا شکواییه مربوطه را ثبت نمایید.";
+                    }
+                }
+                
+                if(contextBlock.includes('چک')) out += "\n\n📚 **مستندات:** <a class='text-amber-500 dark:text-amber-400 underline cursor-pointer' onclick='openLawBottomSheet(\"ماده ۲۳ قانون صدور چک\")'>مشاهده ماده ۲۳ قانون صدور چک</a>";
+                return out;
+            }
+        };
+
+        async function callLiveLLM(promptText) {
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST', mode: 'cors', headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify({ action: 'ai_chat', prompt: promptText, history: chatConversationHistory.slice(-4) })
+                });
+                if(!response.ok) throw new Error();
+                const data = await response.json();
+                return data.answer || data.result;
+            } catch(e) {
+                return LegalNlpEngine.analyze(promptText, chatConversationHistory);
+            }
+        }
+
+        window.runAiAssistant = async function() {
+            const input = document.getElementById('aiPromptInput');
+            const p = input.value.trim(); if(!p) return;
+            chatConversationHistory.push({ role: 'user', text: p });
+            input.value = ''; window.renderChatUI(); document.getElementById('aiTypingIndicator').classList.remove('hidden');
+
+            const res = await callLiveLLM(p);
+            document.getElementById('aiTypingIndicator').classList.add('hidden');
+            chatConversationHistory.push({ role: 'model', text: res });
+            sessionStorage.setItem('mizan_active_chat', JSON.stringify(chatConversationHistory));
+            window.renderChatUI();
+        };
+
+        window.renderChatUI = function() {
+            const c = document.getElementById('chatMessagesContainer');
+            c.innerHTML = chatConversationHistory.map(msg => {
+                const isUser = msg.role === 'user';
+                let formattedText = msg.text.replace('[WIDGET:COURT_FEE]', `
+                    <div class="chat-widget mt-2">
+                        <input type="number" id="chatFeeInp" placeholder="مبلغ (ریال)" class="w-full bg-white/50 dark:bg-black/50 text-slate-800 dark:text-white rounded p-1.5 mb-1 text-[11px] focus:outline-none border border-slate-300 dark:border-transparent">
+                        <button onclick="alert('هزینه بدوی تقریبی: ' + (document.getElementById('chatFeeInp').value * 0.035) + ' ریال')" class="w-full bg-red-600 text-white rounded p-1.5 text-[11px] font-bold shadow">محاسبه سریع</button>
+                    </div>`);
+                return `<div class="flex justify-${isUser ? 'end' : 'start'}"><div class="${isUser ? 'bg-red-600 text-white rounded-br-none shadow-md' : 'bg-white dark:bg-slate-800 border border-slate-200 dark:border-white/10 text-slate-800 dark:text-slate-100 rounded-bl-none shadow'} p-3 rounded-2xl max-w-[88%] leading-relaxed">${formattedText.replace(/\n/g, '<br>')}</div></div>`;
+            }).join('');
+            c.scrollTop = c.scrollHeight;
+        };
+        window.sendQuickChat = function(text) { document.getElementById('aiPromptInput').value = text; window.runAiAssistant(); };
+        window.clearChatHistory = function() { chatConversationHistory = []; sessionStorage.removeItem('mizan_active_chat'); window.renderChatUI(); window.showToast('تاریخچه پاکسازی شد'); };
+
+        // --- افکت‌های عمومی و ژست‌ها ---
+        window.initPullToRefresh = function() {
             let startY = 0; let ptr = document.getElementById('ptr-indicator'); let isPulling = false;
-            window.addEventListener('touchstart', e => { if(window.scrollY === 0) startY = e.touches[0].clientY; }, {passive:true});
-            window.addEventListener('touchmove', e => { if(window.scrollY === 0 && startY > 0) { let y = e.touches[0].clientY; if(y - startY > 50) { isPulling = true; ptr.style.height = '40px'; } } }, {passive:true});
-            window.addEventListener('touchend', e => { if(isPulling) { manualRefresh(); setTimeout(() => { ptr.style.height = '0'; isPulling = false; }, 1000); } startY = 0; }, {passive:true});
-        }
+            window.addEventListener('touchstart', e => { 
+                if(window.scrollY <= 0 && document.documentElement.scrollTop <= 0) startY = e.touches[0].clientY; 
+            }, {passive:true});
+            window.addEventListener('touchmove', e => { 
+                if(startY > 0 && (window.scrollY <= 0 && document.documentElement.scrollTop <= 0)) { 
+                    let y = e.touches[0].clientY; 
+                    if(y - startY > 60) { isPulling = true; ptr.style.height = '40px'; } 
+                } 
+            }, {passive:true});
+            window.addEventListener('touchend', e => { 
+                if(isPulling) { window.manualRefresh(); setTimeout(() => { ptr.style.height = '0'; isPulling = false; }, 1000); } 
+                startY = 0; 
+            }, {passive:true});
+        };
 
-        function initTiltEffect() {
+        window.initTiltEffect = function() {
             const cards = document.querySelectorAll('.ultra-glass');
             cards.forEach(c => {
                 c.addEventListener('touchmove', e => {
@@ -1467,9 +1611,9 @@
                 });
                 c.addEventListener('touchend', () => c.style.transform = 'none');
             });
-        }
+        };
 
-        function switchTab(sectionId, btn) {
+        window.switchTab = function(sectionId, btn) {
             document.querySelectorAll('.page-section').forEach(sec => sec.classList.add('hidden'));
             document.getElementById(sectionId)?.classList.remove('hidden');
             document.querySelectorAll('#mainNavContainer button').forEach(b => b.classList.remove('active-tab'));
@@ -1481,19 +1625,20 @@
                 if(vid && !vid.paused) vid.pause();
             }
             window.scrollTo(0, 0);
-        }
+        };
         
-        function toggleMoreDrawer() { const d = document.getElementById('moreDrawer'); d.style.display = d.style.display === 'block' ? 'none' : 'block'; }
-        function toggleSettingsMenu(e) { e.stopPropagation(); document.getElementById('settingsDropdown').classList.toggle('hidden'); }
-        function openAdvancedSearchModal() { document.getElementById('advancedSearchModal').classList.remove('hidden'); }
-        function closeAdvancedSearchModal() { document.getElementById('advancedSearchModal').classList.add('hidden'); }
-        function executeGoogleSearch() {
+        window.toggleMoreDrawer = function() { const d = document.getElementById('moreDrawer'); d.style.display = d.style.display === 'block' ? 'none' : 'block'; };
+        window.toggleSettingsMenu = function(e) { if(e) e.stopPropagation(); document.getElementById('settingsDropdown').classList.toggle('hidden'); };
+        window.openAdvancedSearchModal = function() { document.getElementById('advancedSearchModal').classList.remove('hidden'); };
+        window.closeAdvancedSearchModal = function() { document.getElementById('advancedSearchModal').classList.add('hidden'); };
+        window.executeGoogleSearch = function() {
             const query = document.getElementById('googleSearchInput').value.trim();
             if(query) window.open(`https://www.google.com/search?q=${encodeURIComponent(query)}`, '_blank');
-            closeAdvancedSearchModal();
-        }
-        
-        window.addEventListener('DOMContentLoaded', initApp);
+            window.closeAdvancedSearchModal();
+        };
+
+        // راه‌اندازی پس از بارگذاری DOM
+        window.addEventListener('DOMContentLoaded', window.initApp);
     </script>
 </body>
 </html>
