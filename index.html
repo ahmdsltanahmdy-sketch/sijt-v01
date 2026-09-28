@@ -22,7 +22,7 @@
     <!-- کتابخانه‌ها -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
+    
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -42,7 +42,7 @@
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-        /* پس‌زمینه */
+        /* پس‌زمینه سایبرنتیک */
         .mesh-bg {
             background-color: #080c14;
             background-image: 
@@ -53,72 +53,131 @@
                 linear-gradient(90deg, rgba(245, 158, 11, 0.03) 1px, transparent 1px);
             background-size: 100% 100%, 100% 100%, 100% 100%, 32px 32px, 32px 32px;
         }
-        .light .mesh-bg, body:not(.dark):not(.oled-mode) .mesh-bg { background-color: #f1f5f9; background-image: none; }
+        .light .mesh-bg, body:not(.dark):not(.oled-mode) .mesh-bg {
+            background-color: #f8fafc; background-image: none;
+        }
+
         body.oled-mode { background-color: #000000 !important; color: #f8fafc !important; background-image: none !important; }
         body.oled-mode .ultra-glass { background: rgba(8, 8, 8, 0.98) !important; border: 1px solid rgba(255, 255, 255, 0.15) !important; color: #ffffff !important; box-shadow: 0 0 20px rgba(197, 27, 36, 0.2) !important; }
 
         /* حالت High Contrast */
         body.high-contrast { background-color: #000 !important; color: #ffff00 !important; background-image: none !important; }
-        body.high-contrast .ultra-glass, body.high-contrast .settings-glass { background: #000 !important; border: 2px solid #ffff00 !important; color: #ffff00 !important; box-shadow: none !important; }
+        body.high-contrast .ultra-glass, body.high-contrast .settings-glass {
+            background: #000 !important; border: 2px solid #ffff00 !important; color: #ffff00 !important; box-shadow: none !important;
+        }
         body.high-contrast p, body.high-contrast span, body.high-contrast h2, body.high-contrast h3, body.high-contrast div { color: #ffff00 !important; }
         body.high-contrast button { border: 1px solid #ffff00; }
 
-        .noise-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.025'/%3E%3C/svg%3E"); pointer-events: none; z-index: 999; }
+        .noise-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.025'/%3E%3C/svg%3E");
+            pointer-events: none; z-index: 999;
+        }
+
         .text-gradient { background: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
-        /* کارت‌ها و شیشه‌ها */
-        .ultra-glass { background: rgba(13, 19, 33, 0.92); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border: 1px solid rgba(245, 158, 11, 0.25); box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7), 0 0 15px rgba(197, 27, 36, 0.15); color: #ffffff; transition: transform 0.1s, border-color 0.3s, box-shadow 0.3s; transform-style: preserve-3d; }
-        .ultra-glass:hover { border-color: rgba(245, 158, 11, 0.45); box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8), 0 0 25px rgba(197, 27, 36, 0.3); }
+        /* کارت‌ها با طراحی نئونی و 3D Tilt */
+        .ultra-glass {
+            background: rgba(13, 19, 33, 0.92);
+            backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(245, 158, 11, 0.25);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7), 0 0 15px rgba(197, 27, 36, 0.15);
+            color: #ffffff;
+            transition: transform 0.1s, border-color 0.3s, box-shadow 0.3s;
+            transform-style: preserve-3d;
+        }
+        .ultra-glass:hover {
+            border-color: rgba(245, 158, 11, 0.45);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8), 0 0 25px rgba(197, 27, 36, 0.3);
+        }
         .ultra-glass-content { transform: translateZ(20px); }
-        .light .ultra-glass, body:not(.dark):not(.oled-mode) .ultra-glass { background: rgba(255, 255, 255, 0.99); border: 1px solid rgba(0, 0, 0, 0.16); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08); color: #0f172a !important; }
-        .light .ultra-glass p, body:not(.dark):not(.oled-mode) .ultra-glass p, .light .ultra-glass span, body:not(.dark):not(.oled-mode) .ultra-glass span { color: #1e293b !important; }
 
-        .settings-glass { background: rgba(13, 19, 33, 0.98); backdrop-filter: blur(30px); border: 1px solid rgba(245, 158, 11, 0.3); color: #ffffff; box-shadow: 0 0 35px rgba(0, 0, 0, 0.9), 0 0 20px rgba(197, 27, 36, 0.3); }
+        .light .ultra-glass, body:not(.dark):not(.oled-mode) .ultra-glass {
+            background: rgba(255, 255, 255, 0.99); border: 1px solid rgba(0, 0, 0, 0.12); box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05); color: #0f172a !important;
+        }
+        .light .ultra-glass p, body:not(.dark):not(.oled-mode) .ultra-glass p, .light .ultra-glass span, body:not(.dark):not(.oled-mode) .ultra-glass span { color: #334155 !important; }
+
+        .settings-glass {
+            background: rgba(13, 19, 33, 0.98); backdrop-filter: blur(30px); border: 1px solid rgba(245, 158, 11, 0.3); color: #ffffff;
+            box-shadow: 0 0 35px rgba(0, 0, 0, 0.9), 0 0 20px rgba(197, 27, 36, 0.3);
+        }
         .light .settings-glass, body:not(.dark):not(.oled-mode) .settings-glass { background: rgba(255, 255, 255, 0.98); border: 1px solid rgba(0, 0, 0, 0.15); color: #0f172a; }
 
         /* نوار ناوبری پایین */
-        .floating-nav { background: rgba(10, 15, 28, 0.96) !important; backdrop-filter: blur(30px) saturate(200%); -webkit-backdrop-filter: blur(30px) saturate(200%); border: 1px solid rgba(245, 158, 11, 0.35); box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8), 0 0 25px rgba(197, 27, 36, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.12); transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), padding 0.3s ease, opacity 0.3s ease; }
+        .floating-nav {
+            background: rgba(10, 15, 28, 0.96) !important; backdrop-filter: blur(30px) saturate(200%); -webkit-backdrop-filter: blur(30px) saturate(200%);
+            border: 1px solid rgba(245, 158, 11, 0.35);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8), 0 0 25px rgba(197, 27, 36, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), padding 0.3s ease, opacity 0.3s ease;
+        }
         .light .floating-nav, body:not(.dark):not(.oled-mode) .floating-nav { background: #ffffff !important; border: 1px solid #cbd5e1 !important; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15) !important; }
+        
         .nav-scrolled-compact { transform: translateY(8px) scale(0.96) !important; padding-top: 3px !important; padding-bottom: 3px !important; opacity: 0.92; }
+
         .nav-btn { color: #cbd5e1; transition: all 0.25s ease; }
-        .light .nav-btn, body:not(.dark):not(.oled-mode) .nav-btn { color: #334155 !important; }
-        .nav-btn.active-tab { color: #ef4444 !important; transform: scale(1.08) translateY(-2px); filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.8)); }
+        .light .nav-btn, body:not(.dark):not(.oled-mode) .nav-btn { color: #64748b !important; }
+        .nav-btn.active-tab {
+            color: #ef4444 !important; transform: scale(1.08) translateY(-2px); filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.8));
+        }
         .nav-btn.active-tab span { color: #ef4444 !important; font-weight: 900 !important; }
 
-        /* کشوها */
-        #moreDrawer, #navEditorDrawer, #lawBottomSheet { display: none; position: fixed; bottom: 0; left: 0; right: 0; z-index: 100; max-width: 28rem; margin: 0 auto; border-top-left-radius: 1.5rem; border-top-right-radius: 1.5rem; padding: 1rem; box-shadow: 0 -10px 40px rgba(0,0,0,0.8), 0 0 25px rgba(197, 27, 36, 0.3); animation: slideUpDrawer 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        /* کشوها و مودال‌ها */
+        #moreDrawer, #navEditorDrawer, #lawBottomSheet {
+            display: none; position: fixed; bottom: 0; left: 0; right: 0;
+            z-index: 100; max-width: 28rem; margin: 0 auto;
+            border-top-left-radius: 1.5rem; border-top-right-radius: 1.5rem;
+            padding: 1rem; box-shadow: 0 -10px 40px rgba(0,0,0,0.8), 0 0 25px rgba(197, 27, 36, 0.3);
+            animation: slideUpDrawer 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
         @keyframes slideUpDrawer { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
         .glass-tab { background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(16px); border: 1px solid rgba(245, 158, 11, 0.25); color: #ffffff !important; }
         .header-bg { background-image: url('https://raw.githubusercontent.com/ahmdsltanahmdy-sketch/mizan-miniapp-new/main/photo_2026-09-15_10-06-27.jpg'); background-size: cover; background-position: center; }
         
         #appHeader { transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease, background-color 0.4s ease, backdrop-filter 0.4s ease; will-change: transform, opacity; }
         #appHeader.scrolled-header { background-color: rgba(8, 12, 20, 0.95) !important; backdrop-filter: blur(25px) saturate(180%); border-bottom: 1px solid rgba(245, 158, 11, 0.3); box-shadow: 0 10px 25px rgba(0,0,0,0.7); }
         .header-hidden { transform: translateY(-100%) !important; opacity: 0 !important; pointer-events: none !important; }
+
         #backToTopBtn { position: fixed; bottom: 84px; right: 16px; z-index: 45; }
 
         /* Media & PiP */
         .zoomable-container { overflow: auto; position: relative; width: 100%; height: 70vh; display: flex; align-items: center; justify-content: center; background: #000; border-radius: 1rem; cursor: grab; }
+        .zoomable-container:active { cursor: grabbing; }
         .zoomable-img { transition: transform 0.2s ease; max-width: 100%; max-height: 100%; object-fit: contain; user-select: none; }
         .pro-video-wrapper { position: relative; width: 100%; aspect-ratio: 16/9; background: radial-gradient(circle at center, #1e293b 0%, #020617 100%); border-radius: 1.25rem; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.85), 0 0 25px rgba(197, 27, 36, 0.4); border: 1px solid rgba(245, 158, 11, 0.3); }
         .pro-video-wrapper video { width: 100%; height: 100%; object-fit: cover; }
         
-        #floatingPipContainer { display: none; position: fixed; bottom: 100px; right: 20px; width: 180px; aspect-ratio: 16/9; z-index: 9999; background: #000; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.8), 0 0 15px rgba(197,27,36,0.5); border: 2px solid rgba(245, 158, 11, 0.5); cursor: move; touch-action: none; }
+        /* Floating Native PiP */
+        #floatingPipContainer {
+            display: none; position: fixed; bottom: 100px; right: 20px; width: 180px; aspect-ratio: 16/9;
+            z-index: 9999; background: #000; border-radius: 12px; overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8), 0 0 15px rgba(197,27,36,0.5);
+            border: 2px solid rgba(245, 158, 11, 0.5); cursor: move; touch-action: none;
+        }
         #floatingPipContainer video { width: 100%; height: 100%; object-fit: cover; }
         .pip-close-btn { position: absolute; top: 4px; right: 4px; background: rgba(0,0,0,0.6); color: #fff; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; z-index: 10; font-size: 10px; cursor: pointer; }
 
         /* Floating Audio Player */
-        #floatingAudioPlayer { position: fixed; bottom: 70px; left: 12px; right: 12px; max-width: 400px; margin: 0 auto; background: var(--player-color, rgba(13, 19, 33, 0.95)); backdrop-filter: blur(20px); border: 1px solid rgba(245, 158, 11, 0.4); border-radius: 20px; padding: 10px 15px; display: none; align-items: center; justify-content: space-between; box-shadow: 0 -10px 30px rgba(0,0,0,0.7), 0 0 20px rgba(197,27,36,0.3); z-index: 49; transform: translateY(150%); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), background 0.5s ease; }
+        #floatingAudioPlayer {
+            position: fixed; bottom: 70px; left: 12px; right: 12px; max-width: 400px; margin: 0 auto;
+            background: var(--player-color, rgba(13, 19, 33, 0.95)); backdrop-filter: blur(20px);
+            border: 1px solid rgba(245, 158, 11, 0.4); border-radius: 20px;
+            padding: 10px 15px; display: none; align-items: center; justify-content: space-between;
+            box-shadow: 0 -10px 30px rgba(0,0,0,0.7), 0 0 20px rgba(197,27,36,0.3); z-index: 49;
+            transform: translateY(150%); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), background 0.5s ease;
+        }
         #floatingAudioPlayer.show { display: flex; transform: translateY(0); }
 
         .cinematic-mode-box { max-width: 98vw !important; width: 98vw !important; background: rgba(5, 5, 5, 0.99) !important; border: 1px solid rgba(245, 158, 11, 0.4) !important; box-shadow: 0 0 60px rgba(0, 0, 0, 0.95), 0 0 30px rgba(197, 27, 36, 0.5) !important; }
         .cinematic-mode-box .pro-video-wrapper { aspect-ratio: 21/9 !important; max-height: 75vh; }
-        .card-bg-glass { background-image: linear-gradient(rgba(10, 15, 28, 0.95), rgba(10, 15, 28, 0.99)), url('https://raw.githubusercontent.com/ahmdsltanahmdy-sketch/sijt-v01/main/01.png'); background-size: cover; background-position: center; border: 1px solid rgba(245, 158, 11, 0.3); color: #ffffff; box-shadow: 0 0 20px rgba(197, 27, 36, 0.25); }
 
         .custom-skeleton { background: linear-gradient(90deg, rgba(255,255,255,0.05) 25%, rgba(255,255,255,0.15) 50%, rgba(255,255,255,0.05) 75%); background-size: 200% 100%; animation: customSkeletonAnim 1.5s infinite ease-in-out; border-radius: 14px; }
+        .light .custom-skeleton { background: linear-gradient(90deg, rgba(0,0,0,0.05) 25%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.05) 75%); background-size: 200% 100%; }
         @keyframes customSkeletonAnim { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
 
         .page-section { animation: fadeInScale 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         @keyframes fadeInScale { from { opacity: 0; transform: translateY(8px) scale(0.99); } to { opacity: 1; transform: translateY(0) scale(1); } }
+
         .story-ring { background: linear-gradient(45deg, #f59e0b, #c51b24, #9333ea); padding: 2px; border-radius: 50%; display: inline-block; cursor: pointer; box-shadow: 0 0 10px rgba(245, 158, 11, 0.4); }
 
         #toastContainer { position: fixed; top: 16px; left: 50%; transform: translateX(-50%); z-index: 9999; display: flex; flex-direction: column; gap: 8px; pointer-events: none; width: 90%; max-width: 380px; }
@@ -132,9 +191,14 @@
         .ptr-spinner { border: 3px solid rgba(245,158,11,0.2); border-top: 3px solid #f59e0b; border-radius: 50%; width: 24px; height: 24px; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
+        /* Glossary Tooltip Highlighting */
         .glossary-term { color: #60a5fa; border-bottom: 1px dashed #60a5fa; cursor: pointer; transition: color 0.2s; }
         .glossary-term:hover { color: #f59e0b; border-bottom-color: #f59e0b; }
+        .light .glossary-term { color: #2563eb; border-bottom-color: #2563eb; }
+
+        /* In-Chat Widget */
         .chat-widget { background: rgba(0,0,0,0.4); border: 1px solid rgba(245,158,11,0.4); border-radius: 12px; padding: 10px; margin-top: 8px; }
+        .light .chat-widget { background: rgba(0,0,0,0.05); }
 
         /* Tree Diagram */
         .tree-container { display: flex; flex-direction: column; align-items: center; font-size: 10px; margin-top: 10px; }
@@ -143,13 +207,24 @@
         .tree-branches { display: flex; justify-content: space-around; width: 100%; border-top: 2px solid #f59e0b; padding-top: 10px; position: relative; }
         .tree-branch { display: flex; flex-direction: column; align-items: center; position: relative; width:100%; }
         .tree-branch::before { content: ''; position: absolute; top: -10px; left: 50%; width: 2px; height: 10px; background: #f59e0b; }
+
+        /* Typing Dots (Replace Lottie to prevent 403) */
+        .typing-dot { width: 6px; height: 6px; background-color: #f59e0b; border-radius: 50%; margin: 0 2px; animation: typingAnimation 1.4s infinite ease-in-out both; }
+        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+        @keyframes typingAnimation { 0%, 80%, 100% { transform: scale(0); opacity: 0.3; } 40% { transform: scale(1); opacity: 1; } }
+
     </style>
 </head>
 <body id="bodyRoot" class="mesh-bg text-slate-900 dark:text-slate-100 min-h-screen flex flex-col relative select-none">
 
-    <!-- اسپلش اسکرین روان -->
+    <!-- اسپلش اسکرین پایدار با CSS -->
     <div id="splashScreen" class="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#080c14] transition-opacity duration-300">
-        <div class="relative w-32 h-32 flex items-center justify-center mb-2" id="splashLottie"></div>
+        <div class="relative w-24 h-24 flex items-center justify-center mb-4">
+            <div class="absolute inset-0 border-4 border-slate-800 rounded-full"></div>
+            <div class="absolute inset-0 border-4 border-red-600 border-t-transparent rounded-full animate-spin"></div>
+            <i class="fa-solid fa-scale-balanced text-4xl text-amber-500 drop-shadow-[0_0_10px_rgba(245,158,11,0.6)]"></i>
+        </div>
         <h1 class="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-amber-500 tracking-wider">SIJT</h1>
         <p class="text-xs text-slate-400 mt-2 font-bold animate-pulse">سامانه تخصصی حقوقی هوشمند</p>
     </div>
@@ -227,29 +302,32 @@
 
         <!-- منوی تنظیمات -->
         <div id="settingsDropdown" class="hidden absolute left-4 top-12 z-50 max-w-xs w-80 p-4 settings-glass rounded-3xl space-y-3 text-xs shadow-2xl max-h-[80vh] overflow-y-auto">
+            
             <div id="installPwaBox" class="hidden flex items-center justify-between pb-2 border-b border-white/20">
                 <span class="font-bold text-amber-300">نصب اپلیکیشن:</span>
-                <button onclick="installPWA();" class="bg-amber-500/20 text-amber-300 px-3 py-1 rounded-xl font-bold"><i class="fa-solid fa-download ml-1"></i> نصب</button>
+                <button onclick="installPWA();" class="bg-amber-100 text-amber-700 dark:bg-amber-500/20 dark:text-amber-300 px-3 py-1 rounded-xl font-bold"><i class="fa-solid fa-download ml-1"></i> نصب</button>
             </div>
+            
             <div class="flex items-center justify-between pb-2 border-b border-white/20">
                 <span class="font-bold">حالت نمایش (روز / شب):</span>
-                <button onclick="toggleTheme();" class="bg-white/20 px-3 py-1 rounded-xl font-medium">تیره / روشن</button>
+                <button onclick="toggleTheme();" class="bg-slate-200 text-slate-700 dark:bg-white/20 dark:text-white px-3 py-1 rounded-xl font-medium">تیره / روشن</button>
             </div>
             <div class="flex items-center justify-between pb-2 border-b border-white/20">
                 <span class="font-bold">کنتراست بالا (ویژه بینایی):</span>
-                <button onclick="toggleHighContrast();" class="bg-yellow-600/40 text-yellow-200 px-3 py-1 rounded-xl font-medium">فعال/غیرفعال</button>
+                <button onclick="toggleHighContrast();" class="bg-yellow-100 text-yellow-700 dark:bg-yellow-600/40 dark:text-yellow-200 px-3 py-1 rounded-xl font-medium">فعال/غیرفعال</button>
             </div>
             <div class="flex items-center justify-between pb-2 border-b border-white/20">
                 <span class="font-bold">حالت مطالعه (OLED):</span>
-                <button onclick="toggleOledMode();" class="bg-red-600/40 text-red-200 px-3 py-1 rounded-xl font-medium">فعال/غیرفعال</button>
+                <button onclick="toggleOledMode();" class="bg-red-100 text-red-700 dark:bg-red-600/40 dark:text-red-200 px-3 py-1 rounded-xl font-medium">فعال/غیرفعال</button>
             </div>
             <div class="flex items-center justify-between pb-2 border-b border-white/20">
                 <span class="font-bold">شخصی‌سازی نوار پایین:</span>
-                <button onclick="openNavEditor(); document.getElementById('settingsDropdown').classList.add('hidden');" class="bg-indigo-600/40 text-indigo-200 px-3 py-1 rounded-xl font-medium"><i class="fa-solid fa-pen-to-square"></i> ویرایش</button>
+                <button onclick="openNavEditor(); document.getElementById('settingsDropdown').classList.add('hidden');" class="bg-indigo-100 text-indigo-700 dark:bg-indigo-600/40 dark:text-indigo-200 px-3 py-1 rounded-xl font-medium"><i class="fa-solid fa-pen-to-square"></i> ویرایش</button>
             </div>
+            
             <div class="flex items-center justify-between pb-2 border-b border-white/20">
                 <span class="font-bold">قلم تخصصی:</span>
-                <select id="fontSelect" onchange="changeFontFamily(this.value);" class="bg-slate-800 text-white rounded-lg px-2 py-1 text-[11px]">
+                <select id="fontSelect" onchange="changeFontFamily(this.value);" class="bg-slate-200 text-slate-800 dark:bg-slate-800 dark:text-white rounded-lg px-2 py-1 text-[11px]">
                     <option value="Tahoma">Tahoma</option>
                     <option value="Vazirmatn">وزیر</option>
                     <option value="Shabnam">شبنم</option>
@@ -257,7 +335,7 @@
             </div>
             <div class="flex items-center justify-between pb-2 border-b border-white/20">
                 <span class="font-bold">فاصله خطوط:</span>
-                <select onchange="changeLineHeight(this.value);" class="bg-slate-800 text-white rounded-lg px-2 py-1 text-[11px]">
+                <select onchange="changeLineHeight(this.value);" class="bg-slate-200 text-slate-800 dark:bg-slate-800 dark:text-white rounded-lg px-2 py-1 text-[11px]">
                     <option value="1.5">فشرده</option>
                     <option value="1.8" selected>استاندارد</option>
                     <option value="2.2">باز (راحت)</option>
@@ -266,14 +344,14 @@
             <div class="flex items-center justify-between pb-2 border-b border-white/20">
                 <span class="font-bold">اندازه متن:</span>
                 <div class="space-x-1 space-x-reverse">
-                    <button onclick="changeAppFontSize('11px')" class="px-2 py-0.5 bg-white/20 rounded-lg">کوچک</button>
-                    <button onclick="changeAppFontSize('12px')" class="px-2 py-0.5 bg-white/20 rounded-lg">متوسط</button>
-                    <button onclick="changeAppFontSize('14px')" class="px-2 py-0.5 bg-white/20 rounded-lg">بزرگ</button>
+                    <button onclick="changeAppFontSize('11px')" class="px-2 py-0.5 bg-slate-200 text-slate-700 dark:bg-white/20 dark:text-white rounded-lg">کوچک</button>
+                    <button onclick="changeAppFontSize('12px')" class="px-2 py-0.5 bg-slate-200 text-slate-700 dark:bg-white/20 dark:text-white rounded-lg">متوسط</button>
+                    <button onclick="changeAppFontSize('14px')" class="px-2 py-0.5 bg-slate-200 text-slate-700 dark:bg-white/20 dark:text-white rounded-lg">بزرگ</button>
                 </div>
             </div>
             <div class="flex items-center justify-between pb-2 border-b border-white/20" onclick="event.stopPropagation();">
                 <span class="font-bold">تقویم:</span>
-                <select id="calendarSelect" onchange="changeCalendarType(this.value); event.stopPropagation();" class="bg-slate-800 text-white rounded-lg px-2 py-1 text-[11px] border border-white/20">
+                <select id="calendarSelect" onchange="changeCalendarType(this.value); event.stopPropagation();" class="bg-slate-200 text-slate-800 dark:bg-slate-800 dark:text-white rounded-lg px-2 py-1 text-[11px]">
                     <option value="persian">شمسی</option>
                     <option value="gregorian">میلادی</option>
                     <option value="lunar">قمری</option>
@@ -285,10 +363,10 @@
             </div>
             <div class="flex items-center justify-between pb-2 border-b border-white/20">
                 <span class="font-bold">پاکسازی کش:</span>
-                <button onclick="clearIndexedDBCache();" class="bg-red-500/20 text-red-300 px-2.5 py-1 rounded-xl font-bold">پاکسازی</button>
+                <button onclick="clearIndexedDBCache();" class="bg-rose-100 text-rose-700 dark:bg-red-500/20 dark:text-red-300 px-2.5 py-1 rounded-xl font-bold">پاکسازی</button>
             </div>
             <div class="text-center pt-1">
-                <button onclick="openAboutModal();" class="text-amber-400 font-bold">درباره ما و پشتیبانی</button>
+                <button onclick="openAboutModal();" class="text-amber-400 font-bold hover:text-amber-300">درباره ما و پشتیبانی</button>
             </div>
         </div>
 
@@ -296,12 +374,12 @@
         <div class="max-w-md mx-auto px-4 py-2.5 relative z-20">
             <div class="flex space-x-2 space-x-reverse relative items-center">
                 <div class="relative flex-grow">
-                    <input type="text" id="searchInput" oninput="handleUniversalSearch(this.value)" placeholder="جستجوی هوشمند فازی در اصطلاحات..." class="w-full bg-slate-900/90 text-amber-200 placeholder-slate-400 rounded-xl px-4 py-2.5 pr-9 pl-14 text-xs focus:outline-none border border-amber-500/30 shadow-inner">
-                    <i class="fa-solid fa-magnifying-glass absolute right-3 top-3.5 text-amber-300 text-xs"></i>
-                    <button onclick="startVoiceDictation('searchInput')" title="جستجوی صوتی" class="absolute left-7 top-2.5 text-amber-400 hover:text-white p-1 text-xs"><i class="fa-solid fa-microphone"></i></button>
-                    <button id="clearSearchBtn" onclick="clearSearchInput()" class="hidden absolute left-2 top-3 text-slate-300 hover:text-white text-xs"><i class="fa-solid fa-xmark"></i></button>
+                    <input type="text" id="searchInput" oninput="handleUniversalSearch(this.value)" placeholder="جستجوی جامع در تمامی بخش‌ها..." class="w-full bg-white/90 text-slate-800 dark:bg-slate-900/90 dark:text-amber-200 placeholder-slate-400 rounded-xl px-4 py-2.5 pr-9 pl-14 text-xs focus:outline-none border border-amber-500/30 shadow-inner">
+                    <i class="fa-solid fa-magnifying-glass absolute right-3 top-3.5 text-amber-500 dark:text-amber-300 text-xs"></i>
+                    <button onclick="startVoiceDictation('searchInput')" title="جستجوی صوتی" class="absolute left-7 top-2.5 text-amber-500 hover:text-amber-600 dark:text-amber-400 dark:hover:text-white p-1 text-xs"><i class="fa-solid fa-microphone"></i></button>
+                    <button id="clearSearchBtn" onclick="clearSearchInput()" class="hidden absolute left-2 top-3 text-slate-500 hover:text-slate-700 dark:text-slate-300 dark:hover:text-white text-xs"><i class="fa-solid fa-xmark"></i></button>
                 </div>
-                <button onclick="openAdvancedSearchModal(); triggerHaptic('light');" class="glass-tab p-2.5 rounded-xl text-xs flex items-center justify-center transition text-amber-300 shadow hover:bg-white/25">
+                <button onclick="openAdvancedSearchModal(); triggerHaptic('light');" class="glass-tab p-2.5 rounded-xl text-xs flex items-center justify-center transition text-amber-500 dark:text-amber-300 shadow hover:bg-white/25">
                     <i class="fa-solid fa-earth-americas text-sm"></i>
                 </button>
             </div>
@@ -316,12 +394,12 @@
         <section id="dictionary-tab" class="page-section space-y-3">
             <div class="flex items-center justify-between mb-1">
                 <h2 class="font-black text-xs flex items-center text-gradient"><i class="fa-solid fa-book ml-1.5 text-red-500"></i> فرهنگ اصطلاحات حقوقی</h2>
-                <span id="dictCounter" class="text-[9px] text-amber-300 font-bold"></span>
+                <span id="dictCounter" class="text-[9px] text-amber-500 dark:text-amber-300 font-bold"></span>
             </div>
             <div class="flex space-x-2 space-x-reverse overflow-x-auto hide-scrollbar pb-1 text-[11px]">
                 <button onclick="filterDictCategory('all', this); triggerHaptic('light');" class="dict-chip px-3 py-1.5 rounded-full bg-red-600 text-white font-bold flex-shrink-0 shadow shadow-red-600/30">همه</button>
-                <button onclick="filterDictCategory('مدنی', this); triggerHaptic('light');" class="dict-chip px-3 py-1.5 rounded-full bg-slate-800 text-slate-200 border border-white/15 flex-shrink-0">حقوق مدنی</button>
-                <button onclick="filterDictCategory('کیفری', this); triggerHaptic('light');" class="dict-chip px-3 py-1.5 rounded-full bg-slate-800 text-slate-200 border border-white/15 flex-shrink-0">کیفری</button>
+                <button onclick="filterDictCategory('مدنی', this); triggerHaptic('light');" class="dict-chip px-3 py-1.5 rounded-full bg-slate-200 text-slate-700 dark:bg-slate-800 dark:text-slate-200 border border-slate-300 dark:border-white/15 flex-shrink-0">حقوق مدنی</button>
+                <button onclick="filterDictCategory('کیفری', this); triggerHaptic('light');" class="dict-chip px-3 py-1.5 rounded-full bg-slate-200 text-slate-700 dark:bg-slate-800 dark:text-slate-200 border border-slate-300 dark:border-white/15 flex-shrink-0">کیفری</button>
                 <button onclick="filterDictCategory('bookmarks', this); triggerHaptic('light');" class="dict-chip px-3 py-1.5 rounded-full bg-amber-600 text-white font-bold flex-shrink-0 shadow shadow-amber-600/30"><i class="fa-solid fa-bookmark ml-1"></i>نشانک‌ها</button>
             </div>
             <div id="dictionaryContainer" class="space-y-2 mt-2">
@@ -338,12 +416,12 @@
             </div>
             <!-- راهنمای چک -->
             <div class="ultra-glass p-4 rounded-2xl space-y-2 shadow-lg mt-4">
-                <h3 class="font-bold text-xs text-amber-300"><i class="fa-solid fa-circle-question ml-1"></i> راهنمای استعلام و ثبت چک صیادی</h3>
-                <p class="text-[10px] text-slate-300">برای ثبت، انتقال یا استعلام چک‌های صیادی جدید، از روش‌های رسمی بانک مرکزی استفاده کنید:</p>
+                <h3 class="font-bold text-xs text-amber-500 dark:text-amber-300"><i class="fa-solid fa-circle-question ml-1"></i> راهنمای استعلام و ثبت چک صیادی</h3>
+                <p class="text-[10px] text-slate-600 dark:text-slate-300">برای ثبت، انتقال یا استعلام چک‌های صیادی جدید، از روش‌های رسمی بانک مرکزی استفاده کنید:</p>
                 <div class="space-y-1.5 pt-1 text-[11px]">
-                    <div class="bg-slate-900 p-2 rounded-xl border border-white/10">1. ورود به اپلیکیشن‌های بانکی معتبر یا سامانه چک صیادی بانک مرکزی</div>
-                    <div class="bg-slate-900 p-2 rounded-xl border border-white/10">2. اسکن بارکد روی چک یا وارد کردن شناسه ۱۶ رقمی صیادی</div>
-                    <div class="bg-slate-900 p-2 rounded-xl border border-white/10">3. ثبت تایید دریافت یا انتقال به شخص دیگر</div>
+                    <div class="bg-slate-100 dark:bg-slate-900 p-2 rounded-xl border border-slate-200 dark:border-white/10 text-slate-700 dark:text-slate-200">1. ورود به اپلیکیشن‌های بانکی معتبر یا سامانه چک صیادی بانک مرکزی</div>
+                    <div class="bg-slate-100 dark:bg-slate-900 p-2 rounded-xl border border-slate-200 dark:border-white/10 text-slate-700 dark:text-slate-200">2. اسکن بارکد روی چک یا وارد کردن شناسه ۱۶ رقمی صیادی</div>
+                    <div class="bg-slate-100 dark:bg-slate-900 p-2 rounded-xl border border-slate-200 dark:border-white/10 text-slate-700 dark:text-slate-200">3. ثبت تایید دریافت یا انتقال به شخص دیگر</div>
                 </div>
             </div>
         </section>
@@ -367,14 +445,14 @@
             <div class="ultra-glass p-4 rounded-3xl space-y-4 shadow-xl">
                 <div class="ultra-glass-content">
                     <h2 class="font-extrabold text-xs text-gradient mb-2">مشاور و وکیل آنلاین SIJT</h2>
-                    <select id="questionCategory" class="w-full bg-slate-900 text-white rounded-xl p-2.5 text-xs border border-white/20 mb-2">
+                    <select id="questionCategory" class="w-full bg-white dark:bg-slate-900 text-slate-800 dark:text-white rounded-xl p-2.5 text-xs border border-slate-300 dark:border-white/20 mb-2">
                         <option value="حقوقی عمومی">حقوقی عمومی / قراردادها</option>
                         <option value="کیفری و جرایم">کیفری و جرایم</option>
                         <option value="خانواده و مهریه">خانواده و مهریه</option>
                     </select>
                     <div class="relative mb-2">
-                        <textarea id="questionInput" placeholder="سوال حقوقی خود را اینجا مطرح فرمایید..." class="w-full bg-slate-900 text-amber-200 rounded-2xl p-3 pl-8 text-xs h-24 resize-none border border-white/20 shadow-inner"></textarea>
-                        <button onclick="startVoiceDictation('questionInput')" class="absolute left-2.5 top-3 text-amber-400 hover:text-white text-xs"><i class="fa-solid fa-microphone"></i></button>
+                        <textarea id="questionInput" placeholder="سوال حقوقی خود را اینجا مطرح فرمایید..." class="w-full bg-white dark:bg-slate-900 text-slate-800 dark:text-amber-200 rounded-2xl p-3 pl-8 text-xs h-24 resize-none border border-slate-300 dark:border-white/20 shadow-inner"></textarea>
+                        <button onclick="startVoiceDictation('questionInput')" class="absolute left-2.5 top-3 text-amber-500 hover:text-amber-600 dark:text-amber-400 dark:hover:text-white text-xs"><i class="fa-solid fa-microphone"></i></button>
                     </div>
                     <button id="submitQuestionBtn" onclick="submitQuestion();" class="w-full bg-gradient-to-r from-red-600 to-red-700 py-2.5 text-xs font-bold text-white rounded-xl shadow-md">ارسال سوال</button>
                     <div id="userFaqsContainer" class="space-y-3 max-h-60 overflow-y-auto mt-3"></div>
@@ -382,34 +460,36 @@
             </div>
         </section>
 
-        <!-- تب ۶: چت‌بات هوش مصنوعی پیشرفته (Real AI Agentic) -->
+        <!-- تب ۶: چت‌بات هوش مصنوعی پیشرفته (Agentic AI) -->
         <section id="chatbot-tab" class="page-section hidden space-y-3">
             <div class="ultra-glass p-4 rounded-3xl space-y-3 shadow-xl flex flex-col h-[70vh]">
-                <div class="flex items-center justify-between pb-1 border-b border-white/10">
+                <div class="flex items-center justify-between pb-1 border-b border-slate-200 dark:border-white/10">
                     <h2 class="font-extrabold text-xs text-gradient flex items-center">
                         <i class="fa-solid fa-robot ml-1.5 text-red-500"></i> دستیار هوشمند حقوقی
                     </h2>
-                    <button onclick="clearChatHistory()" class="text-[10px] text-slate-400 hover:text-red-400 flex items-center space-x-1 space-x-reverse transition">
+                    <button onclick="clearChatHistory()" class="text-[10px] text-slate-500 hover:text-red-500 dark:text-slate-400 dark:hover:text-red-400 flex items-center space-x-1 space-x-reverse transition">
                         <i class="fa-solid fa-trash-can"></i><span>پاکسازی</span>
                     </button>
                 </div>
 
                 <div class="flex space-x-1.5 space-x-reverse overflow-x-auto hide-scrollbar pb-1 text-[10px]">
-                    <button onclick="sendQuickChat('تفاوت چک صیادی جدید با قانون سال ۱۳۹۶ چیست؟')" class="flex-shrink-0 px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-slate-200">مقایسه قانون چک</button>
-                    <button onclick="sendQuickChat('مراحل اجرای مستقیم مهریه چگونه است؟')" class="flex-shrink-0 px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-slate-200">اجرای مهریه</button>
-                    <button onclick="sendQuickChat('هزینه دادرسی چقدر است؟')" class="flex-shrink-0 px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-slate-200">محاسبه هزینه</button>
+                    <button onclick="sendQuickChat('تفاوت چک صیادی با قانون سال ۱۳۹۶ چیست؟')" class="flex-shrink-0 px-2.5 py-1 rounded-lg bg-slate-200 dark:bg-white/10 hover:bg-slate-300 dark:hover:bg-white/20 text-slate-700 dark:text-slate-200">مقایسه قانون چک</button>
+                    <button onclick="sendQuickChat('مراحل اجرای مستقیم مهریه چگونه است؟')" class="flex-shrink-0 px-2.5 py-1 rounded-lg bg-slate-200 dark:bg-white/10 hover:bg-slate-300 dark:hover:bg-white/20 text-slate-700 dark:text-slate-200">اجرای مهریه</button>
+                    <button onclick="sendQuickChat('هزینه دادرسی چقدر است؟')" class="flex-shrink-0 px-2.5 py-1 rounded-lg bg-slate-200 dark:bg-white/10 hover:bg-slate-300 dark:hover:bg-white/20 text-slate-700 dark:text-slate-200">محاسبه هزینه</button>
                 </div>
 
-                <div id="chatMessagesContainer" class="space-y-3 flex-grow overflow-y-auto p-3 bg-slate-900/90 rounded-2xl text-[11px] text-slate-100 shadow-inner"></div>
+                <div id="chatMessagesContainer" class="space-y-3 flex-grow overflow-y-auto p-3 bg-slate-100 dark:bg-slate-900/90 rounded-2xl text-[11px] text-slate-800 dark:text-slate-100 shadow-inner"></div>
 
-                <div id="aiTypingIndicator" class="hidden flex items-center space-x-2 space-x-reverse bg-slate-800/90 text-slate-300 p-2.5 rounded-2xl w-fit border border-amber-500/30">
-                    <div id="chatTypingLottie" class="w-6 h-6"></div>
-                    <span class="text-[10px] font-bold text-amber-300">در حال تحلیل و استناد...</span>
+                <div id="aiTypingIndicator" class="hidden flex items-center space-x-2 space-x-reverse bg-slate-200 dark:bg-slate-800/90 text-slate-700 dark:text-slate-300 p-2.5 rounded-2xl w-fit border border-amber-500/30">
+                    <div class="flex px-1">
+                        <span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span>
+                    </div>
+                    <span class="text-[10px] font-bold text-amber-600 dark:text-amber-300">در حال تحلیل و استناد...</span>
                 </div>
 
-                <div class="flex space-x-2 space-x-reverse relative pt-2 border-t border-white/10">
-                    <textarea id="aiPromptInput" placeholder="مسئله یا ابهام حقوقی (با ذکر زمان/سال)..." class="flex-grow bg-slate-900 text-amber-200 rounded-xl p-2.5 pl-8 text-xs h-14 resize-none border border-white/20 focus:outline-none"></textarea>
-                    <button onclick="startVoiceDictation('aiPromptInput')" class="absolute left-14 top-5 text-amber-400 hover:text-white text-xs p-1"><i class="fa-solid fa-microphone"></i></button>
+                <div class="flex space-x-2 space-x-reverse relative pt-2 border-t border-slate-200 dark:border-white/10">
+                    <textarea id="aiPromptInput" placeholder="مسئله یا ابهام حقوقی (با ذکر زمان/سال)..." class="flex-grow bg-white dark:bg-slate-900 text-slate-800 dark:text-amber-200 rounded-xl p-2.5 pl-8 text-xs h-14 resize-none border border-slate-300 dark:border-white/20 focus:outline-none"></textarea>
+                    <button onclick="startVoiceDictation('aiPromptInput')" class="absolute left-14 top-5 text-amber-500 hover:text-amber-600 dark:text-amber-400 dark:hover:text-white text-xs p-1"><i class="fa-solid fa-microphone"></i></button>
                     <button id="aiSendBtn" onclick="runAiAssistant();" class="bg-red-600 text-white px-4 rounded-xl text-xs font-bold shadow hover:bg-red-700 transition"><i class="fa-solid fa-paper-plane"></i></button>
                 </div>
             </div>
@@ -422,20 +502,20 @@
             <!-- ابزار حق الوکاله و تمبر مالیاتی -->
             <div class="ultra-glass p-4 rounded-2xl space-y-3 shadow-lg">
                 <div class="ultra-glass-content">
-                    <h3 class="font-bold text-xs text-amber-300"><i class="fa-solid fa-scale-unbalanced ml-1"></i> محاسبه‌گر حق‌الوکاله و تمبر مالیاتی</h3>
-                    <p class="text-[9px] text-slate-300 mb-2">بر اساس آیین‌نامه تعرفه حق‌الوکاله (مرحله بدوی)</p>
-                    <input type="number" id="lawyerClaimAmount" placeholder="مبلغ خواسته (ریال)..." class="w-full bg-slate-900 text-amber-200 rounded-xl px-3 py-2 text-xs border border-white/20 mb-2">
+                    <h3 class="font-bold text-xs text-amber-600 dark:text-amber-300"><i class="fa-solid fa-scale-unbalanced ml-1"></i> محاسبه‌گر حق‌الوکاله و تمبر مالیاتی</h3>
+                    <p class="text-[9px] text-slate-500 dark:text-slate-300 mb-2">بر اساس آیین‌نامه تعرفه حق‌الوکاله (مرحله بدوی)</p>
+                    <input type="number" id="lawyerClaimAmount" placeholder="مبلغ خواسته (ریال)..." class="w-full bg-white dark:bg-slate-900 text-slate-800 dark:text-amber-200 rounded-xl px-3 py-2 text-xs border border-slate-300 dark:border-white/20 mb-2">
                     <button onclick="calculateLawyerFee()" class="w-full bg-red-600 text-white py-2 rounded-xl text-xs font-bold shadow">محاسبه تعرفه و مالیات</button>
-                    <div id="lawyerFeeResult" class="text-[11px] font-bold text-amber-300 mt-2 space-y-1 leading-loose"></div>
+                    <div id="lawyerFeeResult" class="text-[11px] font-bold text-amber-700 dark:text-amber-300 mt-2 space-y-1 leading-loose"></div>
                 </div>
             </div>
 
             <!-- ابزار سهم الارث با نمودار درختی -->
             <div class="ultra-glass p-4 rounded-2xl space-y-3 shadow-lg">
                 <div class="ultra-glass-content">
-                    <h3 class="font-bold text-xs text-amber-300"><i class="fa-solid fa-sitemap ml-1"></i> محاسبه‌گر سهم‌الارث و نمودار درختی</h3>
-                    <input type="number" id="estateAmount" placeholder="مبلغ کل ترکه (ریال)..." class="w-full bg-slate-900 text-amber-200 rounded-xl px-3 py-2 text-xs border border-white/20 mb-2">
-                    <select id="heirsType" class="w-full bg-slate-900 text-white rounded-xl p-2.5 text-xs border border-white/20 mb-2">
+                    <h3 class="font-bold text-xs text-amber-600 dark:text-amber-300"><i class="fa-solid fa-sitemap ml-1"></i> محاسبه‌گر سهم‌الارث و نمودار درختی</h3>
+                    <input type="number" id="estateAmount" placeholder="مبلغ کل ترکه (ریال)..." class="w-full bg-white dark:bg-slate-900 text-slate-800 dark:text-amber-200 rounded-xl px-3 py-2 text-xs border border-slate-300 dark:border-white/20 mb-2">
+                    <select id="heirsType" class="w-full bg-white dark:bg-slate-900 text-slate-800 dark:text-white rounded-xl p-2.5 text-xs border border-slate-300 dark:border-white/20 mb-2">
                         <option value="wife_1son_1daughter">همسر + ۱ پسر + ۱ دختر</option>
                         <option value="husband_2sons">شوهر + ۲ پسر</option>
                         <option value="only_parents">فقط پدر و مادر</option>
@@ -447,59 +527,59 @@
 
             <!-- سایر ابزارهای محاسباتی نسخه قبل -->
             <div class="ultra-glass p-4 rounded-2xl space-y-3 shadow-lg">
-                <h3 class="font-bold text-xs text-amber-300"><i class="fa-solid fa-calculator ml-1"></i> محاسبه‌گر هزینه‌های دادرسی</h3>
-                <input type="number" id="courtFeeInput" placeholder="مبلغ خواسته به ریال..." class="w-full bg-slate-900 text-amber-200 rounded-xl px-3 py-2 text-xs border border-white/20">
+                <h3 class="font-bold text-xs text-amber-600 dark:text-amber-300"><i class="fa-solid fa-calculator ml-1"></i> محاسبه‌گر هزینه‌های دادرسی</h3>
+                <input type="number" id="courtFeeInput" placeholder="مبلغ خواسته به ریال..." class="w-full bg-white dark:bg-slate-900 text-slate-800 dark:text-amber-200 rounded-xl px-3 py-2 text-xs border border-slate-300 dark:border-white/20">
                 <button onclick="calculateCourtFee()" class="w-full bg-red-600 text-white py-2 rounded-xl text-xs font-bold shadow">محاسبه هزینه دادرسی</button>
-                <div id="feeResult" class="text-[11px] font-bold text-amber-300"></div>
+                <div id="feeResult" class="text-[11px] font-bold text-amber-700 dark:text-amber-300 mt-2"></div>
             </div>
 
             <div class="ultra-glass p-4 rounded-2xl space-y-3 shadow-lg">
-                <h3 class="font-bold text-xs text-amber-300"><i class="fa-solid fa-coins ml-1"></i> محاسبه‌گر جامع مهریه</h3>
+                <h3 class="font-bold text-xs text-amber-600 dark:text-amber-300"><i class="fa-solid fa-coins ml-1"></i> محاسبه‌گر جامع مهریه</h3>
                 <div class="grid grid-cols-2 gap-2">
-                    <input type="number" id="mahariyehCoins" placeholder="تعداد سکه..." class="bg-slate-900 text-amber-200 rounded-xl px-3 py-2 text-xs border border-white/20">
-                    <input type="number" id="marriageYear" placeholder="سال عقد (مثلا 1395)..." class="bg-slate-900 text-amber-200 rounded-xl px-3 py-2 text-xs border border-white/20">
+                    <input type="number" id="mahariyehCoins" placeholder="تعداد سکه..." class="bg-white dark:bg-slate-900 text-slate-800 dark:text-amber-200 rounded-xl px-3 py-2 text-xs border border-slate-300 dark:border-white/20">
+                    <input type="number" id="marriageYear" placeholder="سال عقد (مثلا 1395)..." class="bg-white dark:bg-slate-900 text-slate-800 dark:text-amber-200 rounded-xl px-3 py-2 text-xs border border-slate-300 dark:border-white/20">
                 </div>
-                <input type="number" id="currentCoinPrice" placeholder="قیمت روز هر سکه (ریال)..." class="w-full bg-slate-900 text-amber-200 rounded-xl px-3 py-2 text-xs border border-white/20">
-                <button onclick="calculateBankCentralMahariyeh()" class="w-full bg-red-600 text-white py-2 rounded-xl text-xs font-bold shadow">محاسبه ارزش روز مهریه</button>
-                <div id="mahariyehResult" class="text-[11px] font-bold text-amber-300"></div>
+                <input type="number" id="currentCoinPrice" placeholder="قیمت روز هر سکه (ریال)..." class="w-full bg-white dark:bg-slate-900 text-slate-800 dark:text-amber-200 rounded-xl px-3 py-2 text-xs border border-slate-300 dark:border-white/20 mt-2">
+                <button onclick="calculateBankCentralMahariyeh()" class="w-full bg-red-600 text-white py-2 rounded-xl text-xs font-bold shadow mt-2">محاسبه ارزش روز مهریه</button>
+                <div id="mahariyehResult" class="text-[11px] font-bold text-amber-700 dark:text-amber-300 mt-2"></div>
             </div>
 
             <div class="ultra-glass p-4 rounded-2xl space-y-3 shadow-lg">
-                <h3 class="font-bold text-xs text-amber-300"><i class="fa-solid fa-chart-line ml-1"></i> محاسبه‌گر تأخیر تأدیه</h3>
+                <h3 class="font-bold text-xs text-amber-600 dark:text-amber-300"><i class="fa-solid fa-chart-line ml-1"></i> محاسبه‌گر تأخیر تأدیه</h3>
                 <div class="grid grid-cols-2 gap-2">
-                    <input type="number" id="principalAmount" placeholder="اصل طلب (ریال)..." class="bg-slate-900 text-amber-200 rounded-xl px-3 py-2 text-xs border border-white/20">
-                    <input type="number" id="delayYears" placeholder="تعداد سال تأخیر..." class="bg-slate-900 text-amber-200 rounded-xl px-3 py-2 text-xs border border-white/20">
+                    <input type="number" id="principalAmount" placeholder="اصل طلب (ریال)..." class="bg-white dark:bg-slate-900 text-slate-800 dark:text-amber-200 rounded-xl px-3 py-2 text-xs border border-slate-300 dark:border-white/20">
+                    <input type="number" id="delayYears" placeholder="تعداد سال تأخیر..." class="bg-white dark:bg-slate-900 text-slate-800 dark:text-amber-200 rounded-xl px-3 py-2 text-xs border border-slate-300 dark:border-white/20">
                 </div>
-                <button onclick="calculateDelayCompensation()" class="w-full bg-red-600 text-white py-2 rounded-xl text-xs font-bold shadow">محاسبه خسارت کاهش ارزش</button>
-                <div id="delayResult" class="text-[11px] font-bold text-amber-300"></div>
+                <button onclick="calculateDelayCompensation()" class="w-full bg-red-600 text-white py-2 rounded-xl text-xs font-bold shadow mt-2">محاسبه خسارت کاهش ارزش</button>
+                <div id="delayResult" class="text-[11px] font-bold text-amber-700 dark:text-amber-300 mt-2"></div>
             </div>
 
             <div class="ultra-glass p-4 rounded-2xl space-y-3 shadow-lg">
-                <h3 class="font-bold text-xs text-amber-300"><i class="fa-solid fa-heart-pulse ml-1"></i> محاسبه‌گر دیه</h3>
-                <select id="diyehType" class="w-full bg-slate-900 text-white rounded-xl p-2.5 text-xs border border-white/20">
+                <h3 class="font-bold text-xs text-amber-600 dark:text-amber-300"><i class="fa-solid fa-heart-pulse ml-1"></i> محاسبه‌گر دیه</h3>
+                <select id="diyehType" class="w-full bg-white dark:bg-slate-900 text-slate-800 dark:text-white rounded-xl p-2.5 text-xs border border-slate-300 dark:border-white/20">
                     <option value="complete">دیه کامل یک مرد مسلمان (ماه عادی)</option>
                     <option value="haram">دیه کامل در ماه‌های حرام (تغلیظ دیه)</option>
                     <option value="finger">دیه یک انگشت (یک دهم)</option>
                     <option value="eye">دیه یک چشم (نصف دیه)</option>
                 </select>
-                <button onclick="calculateDiyeh()" class="w-full bg-red-600 text-white py-2 rounded-xl text-xs font-bold shadow">محاسبه مبلغ دیه</button>
-                <div id="diyehResult" class="text-[11px] font-bold text-amber-300"></div>
+                <button onclick="calculateDiyeh()" class="w-full bg-red-600 text-white py-2 rounded-xl text-xs font-bold shadow mt-2">محاسبه مبلغ دیه</button>
+                <div id="diyehResult" class="text-[11px] font-bold text-amber-700 dark:text-amber-300 mt-2"></div>
             </div>
 
             <div class="ultra-glass p-4 rounded-2xl space-y-3 shadow-lg">
-                <h3 class="font-bold text-xs text-amber-300"><i class="fa-solid fa-file-contract ml-1"></i> فرم‌ساز قراردادهای هوشمند</h3>
-                <select id="contractType" class="w-full bg-slate-900 text-white rounded-xl p-2.5 text-xs border border-white/20">
+                <h3 class="font-bold text-xs text-amber-600 dark:text-amber-300"><i class="fa-solid fa-file-contract ml-1"></i> فرم‌ساز قراردادهای هوشمند</h3>
+                <select id="contractType" class="w-full bg-white dark:bg-slate-900 text-slate-800 dark:text-white rounded-xl p-2.5 text-xs border border-slate-300 dark:border-white/20">
                     <option value="rent">قرارداد اجاره مسکن</option>
                     <option value="sale">مبایعه‌نامه عمومی</option>
                 </select>
-                <input type="text" id="partyFirst" placeholder="طرف اول..." class="w-full bg-slate-900 text-amber-200 rounded-xl px-3 py-2 text-xs border border-white/20">
-                <input type="text" id="partySecond" placeholder="طرف دوم..." class="w-full bg-slate-900 text-amber-200 rounded-xl px-3 py-2 text-xs border border-white/20">
-                <input type="text" id="contractAmount" placeholder="مبلغ (ریال)..." class="w-full bg-slate-900 text-amber-200 rounded-xl px-3 py-2 text-xs border border-white/20">
-                <div class="flex space-x-2 space-x-reverse">
+                <input type="text" id="partyFirst" placeholder="طرف اول..." class="w-full bg-white dark:bg-slate-900 text-slate-800 dark:text-amber-200 rounded-xl px-3 py-2 text-xs border border-slate-300 dark:border-white/20 mt-2">
+                <input type="text" id="partySecond" placeholder="طرف دوم..." class="w-full bg-white dark:bg-slate-900 text-slate-800 dark:text-amber-200 rounded-xl px-3 py-2 text-xs border border-slate-300 dark:border-white/20 mt-2">
+                <input type="text" id="contractAmount" placeholder="مبلغ (ریال)..." class="w-full bg-white dark:bg-slate-900 text-slate-800 dark:text-amber-200 rounded-xl px-3 py-2 text-xs border border-slate-300 dark:border-white/20 mt-2">
+                <div class="flex space-x-2 space-x-reverse mt-2">
                     <button onclick="generateSmartContract()" class="flex-grow bg-red-600 text-white py-2 rounded-xl text-xs font-bold shadow">تولید پیش‌نویس</button>
                     <button onclick="exportContractPDF()" class="bg-amber-600 text-white px-3 py-2 rounded-xl text-xs font-bold shadow"><i class="fa-solid fa-print"></i></button>
                 </div>
-                <div id="contractOutputBox" class="hidden bg-slate-900 p-3 rounded-xl text-[10px] leading-relaxed text-slate-200 border border-white/10 space-y-2"></div>
+                <div id="contractOutputBox" class="hidden bg-slate-100 dark:bg-slate-900 p-3 rounded-xl text-[10px] leading-relaxed text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-white/10 space-y-2 mt-2"></div>
             </div>
         </section>
 
@@ -507,8 +587,8 @@
         <section id="notes-tab" class="page-section hidden space-y-3">
             <h2 class="font-black text-xs text-gradient"><i class="fa-solid fa-note-sticky ml-1 text-red-500"></i> یادداشت‌ها و پرونده شخصی</h2>
             <div class="ultra-glass p-4 rounded-2xl space-y-3 shadow-lg">
-                <input type="text" id="caseTitleInput" placeholder="عنوان پرونده..." class="w-full bg-slate-900 text-amber-200 rounded-xl px-3 py-2 text-xs border border-white/20">
-                <textarea id="caseNoteInput" placeholder="توضیحات..." class="w-full bg-slate-900 text-amber-200 rounded-xl p-3 text-xs h-24 resize-none border border-white/20"></textarea>
+                <input type="text" id="caseTitleInput" placeholder="عنوان پرونده..." class="w-full bg-white dark:bg-slate-900 text-slate-800 dark:text-amber-200 rounded-xl px-3 py-2 text-xs border border-slate-300 dark:border-white/20">
+                <textarea id="caseNoteInput" placeholder="توضیحات..." class="w-full bg-white dark:bg-slate-900 text-slate-800 dark:text-amber-200 rounded-xl p-3 text-xs h-24 resize-none border border-slate-300 dark:border-white/20"></textarea>
                 <div class="flex space-x-2 space-x-reverse">
                     <button onclick="savePersonalNote()" class="flex-grow bg-red-600 text-white py-2 rounded-xl text-xs font-bold shadow">ذخیره</button>
                     <button onclick="exportNotesPDF()" class="bg-amber-600 text-white px-3 py-2 rounded-xl text-xs font-bold shadow"><i class="fa-solid fa-print"></i></button>
@@ -575,9 +655,9 @@
 
     <!-- Bottom Sheets و Drawers -->
     <div id="moreDrawer" class="settings-glass rounded-t-3xl p-4 shadow-2xl space-y-3">
-        <div class="flex justify-between items-center pb-2 border-b border-white/10">
-            <span class="font-bold text-xs text-amber-300"><i class="fa-solid fa-layer-group ml-1"></i> سایر بخش‌ها</span>
-            <button onclick="toggleMoreDrawer()" class="text-slate-300 hover:text-white p-1"><i class="fa-solid fa-xmark text-sm"></i></button>
+        <div class="flex justify-between items-center pb-2 border-b border-slate-300 dark:border-white/10">
+            <span class="font-bold text-xs text-amber-600 dark:text-amber-300"><i class="fa-solid fa-layer-group ml-1"></i> سایر بخش‌ها</span>
+            <button onclick="toggleMoreDrawer()" class="text-slate-500 hover:text-slate-800 dark:text-slate-300 dark:hover:text-white p-1"><i class="fa-solid fa-xmark text-sm"></i></button>
         </div>
         <div class="grid grid-cols-3 gap-2 text-center text-[10px]" id="moreDrawerGrid">
             <!-- Dynamicly populated -->
@@ -586,11 +666,11 @@
 
     <!-- ویرایشگر نوار پایین -->
     <div id="navEditorDrawer" class="settings-glass rounded-t-3xl p-4 shadow-2xl space-y-3">
-        <div class="flex justify-between items-center pb-2 border-b border-white/10">
-            <span class="font-bold text-xs text-amber-300">انتخاب ۵ تب اصلی</span>
-            <button onclick="closeNavEditor()" class="text-slate-300 hover:text-white p-1"><i class="fa-solid fa-xmark text-sm"></i></button>
+        <div class="flex justify-between items-center pb-2 border-b border-slate-300 dark:border-white/10">
+            <span class="font-bold text-xs text-amber-600 dark:text-amber-300">انتخاب ۵ تب اصلی</span>
+            <button onclick="closeNavEditor()" class="text-slate-500 hover:text-slate-800 dark:text-slate-300 dark:hover:text-white p-1"><i class="fa-solid fa-xmark text-sm"></i></button>
         </div>
-        <p class="text-[9px] text-slate-300">حداکثر ۵ مورد را برای نوار پایین انتخاب کنید:</p>
+        <p class="text-[9px] text-slate-500 dark:text-slate-300">حداکثر ۵ مورد را برای نوار پایین انتخاب کنید:</p>
         <div id="navEditorList" class="grid grid-cols-2 gap-2 text-[10px]"></div>
         <button onclick="saveNavConfig()" class="w-full bg-amber-600 text-white py-2 rounded-xl mt-2 font-bold shadow">ذخیره تنظیمات</button>
     </div>
@@ -599,17 +679,17 @@
     <div id="lawBottomSheet" class="settings-glass rounded-t-3xl p-5 shadow-2xl space-y-3">
         <div class="flex justify-between items-center pb-2 border-b border-amber-500/30">
             <span id="lawBsTitle" class="font-black text-xs text-red-500">عنوان</span>
-            <button onclick="closeLawBottomSheet()" class="text-slate-300 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            <button onclick="closeLawBottomSheet()" class="text-slate-500 hover:text-slate-800 dark:text-slate-300 dark:hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
         </div>
-        <div id="lawBsContent" class="text-xs leading-loose font-semibold text-slate-200 max-h-60 overflow-y-auto pr-1">متن توضیحات...</div>
+        <div id="lawBsContent" class="text-xs leading-loose font-semibold text-slate-700 dark:text-slate-200 max-h-60 overflow-y-auto pr-1">متن توضیحات...</div>
     </div>
 
     <!-- دکمه بازگشت به بالا -->
-    <button id="backToTopBtn" onclick="window.scrollTo({top: 0, behavior: 'smooth'});" class="hidden w-11 h-11 rounded-full ultra-glass text-amber-300 shadow-2xl flex items-center justify-center transition hover:scale-110">
+    <button id="backToTopBtn" onclick="window.scrollTo({top: 0, behavior: 'smooth'});" class="hidden w-11 h-11 rounded-full ultra-glass text-amber-600 dark:text-amber-300 shadow-2xl flex items-center justify-center transition hover:scale-110">
         <i class="fa-solid fa-arrow-up text-xs"></i>
     </button>
 
-    <!-- مودال رسانه (پشتیبانی از عکس و فیلم) -->
+    <!-- مودال رسانه (پشتیبانی از عکس و فیلم و لینک خارجی) -->
     <div id="mediaModal" class="fixed inset-0 bg-black/90 z-[110] hidden flex items-center justify-center p-4">
         <div id="mediaModalBox" class="ultra-glass rounded-3xl max-w-lg w-full p-4 relative shadow-2xl space-y-3 text-center">
             <button onclick="closeMediaModal()" class="absolute top-3 left-3 text-slate-300 p-2 z-10 hover:text-white"><i class="fa-solid fa-xmark text-base"></i></button>
@@ -618,7 +698,8 @@
             <div class="flex flex-wrap gap-2 justify-between">
                 <button id="cinematicBtn" onclick="toggleCinematicMode()" class="hidden flex-1 bg-indigo-600/30 text-indigo-200 border border-indigo-500/40 py-2 rounded-xl text-[10px] font-bold"><i class="fa-solid fa-film"></i> سینمایی</button>
                 <button id="pipBtn" onclick="openNativePiP()" class="hidden flex-1 bg-amber-500/20 text-amber-300 border border-amber-500/40 py-2 rounded-xl text-[10px] font-bold"><i class="fa-solid fa-clone"></i> PiP شناور</button>
-                <a id="mediaModalExternalBtn" href="#" target="_blank" class="hidden flex-1 bg-red-600/30 text-red-200 border border-red-500/40 py-2 rounded-xl text-[10px] font-bold"><i class="fa-solid fa-external-link-alt"></i> لینک</a>
+                <!-- دکمه لینک خارجی با ویژگی target=_blank برای باز شدن در مرورگر -->
+                <a id="mediaModalExternalBtn" href="#" target="_blank" class="hidden flex-1 bg-red-600/30 text-red-200 border border-red-500/40 py-2 rounded-xl text-[10px] font-bold flex items-center justify-center"><i class="fa-solid fa-external-link-alt ml-1"></i> لینک وب</a>
             </div>
         </div>
     </div>
@@ -656,7 +737,7 @@
 
         function initThemes() {
             if (localStorage.getItem('mizan_theme') === 'light') {
-                document.documentElement.classList.remove('dark'); document.body.classList.add('light'); updateMetaThemeColor('#f1f5f9');
+                document.documentElement.classList.remove('dark'); document.body.classList.add('light'); updateMetaThemeColor('#f8fafc');
             } else {
                 document.documentElement.classList.add('dark'); updateMetaThemeColor('#080c14');
             }
@@ -673,13 +754,21 @@
             const isDark = document.documentElement.classList.toggle('dark');
             document.body.classList.toggle('light', !isDark);
             localStorage.setItem('mizan_theme', isDark ? 'dark' : 'light');
-            updateMetaThemeColor(isDark ? '#080c14' : '#f1f5f9');
+            updateMetaThemeColor(isDark ? '#080c14' : '#f8fafc');
         }
         function toggleOledMode() { document.body.classList.toggle('oled-mode'); localStorage.setItem('oled_mode', document.body.classList.contains('oled-mode')); }
         function toggleHighContrast() { document.body.classList.toggle('high-contrast'); localStorage.setItem('high_contrast', document.body.classList.contains('high-contrast')); }
         function changeFontFamily(val) { document.documentElement.style.setProperty('--selected-font', val); localStorage.setItem('mizan_font', val); }
         function changeAppFontSize(val) { document.documentElement.style.setProperty('--app-font-size', val); localStorage.setItem('mizan_font_size', val); }
         function changeLineHeight(val) { document.documentElement.style.setProperty('--line-height', val); localStorage.setItem('mizan_line_height', val); }
+        function changeCalendarType(type) { localStorage.setItem('mizan_calendar', type); updateDateTime(); }
+        
+        async function clearIndexedDBCache() {
+            localStorage.removeItem('mizan_cache');
+            sessionStorage.removeItem('mizan_active_chat');
+            showToast('حافظه کش پاکسازی شد');
+            setTimeout(() => location.reload(), 500);
+        }
 
         // --- Audio & Haptics ---
         let microInteractionsEnabled = localStorage.getItem('micro_interactions') !== 'false';
@@ -696,13 +785,63 @@
         }
         function triggerHaptic(type = 'medium') {
             playClickSound();
-            if (microInteractionsEnabled && tg?.HapticFeedback) { try { tg.HapticFeedback.impactOccurred(type); } catch(e) {} }
+            try {
+                if (microInteractionsEnabled && tg && tg.HapticFeedback && tg.isVersionAtLeast && tg.isVersionAtLeast('6.1')) {
+                    tg.HapticFeedback.impactOccurred(type);
+                }
+            } catch(e) {}
         }
         function showToast(message, type = 'success') {
             const container = document.getElementById('toastContainer');
             const t = document.createElement('div'); t.className = 'toast-item';
             t.innerHTML = `<div class="flex items-center space-x-2 space-x-reverse">${type === 'error' ? '⚠️' : '✅'}<span>${message}</span></div>`;
             container.appendChild(t); setTimeout(() => { if(t.parentElement) t.remove(); }, 3000);
+        }
+
+        function updateDateTime() {
+            const now = new Date();
+            const calType = localStorage.getItem('mizan_calendar') || 'persian';
+            const calElem = document.getElementById('headerCalendarWidget');
+            if(calElem) {
+                if(calType === 'gregorian') {
+                    calElem.innerText = now.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+                } else if(calType === 'lunar') {
+                    calElem.innerText = now.toLocaleDateString('fa-IR-u-ca-islamic-umalqura', { year: 'numeric', month: 'long', day: 'numeric' });
+                } else {
+                    calElem.innerText = now.toLocaleDateString('fa-IR', { calendar: 'persian', year: 'numeric', month: 'long', day: 'numeric' });
+                }
+            }
+        }
+        async function fetchTehranWeather() {
+            const widget = document.getElementById('headerWeatherWidget');
+            try {
+                const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=35.6892&longitude=51.3890&current_weather=true');
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data?.current_weather && widget) {
+                        widget.innerText = `تهران ${Math.round(data.current_weather.temperature)}°C`;
+                        return;
+                    }
+                }
+            } catch(e) {}
+            if (widget) widget.innerText = `تهران ۲۴°C`;
+        }
+
+        // --- PWA Installation ---
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault(); deferredPrompt = e;
+            const pwaBox = document.getElementById('installPwaBox');
+            if(pwaBox) pwaBox.classList.remove('hidden');
+        });
+        function installPWA() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') showToast('برنامه با موفقیت نصب شد');
+                    deferredPrompt = null;
+                });
+            } else { showToast('از منوی مرورگر گزینه Add to Home Screen را بزنید'); }
         }
 
         // --- Nav Customization ---
@@ -735,7 +874,7 @@
                 if(userNav.includes(tab.id)) {
                     nav.innerHTML += `<button onclick="switchTab('${tab.id}', this); triggerHaptic('light');" class="nav-btn flex flex-col items-center px-2 py-1"><i class="fa-solid ${tab.icon} text-base mb-1"></i><span class="text-[10px] font-bold">${tab.label}</span></button>`;
                 } else {
-                    drawer.innerHTML += `<button onclick="switchTab('${tab.id}'); toggleMoreDrawer();" class="p-2.5 rounded-2xl bg-white/5 hover:bg-white/10 flex flex-col items-center space-y-1"><i class="fa-solid ${tab.icon} text-sm"></i><span>${tab.label}</span></button>`;
+                    drawer.innerHTML += `<button onclick="switchTab('${tab.id}'); toggleMoreDrawer();" class="p-2.5 rounded-2xl bg-slate-200 dark:bg-white/5 hover:bg-slate-300 dark:hover:bg-white/10 flex flex-col items-center space-y-1 text-slate-700 dark:text-slate-200"><i class="fa-solid ${tab.icon} text-sm"></i><span>${tab.label}</span></button>`;
                 }
             });
             nav.innerHTML += `<button onclick="toggleMoreDrawer();" class="nav-btn flex flex-col items-center px-2 py-1"><i class="fa-solid fa-bars-staggered text-base mb-1"></i><span class="text-[10px] font-bold">بیشتر</span></button>`;
@@ -749,7 +888,7 @@
 
         function openNavEditor() {
             const list = document.getElementById('navEditorList');
-            list.innerHTML = ALL_TABS.map(t => `<label class="flex items-center space-x-2 space-x-reverse bg-white/10 p-2 rounded-xl"><input type="checkbox" value="${t.id}" ${userNav.includes(t.id)?'checked':''} class="nav-editor-cb accent-amber-500 w-4 h-4"><span><i class="fa-solid ${t.icon} ml-1"></i>${t.label}</span></label>`).join('');
+            list.innerHTML = ALL_TABS.map(t => `<label class="flex items-center space-x-2 space-x-reverse bg-slate-100 dark:bg-white/10 p-2 rounded-xl text-slate-800 dark:text-white"><input type="checkbox" value="${t.id}" ${userNav.includes(t.id)?'checked':''} class="nav-editor-cb accent-amber-500 w-4 h-4"><span><i class="fa-solid ${t.icon} ml-1"></i>${t.label}</span></label>`).join('');
             document.getElementById('navEditorDrawer').style.display = 'block';
         }
         function closeNavEditor() { document.getElementById('navEditorDrawer').style.display = 'none'; }
@@ -789,12 +928,9 @@
             renderAll();
             initPullToRefresh();
             initTiltEffect();
-            
-            // Lottie loading
-            const splashLottie = document.getElementById('splashLottie');
-            lottie.loadAnimation({ container: splashLottie, renderer: 'svg', loop: true, autoplay: true, path: 'https://assets3.lottiefiles.com/packages/lf20_tijmpky4.json' }); 
-            const chatLottie = document.getElementById('chatTypingLottie');
-            lottie.loadAnimation({ container: chatLottie, renderer: 'svg', loop: true, autoplay: true, path: 'https://assets9.lottiefiles.com/packages/lf20_1LhhaM.json' });
+            updateDateTime();
+            setInterval(updateDateTime, 1000);
+            fetchTehranWeather();
 
             setTimeout(() => { document.getElementById('splashScreen').style.opacity = '0'; setTimeout(()=> document.getElementById('splashScreen').remove(), 300); }, 1500);
 
@@ -852,8 +988,8 @@
             c.innerHTML = list.slice(0, pageLimits.dict).map(d => `
                 <div class="ultra-glass p-3.5 rounded-xl shadow-md space-y-1.5 ultra-glass-content">
                     <div class="flex justify-between items-center">
-                        <span class="font-black text-red-500">${d.term}</span>
-                        <i onclick="copyToClipboard('${d.term}: ${d.definition}'); showToast('کپی شد')" class="fa-solid fa-copy text-slate-400 hover:text-white cursor-pointer"></i>
+                        <span class="font-black text-red-600 dark:text-red-500">${d.term}</span>
+                        <i onclick="copyToClipboard('${d.term}: ${d.definition}'); showToast('کپی شد')" class="fa-solid fa-copy text-slate-400 hover:text-slate-600 dark:hover:text-white cursor-pointer"></i>
                     </div>
                     <p class="font-semibold">${d.definition}</p>
                 </div>`).join('');
@@ -880,8 +1016,8 @@
                 if(terms.length > 0) content = content.replace(regex, match => `<span class="glossary-term" onclick="openLawBottomSheet('${match}')">${match}</span>`);
                 return `
                 <div class="ultra-glass p-4 rounded-2xl shadow-md ultra-glass-content space-y-2">
-                    <h3 class="font-bold text-red-500">${l.title}</h3>
-                    <p class="font-semibold text-[11px] text-amber-400">${l.summary}</p>
+                    <h3 class="font-bold text-red-600 dark:text-red-500">${l.title}</h3>
+                    <p class="font-semibold text-[11px] text-amber-600 dark:text-amber-400">${l.summary}</p>
                     <p class="font-semibold leading-loose">${content}</p>
                 </div>`;
             }).join('');
@@ -889,32 +1025,32 @@
 
         function renderShareCards() {
             const c = document.getElementById('shareCardsContainer');
-            if(c) c.innerHTML = (appData.shareCards || []).map(card => `<div class="card-bg-glass p-4 rounded-3xl space-y-2 shadow-xl"><span class="font-bold text-amber-300">${card.title}</span><p class="text-white font-semibold">${card.text}</p></div>`).join('');
+            if(c) c.innerHTML = (appData.shareCards || []).map(card => `<div class="ultra-glass p-4 rounded-3xl space-y-2 shadow-xl"><span class="font-bold text-amber-600 dark:text-amber-300">${card.title}</span><p class="font-semibold text-slate-800 dark:text-white">${card.text}</p></div>`).join('');
         }
 
         function renderNews() {
             const c = document.getElementById('newsContainer');
-            if(c) c.innerHTML = (appData.news || []).map(n => `<div class="ultra-glass p-4 rounded-2xl space-y-1.5 shadow-md"><div class="text-[9px] text-slate-400">${n.date||''}</div><h3 class="font-bold text-red-600">${n.title}</h3><p class="font-semibold text-slate-200">${n.summary}</p></div>`).join('');
+            if(c) c.innerHTML = (appData.news || []).map(n => `<div class="ultra-glass p-4 rounded-2xl space-y-1.5 shadow-md"><div class="text-[9px] text-slate-500 dark:text-slate-400">${n.date||''}</div><h3 class="font-bold text-red-600">${n.title}</h3><p class="font-semibold text-slate-700 dark:text-slate-200">${n.summary}</p></div>`).join('');
         }
 
         function renderPublicFaqs() {
             const c = document.getElementById('publicFaqContainer');
-            if(c) c.innerHTML = (appData.publicFaqs || []).map(pf => `<div class="ultra-glass p-4 rounded-3xl space-y-2 shadow-md"><div class="font-bold text-red-600"><i class="fa-solid fa-question ml-1"></i> ${pf.question}</div><div class="bg-slate-900/60 p-3 rounded-2xl font-semibold text-slate-200">${pf.answer}</div></div>`).join('');
+            if(c) c.innerHTML = (appData.publicFaqs || []).map(pf => `<div class="ultra-glass p-4 rounded-3xl space-y-2 shadow-md"><div class="font-bold text-red-600"><i class="fa-solid fa-question ml-1"></i> ${pf.question}</div><div class="bg-slate-100 dark:bg-slate-900/60 p-3 rounded-2xl font-semibold text-slate-700 dark:text-slate-200">${pf.answer}</div></div>`).join('');
         }
 
         function renderInstagram() {
             const c = document.getElementById('instagramContainer');
-            if(c) c.innerHTML = (appData.instagram || []).map(ig => `<a href="${ig.url}" target="_blank" class="flex flex-col items-center space-y-1"><div class="w-16 h-16 rounded-full p-1 bg-gradient-to-tr from-amber-500 to-red-600 flex items-center justify-center shadow-md"><img src="${ig.image}" class="w-full h-full object-cover rounded-full"></div><span class="text-[10px] font-bold text-slate-200">${ig.title}</span></a>`).join('');
+            if(c) c.innerHTML = (appData.instagram || []).map(ig => `<a href="${ig.url}" target="_blank" class="flex flex-col items-center space-y-1"><div class="w-16 h-16 rounded-full p-1 bg-gradient-to-tr from-amber-500 to-red-600 flex items-center justify-center shadow-md"><img src="${ig.image}" class="w-full h-full object-cover rounded-full"></div><span class="text-[10px] font-bold text-slate-700 dark:text-slate-200">${ig.title}</span></a>`).join('');
         }
 
         function renderPodcasts() {
             const c = document.getElementById('podcastsContainer');
-            if(c) c.innerHTML = (appData.podcasts || []).map(p => `<div class="ultra-glass p-3 rounded-2xl shadow-md flex justify-between items-center"><span class="font-bold text-red-600">${p.title}</span><button onclick="playAudio('${p.url}', '${p.title}', '${p.image||''}')" class="bg-amber-500 text-black px-4 py-1.5 rounded-full text-[10px] font-bold shadow hover:scale-105 transition"><i class="fa-solid fa-play ml-1"></i>پخش</button></div>`).join('');
+            if(c) c.innerHTML = (appData.podcasts || []).map(p => `<div class="ultra-glass p-3 rounded-2xl shadow-md flex justify-between items-center"><span class="font-bold text-red-600">${p.title}</span><button onclick="playAudio('${p.url}', '${p.title}', '${p.image||''}')" class="bg-amber-500 text-white dark:text-black px-4 py-1.5 rounded-full text-[10px] font-bold shadow hover:scale-105 transition"><i class="fa-solid fa-play ml-1"></i>پخش</button></div>`).join('');
         }
 
         function renderFiles() {
             const c = document.getElementById('filesContainer');
-            if(c) c.innerHTML = (appData.files || []).map(f => `<div class="ultra-glass p-4 rounded-2xl space-y-2 shadow-md"><img src="${f.image}" class="w-full h-36 object-cover rounded-xl"><h3 class="font-bold text-red-600">${f.title}</h3><p class="font-semibold text-slate-200">${f.description}</p></div>`).join('');
+            if(c) c.innerHTML = (appData.files || []).map(f => `<div class="ultra-glass p-4 rounded-2xl space-y-2 shadow-md"><img src="${f.image}" class="w-full h-36 object-cover rounded-xl"><h3 class="font-bold text-red-600">${f.title}</h3><p class="font-semibold text-slate-700 dark:text-slate-200">${f.description}</p></div>`).join('');
         }
 
         function renderInfographics() {
@@ -929,12 +1065,12 @@
 
         function renderLiveChannels() {
             const c = document.getElementById('liveChannelsSelector');
-            if(c) c.innerHTML = (appData.livestream || []).map(st => `<button onclick="playVideo('${st.url}')" class="p-3 ultra-glass rounded-2xl text-right border hover:border-red-500 space-y-1 shadow"><div class="font-bold text-red-600"><i class="fa-solid fa-tv ml-1"></i> ${st.title}</div><div class="text-[10px] opacity-80">${st.description}</div></button>`).join('');
+            if(c) c.innerHTML = (appData.livestream || []).map(st => `<button onclick="playVideo('${st.url}')" class="p-3 ultra-glass rounded-2xl text-right border hover:border-red-500 space-y-1 shadow"><div class="font-bold text-red-600"><i class="fa-solid fa-tv ml-1"></i> ${st.title}</div><div class="text-[10px] opacity-80 text-slate-600 dark:text-slate-300">${st.description}</div></button>`).join('');
         }
 
         function renderStoryHighlights() {
             const bar = document.getElementById('storyHighlightsBar');
-            if(bar) bar.innerHTML = (appData.shareCards || []).map((card, idx) => `<div onclick="openStorySheet(${idx})" class="flex flex-col items-center space-y-1 flex-shrink-0 cursor-pointer"><div class="story-ring"><div class="w-12 h-12 rounded-full bg-slate-900 flex items-center justify-center text-amber-400 text-xs font-bold shadow-inner"><i class="fa-solid fa-certificate"></i></div></div><span class="text-[9px] font-bold max-w-[50px] truncate text-slate-300">${card.title}</span></div>`).join('');
+            if(bar) bar.innerHTML = (appData.shareCards || []).map((card, idx) => `<div onclick="openStorySheet(${idx})" class="flex flex-col items-center space-y-1 flex-shrink-0 cursor-pointer"><div class="story-ring"><div class="w-12 h-12 rounded-full bg-slate-100 dark:bg-slate-900 flex items-center justify-center text-amber-500 dark:text-amber-400 text-xs font-bold shadow-inner"><i class="fa-solid fa-certificate"></i></div></div><span class="text-[9px] font-bold max-w-[50px] truncate text-slate-600 dark:text-slate-300">${card.title}</span></div>`).join('');
         }
 
         // Infinite scroll logic
@@ -960,7 +1096,6 @@
             }
         }
         function closeLawBottomSheet() { document.getElementById('lawBottomSheet').style.display = 'none'; }
-
 
         // --- Advanced Tools (Inheritance Tree & Attorney Fee) ---
         function calculateInheritanceVisual() {
@@ -1000,9 +1135,9 @@
             const tax = fee * 0.05; const hemaayat = tax * 0.5; const taavon = tax * 0.25;
 
             document.getElementById('lawyerFeeResult').innerHTML = `
-                <div class="bg-slate-900 p-2 rounded-xl">حق‌الوکاله پایه: <span class="text-white">${Math.round(fee).toLocaleString()}</span> ریال</div>
-                <div class="bg-slate-900 p-2 rounded-xl">تمبر مالیاتی (۵٪): <span class="text-red-400">${Math.round(tax).toLocaleString()}</span> ریال</div>
-                <div class="bg-slate-900 p-2 rounded-xl">صندوق حمایت و تعاون: <span class="text-amber-400">${Math.round(hemaayat+taavon).toLocaleString()}</span> ریال</div>
+                <div class="bg-slate-100 dark:bg-slate-900 p-2 rounded-xl text-slate-800 dark:text-slate-200">حق‌الوکاله پایه: <span class="text-slate-900 dark:text-white font-bold">${Math.round(fee).toLocaleString()}</span> ریال</div>
+                <div class="bg-slate-100 dark:bg-slate-900 p-2 rounded-xl text-slate-800 dark:text-slate-200">تمبر مالیاتی (۵٪): <span class="text-red-500 dark:text-red-400 font-bold">${Math.round(tax).toLocaleString()}</span> ریال</div>
+                <div class="bg-slate-100 dark:bg-slate-900 p-2 rounded-xl text-slate-800 dark:text-slate-200">صندوق حمایت و تعاون: <span class="text-amber-600 dark:text-amber-400 font-bold">${Math.round(hemaayat+taavon).toLocaleString()}</span> ریال</div>
             `;
             triggerHaptic('medium');
         }
@@ -1011,8 +1146,32 @@
             const amt = parseFloat(document.getElementById('courtFeeInput').value) || 0;
             document.getElementById('feeResult').innerText = `هزینه دادرسی بدوی: ${Math.round(amt * 0.035).toLocaleString()} ریال`;
         }
+        function calculateBankCentralMahariyeh() {
+            const coins = parseFloat(document.getElementById('mahariyehCoins').value) || 0;
+            const year = parseInt(document.getElementById('marriageYear').value) || 1395;
+            let coinPrice = parseFloat(document.getElementById('currentCoinPrice').value) || 450000000;
+            const yearDiff = Math.max(0, 1405 - year);
+            let totalValue = coins * coinPrice;
+            if (yearDiff > 0) totalValue = Math.round((coins * coinPrice) * (0.8 + (0.2 * Math.pow(1.22, yearDiff))));
+            document.getElementById('mahariyehResult').innerHTML = `ارزش روز محاسبه‌شده: <span class="text-emerald-500 font-bold">${totalValue.toLocaleString()} ریال</span>`;
+            showToast('محاسبه انجام شد');
+        }
+        function calculateDelayCompensation() {
+            const principal = parseFloat(document.getElementById('principalAmount').value) || 0;
+            const years = parseFloat(document.getElementById('delayYears').value) || 0;
+            const estimated = principal * Math.pow(1.35, years) - principal;
+            document.getElementById('delayResult').innerText = `خسارت تأخیر تأدیه تقریبی: ${Math.round(estimated).toLocaleString()} ریال`;
+        }
+        function calculateDiyeh() {
+            const type = document.getElementById('diyehType').value;
+            let base = 1600000000;
+            if(type === 'haram') base *= 1.33; if(type === 'finger') base *= 0.1; if(type === 'eye') base *= 0.5;
+            document.getElementById('diyehResult').innerText = `مبلغ تقریبی دیه: ${Math.round(base).toLocaleString()} ریال`;
+        }
 
-        // --- Fuzzy Search Implementation ---
+        function copyToClipboard(text) { navigator.clipboard.writeText(text); }
+
+        // --- Universal & Fuzzy Search ---
         function levenshtein(a, b) {
             const matrix = Array(b.length + 1).fill(null).map(() => Array(a.length + 1).fill(null));
             for (let i = 0; i <= a.length; i += 1) matrix[0][i] = i;
@@ -1034,17 +1193,44 @@
             clearBtn.classList.remove('hidden'); box.classList.remove('hidden');
 
             let resultsHTML = '';
+            
+            // Fuzzy Dictionary Search
             let dictMatches = (appData.dictionary || []).map(d => ({
                 item: d, dist: Math.min(levenshtein(q, d.term), levenshtein(q, d.term.substring(0, q.length)))
-            })).filter(m => m.dist < 3 || m.item.term.includes(q)).sort((a,b) => a.dist - b.dist).slice(0,4);
+            })).filter(m => m.dist < 3 || m.item.term.includes(q)).sort((a,b) => a.dist - b.dist).slice(0,3);
 
             if(dictMatches.length > 0) {
-                resultsHTML += `<div class="text-[10px] font-bold text-amber-400 pb-1 border-b border-white/10">اصطلاحات فازی</div>`;
+                resultsHTML += `<div class="text-[10px] font-bold text-amber-500 dark:text-amber-400 pb-1 border-b border-slate-200 dark:border-white/10"><i class="fa-solid fa-book ml-1"></i> اصطلاحات</div>`;
                 dictMatches.forEach(m => {
-                    resultsHTML += `<div onclick="switchTab('dictionary-tab'); document.getElementById('searchInput').value='${m.item.term}';" class="p-2 text-xs cursor-pointer hover:bg-white/15 rounded font-bold">${m.item.term}</div>`;
+                    resultsHTML += `<div onclick="switchTab('dictionary-tab'); document.getElementById('searchInput').value='${m.item.term}';" class="p-2 text-xs cursor-pointer hover:bg-slate-100 dark:hover:bg-white/15 rounded font-bold">${m.item.term}</div>`;
                 });
             }
-            box.innerHTML = resultsHTML || `<div class="p-2 text-xs text-slate-400 text-center">موردی یافت نشد</div>`;
+
+            // Laws Exact Search
+            const lawsMatches = (appData.laws || []).filter(l => l.title.includes(q) || l.content.includes(q)).slice(0,2);
+            if(lawsMatches.length > 0) {
+                resultsHTML += `<div class="text-[10px] font-bold text-amber-500 dark:text-amber-400 pt-2 pb-1 border-b border-slate-200 dark:border-white/10"><i class="fa-solid fa-gavel ml-1"></i> قوانین</div>`;
+                lawsMatches.forEach(l => {
+                    resultsHTML += `<div onclick="switchTab('laws-tab'); document.getElementById('searchInput').value='${l.title}';" class="p-2 text-xs cursor-pointer hover:bg-slate-100 dark:hover:bg-white/15 rounded font-bold">${l.title}</div>`;
+                });
+            }
+
+            // FAQs Exact Search
+            const faqMatches = (appData.publicFaqs || []).filter(f => f.question.includes(q) || f.answer.includes(q)).slice(0,2);
+            if(faqMatches.length > 0) {
+                resultsHTML += `<div class="text-[10px] font-bold text-amber-500 dark:text-amber-400 pt-2 pb-1 border-b border-slate-200 dark:border-white/10"><i class="fa-solid fa-question ml-1"></i> سوالات</div>`;
+                faqMatches.forEach(f => {
+                    resultsHTML += `<div onclick="switchTab('public-faq-tab'); document.getElementById('searchInput').value='${f.question}';" class="p-2 text-xs cursor-pointer hover:bg-slate-100 dark:hover:bg-white/15 rounded font-bold">${f.question}</div>`;
+                });
+            }
+
+            box.innerHTML = resultsHTML || `<div class="p-2 text-xs text-slate-500 dark:text-slate-400 text-center">موردی یافت نشد</div>`;
+        }
+
+        function clearSearchInput() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('liveSuggestionsBox').classList.add('hidden');
+            document.getElementById('clearSearchBtn').classList.add('hidden');
         }
 
         // --- Advanced Chatbot (Agentic, Temporal, Citations, Widgets) ---
@@ -1052,25 +1238,29 @@
             analyze: function(text) {
                 let out = "";
                 // Temporal Logic
-                if(text.includes('1396') || text.includes('۱۳۹۶') || text.includes('قدیم')) {
-                    out += "⏳ **تحلیل زمانی:** با توجه به اینکه تاریخ چک مربوط به قبل از سال ۱۴۰۰ است، تابع قانون قدیم صدور چک می‌باشد. در این حالت صدور اجراییه مستقیم (ماده ۲۳) امکان‌پذیر نیست و باید دعوای مطالبه وجه مطرح شود.\n\n";
-                } else if(text.includes('چک') && (text.includes('صیاد') || text.includes('جدید'))) {
-                    out += "⏳ **تحلیل زمانی:** بر اساس قانون جدید صدور چک (چک‌های صیادی بنفش)، روند بسیار تسریع شده است.\n\n";
+                if(text.includes('1396') || text.includes('۱۳۹۶') || text.includes('قدیم') || text.includes('97')) {
+                    out += "⏳ **تحلیل زمانی:** با توجه به اینکه تاریخ چک مربوط به قبل از سال ۱۴۰۰ است، تابع قانون قدیم صدور چک می‌باشد. در این حالت صدور اجراییه مستقیم (ماده ۲۳) امکان‌پذیر نیست و باید دعوای حقوقی مطالبه وجه مطرح شود.\n\n";
+                } else if(text.includes('چک') && (text.includes('صیاد') || text.includes('جدید') || text.includes('۱۴۰۰'))) {
+                    out += "⏳ **تحلیل زمانی:** بر اساس قانون جدید صدور چک (چک‌های صیادی بنفش)، نیازی به دادرسی طولانی نیست.\n\n";
                 }
+                
                 // Widget Injection
                 let hasWidget = false;
                 if(text.includes('هزینه') && text.includes('دادرسی')) {
-                    out += "برای محاسبه هزینه دادرسی، از ویجت زیر استفاده کنید:\n[WIDGET:COURT_FEE]";
+                    out += "برای محاسبه هزینه دادرسی، از ویجت تعاملی زیر استفاده کنید:\n[WIDGET:COURT_FEE]";
                     hasWidget = true;
                 }
-                // Standard Match
+                
+                // Universal Fallback
                 if(!hasWidget) {
-                    if(text.includes('مهریه')) out += "برای اجرای مهریه باید ابتدا به اداره ثبت مراجعه کنید. <a class='text-blue-400 underline cursor-pointer' onclick='openLawBottomSheet(\"توقیف اموال\")'>(توضیح توقیف اموال)</a>";
-                    else if(text.includes('تخلیه')) out += "دستور تخلیه فوری نیازمند امضای دو شاهد در قرارداد است.";
-                    else out += "لطفاً جزئیات بیشتری از پرونده، سال وقوع یا نوع قرارداد بیان کنید تا دقیق‌تر راهنمایی کنم.";
+                    if(text.includes('مهریه')) out += "برای اجرای مهریه باید ابتدا به اداره ثبت (محل ثبت عقد) مراجعه کنید. نیازی به مراجعه مستقیم به دادگاه نیست. <a class='text-blue-500 dark:text-blue-400 underline cursor-pointer' onclick='openLawBottomSheet(\"توقیف اموال\")'>(مشاهده شرایط توقیف اموال)</a>";
+                    else if(text.includes('تخلیه')) out += "دستور تخلیه فوری ملک تنها در صورتی صادر می‌شود که قرارداد دارای امضای دو شاهد معتبر باشد و مدت آن تمام شده باشد.";
+                    else if(text.includes('بیمه') || text.includes('اداره کار') || text.includes('کارگر')) out += "بر اساس ماده 148 قانون کار، کارفرما مکلف به بیمه کردن کارگر از روز اول است و توافق بر خلاف آن باطل است. شما می‌توانید با مراجعه به اداره کار محل، دادخواست خود را ثبت کنید.";
+                    else out += "با توجه به اصول کلی و رویه قضایی، برای پیگیری این خواسته باید ابتدا ادله اثبات دعوا (مانند اسناد، شهادت شهود یا پرینت مالی) را جمع‌آوری کرده و سپس از طریق یکی از دفاتر خدمات الکترونیک قضایی، دادخواست یا شکواییه مربوطه را ثبت نمایید.";
                 }
-                // Citation
-                out += "\n\n📚 **مستندات:** <a class='text-amber-400 underline cursor-pointer' onclick='openLawBottomSheet(\"ماده ۲۳ قانون صدور چک\")'>قانون صدور چک</a>";
+                
+                // Citation (if applicable)
+                if(text.includes('چک')) out += "\n\n📚 **مستندات:** <a class='text-amber-500 dark:text-amber-400 underline cursor-pointer' onclick='openLawBottomSheet(\"ماده ۲۳ قانون صدور چک\")'>مشاهده ماده ۲۳ قانون صدور چک</a>";
                 return out;
             }
         };
@@ -1086,7 +1276,7 @@
                 document.getElementById('aiTypingIndicator').classList.add('hidden');
                 chatConversationHistory.push({ role: 'model', text: res });
                 renderChatUI();
-            }, 1000);
+            }, 1200);
         }
 
         function renderChatUI() {
@@ -1095,13 +1285,15 @@
                 const isUser = msg.role === 'user';
                 let formattedText = msg.text.replace('[WIDGET:COURT_FEE]', `
                     <div class="chat-widget mt-2">
-                        <input type="number" id="chatFeeInp" placeholder="مبلغ (ریال)" class="w-full bg-black/50 text-white rounded p-1 mb-1 text-[10px]">
-                        <button onclick="alert('هزینه بدوی: ' + (document.getElementById('chatFeeInp').value * 0.035) + ' ریال')" class="w-full bg-red-600 rounded p-1 text-[10px]">محاسبه</button>
+                        <input type="number" id="chatFeeInp" placeholder="مبلغ (ریال)" class="w-full bg-white/50 dark:bg-black/50 text-slate-800 dark:text-white rounded p-1.5 mb-1 text-[11px] focus:outline-none border border-slate-300 dark:border-transparent">
+                        <button onclick="alert('هزینه بدوی تقریبی: ' + (document.getElementById('chatFeeInp').value * 0.035) + ' ریال')" class="w-full bg-red-600 text-white rounded p-1.5 text-[11px] font-bold shadow">محاسبه سریع</button>
                     </div>`);
-                return `<div class="flex justify-${isUser ? 'end' : 'start'}"><div class="${isUser ? 'bg-red-600 rounded-br-none' : 'bg-slate-800 border border-white/10 rounded-bl-none'} p-3 rounded-2xl max-w-[88%] leading-relaxed">${formattedText}</div></div>`;
+                return `<div class="flex justify-${isUser ? 'end' : 'start'}"><div class="${isUser ? 'bg-red-600 text-white rounded-br-none shadow-md' : 'bg-white dark:bg-slate-800 border border-slate-200 dark:border-white/10 text-slate-800 dark:text-slate-100 rounded-bl-none shadow'} p-3 rounded-2xl max-w-[88%] leading-relaxed">${formattedText}</div></div>`;
             }).join('');
             c.scrollTop = c.scrollHeight;
         }
+        function sendQuickChat(text) { document.getElementById('aiPromptInput').value = text; runAiAssistant(); }
+        function clearChatHistory() { chatConversationHistory = []; sessionStorage.removeItem('mizan_active_chat'); renderChatUI(); showToast('تاریخچه گفتگو پاکسازی شد'); }
 
         // --- Modals, PiP & Video ---
         function playVideo(url) {
@@ -1120,7 +1312,7 @@
 
             if(type === 'series') {
                 content.innerHTML = `<div class="pro-video-wrapper"><video id="modalVideoPlayer" src="${item.url}" controls autoplay playsinline webkit-playsinline></video></div>`;
-                extBtn.classList.remove('hidden'); extBtn.href = item.url;
+                extBtn.classList.remove('hidden'); extBtn.href = item.url; 
                 cinBtn.classList.remove('hidden');
                 if (document.pictureInPictureEnabled) { pipBtn.classList.remove('hidden'); }
             } else {
@@ -1151,7 +1343,7 @@
         function closePiP() { pipDiv.style.display = 'none'; pipDiv.innerHTML = '<div class="pip-close-btn" onclick="closePiP()"><i class="fa-solid fa-xmark"></i></div>'; }
 
         // --- Floating Audio Player & Dynamic Color ---
-        function getAverageColor(imgUrl) { const colors = ['#9b131a', '#f59e0b', '#0f172a', '#4338ca']; return colors[Math.floor(Math.random() * colors.length)]; }
+        function getAverageColor(imgUrl) { const colors = ['#9b131a', '#f59e0b', '#0f172a', '#4338ca', '#047857']; return colors[Math.floor(Math.random() * colors.length)]; }
         let audioEl = document.getElementById('mainAudioObj');
         function playAudio(url, title, img) {
             audioEl.src = url; audioEl.play(); document.getElementById('playerTitle').innerText = title;
@@ -1193,10 +1385,18 @@
             document.getElementById(sectionId)?.classList.remove('hidden');
             document.querySelectorAll('#mainNavContainer button').forEach(b => b.classList.remove('active-tab'));
             if(btn) btn.classList.add('active-tab');
+            else { const tBtn = Array.from(document.querySelectorAll('#mainNavContainer button')).find(b => b.getAttribute('onclick')?.includes(sectionId)); if(tBtn) tBtn.classList.add('active-tab'); }
             window.scrollTo(0, 0);
         }
         function toggleMoreDrawer() { const d = document.getElementById('moreDrawer'); d.style.display = d.style.display === 'block' ? 'none' : 'block'; }
         function toggleSettingsMenu(e) { e.stopPropagation(); document.getElementById('settingsDropdown').classList.toggle('hidden'); }
+        function openAdvancedSearchModal() { document.getElementById('advancedSearchModal').classList.remove('hidden'); }
+        function closeAdvancedSearchModal() { document.getElementById('advancedSearchModal').classList.add('hidden'); }
+        function executeGoogleSearch() {
+            const query = document.getElementById('googleSearchInput').value.trim();
+            if(query) window.open(`https://www.google.com/search?q=${encodeURIComponent(query)}`, '_blank');
+            closeAdvancedSearchModal();
+        }
         
         window.addEventListener('DOMContentLoaded', initApp);
     </script>
