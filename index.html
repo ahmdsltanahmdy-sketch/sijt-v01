@@ -32,7 +32,13 @@
 
     <style>
         :root { --selected-font: Tahoma; --app-font-size: 12px; --line-height: 1.8; }
-        body { font-family: var(--selected-font), Arial, sans-serif; font-size: var(--app-font-size); line-height: var(--line-height); overflow-x: hidden; touch-action: pan-y; }
+        body { font-family: var(--selected-font), Arial, sans-serif; font-size: var(--app-font-size); overflow-x: hidden; touch-action: pan-y; }
+        
+        /* اعمال قطعی فاصله خطوط روی تمام متون */
+        .page-section p, .page-section span:not(.fa-solid):not(.fa-brands):not(.fa-regular), .page-section div, .page-section h2, .page-section h3, .page-section h4 {
+            line-height: var(--line-height) !important;
+        }
+
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
@@ -100,7 +106,7 @@
         .pip-close-btn { position: absolute; top: 4px; right: 4px; background: rgba(0,0,0,0.6); color: #fff; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; z-index: 10; font-size: 10px; cursor: pointer; }
 
         /* Floating Audio Player */
-        #floatingAudioPlayer { position: fixed; bottom: 70px; left: 12px; right: 12px; max-width: 400px; margin: 0 auto; background: rgba(13, 19, 33, 0.95); backdrop-filter: blur(20px); border: 1px solid rgba(245, 158, 11, 0.4); border-radius: 20px; padding: 10px 15px; display: none; align-items: center; justify-content: space-between; box-shadow: 0 -10px 30px rgba(0,0,0,0.7), 0 0 20px rgba(197,27,36,0.3); z-index: 49; transform: translateY(150%); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), background 0.5s ease; }
+        #floatingAudioPlayer { position: fixed; bottom: 70px; left: 12px; right: 12px; max-width: 400px; margin: 0 auto; background: var(--player-color, rgba(13, 19, 33, 0.95)); backdrop-filter: blur(20px); border: 1px solid rgba(245, 158, 11, 0.4); border-radius: 20px; padding: 10px 15px; display: none; align-items: center; justify-content: space-between; box-shadow: 0 -10px 30px rgba(0,0,0,0.7), 0 0 20px rgba(197,27,36,0.3); z-index: 49; transform: translateY(150%); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), background 0.5s ease; }
         #floatingAudioPlayer.show { display: flex; transform: translateY(0); }
         .cinematic-mode-box { max-width: 98vw !important; width: 98vw !important; background: rgba(5, 5, 5, 0.99) !important; border: 1px solid rgba(245, 158, 11, 0.4) !important; box-shadow: 0 0 60px rgba(0, 0, 0, 0.95), 0 0 30px rgba(197, 27, 36, 0.5) !important; }
         .cinematic-mode-box .pro-video-wrapper { aspect-ratio: 21/9 !important; max-height: 75vh; }
@@ -179,7 +185,7 @@
             <button onclick="toggleAudioPlay()" id="playerPlayBtn" class="text-amber-400 hover:text-white text-xl"><i class="fa-solid fa-circle-pause"></i></button>
             <button onclick="closeAudioPlayer()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
         </div>
-        <audio id="mainAudioObj" class="hidden" ontimeupdate="updateAudioProgress()" onended="closeAudioPlayer()" crossOrigin="anonymous"></audio>
+        <audio id="mainAudioObj" class="hidden" ontimeupdate="updateAudioProgress()" onended="closeAudioPlayer()" crossorigin="anonymous"></audio>
         <div class="absolute bottom-0 left-4 right-4 h-0.5 bg-white/10 rounded-full overflow-hidden">
             <div id="playerProgress" class="h-full bg-amber-400 w-0 transition-all duration-200"></div>
         </div>
@@ -614,7 +620,6 @@
         const tg = window.Telegram?.WebApp;
         if (tg) { try { tg.ready(); tg.expand(); } catch(e) {} }
 
-        // استخراج آیدی کاربر از تلگرام
         let userId = localStorage.getItem('mizan_user_id');
         if(!userId) {
             userId = (tg?.initDataUnsafe?.user?.id) ? 'tg_' + tg.initDataUnsafe.user.id : 'user_' + Math.random().toString(36).substr(2, 9);
@@ -851,6 +856,8 @@
                         localStorage.setItem('mizan_cache', JSON.stringify(appData));
                         renderAll();
                     }
+                } else {
+                    throw new Error('Server not ok');
                 }
             } catch(e) { console.log("اتصال به سرور برقرار نشد، استفاده از دیتای آفلاین"); }
             
@@ -859,7 +866,6 @@
             initAppSwipeGestures();
             if(document.getElementById('userFaqsContainer')) loadUserFaqs();
             
-            // نمایش تور در صورت بازدید اول
             if (!localStorage.getItem('sijt_tour_completed')) startOnboardingTour();
         }
 
@@ -869,12 +875,15 @@
             showToast('در حال همگام‌سازی...');
             try {
                 const res = await fetch(API_URL + "?action=get_all&t=" + Date.now());
+                if (!res.ok) throw new Error('Server returned ' + res.status);
                 const newData = await res.json();
-                appData = { ...fallbackData, ...newData };
-                localStorage.setItem('mizan_cache', JSON.stringify(appData));
-                renderAll(); showToast('به‌روز شد');
+                if(newData && Object.keys(newData).length > 0) {
+                    appData = { ...fallbackData, ...newData };
+                    localStorage.setItem('mizan_cache', JSON.stringify(appData));
+                    renderAll(); showToast('به‌روز شد');
+                }
             } catch(e) { showToast('ارتباط برقرار نشد. نمایش دیتای محلی', 'error'); }
-            if(icon) icon.classList.remove('fa-spin');
+            finally { if(icon) icon.classList.remove('fa-spin'); }
         }
 
         // --- Tour Logic ---
@@ -966,7 +975,7 @@
             c.innerHTML = list.map(l => {
                 let content = String(l.content || '');
                 if(terms.length > 0) content = content.replace(regex, match => `<span class="glossary-term" onclick="openLawBottomSheet('${match}')">${match}</span>`);
-                return `<div class="ultra-glass p-4 rounded-2xl shadow-md ultra-glass-content space-y-2"><h3 class="font-bold text-red-600 dark:text-red-500">${l.title}</h3><p class="font-semibold text-[11px] text-amber-600 dark:text-amber-400">${l.summary}</p><p class="font-semibold leading-loose text-slate-800 dark:text-slate-100">${content}</p></div>`;
+                return `<div class="ultra-glass p-4 rounded-2xl shadow-md ultra-glass-content space-y-2"><h3 class="font-bold text-red-600 dark:text-red-500">${l.title}</h3><p class="font-semibold text-[11px] text-amber-600 dark:text-amber-400">${l.summary}</p><p class="font-semibold text-slate-800 dark:text-slate-100">${content}</p></div>`;
             }).join('');
         }
 
@@ -979,7 +988,7 @@
             if(reset) pageLimits.news = 10;
             const c = document.getElementById('newsContainer'); if(!c) return;
             const list = (appData.news || []).slice(0, pageLimits.news);
-            c.innerHTML = list.map(n => `<div class="ultra-glass p-4 rounded-2xl space-y-1.5 shadow-md ultra-glass-content"><div class="text-[9px] text-slate-500 dark:text-slate-400">${n.date||''}</div><h3 class="font-bold text-red-600 dark:text-red-500">${n.title}</h3><p class="font-semibold text-slate-700 dark:text-slate-200 leading-relaxed">${n.summary}</p></div>`).join('');
+            c.innerHTML = list.map(n => `<div class="ultra-glass p-4 rounded-2xl space-y-1.5 shadow-md ultra-glass-content"><div class="text-[9px] text-slate-500 dark:text-slate-400">${n.date||''}</div><h3 class="font-bold text-red-600 dark:text-red-500">${n.title}</h3><p class="font-semibold text-slate-700 dark:text-slate-200">${n.summary}</p></div>`).join('');
         }
 
         function renderPublicFaqs() {
@@ -1262,7 +1271,7 @@
 
         function copyToClipboard(text) { navigator.clipboard.writeText(text); }
 
-        // --- Search ---
+        // --- Extended Universal Search + Smart Navigation ---
         function levenshtein(a, b) {
             const matrix = Array(b.length + 1).fill(null).map(() => Array(a.length + 1).fill(null));
             for (let i = 0; i <= a.length; i += 1) matrix[0][i] = i;
@@ -1285,33 +1294,82 @@
 
             let resultsHTML = '';
             
+            // Dictionary Fuzzy Search
             let dictMatches = (appData.dictionary || []).map(d => ({
                 item: d, dist: Math.min(levenshtein(q, d.term), levenshtein(q, d.term.substring(0, q.length)))
-            })).filter(m => m.dist < 3 || m.item.term.includes(q)).sort((a,b) => a.dist - b.dist).slice(0,2);
+            })).filter(m => m.dist < 3 || m.item.term.includes(q)).sort((a,b) => a.dist - b.dist).slice(0,3);
+
             if(dictMatches.length > 0) {
                 resultsHTML += `<div class="text-[10px] font-bold text-amber-500 dark:text-amber-400 pb-1 border-b border-slate-200 dark:border-white/10"><i class="fa-solid fa-book ml-1"></i> اصطلاحات</div>`;
-                dictMatches.forEach(m => { resultsHTML += `<div onclick="switchTab('dictionary-tab'); document.getElementById('searchInput').value='${m.item.term}';" class="p-2 text-xs cursor-pointer hover:bg-slate-100 dark:hover:bg-white/15 rounded font-bold">${m.item.term}</div>`; });
+                dictMatches.forEach(m => {
+                    resultsHTML += `<div onclick="gotoSection('dictionary-tab', '${m.item.term}')" class="p-2 text-xs cursor-pointer hover:bg-slate-100 dark:hover:bg-white/15 rounded font-bold">${m.item.term}</div>`;
+                });
             }
 
-            const lawsMatches = (appData.laws || []).filter(l => String(l.title||'').includes(q) || String(l.content||'').includes(q)).slice(0,2);
-            if(lawsMatches.length > 0) {
-                resultsHTML += `<div class="text-[10px] font-bold text-amber-500 dark:text-amber-400 pt-2 pb-1 border-b border-slate-200 dark:border-white/10"><i class="fa-solid fa-gavel ml-1"></i> قوانین</div>`;
-                lawsMatches.forEach(l => { resultsHTML += `<div onclick="switchTab('laws-tab'); document.getElementById('searchInput').value='${l.title}';" class="p-2 text-xs cursor-pointer hover:bg-slate-100 dark:hover:bg-white/15 rounded font-bold">${l.title}</div>`; });
-            }
+            // Universal Categorized Search Helper
+            const searchCat = (dataArr, tabId, icon, titleLabel, fields) => {
+                const matches = (dataArr || []).filter(item => fields.some(f => String(item[f]||'').toLowerCase().includes(q))).slice(0,3);
+                if(matches.length > 0) {
+                    resultsHTML += `<div class="text-[10px] font-bold text-amber-500 dark:text-amber-400 pt-2 pb-1 border-b border-slate-200 dark:border-white/10"><i class="fa-solid ${icon} ml-1"></i> ${titleLabel}</div>`;
+                    matches.forEach(m => {
+                        const dispTitle = m.title || m.question || m.term || m.description;
+                        resultsHTML += `<div onclick="gotoSection('${tabId}', '${dispTitle.replace(/'/g,"\\'")}')" class="p-2 text-xs cursor-pointer hover:bg-slate-100 dark:hover:bg-white/15 rounded font-bold truncate">${dispTitle}</div>`;
+                    });
+                }
+            };
 
-            const newsMatches = (appData.news || []).filter(n => String(n.title||'').includes(q) || String(n.summary||'').includes(q)).slice(0,2);
-            if(newsMatches.length > 0) {
-                resultsHTML += `<div class="text-[10px] font-bold text-amber-500 dark:text-amber-400 pt-2 pb-1 border-b border-slate-200 dark:border-white/10"><i class="fa-solid fa-bullhorn ml-1"></i> اخبار</div>`;
-                newsMatches.forEach(n => { resultsHTML += `<div onclick="switchTab('news-tab'); document.getElementById('searchInput').value='${n.title}';" class="p-2 text-xs cursor-pointer hover:bg-slate-100 dark:hover:bg-white/15 rounded font-bold">${n.title}</div>`; });
-            }
+            searchCat(appData.laws, 'laws-tab', 'fa-gavel', 'قوانین', ['title', 'content']);
+            searchCat(appData.news, 'news-tab', 'fa-bullhorn', 'اخبار', ['title', 'summary']);
+            searchCat(appData.publicFaqs, 'public-faq-tab', 'fa-question', 'سوالات', ['question', 'answer']);
+            searchCat(appData.shareCards, 'cards-tab', 'fa-id-card', 'کارت‌ها', ['title', 'text']);
+            searchCat(appData.podcasts, 'podcasts-tab', 'fa-podcast', 'پادکست‌ها', ['title']);
+            searchCat(appData.files, 'files-tab', 'fa-folder-open', 'پرونده‌ها', ['title', 'description']);
+            searchCat(appData.infographics, 'infographics-tab', 'fa-image', 'اینفوگرافیک', ['title']);
+            searchCat(appData.series, 'series-tab', 'fa-film', 'سریال‌ها', ['title']);
             
-            const faqMatches = (appData.publicFaqs || []).filter(f => String(f.question||'').includes(q) || String(f.answer||'').includes(q)).slice(0,2);
-            if(faqMatches.length > 0) {
-                resultsHTML += `<div class="text-[10px] font-bold text-amber-500 dark:text-amber-400 pt-2 pb-1 border-b border-slate-200 dark:border-white/10"><i class="fa-solid fa-question ml-1"></i> سوالات</div>`;
-                faqMatches.forEach(f => { resultsHTML += `<div onclick="switchTab('public-faq-tab'); document.getElementById('searchInput').value='${f.question}';" class="p-2 text-xs cursor-pointer hover:bg-slate-100 dark:hover:bg-white/15 rounded font-bold">${f.question}</div>`; });
-            }
-
             box.innerHTML = resultsHTML || `<div class="p-2 text-xs text-slate-500 dark:text-slate-400 text-center">موردی یافت نشد</div>`;
+        }
+
+        function gotoSection(tabId, titleText) {
+            // مخفی کردن نوار جستجو
+            document.getElementById('liveSuggestionsBox').classList.add('hidden');
+            document.getElementById('clearSearchBtn').classList.add('hidden');
+            document.getElementById('searchInput').value = '';
+            
+            // جابجایی تب
+            switchTab(tabId);
+
+            // اطمینان از لود شدن کامل لیست‌ها برای تب‌های دارای اسکرول
+            if (tabId === 'dictionary-tab') { pageLimits.dict = 9999; renderDictionary(); }
+            if (tabId === 'laws-tab') { pageLimits.laws = 9999; renderLaws(); }
+            if (tabId === 'news-tab') { pageLimits.news = 9999; renderNews(); }
+
+            // پیدا کردن المان و اسکرول/هایلایت روی آن
+            setTimeout(() => {
+                const tab = document.getElementById(tabId);
+                if (!tab) return;
+                
+                // جستجوی متن داخل تب
+                const elements = Array.from(tab.querySelectorAll('h2, h3, h4, span, div, p')).filter(el => el.textContent.includes(titleText));
+                if(elements.length > 0) {
+                    // یافتن کارت والد
+                    const card = elements[0].closest('.ultra-glass, .bg-slate-100, .bg-slate-900') || elements[0];
+                    card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    
+                    // افکت هایلایت
+                    const origBorder = card.style.borderColor;
+                    const origBoxShadow = card.style.boxShadow;
+                    card.style.borderColor = '#f59e0b';
+                    card.style.boxShadow = '0 0 20px rgba(245, 158, 11, 0.5)';
+                    card.style.transition = 'all 0.5s ease';
+                    
+                    setTimeout(() => {
+                        card.style.borderColor = origBorder;
+                        card.style.boxShadow = origBoxShadow;
+                    }, 2000);
+                    triggerHaptic('medium');
+                }
+            }, 300);
         }
 
         function clearSearchInput() { document.getElementById('searchInput').value = ''; document.getElementById('liveSuggestionsBox').classList.add('hidden'); document.getElementById('clearSearchBtn').classList.add('hidden'); }
@@ -1330,7 +1388,6 @@
 
         // --- Touch Panning for Zoomed Images ---
         let panX = 0, panY = 0, isPanning = false, startPanX, startPanY;
-        
         function toggleZoom(img) {
             if (img.classList.contains('zoomed')) {
                 img.classList.remove('zoomed'); panX = 0; panY = 0;
