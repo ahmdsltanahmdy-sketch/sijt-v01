@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SIJT - مینی‌اپ تخصصی حقوقی (پرو مکس کامل)</title>
+    <title>SIJT - مینی‌اپ تخصصی حقوقی (پرو مکس)</title>
 
     <link rel="manifest" href="data:application/manifest+json;charset=utf-8,{
         %22name%22:%20%22SIJT%22,
@@ -31,12 +31,17 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        :root { --selected-font: Tahoma; --app-font-size: 12px; --line-height: 1.8; }
+        :root {
+            --selected-font: Tahoma;
+            --app-font-size: 12px;
+            --line-height: 1.8;
+            --player-color: #080c14;
+        }
         body { font-family: var(--selected-font), Arial, sans-serif; font-size: var(--app-font-size); line-height: var(--line-height); overflow-x: hidden; touch-action: pan-y; }
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-        /* پس‌زمینه سایبرنتیک */
+        /* پس‌زمینه */
         .mesh-bg {
             background-color: #080c14;
             background-image: 
@@ -60,7 +65,7 @@
         .noise-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.025'/%3E%3C/svg%3E"); pointer-events: none; z-index: 999; }
         .text-gradient { background: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
-        /* کارت‌ها با طراحی نئونی و 3D Tilt */
+        /* کارت‌ها و افکت 3D Tilt */
         .ultra-glass { background: rgba(13, 19, 33, 0.92); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border: 1px solid rgba(245, 158, 11, 0.25); box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7), 0 0 15px rgba(197, 27, 36, 0.15); color: #ffffff; transition: transform 0.1s, border-color 0.3s, box-shadow 0.3s; transform-style: preserve-3d; }
         .ultra-glass:hover { border-color: rgba(245, 158, 11, 0.45); box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8), 0 0 25px rgba(197, 27, 36, 0.3); }
         .ultra-glass-content { transform: translateZ(20px); }
@@ -79,19 +84,22 @@
         .nav-btn.active-tab { color: #ef4444 !important; transform: scale(1.08) translateY(-2px); filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.8)); }
         .nav-btn.active-tab span { color: #ef4444 !important; font-weight: 900 !important; }
 
-        /* کشوها و مودال‌ها */
+        /* کشوها */
         #moreDrawer, #navEditorDrawer, #lawBottomSheet { display: none; position: fixed; bottom: 0; left: 0; right: 0; z-index: 100; max-width: 28rem; margin: 0 auto; border-top-left-radius: 1.5rem; border-top-right-radius: 1.5rem; padding: 1rem; box-shadow: 0 -10px 40px rgba(0,0,0,0.8), 0 0 25px rgba(197, 27, 36, 0.3); animation: slideUpDrawer 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         @keyframes slideUpDrawer { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         .glass-tab { background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(16px); border: 1px solid rgba(245, 158, 11, 0.25); color: #ffffff !important; }
         .header-bg { background-image: url('https://raw.githubusercontent.com/ahmdsltanahmdy-sketch/mizan-miniapp-new/main/photo_2026-09-15_10-06-27.jpg'); background-size: cover; background-position: center; }
+        
         #appHeader { transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease, background-color 0.4s ease, backdrop-filter 0.4s ease; will-change: transform, opacity; }
         #appHeader.scrolled-header { background-color: rgba(8, 12, 20, 0.95) !important; backdrop-filter: blur(25px) saturate(180%); border-bottom: 1px solid rgba(245, 158, 11, 0.3); box-shadow: 0 10px 25px rgba(0,0,0,0.7); }
         .header-hidden { transform: translateY(-100%) !important; opacity: 0 !important; pointer-events: none !important; }
         #backToTopBtn { position: fixed; bottom: 84px; right: 16px; z-index: 45; }
 
-        /* Media & PiP - با قابلیت Pan & Zoom بومی جاوااسکریپت */
-        .zoomable-container { overflow: hidden; position: relative; width: 100%; height: 70vh; display: flex; align-items: center; justify-content: center; background: #000; border-radius: 1rem; touch-action: none; }
-        .zoomable-img { max-width: 100%; max-height: 100%; object-fit: contain; cursor: zoom-in; transition: transform 0.2s ease-out; transform-origin: center center; }
+        /* Media & PiP - بهینه‌سازی زوم و جابجایی */
+        .zoomable-container { overflow: auto; position: relative; width: 100%; height: 70vh; display: flex; align-items: center; justify-content: center; background: #000; border-radius: 1rem; }
+        .zoomable-img { max-width: 100%; max-height: 100%; object-fit: contain; cursor: zoom-in; transition: transform 0.3s ease; }
+        .zoomable-img.zoomed { max-width: none; max-height: none; width: 250%; cursor: zoom-out; }
+        
         .pro-video-wrapper { position: relative; width: 100%; aspect-ratio: 16/9; background: radial-gradient(circle at center, #1e293b 0%, #020617 100%); border-radius: 1.25rem; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.85), 0 0 25px rgba(197, 27, 36, 0.4); border: 1px solid rgba(245, 158, 11, 0.3); }
         .pro-video-wrapper video { width: 100%; height: 100%; object-fit: cover; }
         
@@ -100,8 +108,9 @@
         .pip-close-btn { position: absolute; top: 4px; right: 4px; background: rgba(0,0,0,0.6); color: #fff; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; z-index: 10; font-size: 10px; cursor: pointer; }
 
         /* Floating Audio Player */
-        #floatingAudioPlayer { position: fixed; bottom: 70px; left: 12px; right: 12px; max-width: 400px; margin: 0 auto; background: rgba(13, 19, 33, 0.95); backdrop-filter: blur(20px); border: 1px solid rgba(245, 158, 11, 0.4); border-radius: 20px; padding: 10px 15px; display: none; align-items: center; justify-content: space-between; box-shadow: 0 -10px 30px rgba(0,0,0,0.7), 0 0 20px rgba(197,27,36,0.3); z-index: 49; transform: translateY(150%); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), background 0.5s ease; }
+        #floatingAudioPlayer { position: fixed; bottom: 70px; left: 12px; right: 12px; max-width: 400px; margin: 0 auto; background: var(--player-color, rgba(13, 19, 33, 0.95)); backdrop-filter: blur(20px); border: 1px solid rgba(245, 158, 11, 0.4); border-radius: 20px; padding: 10px 15px; display: none; align-items: center; justify-content: space-between; box-shadow: 0 -10px 30px rgba(0,0,0,0.7), 0 0 20px rgba(197,27,36,0.3); z-index: 49; transform: translateY(150%); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), background 0.5s ease; }
         #floatingAudioPlayer.show { display: flex; transform: translateY(0); }
+
         .cinematic-mode-box { max-width: 98vw !important; width: 98vw !important; background: rgba(5, 5, 5, 0.99) !important; border: 1px solid rgba(245, 158, 11, 0.4) !important; box-shadow: 0 0 60px rgba(0, 0, 0, 0.95), 0 0 30px rgba(197, 27, 36, 0.5) !important; }
         .cinematic-mode-box .pro-video-wrapper { aspect-ratio: 21/9 !important; max-height: 75vh; }
 
@@ -117,7 +126,7 @@
         .toast-item { background: rgba(13, 19, 33, 0.96); backdrop-filter: blur(20px); border: 1px solid rgba(245, 158, 11, 0.4); color: #fff; padding: 12px 16px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.7), 0 0 15px rgba(197, 27, 36, 0.3); font-size: 11px; font-weight: bold; display: flex; align-items: center; justify-content: space-between; pointer-events: auto; animation: toastIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         @keyframes toastIn { from { opacity: 0; transform: translateY(-20px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
 
-        .tour-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.88); backdrop-filter: blur(10px); z-index: 250; flex-direction: column; align-items: center; justify-content: center; padding: 1.5rem; animation: fadeInScale 0.3s ease; }
+        .tour-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.88); backdrop-filter: blur(10px); z-index: 250; align-items: center; justify-content: center; padding: 1.5rem; animation: fadeInScale 0.3s ease; }
 
         #ptr-indicator { height: 0; overflow: hidden; display: flex; align-items: center; justify-content: center; transition: height 0.2s ease; background: transparent; width: 100%; }
         .ptr-spinner { border: 3px solid rgba(245,158,11,0.2); border-top: 3px solid #f59e0b; border-radius: 50%; width: 24px; height: 24px; animation: spin 1s linear infinite; }
@@ -137,11 +146,12 @@
         .tree-branch { display: flex; flex-direction: column; align-items: center; position: relative; width:100%; }
         .tree-branch::before { content: ''; position: absolute; top: -10px; left: 50%; width: 2px; height: 10px; background: #f59e0b; }
 
-        /* لودینگ هوش مصنوعی */
+        /* لودینگ هوش مصنوعی با CSS به جای Lottie */
         .typing-dot { width: 6px; height: 6px; background-color: #f59e0b; border-radius: 50%; margin: 0 2px; animation: typingAnimation 1.4s infinite ease-in-out both; }
         .typing-dot:nth-child(1) { animation-delay: -0.32s; }
         .typing-dot:nth-child(2) { animation-delay: -0.16s; }
         @keyframes typingAnimation { 0%, 80%, 100% { transform: scale(0); opacity: 0.3; } 40% { transform: scale(1); opacity: 1; } }
+
     </style>
 </head>
 <body id="bodyRoot" class="mesh-bg text-slate-900 dark:text-slate-100 min-h-screen flex flex-col relative select-none">
@@ -159,6 +169,7 @@
 
     <div class="noise-overlay"></div>
     <div id="toastContainer"></div>
+
     <div id="ptr-indicator"><div class="ptr-spinner"></div></div>
 
     <div id="floatingPipContainer">
@@ -172,21 +183,21 @@
             </div>
             <div class="flex flex-col truncate">
                 <span id="playerTitle" class="text-xs font-bold text-white truncate">در حال پخش...</span>
-                <span class="text-[9px] text-slate-300 opacity-80">پادکست حقوقی</span>
+                <span class="text-[9px] text-slate-300">پادکست حقوقی</span>
             </div>
         </div>
         <div class="flex items-center space-x-3 space-x-reverse flex-shrink-0">
             <button onclick="toggleAudioPlay()" id="playerPlayBtn" class="text-amber-400 hover:text-white text-xl"><i class="fa-solid fa-circle-pause"></i></button>
             <button onclick="closeAudioPlayer()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
         </div>
-        <audio id="mainAudioObj" class="hidden" ontimeupdate="updateAudioProgress()" onended="closeAudioPlayer()" crossOrigin="anonymous"></audio>
+        <audio id="mainAudioObj" class="hidden" ontimeupdate="updateAudioProgress()" onended="closeAudioPlayer()"></audio>
         <div class="absolute bottom-0 left-4 right-4 h-0.5 bg-white/10 rounded-full overflow-hidden">
             <div id="playerProgress" class="h-full bg-amber-400 w-0 transition-all duration-200"></div>
         </div>
     </div>
 
-    <!-- تور راهنمای ورود (با قابلیت بازگشت کامل) -->
-    <div id="onboardingModal" class="tour-overlay hidden">
+    <!-- تور راهنمای ورود -->
+    <div id="onboardingModal" class="tour-overlay hidden flex">
         <div class="ultra-glass rounded-3xl max-w-sm w-full p-5 relative shadow-2xl space-y-4 text-center border border-amber-500/40">
             <div id="tourIconContainer" class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-red-600 to-amber-500 mx-auto flex items-center justify-center text-white text-2xl shadow-lg shadow-red-600/40">
                 <i id="tourStepIcon" class="fa-solid fa-scale-balanced"></i>
@@ -282,7 +293,7 @@
                 </select>
             </div>
             <div class="flex items-center justify-between pb-2 border-b border-white/20">
-                <span class="font-bold">افکت صوتی:</span>
+                <span class="font-bold">افکت صوتی و لرزشی:</span>
                 <input type="checkbox" id="microInteractionsCheck" onchange="toggleMicroInteractions(this.checked)" checked class="accent-red-600 w-4 h-4 cursor-pointer">
             </div>
             <div class="flex items-center justify-between pb-2 border-b border-white/20">
@@ -294,7 +305,7 @@
             </div>
         </div>
 
-        <!-- نوار جستجو هدر (Fuzzy + Universal Search) -->
+        <!-- نوار جستجو هدر (Fuzzy Search Enabled) -->
         <div class="max-w-md mx-auto px-4 py-2.5 relative z-20">
             <div class="flex space-x-2 space-x-reverse relative items-center">
                 <div class="relative flex-grow">
@@ -324,19 +335,24 @@
                 <button onclick="filterDictCategory('all', this); triggerHaptic('light');" class="dict-chip px-3 py-1.5 rounded-full bg-red-600 text-white font-bold flex-shrink-0 shadow shadow-red-600/30">همه واژگان</button>
                 <button onclick="filterDictCategory('bookmarks', this); triggerHaptic('light');" class="dict-chip px-3 py-1.5 rounded-full bg-slate-200 text-slate-700 dark:bg-slate-800 dark:text-slate-200 border border-slate-300 dark:border-white/15 flex-shrink-0"><i class="fa-solid fa-bookmark ml-1"></i>نشانک‌های من</button>
             </div>
-            <div id="dictionaryContainer" class="space-y-2 mt-2"><div class="custom-skeleton h-20 w-full"></div></div>
-            <div id="dictLoadingObserver" class="h-4 w-full"></div>
+            <div id="dictionaryContainer" class="space-y-2 mt-2">
+                <div class="custom-skeleton h-20 w-full"></div>
+            </div>
+            <div id="dictLoadingObserver" class="h-4 w-full"></div> 
         </section>
 
         <!-- تب ۲: سامانه‌ها -->
         <section id="legal-tab" class="page-section hidden space-y-3">
             <h2 class="font-black text-xs mb-2 text-gradient"><i class="fa-solid fa-scale-balanced ml-1 text-red-500"></i> سامانه‌های قضایی</h2>
-            <div id="legalSystemsContainer" class="space-y-3"><div class="custom-skeleton h-16 w-full"></div></div>
+            <div id="legalSystemsContainer" class="space-y-3">
+                <div class="custom-skeleton h-16 w-full"></div>
+            </div>
             <div class="ultra-glass p-4 rounded-2xl space-y-2 shadow-lg mt-4">
                 <h3 class="font-bold text-xs text-amber-500 dark:text-amber-300"><i class="fa-solid fa-circle-question ml-1"></i> راهنمای استعلام چک صیادی</h3>
+                <p class="text-[10px] text-slate-600 dark:text-slate-300">برای ثبت و استعلام چک، از روش‌های رسمی استفاده کنید:</p>
                 <div class="space-y-1.5 pt-1 text-[11px]">
-                    <div class="bg-slate-100 dark:bg-slate-900 p-2 rounded-xl border border-slate-200 dark:border-white/10 text-slate-700 dark:text-slate-200">1. ورود به سامانه‌های معتبر بانک مرکزی</div>
-                    <div class="bg-slate-100 dark:bg-slate-900 p-2 rounded-xl border border-slate-200 dark:border-white/10 text-slate-700 dark:text-slate-200">2. اسکن بارکد یا ورود شناسه ۱۶ رقمی</div>
+                    <div class="bg-slate-100 dark:bg-slate-900 p-2 rounded-xl border border-slate-200 dark:border-white/10 text-slate-700 dark:text-slate-200">1. ورود به اپلیکیشن‌های بانکی معتبر یا سامانه بانک مرکزی</div>
+                    <div class="bg-slate-100 dark:bg-slate-900 p-2 rounded-xl border border-slate-200 dark:border-white/10 text-slate-700 dark:text-slate-200">2. اسکن بارکد روی چک یا وارد کردن شناسه ۱۶ رقمی صیادی</div>
                     <div class="bg-slate-100 dark:bg-slate-900 p-2 rounded-xl border border-slate-200 dark:border-white/10 text-slate-700 dark:text-slate-200">3. ثبت تایید دریافت یا انتقال به شخص دیگر</div>
                 </div>
             </div>
@@ -582,7 +598,6 @@
         <i class="fa-solid fa-arrow-up text-xs"></i>
     </button>
 
-    <!-- مودال رسانه -->
     <div id="mediaModal" class="fixed inset-0 bg-black/90 z-[110] hidden flex items-center justify-center p-4">
         <div id="mediaModalBox" class="ultra-glass rounded-3xl max-w-lg w-full p-4 relative shadow-2xl space-y-3 text-center">
             <button onclick="closeMediaModal()" class="absolute top-3 left-3 text-slate-300 p-2 z-10 hover:text-white"><i class="fa-solid fa-xmark text-base"></i></button>
@@ -610,12 +625,11 @@
     <script>
         const API_URL = 'https://script.google.com/macros/s/AKfycbyrMOSKpL5rwv5C9okpDQvbKE07-1JFP2ZE5xt7Xt4Y9sSvIUwbXZWU6ssTbBgQRgSZ/exec'; 
         
-        // --- Telegram & Config ---
+        // --- Telegram & Theming ---
         const tg = window.Telegram?.WebApp;
         if (tg) { try { tg.ready(); tg.expand(); } catch(e) {} }
 
-        // برگرداندن آیدی اتصال به تلگرام
-        let userId = localStorage.getItem('mizan_user_id') || (tg?.initDataUnsafe?.user?.id ? 'tg_' + tg.initDataUnsafe.user.id : 'user_' + Math.random().toString(36).substr(2, 9));
+        let userId = localStorage.getItem('mizan_user_id') || ('user_' + Math.random().toString(36).substr(2, 9));
         localStorage.setItem('mizan_user_id', userId);
 
         function updateMetaThemeColor(color) {
@@ -653,14 +667,17 @@
         function changeCalendarType(type) { localStorage.setItem('mizan_calendar', type); updateDateTime(); }
         
         async function clearIndexedDBCache() {
-            localStorage.removeItem('mizan_cache'); sessionStorage.removeItem('mizan_active_chat');
-            showToast('حافظه کش پاکسازی شد'); setTimeout(() => location.reload(), 500);
+            localStorage.removeItem('mizan_cache');
+            sessionStorage.removeItem('mizan_active_chat');
+            showToast('حافظه کش پاکسازی شد');
+            setTimeout(() => location.reload(), 500);
         }
         function toggleMicroInteractions(enabled) {
-            microInteractionsEnabled = enabled; localStorage.setItem('micro_interactions', enabled);
+            microInteractionsEnabled = enabled;
+            localStorage.setItem('micro_interactions', enabled);
             showToast(enabled ? 'افکت‌های صوتی فعال شدند' : 'افکت‌ها غیرفعال شدند');
         }
-        function openAboutModal() { alert("مینی‌اپ تخصصی و هوشمند حقوقی SIJT\nنسخه ۳.۰ (پرو مکس کامل)"); }
+        function openAboutModal() { alert("مینی‌اپ تخصصی و هوشمند حقوقی SIJT\nنسخه ۳.۰ (طراحی پرو مکس)"); }
         function toggleNotificationsModal() { showToast('در حال حاضر اعلان جدیدی ندارید', 'success'); triggerHaptic('light'); }
 
         // --- Audio & Haptics ---
@@ -781,7 +798,7 @@
             renderBottomNav(); closeNavEditor(); showToast('نوار پایین بروز شد');
         }
 
-        // --- Data & Sync (Full Knowledge Base Restored) ---
+        // --- Data & Sync ---
         const fallbackData = {
             dictionary: [
                 { term: "تجدیدنظر", definition: "اعتراض به رای دادگاه بدوی در دادگاه تجدیدنظر استان.", category: "کیفری" },
@@ -801,24 +818,6 @@
             livestream: [{ title: "شبکه خبر", description: "پخش زنده اخبار", url: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" }]
         };
 
-        const aiKnowledgeBase = [
-            {
-                id: 'cheque_sayad', keywords: ['چک', 'صیاد', 'برگشت', 'اجرائیه'], patterns: [/چک.*(صیاد|برگشت)/, /اجرای.*چک/],
-                title: 'راهنمای جامع چک صیادی (ماده ۲۳)',
-                content: `مطابق قانون جدید صدور چک، در صورت برگشت چک صیادی:\n📌 **اقدام مستقیم:** بر اساس ماده ۲۳، دارنده با اخذ «گواهی عدم پرداخت با کد رهگیری»، مستقیماً از طریق دفاتر خدمات قضایی تقاضای صدور **اجرائیه** می‌کند؛ نیازی به دادرسی ماهوی نیست.\n⚖️ **مسدودی حساب‌ها:** کلیه حساب‌های صادرکننده مسدود می‌شود.`
-            },
-            {
-                id: 'mahriyeh', keywords: ['مهریه', 'سکه', 'توقیف', 'اعسار'], patterns: [/مهریه.*(مطالبه|توقیف|اجرا)/],
-                title: 'مراحل وصول مهریه',
-                content: `مطابق برنامه ششم توسعه:\n📌 **اجرای ثبت:** زوجه ابتدا باید از طریق دفترخانه محل عقد، پرونده اجرایی در اداره ثبت تشکیل دهد.\n🚗 **توقیف اموال:** حساب‌ها، املاک و خودرو زوج توقیف و وی ممنوع‌الخروج می‌شود.\n⚖️ **اعسار:** در صورت عدم تمکن مالی، زوج می‌تواند پس از ارجاع به دادگاه، دادخواست تقسیط دهد.`
-            },
-            {
-                id: 'delay_comp', keywords: ['تاخیر تادیه', 'خسارت', 'ماده ۵۲۲'], patterns: [/تاخیر.*تادیه/],
-                title: 'خسارت تأخیر تأدیه (ماده ۵۲۲ آ.د.م)',
-                content: `📌 **شرایط:** ۱. موضوع دین وجه رایج (ریال) باشد. ۲. طلبکار رسماً مطالبه کرده باشد (اظهارنامه). ۳. بدهکار متمکن بوده و نپرداخته باشد. ۴. تغییر فاحش شاخص تورم بانک مرکزی وجود داشته باشد.`
-            }
-        ];
-
         let appData = JSON.parse(localStorage.getItem('mizan_cache')) || fallbackData;
         let bookmarks = JSON.parse(localStorage.getItem('mizan_bookmarks')) || [];
         let chatConversationHistory = JSON.parse(sessionStorage.getItem('mizan_active_chat')) || [];
@@ -830,7 +829,6 @@
             setTimeout(() => { document.getElementById('splashScreen').style.opacity = '0'; setTimeout(()=> document.getElementById('splashScreen').remove(), 300); }, 1000);
 
             try {
-                // باگ 404 با کچ شدن حل شده است، اپلیکیشن به کار خود ادامه می‌دهد
                 const res = await fetch(API_URL + "?action=get_all&t=" + Date.now(), { mode: 'cors' });
                 if(res.ok) {
                     const newData = await res.json();
@@ -840,15 +838,12 @@
                         renderAll();
                     }
                 }
-            } catch(e) { console.log("اتصال به سرور برقرار نشد، استفاده از دیتای آفلاین"); }
+            } catch(e) {}
             
             renderPersonalNotes();
             setupNewsObserver();
             initAppSwipeGestures();
             if(document.getElementById('userFaqsContainer')) loadUserFaqs();
-            
-            // نمایش تور در صورت بازدید اول
-            if (!localStorage.getItem('sijt_tour_completed')) startOnboardingTour();
         }
 
         async function manualRefresh() {
@@ -861,29 +856,9 @@
                 appData = { ...fallbackData, ...newData };
                 localStorage.setItem('mizan_cache', JSON.stringify(appData));
                 renderAll(); showToast('به‌روز شد');
-            } catch(e) { showToast('ارتباط برقرار نشد. نمایش دیتای محلی', 'error'); }
+            } catch(e) { showToast('نمایش دیتای محلی', 'error'); }
             if(icon) icon.classList.remove('fa-spin');
         }
-
-        // --- Tour Logic (Restored) ---
-        const tourSteps = [
-            { title: "به مینی‌اپ تخصصی SIJT خوش آمدید", desc: "مرجع جامع واژگان، آرشیو قوانین، سامانه‌های قضایی و دستیار هوشمند.", icon: "fa-solid fa-scale-balanced" },
-            { title: "جستجوی جامع و فازی", desc: "در نوار بالا به صورت صوتی یا متنی در اصطلاحات، قوانین و سوالات بگردید.", icon: "fa-solid fa-magnifying-glass" },
-            { title: "دستیار هوشمند حقوقی", desc: "در تب چت‌بات، سوالات خود را بپرسید تا با مستندات قانونی پاسخ بگیرید.", icon: "fa-solid fa-robot" },
-            { title: "شخصی‌سازی منو", desc: "از تنظیمات هدر، می‌توانید ۵ تب پرکاربرد خود را در نوار پایین پین کنید.", icon: "fa-solid fa-pen-to-square" }
-        ];
-        let currentTourStep = 0;
-        function startOnboardingTour() { currentTourStep = 0; renderTourStep(); document.getElementById('onboardingModal').classList.remove('hidden'); }
-        function renderTourStep() {
-            const step = tourSteps[currentTourStep];
-            document.getElementById('tourStepTitle').innerText = step.title;
-            document.getElementById('tourStepDesc').innerText = step.desc;
-            document.getElementById('tourStepIcon').className = step.icon;
-            document.getElementById('tourNextBtn').innerText = currentTourStep === tourSteps.length - 1 ? 'شروع استفاده' : 'بعدی';
-            document.getElementById('tourDotsContainer').innerHTML = tourSteps.map((_, idx) => `<span class="h-1.5 rounded-full transition-all duration-300 ${idx === currentTourStep ? 'w-5 bg-amber-400' : 'w-2 bg-white/20'}"></span>`).join('');
-        }
-        function nextOnboardingTourStep() { triggerHaptic('light'); if (currentTourStep < tourSteps.length - 1) { currentTourStep++; renderTourStep(); } else skipOnboardingTour(); }
-        function skipOnboardingTour() { localStorage.setItem('sijt_tour_completed', 'true'); document.getElementById('onboardingModal').classList.add('hidden'); triggerHaptic('light'); }
 
         // --- Renderers ---
         let pageLimits = { dict: 10, laws: 10, news: 10 };
@@ -1128,10 +1103,11 @@
             } catch(e) {}
         }
 
-        // --- Smart Swipe Gestures (Restricted to Custom Nav) ---
+        // --- Swipe Gestures ---
         function initAppSwipeGestures() {
             const main = document.getElementById('mainContentArea'); if (!main) return;
             let touchStartX = 0; let touchStartY = 0; let isIgnored = false;
+            const navTabIds = ALL_TABS.map(t => t.id);
 
             main.addEventListener('touchstart', e => {
                 if (!e.touches || e.touches.length === 0) return;
@@ -1148,12 +1124,10 @@
                 if (Math.abs(diffX) > 65 && Math.abs(diffX) > Math.abs(diffY) * 1.5) {
                     const activeSection = document.querySelector('.page-section:not(.hidden)');
                     if (!activeSection) return;
-                    // محدود کردن سوایپ فقط به تب‌های پین شده در نوار پایین کاربر
-                    const currentIndex = userNav.indexOf(activeSection.id);
-                    if (currentIndex === -1) return; // در تب مخفی سوایپ کار نمی‌کند
-
-                    if (diffX < 0 && currentIndex < userNav.length - 1) { switchTab(userNav[currentIndex + 1]); triggerHaptic('light'); } 
-                    else if (diffX > 0 && currentIndex > 0) { switchTab(userNav[currentIndex - 1]); triggerHaptic('light'); }
+                    const currentIndex = navTabIds.indexOf(activeSection.id);
+                    if (currentIndex === -1) return;
+                    if (diffX < 0 && currentIndex < navTabIds.length - 1) { switchTab(navTabIds[currentIndex + 1]); triggerHaptic('light'); } 
+                    else if (diffX > 0 && currentIndex > 0) { switchTab(navTabIds[currentIndex - 1]); triggerHaptic('light'); }
                 }
             }, { passive: true });
         }
@@ -1253,7 +1227,7 @@
 
         function copyToClipboard(text) { navigator.clipboard.writeText(text); }
 
-        // --- Extended Universal Search ---
+        // --- Universal Search ---
         function levenshtein(a, b) {
             const matrix = Array(b.length + 1).fill(null).map(() => Array(a.length + 1).fill(null));
             for (let i = 0; i <= a.length; i += 1) matrix[0][i] = i;
@@ -1278,7 +1252,7 @@
             
             let dictMatches = (appData.dictionary || []).map(d => ({
                 item: d, dist: Math.min(levenshtein(q, d.term), levenshtein(q, d.term.substring(0, q.length)))
-            })).filter(m => m.dist < 3 || m.item.term.includes(q)).sort((a,b) => a.dist - b.dist).slice(0,2);
+            })).filter(m => m.dist < 3 || m.item.term.includes(q)).sort((a,b) => a.dist - b.dist).slice(0,3);
 
             if(dictMatches.length > 0) {
                 resultsHTML += `<div class="text-[10px] font-bold text-amber-500 dark:text-amber-400 pb-1 border-b border-slate-200 dark:border-white/10"><i class="fa-solid fa-book ml-1"></i> اصطلاحات</div>`;
@@ -1295,14 +1269,6 @@
                 });
             }
 
-            const newsMatches = (appData.news || []).filter(n => String(n.title||'').includes(q) || String(n.summary||'').includes(q)).slice(0,2);
-            if(newsMatches.length > 0) {
-                resultsHTML += `<div class="text-[10px] font-bold text-amber-500 dark:text-amber-400 pt-2 pb-1 border-b border-slate-200 dark:border-white/10"><i class="fa-solid fa-bullhorn ml-1"></i> اخبار</div>`;
-                newsMatches.forEach(n => {
-                    resultsHTML += `<div onclick="switchTab('news-tab'); document.getElementById('searchInput').value='${n.title}';" class="p-2 text-xs cursor-pointer hover:bg-slate-100 dark:hover:bg-white/15 rounded font-bold">${n.title}</div>`;
-                });
-            }
-            
             const faqMatches = (appData.publicFaqs || []).filter(f => String(f.question||'').includes(q) || String(f.answer||'').includes(q)).slice(0,2);
             if(faqMatches.length > 0) {
                 resultsHTML += `<div class="text-[10px] font-bold text-amber-500 dark:text-amber-400 pt-2 pb-1 border-b border-slate-200 dark:border-white/10"><i class="fa-solid fa-question ml-1"></i> سوالات</div>`;
@@ -1321,7 +1287,7 @@
         }
 
         function startVoiceDictation(targetInputId) {
-            if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) { return showToast('جستجوی صوتی پشتیبانی نمی‌شود', 'error'); }
+            if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) { return showToast('جستجوی صوتی در این مرورگر پشتیبانی نمی‌شود', 'error'); }
             try {
                 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
                 const recognition = new SpeechRecognition();
@@ -1334,9 +1300,9 @@
             } catch(e) { showToast('خطا در دسترسی به میکروفون', 'error'); }
         }
 
-        // --- Advanced Chatbot (Agentic, Memory, Citations, Widgets) ---
+        // --- Advanced Chatbot (Agentic, Temporal, Citations, Widgets) ---
         const LegalNlpEngine = {
-            analyze: function(text, history) {
+            analyze: function(text) {
                 let out = "";
                 const normalized = text.toLowerCase().trim();
                 
@@ -1348,17 +1314,14 @@
                     return "من «دستیار هوش مصنوعی حقوقی SIJT» هستم. من برای پاسخگویی تخصصی به سوالات قضایی طراحی شده‌ام.";
                 }
                 if (/^(ممنون|مرسی|تشکر|دستت درد نکنه|سپاس|دمت گرم|خیلی ممنون)/.test(normalized) && normalized.length < 25) {
-                    return "خواهش می‌کنم، انجام وظیفه بود! اگر ابهام یا مسئله حقوقی دیگری دارید، با کمال میل در خدمتتان هستم.";
+                    return "خواهش می‌کنم، انجام وظیفه بود! اگر هر ابهام، پرسش یا مسئله حقوقی دیگری دارید، با کمال میل در خدمتتان هستم.";
                 }
 
-                // Context Memory Check
-                const contextBlock = history.slice(-3).map(h => h.text).join(' ') + " " + text;
-                
                 // Temporal Logic
-                if(contextBlock.includes('1396') || contextBlock.includes('۱۳۹۶') || contextBlock.includes('قدیم') || contextBlock.includes('97')) {
-                    out += "⏳ **تحلیل زمانی:** با توجه به اینکه مسئله مربوط به قبل از سال ۱۴۰۰ است، تابع قوانین سابق می‌باشد. در مورد چک، صدور اجراییه مستقیم (ماده ۲۳) امکان‌پذیر نیست و باید دعوای حقوقی مطالبه وجه مطرح شود.\n\n";
+                if(text.includes('1396') || text.includes('۱۳۹۶') || text.includes('قدیم') || text.includes('97')) {
+                    out += "⏳ **تحلیل زمانی:** با توجه به اینکه تاریخ چک مربوط به قبل از سال ۱۴۰۰ است، تابع قانون قدیم صدور چک می‌باشد. در این حالت صدور اجراییه مستقیم (ماده ۲۳) امکان‌پذیر نیست و باید دعوای حقوقی مطالبه وجه مطرح شود.\n\n";
                 } else if(text.includes('چک') && (text.includes('صیاد') || text.includes('جدید') || text.includes('۱۴۰۰'))) {
-                    out += "⏳ **تحلیل زمانی:** بر اساس قانون جدید صدور چک (چک‌های صیادی بنفش)، روند اجرای ثبت بسیار تسریع شده است.\n\n";
+                    out += "⏳ **تحلیل زمانی:** بر اساس قانون جدید صدور چک (چک‌های صیادی بنفش)، نیازی به دادرسی طولانی نیست.\n\n";
                 }
                 
                 // Widget Injection
@@ -1368,24 +1331,16 @@
                     hasWidget = true;
                 }
                 
-                // AI Knowledge Base Fallback
+                // Universal Fallback
                 if(!hasWidget) {
-                    let matched = false;
-                    for (let item of aiKnowledgeBase) {
-                        let score = 0;
-                        for (let kw of item.keywords) { if (contextBlock.includes(kw)) score += 2; }
-                        for (let pat of item.patterns) { if (pat.test(contextBlock)) score += 4; }
-                        if (score >= 4) {
-                            out += `### ⚖️ ${item.title}\n\n${item.content}`; matched = true; break;
-                        }
-                    }
-                    if(!matched) {
-                        out += "با توجه به اصول کلی و رویه قضایی، برای پیگیری این خواسته باید ابتدا ادله اثبات دعوا (مانند اسناد، شهادت شهود یا پرینت مالی) را جمع‌آوری کرده و سپس از طریق یکی از دفاتر خدمات الکترونیک قضایی، دادخواست یا شکواییه مربوطه را به مراجع ذی‌صلاح تقدیم نمایید. برای دریافت نظر تخصصی‌تر می‌توانید از تب «مشاور» استفاده کنید.";
-                    }
+                    if(text.includes('مهریه')) out += "برای اجرای مهریه باید ابتدا به اداره ثبت (محل ثبت عقد) مراجعه کنید. نیازی به مراجعه مستقیم به دادگاه نیست. <a class='text-blue-500 dark:text-blue-400 underline cursor-pointer' onclick='openLawBottomSheet(\"توقیف اموال\")'>(مشاهده شرایط توقیف اموال)</a>";
+                    else if(text.includes('تخلیه')) out += "دستور تخلیه فوری ملک تنها در صورتی صادر می‌شود که قرارداد دارای امضای دو شاهد معتبر باشد و مدت آن تمام شده باشد.";
+                    else if(text.includes('بیمه') || text.includes('اداره کار') || text.includes('کارگر')) out += "بر اساس ماده 148 قانون کار، کارفرما مکلف به بیمه کردن کارگر از روز اول است و توافق بر خلاف آن باطل است. شما می‌توانید با مراجعه به اداره کار محل، دادخواست خود را ثبت کنید.";
+                    else out += "با توجه به اصول کلی و رویه قضایی، برای پیگیری این خواسته باید ابتدا ادله اثبات دعوا (مانند اسناد، شهادت شهود یا پرینت مالی) را جمع‌آوری کرده و سپس از طریق یکی از دفاتر خدمات الکترونیک قضایی، دادخواست یا شکواییه مربوطه را به مراجع ذی‌صلاح تقدیم نمایید.";
                 }
                 
-                // Citation
-                if(contextBlock.includes('چک')) out += "\n\n📚 **مستندات:** <a class='text-amber-500 dark:text-amber-400 underline cursor-pointer' onclick='openLawBottomSheet(\"ماده ۲۳ قانون صدور چک\")'>مشاهده ماده ۲۳ قانون صدور چک</a>";
+                // Citation (if applicable)
+                if(text.includes('چک')) out += "\n\n📚 **مستندات:** <a class='text-amber-500 dark:text-amber-400 underline cursor-pointer' onclick='openLawBottomSheet(\"ماده ۲۳ قانون صدور چک\")'>مشاهده ماده ۲۳ قانون صدور چک</a>";
                 return out;
             }
         };
@@ -1397,10 +1352,9 @@
             input.value = ''; renderChatUI(); document.getElementById('aiTypingIndicator').classList.remove('hidden');
 
             setTimeout(() => {
-                let res = LegalNlpEngine.analyze(p, chatConversationHistory);
+                let res = LegalNlpEngine.analyze(p);
                 document.getElementById('aiTypingIndicator').classList.add('hidden');
                 chatConversationHistory.push({ role: 'model', text: res });
-                sessionStorage.setItem('mizan_active_chat', JSON.stringify(chatConversationHistory));
                 renderChatUI();
             }, 1200);
         }
@@ -1421,87 +1375,83 @@
         function sendQuickChat(text) { document.getElementById('aiPromptInput').value = text; runAiAssistant(); }
         function clearChatHistory() { chatConversationHistory = []; sessionStorage.removeItem('mizan_active_chat'); renderChatUI(); showToast('تاریخچه گفتگو پاکسازی شد'); }
 
-        // --- Native Panning Logic for Zoomed Images ---
-        let panX = 0, panY = 0, isPanning = false, startPanX, startPanY;
-        function toggleZoom(img) {
-            if (img.classList.contains('zoomed')) {
-                img.classList.remove('zoomed'); panX = 0; panY = 0;
-                img.style.transform = `translate(0px, 0px) scale(1)`;
-                img.style.cursor = 'zoom-in';
+        // --- Modals, PiP & Video ---
+        function playVideo(url) {
+            const vid = document.getElementById('liveStreamVideo');
+            if(vid) { vid.src = url; vid.play(); document.getElementById('liveStreamPlaceholder').classList.add('hidden'); triggerHaptic('light'); }
+        }
+
+        function openMediaModal(idx, type) {
+            const list = type === 'series' ? appData.series : appData.infographics;
+            const item = list[idx]; if(!item) return;
+            document.getElementById('mediaModalTitle').innerText = item.title;
+            const content = document.getElementById('mediaModalContent');
+            const extBtn = document.getElementById('mediaModalExternalBtn');
+            const pipBtn = document.getElementById('pipBtn');
+            const cinBtn = document.getElementById('cinematicBtn');
+
+            if(type === 'series') {
+                content.innerHTML = `<div class="pro-video-wrapper"><video id="modalVideoPlayer" src="${item.url}" controls playsinline webkit-playsinline></video></div>`;
+                extBtn.classList.remove('hidden'); extBtn.setAttribute('href', item.url);
+                cinBtn.classList.remove('hidden');
+                if (document.pictureInPictureEnabled) { pipBtn.classList.remove('hidden'); }
             } else {
-                img.classList.add('zoomed');
-                img.style.transform = `translate(0px, 0px) scale(2.5)`;
-                img.style.cursor = 'grab';
+                // پیاده سازی زوم و پنینگ با اسکرول بومی
+                content.innerHTML = `<div class="zoomable-container"><img src="${item.image}" class="zoomable-img" onclick="toggleZoom(this)"></div>`;
+                extBtn.classList.add('hidden'); pipBtn.classList.add('hidden'); cinBtn.classList.add('hidden');
             }
+            document.getElementById('mediaModal').classList.remove('hidden');
+        }
+
+        function toggleZoom(img) {
+            img.classList.toggle('zoomed');
             triggerHaptic('light');
         }
-        
-        const zoomContainers = document.getElementsByClassName('zoomable-container');
-        document.addEventListener('touchstart', (e) => {
-            if(e.target.classList.contains('zoomed')) {
-                isPanning = true; startPanX = e.touches[0].clientX - panX; startPanY = e.touches[0].clientY - panY;
-            }
-        }, {passive: false});
-        document.addEventListener('touchmove', (e) => {
-            if(isPanning && e.target.classList.contains('zoomed')) {
-                e.preventDefault(); // Prevent native scroll
-                panX = e.touches[0].clientX - startPanX; panY = e.touches[0].clientY - startPanY;
-                e.target.style.transform = `translate(${panX}px, ${panY}px) scale(2.5)`;
-            }
-        }, {passive: false});
-        document.addEventListener('touchend', (e) => { isPanning = false; });
-        document.addEventListener('mousedown', (e) => {
-            if(e.target.classList.contains('zoomed')) {
-                isPanning = true; e.target.style.cursor = 'grabbing';
-                startPanX = e.clientX - panX; startPanY = e.clientY - panY;
-            }
-        });
-        document.addEventListener('mousemove', (e) => {
-            if(isPanning && e.target.classList.contains('zoomed')) {
-                e.preventDefault(); panX = e.clientX - startPanX; panY = e.clientY - startPanY;
-                e.target.style.transform = `translate(${panX}px, ${panY}px) scale(2.5)`;
-            }
-        });
-        document.addEventListener('mouseup', (e) => { if(isPanning) { isPanning = false; if(e.target.classList.contains('zoomed')) e.target.style.cursor = 'grab'; } });
-        document.addEventListener('mouseleave', () => isPanning = false);
 
-        // --- Real Image Average Color Extraction (Canvas) ---
-        function getAverageColor(imgUrl, callback) {
-            const img = new Image();
-            img.crossOrigin = "Anonymous"; // Handles CORS if server allows
-            img.src = imgUrl;
-            img.onload = function() {
-                try {
-                    const canvas = document.createElement('canvas'); const ctx = canvas.getContext('2d');
-                    canvas.width = img.width; canvas.height = img.height;
-                    ctx.drawImage(img, 0, 0);
-                    const data = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
-                    let r = 0, g = 0, b = 0, count = 0;
-                    for (let i = 0; i < data.length; i += 16) { r += data[i]; g += data[i+1]; b += data[i+2]; count++; }
-                    r = Math.floor(r/count); g = Math.floor(g/count); b = Math.floor(b/count);
-                    // تیره کردن رنگ برای خوانایی بهتر متن سفید روش
-                    callback(`rgb(${Math.floor(r*0.6)}, ${Math.floor(g*0.6)}, ${Math.floor(b*0.6)})`);
-                } catch(e) { callback('rgba(13, 19, 33, 0.95)'); } // Fallback to dark if CORS blocks
-            };
-            img.onerror = () => callback('rgba(13, 19, 33, 0.95)');
+        function closeMediaModal() {
+            document.getElementById('mediaModal').classList.add('hidden');
+            const vid = document.getElementById('modalVideoPlayer');
+            if(vid) vid.pause();
+            document.getElementById('mediaModalContent').innerHTML = '';
         }
         
-        let audioElm = document.getElementById('mainAudioObj');
-        function playAudio(url, title, imgUrl) {
-            audioElm.src = url; audioElm.play(); document.getElementById('playerTitle').innerText = title;
+        function toggleCinematicMode() { document.getElementById('mediaModalBox').classList.toggle('cinematic-mode-box'); triggerHaptic('light'); }
+
+        // --- Native Floating PiP (Drag & Drop) ---
+        let pipDiv = document.getElementById('floatingPipContainer');
+        let isDragging = false, startX, startY;
+        pipDiv.addEventListener('touchstart', e => { isDragging = true; startX = e.touches[0].clientX - pipDiv.offsetLeft; startY = e.touches[0].clientY - pipDiv.offsetTop; }, {passive:true});
+        pipDiv.addEventListener('touchmove', e => { if(!isDragging) return; e.preventDefault(); pipDiv.style.left = (e.touches[0].clientX - startX) + 'px'; pipDiv.style.top = (e.touches[0].clientY - startY) + 'px'; pipDiv.style.right = 'auto'; pipDiv.style.bottom = 'auto'; }, {passive:false});
+        pipDiv.addEventListener('touchend', () => isDragging = false);
+
+        function openNativePiP() {
+            const vid = document.getElementById('modalVideoPlayer');
+            if(vid) { pipDiv.appendChild(vid); pipDiv.style.display = 'block'; closeMediaModal(); }
+        }
+        function closePiP() { pipDiv.style.display = 'none'; pipDiv.innerHTML = '<div class="pip-close-btn" onclick="closePiP()"><i class="fa-solid fa-xmark"></i></div>'; }
+
+        // --- Floating Audio Player ---
+        let audioEl = document.getElementById('mainAudioObj');
+        function playAudio(url, title, img) {
+            audioEl.src = url; audioEl.play(); document.getElementById('playerTitle').innerText = title;
             const player = document.getElementById('floatingAudioPlayer'); player.classList.add('show');
             document.getElementById('playerPlayBtn').innerHTML = '<i class="fa-solid fa-circle-pause"></i>';
-            if(imgUrl) {
-                document.getElementById('playerThumb').innerHTML = `<img src="${imgUrl}" class="w-full h-full object-cover">`;
-                getAverageColor(imgUrl, (color) => { player.style.background = color; });
-            }
+            if(img) { document.getElementById('playerThumb').innerHTML = `<img src="${img}" class="w-full h-full object-cover">`; }
         }
         function toggleAudioPlay() {
-            if(audioElm.paused) { audioElm.play(); document.getElementById('playerPlayBtn').innerHTML = '<i class="fa-solid fa-circle-pause"></i>'; }
-            else { audioElm.pause(); document.getElementById('playerPlayBtn').innerHTML = '<i class="fa-solid fa-circle-play"></i>'; }
+            if(audioEl.paused) { audioEl.play(); document.getElementById('playerPlayBtn').innerHTML = '<i class="fa-solid fa-circle-pause"></i>'; }
+            else { audioEl.pause(); document.getElementById('playerPlayBtn').innerHTML = '<i class="fa-solid fa-circle-play"></i>'; }
         }
-        function updateAudioProgress() { if(audioElm.duration) document.getElementById('playerProgress').style.width = ((audioElm.currentTime / audioElm.duration) * 100) + '%'; }
-        function closeAudioPlayer() { audioElm.pause(); document.getElementById('floatingAudioPlayer').classList.remove('show'); }
+        function updateAudioProgress() { if(audioEl.duration) document.getElementById('playerProgress').style.width = ((audioEl.currentTime / audioEl.duration) * 100) + '%'; }
+        function closeAudioPlayer() { audioEl.pause(); document.getElementById('floatingAudioPlayer').classList.remove('show'); }
+
+        // --- Pull to Refresh ---
+        function initPullToRefresh() {
+            let startY = 0; let ptr = document.getElementById('ptr-indicator'); let isPulling = false;
+            window.addEventListener('touchstart', e => { if(window.scrollY === 0) startY = e.touches[0].clientY; }, {passive:true});
+            window.addEventListener('touchmove', e => { if(window.scrollY === 0 && startY > 0) { let y = e.touches[0].clientY; if(y - startY > 50) { isPulling = true; ptr.style.height = '40px'; } } }, {passive:true});
+            window.addEventListener('touchend', e => { if(isPulling) { manualRefresh(); setTimeout(() => { ptr.style.height = '0'; isPulling = false; }, 1000); } startY = 0; }, {passive:true});
+        }
 
         // --- 3D Tilt Effect ---
         function initTiltEffect() {
@@ -1524,7 +1474,7 @@
             if(btn) btn.classList.add('active-tab');
             else { const tBtn = Array.from(document.querySelectorAll('#mainNavContainer button')).find(b => b.getAttribute('onclick')?.includes(sectionId)); if(tBtn) tBtn.classList.add('active-tab'); }
             
-            // توقف مدیا
+            // Stop media when leaving multimedia tab
             if(sectionId !== 'multimedia-tab') {
                 const vid = document.getElementById('liveStreamVideo');
                 if(vid && !vid.paused) vid.pause();
@@ -1543,6 +1493,7 @@
         }
         
         window.addEventListener('DOMContentLoaded', initApp);
+   
     </script>
 </body>
 </html>
