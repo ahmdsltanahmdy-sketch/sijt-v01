@@ -22,7 +22,6 @@
     <!-- کتابخانه‌ها -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
-    
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -42,7 +41,7 @@
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-        /* پس‌زمینه سایبرنتیک */
+        /* پس‌زمینه */
         .mesh-bg {
             background-color: #080c14;
             background-image: 
@@ -53,119 +52,63 @@
                 linear-gradient(90deg, rgba(245, 158, 11, 0.03) 1px, transparent 1px);
             background-size: 100% 100%, 100% 100%, 100% 100%, 32px 32px, 32px 32px;
         }
-        .light .mesh-bg, body:not(.dark):not(.oled-mode) .mesh-bg {
-            background-color: #f8fafc; background-image: none;
-        }
-
+        .light .mesh-bg, body:not(.dark):not(.oled-mode) .mesh-bg { background-color: #f8fafc; background-image: none; }
         body.oled-mode { background-color: #000000 !important; color: #f8fafc !important; background-image: none !important; }
         body.oled-mode .ultra-glass { background: rgba(8, 8, 8, 0.98) !important; border: 1px solid rgba(255, 255, 255, 0.15) !important; color: #ffffff !important; box-shadow: 0 0 20px rgba(197, 27, 36, 0.2) !important; }
 
         /* حالت High Contrast */
         body.high-contrast { background-color: #000 !important; color: #ffff00 !important; background-image: none !important; }
-        body.high-contrast .ultra-glass, body.high-contrast .settings-glass {
-            background: #000 !important; border: 2px solid #ffff00 !important; color: #ffff00 !important; box-shadow: none !important;
-        }
+        body.high-contrast .ultra-glass, body.high-contrast .settings-glass { background: #000 !important; border: 2px solid #ffff00 !important; color: #ffff00 !important; box-shadow: none !important; }
         body.high-contrast p, body.high-contrast span, body.high-contrast h2, body.high-contrast h3, body.high-contrast div { color: #ffff00 !important; }
         body.high-contrast button { border: 1px solid #ffff00; }
 
-        .noise-overlay {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.025'/%3E%3C/svg%3E");
-            pointer-events: none; z-index: 999;
-        }
-
+        .noise-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.025'/%3E%3C/svg%3E"); pointer-events: none; z-index: 999; }
         .text-gradient { background: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
-        /* کارت‌ها با طراحی نئونی و 3D Tilt */
-        .ultra-glass {
-            background: rgba(13, 19, 33, 0.92);
-            backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
-            border: 1px solid rgba(245, 158, 11, 0.25);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7), 0 0 15px rgba(197, 27, 36, 0.15);
-            color: #ffffff;
-            transition: transform 0.1s, border-color 0.3s, box-shadow 0.3s;
-            transform-style: preserve-3d;
-        }
-        .ultra-glass:hover {
-            border-color: rgba(245, 158, 11, 0.45);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8), 0 0 25px rgba(197, 27, 36, 0.3);
-        }
+        /* کارت‌ها و افکت 3D Tilt */
+        .ultra-glass { background: rgba(13, 19, 33, 0.92); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border: 1px solid rgba(245, 158, 11, 0.25); box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7), 0 0 15px rgba(197, 27, 36, 0.15); color: #ffffff; transition: transform 0.1s, border-color 0.3s, box-shadow 0.3s; transform-style: preserve-3d; }
+        .ultra-glass:hover { border-color: rgba(245, 158, 11, 0.45); box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8), 0 0 25px rgba(197, 27, 36, 0.3); }
         .ultra-glass-content { transform: translateZ(20px); }
-
-        .light .ultra-glass, body:not(.dark):not(.oled-mode) .ultra-glass {
-            background: rgba(255, 255, 255, 0.99); border: 1px solid rgba(0, 0, 0, 0.12); box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05); color: #0f172a !important;
-        }
+        .light .ultra-glass, body:not(.dark):not(.oled-mode) .ultra-glass { background: rgba(255, 255, 255, 0.99); border: 1px solid rgba(0, 0, 0, 0.12); box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05); color: #0f172a !important; }
         .light .ultra-glass p, body:not(.dark):not(.oled-mode) .ultra-glass p, .light .ultra-glass span, body:not(.dark):not(.oled-mode) .ultra-glass span { color: #334155 !important; }
 
-        .settings-glass {
-            background: rgba(13, 19, 33, 0.98); backdrop-filter: blur(30px); border: 1px solid rgba(245, 158, 11, 0.3); color: #ffffff;
-            box-shadow: 0 0 35px rgba(0, 0, 0, 0.9), 0 0 20px rgba(197, 27, 36, 0.3);
-        }
+        .settings-glass { background: rgba(13, 19, 33, 0.98); backdrop-filter: blur(30px); border: 1px solid rgba(245, 158, 11, 0.3); color: #ffffff; box-shadow: 0 0 35px rgba(0, 0, 0, 0.9), 0 0 20px rgba(197, 27, 36, 0.3); }
         .light .settings-glass, body:not(.dark):not(.oled-mode) .settings-glass { background: rgba(255, 255, 255, 0.98); border: 1px solid rgba(0, 0, 0, 0.15); color: #0f172a; }
 
         /* نوار ناوبری پایین */
-        .floating-nav {
-            background: rgba(10, 15, 28, 0.96) !important; backdrop-filter: blur(30px) saturate(200%); -webkit-backdrop-filter: blur(30px) saturate(200%);
-            border: 1px solid rgba(245, 158, 11, 0.35);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8), 0 0 25px rgba(197, 27, 36, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.12);
-            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), padding 0.3s ease, opacity 0.3s ease;
-        }
+        .floating-nav { background: rgba(10, 15, 28, 0.96) !important; backdrop-filter: blur(30px) saturate(200%); -webkit-backdrop-filter: blur(30px) saturate(200%); border: 1px solid rgba(245, 158, 11, 0.35); box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8), 0 0 25px rgba(197, 27, 36, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.12); transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), padding 0.3s ease, opacity 0.3s ease; }
         .light .floating-nav, body:not(.dark):not(.oled-mode) .floating-nav { background: #ffffff !important; border: 1px solid #cbd5e1 !important; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15) !important; }
-        
         .nav-scrolled-compact { transform: translateY(8px) scale(0.96) !important; padding-top: 3px !important; padding-bottom: 3px !important; opacity: 0.92; }
-
         .nav-btn { color: #cbd5e1; transition: all 0.25s ease; }
         .light .nav-btn, body:not(.dark):not(.oled-mode) .nav-btn { color: #64748b !important; }
-        .nav-btn.active-tab {
-            color: #ef4444 !important; transform: scale(1.08) translateY(-2px); filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.8));
-        }
+        .nav-btn.active-tab { color: #ef4444 !important; transform: scale(1.08) translateY(-2px); filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.8)); }
         .nav-btn.active-tab span { color: #ef4444 !important; font-weight: 900 !important; }
 
-        /* کشوها و مودال‌ها */
-        #moreDrawer, #navEditorDrawer, #lawBottomSheet {
-            display: none; position: fixed; bottom: 0; left: 0; right: 0;
-            z-index: 100; max-width: 28rem; margin: 0 auto;
-            border-top-left-radius: 1.5rem; border-top-right-radius: 1.5rem;
-            padding: 1rem; box-shadow: 0 -10px 40px rgba(0,0,0,0.8), 0 0 25px rgba(197, 27, 36, 0.3);
-            animation: slideUpDrawer 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
+        /* کشوها */
+        #moreDrawer, #navEditorDrawer, #lawBottomSheet { display: none; position: fixed; bottom: 0; left: 0; right: 0; z-index: 100; max-width: 28rem; margin: 0 auto; border-top-left-radius: 1.5rem; border-top-right-radius: 1.5rem; padding: 1rem; box-shadow: 0 -10px 40px rgba(0,0,0,0.8), 0 0 25px rgba(197, 27, 36, 0.3); animation: slideUpDrawer 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         @keyframes slideUpDrawer { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-
         .glass-tab { background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(16px); border: 1px solid rgba(245, 158, 11, 0.25); color: #ffffff !important; }
         .header-bg { background-image: url('https://raw.githubusercontent.com/ahmdsltanahmdy-sketch/mizan-miniapp-new/main/photo_2026-09-15_10-06-27.jpg'); background-size: cover; background-position: center; }
         
         #appHeader { transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease, background-color 0.4s ease, backdrop-filter 0.4s ease; will-change: transform, opacity; }
         #appHeader.scrolled-header { background-color: rgba(8, 12, 20, 0.95) !important; backdrop-filter: blur(25px) saturate(180%); border-bottom: 1px solid rgba(245, 158, 11, 0.3); box-shadow: 0 10px 25px rgba(0,0,0,0.7); }
         .header-hidden { transform: translateY(-100%) !important; opacity: 0 !important; pointer-events: none !important; }
-
         #backToTopBtn { position: fixed; bottom: 84px; right: 16px; z-index: 45; }
 
-        /* Media & PiP */
-        .zoomable-container { overflow: auto; position: relative; width: 100%; height: 70vh; display: flex; align-items: center; justify-content: center; background: #000; border-radius: 1rem; cursor: grab; }
-        .zoomable-container:active { cursor: grabbing; }
-        .zoomable-img { transition: transform 0.2s ease; max-width: 100%; max-height: 100%; object-fit: contain; user-select: none; }
+        /* Media & PiP - بهینه‌سازی زوم و جابجایی */
+        .zoomable-container { overflow: auto; position: relative; width: 100%; height: 70vh; display: flex; align-items: center; justify-content: center; background: #000; border-radius: 1rem; }
+        .zoomable-img { max-width: 100%; max-height: 100%; object-fit: contain; cursor: zoom-in; transition: transform 0.3s ease; }
+        .zoomable-img.zoomed { max-width: none; max-height: none; width: 250%; cursor: zoom-out; }
+        
         .pro-video-wrapper { position: relative; width: 100%; aspect-ratio: 16/9; background: radial-gradient(circle at center, #1e293b 0%, #020617 100%); border-radius: 1.25rem; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.85), 0 0 25px rgba(197, 27, 36, 0.4); border: 1px solid rgba(245, 158, 11, 0.3); }
         .pro-video-wrapper video { width: 100%; height: 100%; object-fit: cover; }
         
-        /* Floating Native PiP */
-        #floatingPipContainer {
-            display: none; position: fixed; bottom: 100px; right: 20px; width: 180px; aspect-ratio: 16/9;
-            z-index: 9999; background: #000; border-radius: 12px; overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.8), 0 0 15px rgba(197,27,36,0.5);
-            border: 2px solid rgba(245, 158, 11, 0.5); cursor: move; touch-action: none;
-        }
+        #floatingPipContainer { display: none; position: fixed; bottom: 100px; right: 20px; width: 180px; aspect-ratio: 16/9; z-index: 9999; background: #000; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.8), 0 0 15px rgba(197,27,36,0.5); border: 2px solid rgba(245, 158, 11, 0.5); cursor: move; touch-action: none; }
         #floatingPipContainer video { width: 100%; height: 100%; object-fit: cover; }
         .pip-close-btn { position: absolute; top: 4px; right: 4px; background: rgba(0,0,0,0.6); color: #fff; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; z-index: 10; font-size: 10px; cursor: pointer; }
 
         /* Floating Audio Player */
-        #floatingAudioPlayer {
-            position: fixed; bottom: 70px; left: 12px; right: 12px; max-width: 400px; margin: 0 auto;
-            background: var(--player-color, rgba(13, 19, 33, 0.95)); backdrop-filter: blur(20px);
-            border: 1px solid rgba(245, 158, 11, 0.4); border-radius: 20px;
-            padding: 10px 15px; display: none; align-items: center; justify-content: space-between;
-            box-shadow: 0 -10px 30px rgba(0,0,0,0.7), 0 0 20px rgba(197,27,36,0.3); z-index: 49;
-            transform: translateY(150%); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), background 0.5s ease;
-        }
+        #floatingAudioPlayer { position: fixed; bottom: 70px; left: 12px; right: 12px; max-width: 400px; margin: 0 auto; background: var(--player-color, rgba(13, 19, 33, 0.95)); backdrop-filter: blur(20px); border: 1px solid rgba(245, 158, 11, 0.4); border-radius: 20px; padding: 10px 15px; display: none; align-items: center; justify-content: space-between; box-shadow: 0 -10px 30px rgba(0,0,0,0.7), 0 0 20px rgba(197,27,36,0.3); z-index: 49; transform: translateY(150%); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), background 0.5s ease; }
         #floatingAudioPlayer.show { display: flex; transform: translateY(0); }
 
         .cinematic-mode-box { max-width: 98vw !important; width: 98vw !important; background: rgba(5, 5, 5, 0.99) !important; border: 1px solid rgba(245, 158, 11, 0.4) !important; box-shadow: 0 0 60px rgba(0, 0, 0, 0.95), 0 0 30px rgba(197, 27, 36, 0.5) !important; }
@@ -177,7 +120,6 @@
 
         .page-section { animation: fadeInScale 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         @keyframes fadeInScale { from { opacity: 0; transform: translateY(8px) scale(0.99); } to { opacity: 1; transform: translateY(0) scale(1); } }
-
         .story-ring { background: linear-gradient(45deg, #f59e0b, #c51b24, #9333ea); padding: 2px; border-radius: 50%; display: inline-block; cursor: pointer; box-shadow: 0 0 10px rgba(245, 158, 11, 0.4); }
 
         #toastContainer { position: fixed; top: 16px; left: 50%; transform: translateX(-50%); z-index: 9999; display: flex; flex-direction: column; gap: 8px; pointer-events: none; width: 90%; max-width: 380px; }
@@ -186,21 +128,17 @@
 
         .tour-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.88); backdrop-filter: blur(10px); z-index: 250; align-items: center; justify-content: center; padding: 1.5rem; animation: fadeInScale 0.3s ease; }
 
-        /* Pull to Refresh Indicator */
         #ptr-indicator { height: 0; overflow: hidden; display: flex; align-items: center; justify-content: center; transition: height 0.2s ease; background: transparent; width: 100%; }
         .ptr-spinner { border: 3px solid rgba(245,158,11,0.2); border-top: 3px solid #f59e0b; border-radius: 50%; width: 24px; height: 24px; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        /* Glossary Tooltip Highlighting */
         .glossary-term { color: #60a5fa; border-bottom: 1px dashed #60a5fa; cursor: pointer; transition: color 0.2s; }
         .glossary-term:hover { color: #f59e0b; border-bottom-color: #f59e0b; }
         .light .glossary-term { color: #2563eb; border-bottom-color: #2563eb; }
 
-        /* In-Chat Widget */
         .chat-widget { background: rgba(0,0,0,0.4); border: 1px solid rgba(245,158,11,0.4); border-radius: 12px; padding: 10px; margin-top: 8px; }
         .light .chat-widget { background: rgba(0,0,0,0.05); }
 
-        /* Tree Diagram */
         .tree-container { display: flex; flex-direction: column; align-items: center; font-size: 10px; margin-top: 10px; }
         .tree-node { background: rgba(197,27,36,0.8); color: white; padding: 5px 10px; border-radius: 8px; border: 1px solid #f59e0b; margin-bottom: 10px; position: relative; font-weight: bold; text-align:center;}
         .tree-line { width: 2px; height: 15px; background: #f59e0b; }
@@ -208,7 +146,7 @@
         .tree-branch { display: flex; flex-direction: column; align-items: center; position: relative; width:100%; }
         .tree-branch::before { content: ''; position: absolute; top: -10px; left: 50%; width: 2px; height: 10px; background: #f59e0b; }
 
-        /* Typing Dots (Replace Lottie to prevent 403) */
+        /* لودینگ هوش مصنوعی با CSS به جای Lottie */
         .typing-dot { width: 6px; height: 6px; background-color: #f59e0b; border-radius: 50%; margin: 0 2px; animation: typingAnimation 1.4s infinite ease-in-out both; }
         .typing-dot:nth-child(1) { animation-delay: -0.32s; }
         .typing-dot:nth-child(2) { animation-delay: -0.16s; }
@@ -218,7 +156,7 @@
 </head>
 <body id="bodyRoot" class="mesh-bg text-slate-900 dark:text-slate-100 min-h-screen flex flex-col relative select-none">
 
-    <!-- اسپلش اسکرین پایدار با CSS -->
+    <!-- اسپلش اسکرین -->
     <div id="splashScreen" class="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#080c14] transition-opacity duration-300">
         <div class="relative w-24 h-24 flex items-center justify-center mb-4">
             <div class="absolute inset-0 border-4 border-slate-800 rounded-full"></div>
@@ -232,15 +170,12 @@
     <div class="noise-overlay"></div>
     <div id="toastContainer"></div>
 
-    <!-- Pull to Refresh Indicator -->
     <div id="ptr-indicator"><div class="ptr-spinner"></div></div>
 
-    <!-- Floating Native PiP Container -->
     <div id="floatingPipContainer">
         <div class="pip-close-btn" onclick="closePiP()"><i class="fa-solid fa-xmark"></i></div>
     </div>
 
-    <!-- Floating Audio Player -->
     <div id="floatingAudioPlayer">
         <div class="flex items-center space-x-3 space-x-reverse flex-grow overflow-hidden">
             <div class="w-10 h-10 rounded-full bg-amber-500/20 flex items-center justify-center flex-shrink-0 relative overflow-hidden" id="playerThumb">
@@ -397,15 +332,13 @@
                 <span id="dictCounter" class="text-[9px] text-amber-500 dark:text-amber-300 font-bold"></span>
             </div>
             <div class="flex space-x-2 space-x-reverse overflow-x-auto hide-scrollbar pb-1 text-[11px]">
-                <button onclick="filterDictCategory('all', this); triggerHaptic('light');" class="dict-chip px-3 py-1.5 rounded-full bg-red-600 text-white font-bold flex-shrink-0 shadow shadow-red-600/30">همه</button>
-                <button onclick="filterDictCategory('مدنی', this); triggerHaptic('light');" class="dict-chip px-3 py-1.5 rounded-full bg-slate-200 text-slate-700 dark:bg-slate-800 dark:text-slate-200 border border-slate-300 dark:border-white/15 flex-shrink-0">حقوق مدنی</button>
-                <button onclick="filterDictCategory('کیفری', this); triggerHaptic('light');" class="dict-chip px-3 py-1.5 rounded-full bg-slate-200 text-slate-700 dark:bg-slate-800 dark:text-slate-200 border border-slate-300 dark:border-white/15 flex-shrink-0">کیفری</button>
-                <button onclick="filterDictCategory('bookmarks', this); triggerHaptic('light');" class="dict-chip px-3 py-1.5 rounded-full bg-amber-600 text-white font-bold flex-shrink-0 shadow shadow-amber-600/30"><i class="fa-solid fa-bookmark ml-1"></i>نشانک‌ها</button>
+                <button onclick="filterDictCategory('all', this); triggerHaptic('light');" class="dict-chip px-3 py-1.5 rounded-full bg-red-600 text-white font-bold flex-shrink-0 shadow shadow-red-600/30">همه واژگان</button>
+                <button onclick="filterDictCategory('bookmarks', this); triggerHaptic('light');" class="dict-chip px-3 py-1.5 rounded-full bg-slate-200 text-slate-700 dark:bg-slate-800 dark:text-slate-200 border border-slate-300 dark:border-white/15 flex-shrink-0"><i class="fa-solid fa-bookmark ml-1"></i>نشانک‌های من</button>
             </div>
             <div id="dictionaryContainer" class="space-y-2 mt-2">
                 <div class="custom-skeleton h-20 w-full"></div>
             </div>
-            <div id="dictLoadingObserver" class="h-4 w-full"></div> <!-- Infinite Scroll Anchor -->
+            <div id="dictLoadingObserver" class="h-4 w-full"></div> 
         </section>
 
         <!-- تب ۲: سامانه‌ها -->
@@ -414,23 +347,22 @@
             <div id="legalSystemsContainer" class="space-y-3">
                 <div class="custom-skeleton h-16 w-full"></div>
             </div>
-            <!-- راهنمای چک -->
             <div class="ultra-glass p-4 rounded-2xl space-y-2 shadow-lg mt-4">
-                <h3 class="font-bold text-xs text-amber-500 dark:text-amber-300"><i class="fa-solid fa-circle-question ml-1"></i> راهنمای استعلام و ثبت چک صیادی</h3>
-                <p class="text-[10px] text-slate-600 dark:text-slate-300">برای ثبت، انتقال یا استعلام چک‌های صیادی جدید، از روش‌های رسمی بانک مرکزی استفاده کنید:</p>
+                <h3 class="font-bold text-xs text-amber-500 dark:text-amber-300"><i class="fa-solid fa-circle-question ml-1"></i> راهنمای استعلام چک صیادی</h3>
+                <p class="text-[10px] text-slate-600 dark:text-slate-300">برای ثبت و استعلام چک، از روش‌های رسمی استفاده کنید:</p>
                 <div class="space-y-1.5 pt-1 text-[11px]">
-                    <div class="bg-slate-100 dark:bg-slate-900 p-2 rounded-xl border border-slate-200 dark:border-white/10 text-slate-700 dark:text-slate-200">1. ورود به اپلیکیشن‌های بانکی معتبر یا سامانه چک صیادی بانک مرکزی</div>
+                    <div class="bg-slate-100 dark:bg-slate-900 p-2 rounded-xl border border-slate-200 dark:border-white/10 text-slate-700 dark:text-slate-200">1. ورود به اپلیکیشن‌های بانکی معتبر یا سامانه بانک مرکزی</div>
                     <div class="bg-slate-100 dark:bg-slate-900 p-2 rounded-xl border border-slate-200 dark:border-white/10 text-slate-700 dark:text-slate-200">2. اسکن بارکد روی چک یا وارد کردن شناسه ۱۶ رقمی صیادی</div>
                     <div class="bg-slate-100 dark:bg-slate-900 p-2 rounded-xl border border-slate-200 dark:border-white/10 text-slate-700 dark:text-slate-200">3. ثبت تایید دریافت یا انتقال به شخص دیگر</div>
                 </div>
             </div>
         </section>
 
-        <!-- تب ۳: قوانین (با Tooltip هوشمند) -->
+        <!-- تب ۳: قوانین -->
         <section id="laws-tab" class="page-section hidden space-y-3">
             <h2 class="font-black text-xs text-gradient"><i class="fa-solid fa-gavel ml-1 text-red-500"></i> آرشیو قوانین</h2>
             <div id="lawsContainer" class="space-y-2.5"><div class="custom-skeleton h-24 w-full"></div></div>
-            <div id="lawsLoadingObserver" class="h-4 w-full"></div> <!-- Infinite Scroll Anchor -->
+            <div id="lawsLoadingObserver" class="h-4 w-full"></div>
         </section>
 
         <!-- تب ۴: کارت‌ها -->
@@ -460,7 +392,7 @@
             </div>
         </section>
 
-        <!-- تب ۶: چت‌بات هوش مصنوعی پیشرفته (Agentic AI) -->
+        <!-- تب ۶: چت‌بات هوش مصنوعی پیشرفته -->
         <section id="chatbot-tab" class="page-section hidden space-y-3">
             <div class="ultra-glass p-4 rounded-3xl space-y-3 shadow-xl flex flex-col h-[70vh]">
                 <div class="flex items-center justify-between pb-1 border-b border-slate-200 dark:border-white/10">
@@ -481,9 +413,7 @@
                 <div id="chatMessagesContainer" class="space-y-3 flex-grow overflow-y-auto p-3 bg-slate-100 dark:bg-slate-900/90 rounded-2xl text-[11px] text-slate-800 dark:text-slate-100 shadow-inner"></div>
 
                 <div id="aiTypingIndicator" class="hidden flex items-center space-x-2 space-x-reverse bg-slate-200 dark:bg-slate-800/90 text-slate-700 dark:text-slate-300 p-2.5 rounded-2xl w-fit border border-amber-500/30">
-                    <div class="flex px-1">
-                        <span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span>
-                    </div>
+                    <div class="flex px-1"><span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span></div>
                     <span class="text-[10px] font-bold text-amber-600 dark:text-amber-300">در حال تحلیل و استناد...</span>
                 </div>
 
@@ -494,23 +424,19 @@
                 </div>
             </div>
         </section>
-
-        <!-- تب ۷: ابزارها (شامل نمودار درختی ارث و تمبر مالیاتی) -->
+        <!-- تب ۷: ابزارها -->
         <section id="tools-tab" class="page-section hidden space-y-4">
             <h2 class="font-black text-xs mb-2 text-gradient"><i class="fa-solid fa-toolbox ml-1 text-red-500"></i> ابزارهای پیشرفته حقوقی</h2>
-
-            <!-- ابزار حق الوکاله و تمبر مالیاتی -->
+            
             <div class="ultra-glass p-4 rounded-2xl space-y-3 shadow-lg">
                 <div class="ultra-glass-content">
                     <h3 class="font-bold text-xs text-amber-600 dark:text-amber-300"><i class="fa-solid fa-scale-unbalanced ml-1"></i> محاسبه‌گر حق‌الوکاله و تمبر مالیاتی</h3>
-                    <p class="text-[9px] text-slate-500 dark:text-slate-300 mb-2">بر اساس آیین‌نامه تعرفه حق‌الوکاله (مرحله بدوی)</p>
                     <input type="number" id="lawyerClaimAmount" placeholder="مبلغ خواسته (ریال)..." class="w-full bg-white dark:bg-slate-900 text-slate-800 dark:text-amber-200 rounded-xl px-3 py-2 text-xs border border-slate-300 dark:border-white/20 mb-2">
                     <button onclick="calculateLawyerFee()" class="w-full bg-red-600 text-white py-2 rounded-xl text-xs font-bold shadow">محاسبه تعرفه و مالیات</button>
                     <div id="lawyerFeeResult" class="text-[11px] font-bold text-amber-700 dark:text-amber-300 mt-2 space-y-1 leading-loose"></div>
                 </div>
             </div>
 
-            <!-- ابزار سهم الارث با نمودار درختی -->
             <div class="ultra-glass p-4 rounded-2xl space-y-3 shadow-lg">
                 <div class="ultra-glass-content">
                     <h3 class="font-bold text-xs text-amber-600 dark:text-amber-300"><i class="fa-solid fa-sitemap ml-1"></i> محاسبه‌گر سهم‌الارث و نمودار درختی</h3>
@@ -525,7 +451,6 @@
                 </div>
             </div>
 
-            <!-- سایر ابزارهای محاسباتی نسخه قبل -->
             <div class="ultra-glass p-4 rounded-2xl space-y-3 shadow-lg">
                 <h3 class="font-bold text-xs text-amber-600 dark:text-amber-300"><i class="fa-solid fa-calculator ml-1"></i> محاسبه‌گر هزینه‌های دادرسی</h3>
                 <input type="number" id="courtFeeInput" placeholder="مبلغ خواسته به ریال..." class="w-full bg-white dark:bg-slate-900 text-slate-800 dark:text-amber-200 rounded-xl px-3 py-2 text-xs border border-slate-300 dark:border-white/20">
@@ -555,19 +480,7 @@
             </div>
 
             <div class="ultra-glass p-4 rounded-2xl space-y-3 shadow-lg">
-                <h3 class="font-bold text-xs text-amber-600 dark:text-amber-300"><i class="fa-solid fa-heart-pulse ml-1"></i> محاسبه‌گر دیه</h3>
-                <select id="diyehType" class="w-full bg-white dark:bg-slate-900 text-slate-800 dark:text-white rounded-xl p-2.5 text-xs border border-slate-300 dark:border-white/20">
-                    <option value="complete">دیه کامل یک مرد مسلمان (ماه عادی)</option>
-                    <option value="haram">دیه کامل در ماه‌های حرام (تغلیظ دیه)</option>
-                    <option value="finger">دیه یک انگشت (یک دهم)</option>
-                    <option value="eye">دیه یک چشم (نصف دیه)</option>
-                </select>
-                <button onclick="calculateDiyeh()" class="w-full bg-red-600 text-white py-2 rounded-xl text-xs font-bold shadow mt-2">محاسبه مبلغ دیه</button>
-                <div id="diyehResult" class="text-[11px] font-bold text-amber-700 dark:text-amber-300 mt-2"></div>
-            </div>
-
-            <div class="ultra-glass p-4 rounded-2xl space-y-3 shadow-lg">
-                <h3 class="font-bold text-xs text-amber-600 dark:text-amber-300"><i class="fa-solid fa-file-contract ml-1"></i> فرم‌ساز قراردادهای هوشمند</h3>
+                <h3 class="font-bold text-xs text-amber-600 dark:text-amber-300"><i class="fa-solid fa-file-contract ml-1"></i> فرم‌ساز قرارداد</h3>
                 <select id="contractType" class="w-full bg-white dark:bg-slate-900 text-slate-800 dark:text-white rounded-xl p-2.5 text-xs border border-slate-300 dark:border-white/20">
                     <option value="rent">قرارداد اجاره مسکن</option>
                     <option value="sale">مبایعه‌نامه عمومی</option>
@@ -601,9 +514,10 @@
         <section id="news-tab" class="page-section hidden space-y-4">
             <h2 class="font-black text-xs text-gradient"><i class="fa-solid fa-bullhorn ml-1 text-red-500"></i> اخبار رسمی</h2>
             <div id="newsContainer" class="space-y-3"><div class="custom-skeleton h-20 w-full"></div></div>
+            <div id="newsLoadingObserver" class="h-4 w-full"></div>
         </section>
 
-        <!-- تب ۱۰: بانک سوالات عمومی -->
+        <!-- تب ۱۰: بانک سوالات -->
         <section id="public-faq-tab" class="page-section hidden space-y-3">
             <h2 class="font-black text-xs text-gradient"><i class="fa-solid fa-clipboard-question ml-1 text-red-500"></i> بانک سوالات عمومی</h2>
             <div id="publicFaqContainer" class="space-y-3"><div class="custom-skeleton h-24 w-full"></div></div>
@@ -653,18 +567,15 @@
 
     </main>
 
-    <!-- Bottom Sheets و Drawers -->
+    <!-- Drawers & Modals -->
     <div id="moreDrawer" class="settings-glass rounded-t-3xl p-4 shadow-2xl space-y-3">
         <div class="flex justify-between items-center pb-2 border-b border-slate-300 dark:border-white/10">
             <span class="font-bold text-xs text-amber-600 dark:text-amber-300"><i class="fa-solid fa-layer-group ml-1"></i> سایر بخش‌ها</span>
             <button onclick="toggleMoreDrawer()" class="text-slate-500 hover:text-slate-800 dark:text-slate-300 dark:hover:text-white p-1"><i class="fa-solid fa-xmark text-sm"></i></button>
         </div>
-        <div class="grid grid-cols-3 gap-2 text-center text-[10px]" id="moreDrawerGrid">
-            <!-- Dynamicly populated -->
-        </div>
+        <div class="grid grid-cols-3 gap-2 text-center text-[10px]" id="moreDrawerGrid"></div>
     </div>
 
-    <!-- ویرایشگر نوار پایین -->
     <div id="navEditorDrawer" class="settings-glass rounded-t-3xl p-4 shadow-2xl space-y-3">
         <div class="flex justify-between items-center pb-2 border-b border-slate-300 dark:border-white/10">
             <span class="font-bold text-xs text-amber-600 dark:text-amber-300">انتخاب ۵ تب اصلی</span>
@@ -675,7 +586,6 @@
         <button onclick="saveNavConfig()" class="w-full bg-amber-600 text-white py-2 rounded-xl mt-2 font-bold shadow">ذخیره تنظیمات</button>
     </div>
 
-    <!-- دیکشنری هوشمند در تب قوانین (Glossary Tooltip) -->
     <div id="lawBottomSheet" class="settings-glass rounded-t-3xl p-5 shadow-2xl space-y-3">
         <div class="flex justify-between items-center pb-2 border-b border-amber-500/30">
             <span id="lawBsTitle" class="font-black text-xs text-red-500">عنوان</span>
@@ -684,12 +594,10 @@
         <div id="lawBsContent" class="text-xs leading-loose font-semibold text-slate-700 dark:text-slate-200 max-h-60 overflow-y-auto pr-1">متن توضیحات...</div>
     </div>
 
-    <!-- دکمه بازگشت به بالا -->
     <button id="backToTopBtn" onclick="window.scrollTo({top: 0, behavior: 'smooth'});" class="hidden w-11 h-11 rounded-full ultra-glass text-amber-600 dark:text-amber-300 shadow-2xl flex items-center justify-center transition hover:scale-110">
         <i class="fa-solid fa-arrow-up text-xs"></i>
     </button>
 
-    <!-- مودال رسانه (پشتیبانی از عکس و فیلم و لینک خارجی) -->
     <div id="mediaModal" class="fixed inset-0 bg-black/90 z-[110] hidden flex items-center justify-center p-4">
         <div id="mediaModalBox" class="ultra-glass rounded-3xl max-w-lg w-full p-4 relative shadow-2xl space-y-3 text-center">
             <button onclick="closeMediaModal()" class="absolute top-3 left-3 text-slate-300 p-2 z-10 hover:text-white"><i class="fa-solid fa-xmark text-base"></i></button>
@@ -698,18 +606,13 @@
             <div class="flex flex-wrap gap-2 justify-between">
                 <button id="cinematicBtn" onclick="toggleCinematicMode()" class="hidden flex-1 bg-indigo-600/30 text-indigo-200 border border-indigo-500/40 py-2 rounded-xl text-[10px] font-bold"><i class="fa-solid fa-film"></i> سینمایی</button>
                 <button id="pipBtn" onclick="openNativePiP()" class="hidden flex-1 bg-amber-500/20 text-amber-300 border border-amber-500/40 py-2 rounded-xl text-[10px] font-bold"><i class="fa-solid fa-clone"></i> PiP شناور</button>
-                <!-- دکمه لینک خارجی با ویژگی target=_blank برای باز شدن در مرورگر -->
-                <a id="mediaModalExternalBtn" href="#" target="_blank" class="hidden flex-1 bg-red-600/30 text-red-200 border border-red-500/40 py-2 rounded-xl text-[10px] font-bold flex items-center justify-center"><i class="fa-solid fa-external-link-alt ml-1"></i> لینک وب</a>
+                <a id="mediaModalExternalBtn" href="#" target="_blank" rel="noopener noreferrer" class="hidden flex-1 bg-red-600/30 text-red-200 border border-red-500/40 py-2 rounded-xl text-[10px] font-bold flex items-center justify-center"><i class="fa-solid fa-external-link-alt ml-1"></i> لینک وب</a>
             </div>
         </div>
     </div>
 
-    <!-- نوار ناوبری پایین دینامیک -->
-    <nav id="mainNavContainer" class="fixed bottom-3 left-3 right-3 floating-nav rounded-3xl max-w-md mx-auto py-2.5 px-3 flex space-x-1.5 space-x-reverse overflow-x-auto hide-scrollbar z-50 items-center justify-around whitespace-nowrap">
-        <!-- پر شدن توسط جاوااسکریپت -->
-    </nav>
+    <nav id="mainNavContainer" class="fixed bottom-3 left-3 right-3 floating-nav rounded-3xl max-w-md mx-auto py-2.5 px-3 flex space-x-1.5 space-x-reverse overflow-x-auto hide-scrollbar z-50 items-center justify-around whitespace-nowrap"></nav>
 
-    <!-- مودال جستجوی گوگل -->
     <div id="advancedSearchModal" class="fixed inset-0 bg-black/80 z-[120] hidden flex items-center justify-center p-4">
         <div class="ultra-glass rounded-3xl max-w-sm w-full p-4 relative shadow-2xl space-y-3 text-center">
             <button onclick="closeAdvancedSearchModal();" class="absolute top-3 left-3 text-slate-300 p-2"><i class="fa-solid fa-xmark text-base"></i></button>
@@ -769,6 +672,13 @@
             showToast('حافظه کش پاکسازی شد');
             setTimeout(() => location.reload(), 500);
         }
+        function toggleMicroInteractions(enabled) {
+            microInteractionsEnabled = enabled;
+            localStorage.setItem('micro_interactions', enabled);
+            showToast(enabled ? 'افکت‌های صوتی فعال شدند' : 'افکت‌ها غیرفعال شدند');
+        }
+        function openAboutModal() { alert("مینی‌اپ تخصصی و هوشمند حقوقی SIJT\nنسخه ۳.۰ (طراحی پرو مکس)"); }
+        function toggleNotificationsModal() { showToast('در حال حاضر اعلان جدیدی ندارید', 'success'); triggerHaptic('light'); }
 
         // --- Audio & Haptics ---
         let microInteractionsEnabled = localStorage.getItem('micro_interactions') !== 'false';
@@ -785,11 +695,7 @@
         }
         function triggerHaptic(type = 'medium') {
             playClickSound();
-            try {
-                if (microInteractionsEnabled && tg && tg.HapticFeedback && tg.isVersionAtLeast && tg.isVersionAtLeast('6.1')) {
-                    tg.HapticFeedback.impactOccurred(type);
-                }
-            } catch(e) {}
+            try { if (microInteractionsEnabled && tg && tg.HapticFeedback && tg.isVersionAtLeast && tg.isVersionAtLeast('6.1')) { tg.HapticFeedback.impactOccurred(type); } } catch(e) {}
         }
         function showToast(message, type = 'success') {
             const container = document.getElementById('toastContainer');
@@ -803,13 +709,9 @@
             const calType = localStorage.getItem('mizan_calendar') || 'persian';
             const calElem = document.getElementById('headerCalendarWidget');
             if(calElem) {
-                if(calType === 'gregorian') {
-                    calElem.innerText = now.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
-                } else if(calType === 'lunar') {
-                    calElem.innerText = now.toLocaleDateString('fa-IR-u-ca-islamic-umalqura', { year: 'numeric', month: 'long', day: 'numeric' });
-                } else {
-                    calElem.innerText = now.toLocaleDateString('fa-IR', { calendar: 'persian', year: 'numeric', month: 'long', day: 'numeric' });
-                }
+                if(calType === 'gregorian') { calElem.innerText = now.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }); }
+                else if(calType === 'lunar') { calElem.innerText = now.toLocaleDateString('fa-IR-u-ca-islamic-umalqura', { year: 'numeric', month: 'long', day: 'numeric' }); }
+                else { calElem.innerText = now.toLocaleDateString('fa-IR', { calendar: 'persian', year: 'numeric', month: 'long', day: 'numeric' }); }
             }
         }
         async function fetchTehranWeather() {
@@ -818,10 +720,7 @@
                 const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=35.6892&longitude=51.3890&current_weather=true');
                 if (res.ok) {
                     const data = await res.json();
-                    if (data?.current_weather && widget) {
-                        widget.innerText = `تهران ${Math.round(data.current_weather.temperature)}°C`;
-                        return;
-                    }
+                    if (data?.current_weather && widget) { widget.innerText = `تهران ${Math.round(data.current_weather.temperature)}°C`; return; }
                 }
             } catch(e) {}
             if (widget) widget.innerText = `تهران ۲۴°C`;
@@ -924,15 +823,10 @@
         let chatConversationHistory = JSON.parse(sessionStorage.getItem('mizan_active_chat')) || [];
 
         async function initApp() {
-            renderBottomNav();
-            renderAll();
-            initPullToRefresh();
-            initTiltEffect();
-            updateDateTime();
-            setInterval(updateDateTime, 1000);
-            fetchTehranWeather();
-
-            setTimeout(() => { document.getElementById('splashScreen').style.opacity = '0'; setTimeout(()=> document.getElementById('splashScreen').remove(), 300); }, 1500);
+            renderBottomNav(); renderAll(); initPullToRefresh(); initTiltEffect(); updateDateTime();
+            setInterval(updateDateTime, 1000); fetchTehranWeather();
+            
+            setTimeout(() => { document.getElementById('splashScreen').style.opacity = '0'; setTimeout(()=> document.getElementById('splashScreen').remove(), 300); }, 1000);
 
             try {
                 const res = await fetch(API_URL + "?action=get_all&t=" + Date.now(), { mode: 'cors' });
@@ -944,7 +838,12 @@
                         renderAll();
                     }
                 }
-            } catch(e) { console.log("Offline mode"); }
+            } catch(e) {}
+            
+            renderPersonalNotes();
+            setupNewsObserver();
+            initAppSwipeGestures();
+            if(document.getElementById('userFaqsContainer')) loadUserFaqs();
         }
 
         async function manualRefresh() {
@@ -957,51 +856,68 @@
                 appData = { ...fallbackData, ...newData };
                 localStorage.setItem('mizan_cache', JSON.stringify(appData));
                 renderAll(); showToast('به‌روز شد');
-            } catch(e) { showToast('خطای شبکه', 'error'); }
+            } catch(e) { showToast('نمایش دیتای محلی', 'error'); }
             if(icon) icon.classList.remove('fa-spin');
         }
 
-        // --- Renderers (Complete & Full) ---
-        let pageLimits = { dict: 10, laws: 10 };
+        // --- Renderers ---
+        let pageLimits = { dict: 10, laws: 10, news: 10 };
         function renderAll() {
-            renderDictionary(true);
-            renderLegalSystems();
-            renderLaws(true);
-            renderShareCards();
-            renderNews();
-            renderPublicFaqs();
-            renderInstagram();
-            renderPodcasts();
-            renderFiles();
-            renderInfographics();
-            renderSeries();
-            renderLiveChannels();
-            renderStoryHighlights();
+            renderDictionary(true); renderLegalSystems(); renderLaws(true); renderShareCards();
+            renderNews(true); renderPublicFaqs(); renderInstagram(); renderPodcasts();
+            renderFiles(); renderInfographics(); renderSeries(); renderLiveChannels(); renderStoryHighlights();
             initTiltEffect(); 
+        }
+
+        let selectedDictCat = 'all';
+        function filterDictCategory(cat, btn) {
+            selectedDictCat = cat;
+            document.querySelectorAll('.dict-chip').forEach(b => {
+                b.classList.remove('bg-red-600', 'bg-amber-600', 'text-white', 'font-bold', 'shadow');
+                b.classList.add('bg-slate-200', 'dark:bg-slate-800', 'text-slate-700', 'dark:text-slate-200');
+            });
+            btn.classList.remove('bg-slate-200', 'dark:bg-slate-800', 'text-slate-700', 'dark:text-slate-200');
+            btn.classList.add(cat === 'bookmarks' ? 'bg-amber-600' : 'bg-red-600', 'text-white', 'font-bold', 'shadow');
+            renderDictionary(true);
+        }
+
+        function toggleBookmark(term) {
+            const index = bookmarks.indexOf(term);
+            if (index > -1) { bookmarks.splice(index, 1); showToast('نشانک حذف شد'); } 
+            else { bookmarks.push(term); showToast('نشانک ذخیره شد'); }
+            localStorage.setItem('mizan_bookmarks', JSON.stringify(bookmarks));
+            renderDictionary(); triggerHaptic('light');
         }
 
         function renderDictionary(reset = false) {
             if(reset) pageLimits.dict = 15;
             const c = document.getElementById('dictionaryContainer'); if(!c) return;
             let list = appData.dictionary || [];
+            
+            if (selectedDictCat === 'bookmarks') { list = list.filter(d => bookmarks.includes(d.term)); }
             document.getElementById('dictCounter').innerText = `${list.length} واژه`;
-            c.innerHTML = list.slice(0, pageLimits.dict).map(d => `
+            if (list.length === 0) { c.innerHTML = `<div class="text-center p-4 text-xs text-slate-500">موردی یافت نشد.</div>`; return; }
+
+            c.innerHTML = list.slice(0, pageLimits.dict).map(d => {
+                const isBookmarked = bookmarks.includes(d.term);
+                const starColor = isBookmarked ? 'text-amber-500 dark:text-amber-400' : 'text-slate-400 hover:text-slate-600 dark:hover:text-white';
+                return `
                 <div class="ultra-glass p-3.5 rounded-xl shadow-md space-y-1.5 ultra-glass-content">
                     <div class="flex justify-between items-center">
                         <span class="font-black text-red-600 dark:text-red-500">${d.term}</span>
-                        <i onclick="copyToClipboard('${d.term}: ${d.definition}'); showToast('کپی شد')" class="fa-solid fa-copy text-slate-400 hover:text-slate-600 dark:hover:text-white cursor-pointer"></i>
+                        <div class="flex space-x-2 space-x-reverse">
+                            <i onclick="toggleBookmark('${d.term}')" class="fa-solid fa-bookmark ${starColor} cursor-pointer transition"></i>
+                            <i onclick="copyToClipboard('${d.term}: ${d.definition}'); showToast('کپی شد')" class="fa-solid fa-copy text-slate-400 hover:text-slate-600 dark:hover:text-white cursor-pointer"></i>
+                        </div>
                     </div>
-                    <p class="font-semibold">${d.definition}</p>
-                </div>`).join('');
+                    <p class="font-semibold text-slate-700 dark:text-slate-100">${d.definition}</p>
+                </div>`;
+            }).join('');
         }
 
         function renderLegalSystems() {
             const c = document.getElementById('legalSystemsContainer');
-            if(c) c.innerHTML = (appData.legalSystems || []).map(s => `
-                <div class="ultra-glass p-4 rounded-2xl flex justify-between items-center shadow">
-                    <span class="font-bold text-red-600">${s.title}</span>
-                    <a href="${s.url}" target="_blank" class="bg-red-600 text-white px-3 py-1.5 rounded-xl text-xs font-bold shadow">ورود</a>
-                </div>`).join('');
+            if(c) c.innerHTML = (appData.legalSystems || []).map(s => `<div class="ultra-glass p-4 rounded-2xl flex justify-between items-center shadow"><span class="font-bold text-red-600">${s.title}</span><a href="${s.url}" target="_blank" class="bg-red-600 text-white px-3 py-1.5 rounded-xl text-xs font-bold shadow">ورود</a></div>`).join('');
         }
 
         function renderLaws(reset = false) {
@@ -1014,12 +930,7 @@
             c.innerHTML = list.map(l => {
                 let content = String(l.content || '');
                 if(terms.length > 0) content = content.replace(regex, match => `<span class="glossary-term" onclick="openLawBottomSheet('${match}')">${match}</span>`);
-                return `
-                <div class="ultra-glass p-4 rounded-2xl shadow-md ultra-glass-content space-y-2">
-                    <h3 class="font-bold text-red-600 dark:text-red-500">${l.title}</h3>
-                    <p class="font-semibold text-[11px] text-amber-600 dark:text-amber-400">${l.summary}</p>
-                    <p class="font-semibold leading-loose">${content}</p>
-                </div>`;
+                return `<div class="ultra-glass p-4 rounded-2xl shadow-md ultra-glass-content space-y-2"><h3 class="font-bold text-red-600 dark:text-red-500">${l.title}</h3><p class="font-semibold text-[11px] text-amber-600 dark:text-amber-400">${l.summary}</p><p class="font-semibold leading-loose text-slate-800 dark:text-slate-100">${content}</p></div>`;
             }).join('');
         }
 
@@ -1028,9 +939,11 @@
             if(c) c.innerHTML = (appData.shareCards || []).map(card => `<div class="ultra-glass p-4 rounded-3xl space-y-2 shadow-xl"><span class="font-bold text-amber-600 dark:text-amber-300">${card.title}</span><p class="font-semibold text-slate-800 dark:text-white">${card.text}</p></div>`).join('');
         }
 
-        function renderNews() {
-            const c = document.getElementById('newsContainer');
-            if(c) c.innerHTML = (appData.news || []).map(n => `<div class="ultra-glass p-4 rounded-2xl space-y-1.5 shadow-md"><div class="text-[9px] text-slate-500 dark:text-slate-400">${n.date||''}</div><h3 class="font-bold text-red-600">${n.title}</h3><p class="font-semibold text-slate-700 dark:text-slate-200">${n.summary}</p></div>`).join('');
+        function renderNews(reset = false) {
+            if(reset) pageLimits.news = 10;
+            const c = document.getElementById('newsContainer'); if(!c) return;
+            const list = (appData.news || []).slice(0, pageLimits.news);
+            c.innerHTML = list.map(n => `<div class="ultra-glass p-4 rounded-2xl space-y-1.5 shadow-md ultra-glass-content"><div class="text-[9px] text-slate-500 dark:text-slate-400">${n.date||''}</div><h3 class="font-bold text-red-600 dark:text-red-500">${n.title}</h3><p class="font-semibold text-slate-700 dark:text-slate-200 leading-relaxed">${n.summary}</p></div>`).join('');
         }
 
         function renderPublicFaqs() {
@@ -1073,8 +986,8 @@
             if(bar) bar.innerHTML = (appData.shareCards || []).map((card, idx) => `<div onclick="openStorySheet(${idx})" class="flex flex-col items-center space-y-1 flex-shrink-0 cursor-pointer"><div class="story-ring"><div class="w-12 h-12 rounded-full bg-slate-100 dark:bg-slate-900 flex items-center justify-center text-amber-500 dark:text-amber-400 text-xs font-bold shadow-inner"><i class="fa-solid fa-certificate"></i></div></div><span class="text-[9px] font-bold max-w-[50px] truncate text-slate-600 dark:text-slate-300">${card.title}</span></div>`).join('');
         }
 
-        // Infinite scroll logic
-        const observer = new IntersectionObserver((entries) => {
+        // --- Observers for Infinite Scroll ---
+        const scrollObserver = new IntersectionObserver((entries) => {
             entries.forEach(e => {
                 if(e.isIntersecting) {
                     if(e.target.id === 'dictLoadingObserver') { pageLimits.dict += 10; renderDictionary(); }
@@ -1083,11 +996,21 @@
             });
         });
         setTimeout(() => {
-            const dobs = document.getElementById('dictLoadingObserver'); if(dobs) observer.observe(dobs);
-            const lobs = document.getElementById('lawsLoadingObserver'); if(lobs) observer.observe(lobs);
+            const dobs = document.getElementById('dictLoadingObserver'); if(dobs) scrollObserver.observe(dobs);
+            const lobs = document.getElementById('lawsLoadingObserver'); if(lobs) scrollObserver.observe(lobs);
         }, 1000);
 
-        // --- Smart Glossary Tooltip (Bottom Sheet) ---
+        function setupNewsObserver() {
+            const nObs = document.getElementById('newsLoadingObserver');
+            if(nObs) {
+                const newsObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(e => { if(e.isIntersecting) { pageLimits.news += 5; renderNews(); } });
+                });
+                newsObserver.observe(nObs);
+            }
+        }
+
+        // --- Smart Glossary Tooltip ---
         function openLawBottomSheet(term) {
             const found = (appData.dictionary || []).find(d => d.term === term);
             if(found) {
@@ -1097,7 +1020,119 @@
         }
         function closeLawBottomSheet() { document.getElementById('lawBottomSheet').style.display = 'none'; }
 
-        // --- Advanced Tools (Inheritance Tree & Attorney Fee) ---
+        // --- Personal Notes ---
+        function savePersonalNote() {
+            const title = document.getElementById('caseTitleInput').value.trim();
+            const note = document.getElementById('caseNoteInput').value.trim();
+            if(!title || !note) return showToast('عنوان و متن را وارد کنید', 'error');
+            
+            let notes = JSON.parse(localStorage.getItem('mizan_personal_notes')) || [];
+            notes.unshift({ title, note, date: new Date().toLocaleDateString('fa-IR') });
+            localStorage.setItem('mizan_personal_notes', JSON.stringify(notes));
+            
+            document.getElementById('caseTitleInput').value = ''; document.getElementById('caseNoteInput').value = '';
+            renderPersonalNotes(); showToast('یادداشت با موفقیت ذخیره شد'); triggerHaptic('light');
+        }
+
+        function renderPersonalNotes() {
+            const container = document.getElementById('personalNotesContainer');
+            if(!container) return;
+            let notes = JSON.parse(localStorage.getItem('mizan_personal_notes')) || [];
+            if(notes.length === 0) { container.innerHTML = `<div class="text-center p-4 text-xs text-slate-500 dark:text-slate-400">یادداشتی یافت نشد.</div>`; return; }
+            container.innerHTML = notes.map((n, idx) => `
+                <div class="ultra-glass p-3 rounded-xl space-y-1 shadow-md">
+                    <div class="flex justify-between items-center text-[10px]">
+                        <span class="font-bold text-amber-600 dark:text-amber-300">${n.title}</span>
+                        <div class="flex items-center space-x-2 space-x-reverse">
+                            <span class="text-slate-500 dark:text-slate-400">${n.date}</span>
+                            <button onclick="deleteNote(${idx})" class="text-red-500 hover:text-red-600 dark:text-red-400 dark:hover:text-red-200 transition"><i class="fa-solid fa-trash-can"></i></button>
+                        </div>
+                    </div>
+                    <p class="text-xs leading-relaxed text-slate-700 dark:text-slate-200">${n.note}</p>
+                </div>`).join('');
+        }
+
+        function deleteNote(idx) {
+            let notes = JSON.parse(localStorage.getItem('mizan_personal_notes')) || [];
+            notes.splice(idx, 1); localStorage.setItem('mizan_personal_notes', JSON.stringify(notes));
+            renderPersonalNotes(); showToast('یادداشت حذف شد'); triggerHaptic('medium');
+        }
+
+        function exportNotesPDF() {
+            let notes = JSON.parse(localStorage.getItem('mizan_personal_notes')) || [];
+            if(notes.length === 0) return showToast('یادداشتی برای چاپ وجود ندارد', 'error');
+            const printWindow = window.open('', '', 'height=600,width=800');
+            printWindow.document.write('<html><head><title>چاپ یادداشت‌های پرونده</title><style>body{font-family:Tahoma;direction:rtl;padding:20px;line-height:2;font-size:13px;}.note{border-bottom:1px solid #ccc;margin-bottom:15px;padding-bottom:10px;}h2{color:#c51b24;}</style></head><body>');
+            printWindow.document.write('<h2>گزارش یادداشت‌های شخصی (SIJT)</h2><hr/>');
+            notes.forEach(n => { printWindow.document.write(`<div class="note"><b>${n.title}</b> <span style="color:#666;font-size:10px;">(${n.date})</span><br/><p>${n.note}</p></div>`); });
+            printWindow.document.write('</body></html>'); printWindow.document.close(); printWindow.focus();
+            setTimeout(() => { printWindow.print(); printWindow.close(); }, 400);
+        }
+
+        // --- FAQs (Online Lawyer) ---
+        async function submitQuestion() {
+            const q = document.getElementById('questionInput').value.trim();
+            const cat = document.getElementById('questionCategory').value;
+            if(!q) return showToast('متن سوال را وارد کنید', 'error');
+            
+            document.getElementById('submitQuestionBtn').innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+            try {
+                await fetch(API_URL, {
+                    method: 'POST', mode: 'cors', headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify({ action: 'add_faq', tab: 'faq', userId: userId, category: cat, question: q })
+                });
+                document.getElementById('questionInput').value = ''; showToast('سوال با موفقیت برای وکیل ارسال شد');
+                loadUserFaqs(); triggerHaptic('light');
+            } catch(e) { showToast('سوال در حافظه موقت ثبت شد'); }
+            document.getElementById('submitQuestionBtn').innerHTML = 'ارسال سوال';
+        }
+
+        async function loadUserFaqs() {
+            const container = document.getElementById('userFaqsContainer'); if(!container) return;
+            try {
+                const res = await fetch(`${API_URL}?action=get_user_faqs&tab=faq&userId=${userId}`, { mode: 'cors' });
+                const data = await res.json();
+                if (data?.faqs?.length > 0) {
+                    container.innerHTML = data.faqs.map(f => `
+                        <div class="bg-slate-100 dark:bg-slate-900/80 p-3 rounded-xl text-[10px] space-y-1.5 border border-slate-300 dark:border-white/10 shadow-sm">
+                            <div class="text-amber-600 dark:text-amber-400 font-bold">کد پیگیری: ${f.trackingCode}</div>
+                            <div class="text-slate-800 dark:text-slate-100"><b class="text-red-500">سوال:</b> ${f.question}</div>
+                            <div class="text-emerald-600 dark:text-emerald-400 font-bold">${f.answer ? 'پاسخ وکیل: ' + f.answer : 'در حال بررسی توسط وکیل...'}</div>
+                        </div>`).join('');
+                }
+            } catch(e) {}
+        }
+
+        // --- Swipe Gestures ---
+        function initAppSwipeGestures() {
+            const main = document.getElementById('mainContentArea'); if (!main) return;
+            let touchStartX = 0; let touchStartY = 0; let isIgnored = false;
+            const navTabIds = ALL_TABS.map(t => t.id);
+
+            main.addEventListener('touchstart', e => {
+                if (!e.touches || e.touches.length === 0) return;
+                const scrollable = e.target.closest('.overflow-x-auto, input, textarea, select, video, .zoomable-container, audio, button');
+                if (scrollable) { isIgnored = true; return; }
+                isIgnored = false; touchStartX = e.touches[0].clientX; touchStartY = e.touches[0].clientY;
+            }, { passive: true });
+
+            main.addEventListener('touchend', e => {
+                if (isIgnored || !e.changedTouches || e.changedTouches.length === 0) return;
+                const touchEndX = e.changedTouches[0].clientX; const touchEndY = e.changedTouches[0].clientY;
+                const diffX = touchEndX - touchStartX; const diffY = touchEndY - touchStartY;
+
+                if (Math.abs(diffX) > 65 && Math.abs(diffX) > Math.abs(diffY) * 1.5) {
+                    const activeSection = document.querySelector('.page-section:not(.hidden)');
+                    if (!activeSection) return;
+                    const currentIndex = navTabIds.indexOf(activeSection.id);
+                    if (currentIndex === -1) return;
+                    if (diffX < 0 && currentIndex < navTabIds.length - 1) { switchTab(navTabIds[currentIndex + 1]); triggerHaptic('light'); } 
+                    else if (diffX > 0 && currentIndex > 0) { switchTab(navTabIds[currentIndex - 1]); triggerHaptic('light'); }
+                }
+            }, { passive: true });
+        }
+
+        // --- Advanced Tools ---
         function calculateInheritanceVisual() {
             const estate = parseFloat(document.getElementById('estateAmount').value) || 0;
             const type = document.getElementById('heirsType').value;
@@ -1169,9 +1204,30 @@
             document.getElementById('diyehResult').innerText = `مبلغ تقریبی دیه: ${Math.round(base).toLocaleString()} ریال`;
         }
 
+        // --- Contract Generation ---
+        function generateSmartContract() {
+            const p1 = document.getElementById('partyFirst').value || '......';
+            const p2 = document.getElementById('partySecond').value || '......';
+            const amt = document.getElementById('contractAmount').value || '......';
+            const box = document.getElementById('contractOutputBox');
+            box.innerText = `پیش‌نویس قرارداد رسمی\nطرف اول: ${p1}\nطرف دوم: ${p2}\nمبلغ: ${amt} ریال\nکلیه خیارات اسقاط گردید.`;
+            box.classList.remove('hidden');
+            showToast('قرارداد تولید شد');
+        }
+        function exportContractPDF() {
+            const content = document.getElementById('contractOutputBox').innerText;
+            if(!content || document.getElementById('contractOutputBox').classList.contains('hidden')) { return showToast('ابتدا متن قرارداد را تولید کنید', 'error'); }
+            const printWindow = window.open('', '', 'height=600,width=800');
+            printWindow.document.write('<html><head><title>چاپ قرارداد</title><style>body{font-family:Tahoma;direction:rtl;padding:20px;line-height:2;font-size:14px;}</style></head><body>');
+            printWindow.document.write('<h2>مینی‌اپ حقوقی SIJT - پیش‌نویس قرارداد</h2><hr/>');
+            printWindow.document.write('<pre style="font-family:Tahoma;white-space:pre-wrap;">' + content + '</pre>');
+            printWindow.document.write('</body></html>'); printWindow.document.close(); printWindow.focus();
+            setTimeout(() => { printWindow.print(); printWindow.close(); }, 400);
+        }
+
         function copyToClipboard(text) { navigator.clipboard.writeText(text); }
 
-        // --- Universal & Fuzzy Search ---
+        // --- Universal Search ---
         function levenshtein(a, b) {
             const matrix = Array(b.length + 1).fill(null).map(() => Array(a.length + 1).fill(null));
             for (let i = 0; i <= a.length; i += 1) matrix[0][i] = i;
@@ -1194,7 +1250,6 @@
 
             let resultsHTML = '';
             
-            // Fuzzy Dictionary Search
             let dictMatches = (appData.dictionary || []).map(d => ({
                 item: d, dist: Math.min(levenshtein(q, d.term), levenshtein(q, d.term.substring(0, q.length)))
             })).filter(m => m.dist < 3 || m.item.term.includes(q)).sort((a,b) => a.dist - b.dist).slice(0,3);
@@ -1206,8 +1261,7 @@
                 });
             }
 
-            // Laws Exact Search
-            const lawsMatches = (appData.laws || []).filter(l => l.title.includes(q) || l.content.includes(q)).slice(0,2);
+            const lawsMatches = (appData.laws || []).filter(l => String(l.title||'').includes(q) || String(l.content||'').includes(q)).slice(0,2);
             if(lawsMatches.length > 0) {
                 resultsHTML += `<div class="text-[10px] font-bold text-amber-500 dark:text-amber-400 pt-2 pb-1 border-b border-slate-200 dark:border-white/10"><i class="fa-solid fa-gavel ml-1"></i> قوانین</div>`;
                 lawsMatches.forEach(l => {
@@ -1215,8 +1269,7 @@
                 });
             }
 
-            // FAQs Exact Search
-            const faqMatches = (appData.publicFaqs || []).filter(f => f.question.includes(q) || f.answer.includes(q)).slice(0,2);
+            const faqMatches = (appData.publicFaqs || []).filter(f => String(f.question||'').includes(q) || String(f.answer||'').includes(q)).slice(0,2);
             if(faqMatches.length > 0) {
                 resultsHTML += `<div class="text-[10px] font-bold text-amber-500 dark:text-amber-400 pt-2 pb-1 border-b border-slate-200 dark:border-white/10"><i class="fa-solid fa-question ml-1"></i> سوالات</div>`;
                 faqMatches.forEach(f => {
@@ -1233,10 +1286,37 @@
             document.getElementById('clearSearchBtn').classList.add('hidden');
         }
 
+        function startVoiceDictation(targetInputId) {
+            if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) { return showToast('جستجوی صوتی در این مرورگر پشتیبانی نمی‌شود', 'error'); }
+            try {
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                const recognition = new SpeechRecognition();
+                recognition.lang = 'fa-IR'; recognition.start();
+                recognition.onresult = function(event) {
+                    const text = event.results[0][0].transcript;
+                    const input = document.getElementById(targetInputId);
+                    if(input) { input.value = text; if(targetInputId === 'searchInput') handleUniversalSearch(text); }
+                };
+            } catch(e) { showToast('خطا در دسترسی به میکروفون', 'error'); }
+        }
+
         // --- Advanced Chatbot (Agentic, Temporal, Citations, Widgets) ---
         const LegalNlpEngine = {
             analyze: function(text) {
                 let out = "";
+                const normalized = text.toLowerCase().trim();
+                
+                // Greeting Detection
+                if (/^(سلام|درود|خوبی|وقت بخیر|سلام علیکم|روز بخیر|صبح بخیر|عصر بخیر|سلام چطوری)/.test(normalized) && normalized.length < 35) {
+                    return "سلام و درود! من دستیار هوشمند و تخصصی حقوقی SIJT هستم. برای بررسی و راهنمایی در خصوص دعاوی ملکی، کیفری، خانواده، مهریه، چک، مطالبات و قراردادها در خدمت شما هستم. لطفاً سوال حقوقی خود را بفرمایید.";
+                }
+                if (/^(تو کی هستی|اسمت چیه|چیکار میکنی|رباتی|هوش مصنوعی هستی)/.test(normalized)) {
+                    return "من «دستیار هوش مصنوعی حقوقی SIJT» هستم. من برای پاسخگویی تخصصی به سوالات قضایی طراحی شده‌ام.";
+                }
+                if (/^(ممنون|مرسی|تشکر|دستت درد نکنه|سپاس|دمت گرم|خیلی ممنون)/.test(normalized) && normalized.length < 25) {
+                    return "خواهش می‌کنم، انجام وظیفه بود! اگر هر ابهام، پرسش یا مسئله حقوقی دیگری دارید، با کمال میل در خدمتتان هستم.";
+                }
+
                 // Temporal Logic
                 if(text.includes('1396') || text.includes('۱۳۹۶') || text.includes('قدیم') || text.includes('97')) {
                     out += "⏳ **تحلیل زمانی:** با توجه به اینکه تاریخ چک مربوط به قبل از سال ۱۴۰۰ است، تابع قانون قدیم صدور چک می‌باشد. در این حالت صدور اجراییه مستقیم (ماده ۲۳) امکان‌پذیر نیست و باید دعوای حقوقی مطالبه وجه مطرح شود.\n\n";
@@ -1256,7 +1336,7 @@
                     if(text.includes('مهریه')) out += "برای اجرای مهریه باید ابتدا به اداره ثبت (محل ثبت عقد) مراجعه کنید. نیازی به مراجعه مستقیم به دادگاه نیست. <a class='text-blue-500 dark:text-blue-400 underline cursor-pointer' onclick='openLawBottomSheet(\"توقیف اموال\")'>(مشاهده شرایط توقیف اموال)</a>";
                     else if(text.includes('تخلیه')) out += "دستور تخلیه فوری ملک تنها در صورتی صادر می‌شود که قرارداد دارای امضای دو شاهد معتبر باشد و مدت آن تمام شده باشد.";
                     else if(text.includes('بیمه') || text.includes('اداره کار') || text.includes('کارگر')) out += "بر اساس ماده 148 قانون کار، کارفرما مکلف به بیمه کردن کارگر از روز اول است و توافق بر خلاف آن باطل است. شما می‌توانید با مراجعه به اداره کار محل، دادخواست خود را ثبت کنید.";
-                    else out += "با توجه به اصول کلی و رویه قضایی، برای پیگیری این خواسته باید ابتدا ادله اثبات دعوا (مانند اسناد، شهادت شهود یا پرینت مالی) را جمع‌آوری کرده و سپس از طریق یکی از دفاتر خدمات الکترونیک قضایی، دادخواست یا شکواییه مربوطه را ثبت نمایید.";
+                    else out += "با توجه به اصول کلی و رویه قضایی، برای پیگیری این خواسته باید ابتدا ادله اثبات دعوا (مانند اسناد، شهادت شهود یا پرینت مالی) را جمع‌آوری کرده و سپس از طریق یکی از دفاتر خدمات الکترونیک قضایی، دادخواست یا شکواییه مربوطه را به مراجع ذی‌صلاح تقدیم نمایید.";
                 }
                 
                 // Citation (if applicable)
@@ -1288,7 +1368,7 @@
                         <input type="number" id="chatFeeInp" placeholder="مبلغ (ریال)" class="w-full bg-white/50 dark:bg-black/50 text-slate-800 dark:text-white rounded p-1.5 mb-1 text-[11px] focus:outline-none border border-slate-300 dark:border-transparent">
                         <button onclick="alert('هزینه بدوی تقریبی: ' + (document.getElementById('chatFeeInp').value * 0.035) + ' ریال')" class="w-full bg-red-600 text-white rounded p-1.5 text-[11px] font-bold shadow">محاسبه سریع</button>
                     </div>`);
-                return `<div class="flex justify-${isUser ? 'end' : 'start'}"><div class="${isUser ? 'bg-red-600 text-white rounded-br-none shadow-md' : 'bg-white dark:bg-slate-800 border border-slate-200 dark:border-white/10 text-slate-800 dark:text-slate-100 rounded-bl-none shadow'} p-3 rounded-2xl max-w-[88%] leading-relaxed">${formattedText}</div></div>`;
+                return `<div class="flex justify-${isUser ? 'end' : 'start'}"><div class="${isUser ? 'bg-red-600 text-white rounded-br-none shadow-md' : 'bg-white dark:bg-slate-800 border border-slate-200 dark:border-white/10 text-slate-800 dark:text-slate-100 rounded-bl-none shadow'} p-3 rounded-2xl max-w-[88%] leading-relaxed">${formattedText.replace(/\n/g, '<br>')}</div></div>`;
             }).join('');
             c.scrollTop = c.scrollHeight;
         }
@@ -1311,19 +1391,27 @@
             const cinBtn = document.getElementById('cinematicBtn');
 
             if(type === 'series') {
-                content.innerHTML = `<div class="pro-video-wrapper"><video id="modalVideoPlayer" src="${item.url}" controls autoplay playsinline webkit-playsinline></video></div>`;
-                extBtn.classList.remove('hidden'); extBtn.href = item.url; 
+                content.innerHTML = `<div class="pro-video-wrapper"><video id="modalVideoPlayer" src="${item.url}" controls playsinline webkit-playsinline></video></div>`;
+                extBtn.classList.remove('hidden'); extBtn.setAttribute('href', item.url);
                 cinBtn.classList.remove('hidden');
                 if (document.pictureInPictureEnabled) { pipBtn.classList.remove('hidden'); }
             } else {
-                content.innerHTML = `<div class="zoomable-container"><img src="${item.image}" class="zoomable-img"></div>`;
+                // پیاده سازی زوم و پنینگ با اسکرول بومی
+                content.innerHTML = `<div class="zoomable-container"><img src="${item.image}" class="zoomable-img" onclick="toggleZoom(this)"></div>`;
                 extBtn.classList.add('hidden'); pipBtn.classList.add('hidden'); cinBtn.classList.add('hidden');
             }
             document.getElementById('mediaModal').classList.remove('hidden');
         }
 
+        function toggleZoom(img) {
+            img.classList.toggle('zoomed');
+            triggerHaptic('light');
+        }
+
         function closeMediaModal() {
             document.getElementById('mediaModal').classList.add('hidden');
+            const vid = document.getElementById('modalVideoPlayer');
+            if(vid) vid.pause();
             document.getElementById('mediaModalContent').innerHTML = '';
         }
         
@@ -1342,14 +1430,13 @@
         }
         function closePiP() { pipDiv.style.display = 'none'; pipDiv.innerHTML = '<div class="pip-close-btn" onclick="closePiP()"><i class="fa-solid fa-xmark"></i></div>'; }
 
-        // --- Floating Audio Player & Dynamic Color ---
-        function getAverageColor(imgUrl) { const colors = ['#9b131a', '#f59e0b', '#0f172a', '#4338ca', '#047857']; return colors[Math.floor(Math.random() * colors.length)]; }
+        // --- Floating Audio Player ---
         let audioEl = document.getElementById('mainAudioObj');
         function playAudio(url, title, img) {
             audioEl.src = url; audioEl.play(); document.getElementById('playerTitle').innerText = title;
             const player = document.getElementById('floatingAudioPlayer'); player.classList.add('show');
             document.getElementById('playerPlayBtn').innerHTML = '<i class="fa-solid fa-circle-pause"></i>';
-            if(img) { document.getElementById('playerThumb').innerHTML = `<img src="${img}" class="w-full h-full object-cover">`; player.style.background = getAverageColor(img); }
+            if(img) { document.getElementById('playerThumb').innerHTML = `<img src="${img}" class="w-full h-full object-cover">`; }
         }
         function toggleAudioPlay() {
             if(audioEl.paused) { audioEl.play(); document.getElementById('playerPlayBtn').innerHTML = '<i class="fa-solid fa-circle-pause"></i>'; }
@@ -1386,8 +1473,15 @@
             document.querySelectorAll('#mainNavContainer button').forEach(b => b.classList.remove('active-tab'));
             if(btn) btn.classList.add('active-tab');
             else { const tBtn = Array.from(document.querySelectorAll('#mainNavContainer button')).find(b => b.getAttribute('onclick')?.includes(sectionId)); if(tBtn) tBtn.classList.add('active-tab'); }
+            
+            // Stop media when leaving multimedia tab
+            if(sectionId !== 'multimedia-tab') {
+                const vid = document.getElementById('liveStreamVideo');
+                if(vid && !vid.paused) vid.pause();
+            }
             window.scrollTo(0, 0);
         }
+        
         function toggleMoreDrawer() { const d = document.getElementById('moreDrawer'); d.style.display = d.style.display === 'block' ? 'none' : 'block'; }
         function toggleSettingsMenu(e) { e.stopPropagation(); document.getElementById('settingsDropdown').classList.toggle('hidden'); }
         function openAdvancedSearchModal() { document.getElementById('advancedSearchModal').classList.remove('hidden'); }
@@ -1399,218 +1493,6 @@
         }
         
         window.addEventListener('DOMContentLoaded', initApp);
-    // ==========================================
-// توابع تکمیلی و جامانده (کپی در انتهای کدهای جاوااسکریپت)
-// ==========================================
-
-// --- بخش ۱: یادداشت‌های شخصی (Personal Notes) ---
-function savePersonalNote() {
-    const title = document.getElementById('caseTitleInput').value.trim();
-    const note = document.getElementById('caseNoteInput').value.trim();
-    if(!title || !note) return showToast('عنوان و متن را وارد کنید', 'error');
-    
-    let notes = JSON.parse(localStorage.getItem('mizan_personal_notes')) || [];
-    notes.unshift({ title, note, date: new Date().toLocaleDateString('fa-IR') });
-    localStorage.setItem('mizan_personal_notes', JSON.stringify(notes));
-    
-    document.getElementById('caseTitleInput').value = '';
-    document.getElementById('caseNoteInput').value = '';
-    renderPersonalNotes();
-    showToast('یادداشت با موفقیت ذخیره شد');
-    triggerHaptic('light');
-}
-
-function renderPersonalNotes() {
-    const container = document.getElementById('personalNotesContainer');
-    if(!container) return;
-    let notes = JSON.parse(localStorage.getItem('mizan_personal_notes')) || [];
-    
-    if(notes.length === 0) {
-        container.innerHTML = `<div class="text-center p-4 text-xs text-slate-500 dark:text-slate-400">یادداشتی یافت نشد.</div>`;
-        return;
-    }
-
-    container.innerHTML = notes.map((n, idx) => `
-        <div class="ultra-glass p-3 rounded-xl space-y-1 shadow-md">
-            <div class="flex justify-between items-center text-[10px]">
-                <span class="font-bold text-amber-600 dark:text-amber-300">${n.title}</span>
-                <div class="flex items-center space-x-2 space-x-reverse">
-                    <span class="text-slate-500 dark:text-slate-400">${n.date}</span>
-                    <button onclick="deleteNote(${idx})" class="text-red-500 hover:text-red-600 dark:text-red-400 dark:hover:text-red-200 transition"><i class="fa-solid fa-trash-can"></i></button>
-                </div>
-            </div>
-            <p class="text-xs leading-relaxed text-slate-700 dark:text-slate-200">${n.note}</p>
-        </div>`).join('');
-}
-
-function deleteNote(idx) {
-    let notes = JSON.parse(localStorage.getItem('mizan_personal_notes')) || [];
-    notes.splice(idx, 1);
-    localStorage.setItem('mizan_personal_notes', JSON.stringify(notes));
-    renderPersonalNotes();
-    showToast('یادداشت حذف شد');
-    triggerHaptic('medium');
-}
-
-function exportNotesPDF() {
-    let notes = JSON.parse(localStorage.getItem('mizan_personal_notes')) || [];
-    if(notes.length === 0) return showToast('یادداشتی برای چاپ وجود ندارد', 'error');
-    
-    const printWindow = window.open('', '', 'height=600,width=800');
-    printWindow.document.write('<html><head><title>چاپ یادداشت‌های پرونده</title><style>body{font-family:Tahoma;direction:rtl;padding:20px;line-height:2;font-size:13px;}.note{border-bottom:1px solid #ccc;margin-bottom:15px;padding-bottom:10px;}h2{color:#c51b24;}</style></head><body>');
-    printWindow.document.write('<h2>گزارش یادداشت‌های شخصی (SIJT)</h2><hr/>');
-    notes.forEach(n => {
-        printWindow.document.write(`<div class="note"><b>${n.title}</b> <span style="color:#666;font-size:10px;">(${n.date})</span><br/><p>${n.note}</p></div>`);
-    });
-    printWindow.document.write('</body></html>');
-    printWindow.document.close();
-    printWindow.focus();
-    setTimeout(() => { printWindow.print(); printWindow.close(); }, 400);
-}
-
-// --- بخش ۲: مشاور آنلاین و سوالات (Lawyer & FAQs) ---
-async function submitQuestion() {
-    const q = document.getElementById('questionInput').value.trim();
-    const cat = document.getElementById('questionCategory').value;
-    if(!q) return showToast('متن سوال را وارد کنید', 'error');
-    
-    document.getElementById('submitQuestionBtn').innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
-    try {
-        await fetch(API_URL, {
-            method: 'POST',
-            mode: 'cors',
-            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-            body: JSON.stringify({ action: 'add_faq', tab: 'faq', userId: userId, category: cat, question: q })
-        });
-        document.getElementById('questionInput').value = '';
-        showToast('سوال با موفقیت برای وکیل ارسال شد');
-        loadUserFaqs();
-        triggerHaptic('light');
-    } catch(e) {
-        showToast('سوال در حافظه موقت ثبت شد');
-    }
-    document.getElementById('submitQuestionBtn').innerHTML = 'ارسال سوال';
-}
-
-async function loadUserFaqs() {
-    const container = document.getElementById('userFaqsContainer');
-    if(!container) return;
-    try {
-        const res = await fetch(`${API_URL}?action=get_user_faqs&tab=faq&userId=${userId}`, { mode: 'cors' });
-        const data = await res.json();
-        if (data?.faqs?.length > 0) {
-            container.innerHTML = data.faqs.map(f => `
-                <div class="bg-slate-100 dark:bg-slate-900/80 p-3 rounded-xl text-[10px] space-y-1.5 border border-slate-300 dark:border-white/10 shadow-sm">
-                    <div class="text-amber-600 dark:text-amber-400 font-bold">کد پیگیری: ${f.trackingCode}</div>
-                    <div class="text-slate-800 dark:text-slate-100"><b class="text-red-500">سوال:</b> ${f.question}</div>
-                    <div class="text-emerald-600 dark:text-emerald-400 font-bold">${f.answer ? 'پاسخ وکیل: ' + f.answer : 'در حال بررسی توسط وکیل...'}</div>
-                </div>`).join('');
-        }
-    } catch(e) {}
-}
-
-// --- بخش ۳: ژست‌های حرکتی (Swipe Gestures) ---
-function initAppSwipeGestures() {
-    const main = document.getElementById('mainContentArea');
-    if (!main) return;
-    let touchStartX = 0; let touchStartY = 0; let isIgnored = false;
-    
-    // استخراج آیدی تب‌ها از متغیر ALL_TABS
-    const navTabIds = ALL_TABS.map(t => t.id);
-
-    main.addEventListener('touchstart', e => {
-        if (!e.touches || e.touches.length === 0) return;
-        // نادیده گرفتن سوایپ روی اسکرولرهای افقی، نقشه، ویدیو و اینپوت‌ها
-        const scrollable = e.target.closest('.overflow-x-auto, input, textarea, select, video, .zoomable-container, audio, button');
-        if (scrollable) { isIgnored = true; return; }
-        isIgnored = false;
-        touchStartX = e.touches[0].clientX;
-        touchStartY = e.touches[0].clientY;
-    }, { passive: true });
-
-    main.addEventListener('touchend', e => {
-        if (isIgnored || !e.changedTouches || e.changedTouches.length === 0) return;
-        const touchEndX = e.changedTouches[0].clientX;
-        const touchEndY = e.changedTouches[0].clientY;
-        const diffX = touchEndX - touchStartX;
-        const diffY = touchEndY - touchStartY;
-
-        // تشخیص سوایپ افقی معتبر
-        if (Math.abs(diffX) > 65 && Math.abs(diffX) > Math.abs(diffY) * 1.5) {
-            const activeSection = document.querySelector('.page-section:not(.hidden)');
-            if (!activeSection) return;
-            const currentIndex = navTabIds.indexOf(activeSection.id);
-            if (currentIndex === -1) return;
-
-            // سوایپ به چپ (تب بعدی)
-            if (diffX < 0 && currentIndex < navTabIds.length - 1) {
-                switchTab(navTabIds[currentIndex + 1]); 
-                triggerHaptic('light');
-            } 
-            // سوایپ به راست (تب قبلی)
-            else if (diffX > 0 && currentIndex > 0) {
-                switchTab(navTabIds[currentIndex - 1]); 
-                triggerHaptic('light');
-            }
-        }
-    }, { passive: true });
-}
-
-// --- بخش ۴: اسکرول بی‌نهایت اخبار (Infinite Scroll for News) ---
-pageLimits.news = 10; // تعریف لیمیت اولیه برای اخبار
-function renderNews(reset = false) {
-    if(reset) pageLimits.news = 10;
-    const c = document.getElementById('newsContainer');
-    if(!c) return;
-    const list = (appData.news || []).slice(0, pageLimits.news);
-    c.innerHTML = list.map(n => `
-        <div class="ultra-glass p-4 rounded-2xl space-y-1.5 shadow-md ultra-glass-content">
-            <div class="text-[9px] text-slate-500 dark:text-slate-400">${n.date||''}</div>
-            <h3 class="font-bold text-red-600 dark:text-red-500">${n.title}</h3>
-            <p class="font-semibold text-slate-700 dark:text-slate-200 leading-relaxed">${n.summary}</p>
-        </div>`).join('');
-}
-
-function setupNewsObserver() {
-    const nObs = document.getElementById('newsLoadingObserver');
-    if(nObs) {
-        const newsObserver = new IntersectionObserver((entries) => {
-            entries.forEach(e => {
-                if(e.isIntersecting) { pageLimits.news += 5; renderNews(); }
-            });
-        });
-        newsObserver.observe(nObs);
-    }
-}
-
-// --- بخش ۵: توابع جزئی UI تنظیمات ---
-function toggleMicroInteractions(enabled) {
-    microInteractionsEnabled = enabled;
-    localStorage.setItem('micro_interactions', enabled);
-    showToast(enabled ? 'افکت‌های صوتی و لرزشی فعال شدند' : 'افکت‌ها غیرفعال شدند');
-}
-
-function openAboutModal() {
-    alert((appData.about?.[0]?.text || "مینی‌اپ تخصصی و هوشمند حقوقی SIJT\nنسخه ۳.۰ (طراحی پرو مکس)") + "\n\nبرنامه‌نویسی و اجرا با احترام برای کاربران.");
-}
-
-function toggleNotificationsModal() {
-    showToast('در حال حاضر اعلان جدیدی ندارید', 'success');
-    triggerHaptic('light');
-}
-
-// --- راه‌اندازی خودکار توابع اضافه‌شده ---
-window.addEventListener('DOMContentLoaded', () => {
-    // فراخوانی توابع بالا به محض لود شدن کامل صفحه
-    renderPersonalNotes();
-    setupNewsObserver();
-    initAppSwipeGestures();
-    
-    // اگر کاربر قبلا سوالی پرسیده بود، بارگذاری شود
-    if(document.getElementById('userFaqsContainer')) {
-        loadUserFaqs();
-    }
-});
     </script>
 </body>
 </html>
