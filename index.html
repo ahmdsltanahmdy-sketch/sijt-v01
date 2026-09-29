@@ -381,9 +381,75 @@
             margin-bottom: 0.75rem;
         }
         .dark .disclaimer-box { color: #fbbf24; }
+   /* تنظیم هدر تاریک و هماهنگ با بدنه */
+        .header-bg {
+            background-color: #080c14 !important;
+            background-image: radial-gradient(at 50% 0%, rgba(197, 27, 36, 0.35) 0px, transparent 75%), 
+                              linear-gradient(180deg, rgba(8, 12, 20, 0.98) 0%, rgba(13, 19, 33, 0.95) 100%) !important;
+            border-bottom: 1px solid rgba(245, 158, 11, 0.25) !important;
+        }
+
+        body.dark .floating-nav, html.dark .floating-nav {
+            background: rgba(10, 15, 28, 0.96) !important;
+            border: 1px solid rgba(245, 158, 11, 0.35) !important;
+        }
+
+        /* استایل پلیر و حالت سینمایی */
+        .pro-video-wrapper {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: #000;
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+        }
+        .pro-video-wrapper video {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .cinematic-mode-box {
+            max-width: 98vw !important;
+            width: 98vw !important;
+            background: rgba(0, 0, 0, 0.98) !important;
+            border: 1px solid rgba(245, 158, 11, 0.5) !important;
+            box-shadow: 0 0 50px rgba(0,0,0,0.95), 0 0 20px rgba(197, 27, 36, 0.4) !important;
+        }
+        .cinematic-mode-box .pro-video-wrapper {
+            aspect-ratio: 21/9 !important;
+            max-height: 75vh;
+        }
+
+        /* استایل زوم و جابجایی تصویر اینفوگرافیک */
+        .zoomable-container {
+            overflow: hidden;
+            position: relative;
+            width: 100%;
+            height: 65vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #000000;
+            border-radius: 1rem;
+            touch-action: none;
+            user-select: none;
+        }
+        .zoomable-img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            cursor: zoom-in;
+            transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            transform-origin: center center;
+        }
+        .zoomable-img.zoomed {
+            cursor: grab;
+        }
     </style>
 </head>
-<body id="bodyRoot" class="mesh-bg min-h-screen flex flex-col relative select-none">
+<body id="bodyRoot" class="dark mesh-bg min-h-screen flex flex-col relative select-none">
 
     <!-- اسپلش اسکرین پایدار -->
     <div id="splashScreen" class="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#080c14] transition-opacity duration-300">
@@ -1126,42 +1192,29 @@
             }
         };
 
-        window.initThemes = function() {
+       window.initThemes = function() {
             const savedTheme = localStorage.getItem('mizan_theme');
             if (savedTheme === 'light') {
                 document.documentElement.classList.remove('dark');
+                document.body.classList.remove('dark');
                 document.body.classList.add('light');
                 window.updateMetaThemeColor('#ffffff');
             } else {
                 document.documentElement.classList.add('dark');
+                document.body.classList.add('dark');
                 document.body.classList.remove('light');
                 window.updateMetaThemeColor('#080c14');
             }
-
-            if (localStorage.getItem('oled_mode') === 'true') {
-                document.body.classList.add('oled-mode');
-                window.updateMetaThemeColor('#000000');
-            }
-            if (localStorage.getItem('high_contrast') === 'true') {
-                document.body.classList.add('high-contrast');
-            }
-            if (localStorage.getItem('battery_saver') === 'true') {
-                document.body.classList.add('battery-saver');
-            }
-
-            document.documentElement.style.setProperty('--selected-font', localStorage.getItem('mizan_font') || "'Vazirmatn', sans-serif");
-            document.documentElement.style.setProperty('--app-font-size', localStorage.getItem('mizan_font_size') || '12px');
-            document.documentElement.style.setProperty('--line-height', localStorage.getItem('mizan_line_height') || '1.8');
         };
 
         window.toggleTheme = function() {
             const isDark = document.documentElement.classList.toggle('dark');
+            document.body.classList.toggle('dark', isDark);
             document.body.classList.toggle('light', !isDark);
             localStorage.setItem('mizan_theme', isDark ? 'dark' : 'light');
             window.updateMetaThemeColor(isDark ? '#080c14' : '#ffffff');
             window.triggerHaptic('light');
         };
-
         window.toggleBatterySaver = function() {
             const isSaver = document.body.classList.toggle('battery-saver');
             localStorage.setItem('battery_saver', isSaver);
