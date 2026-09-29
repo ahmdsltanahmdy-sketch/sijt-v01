@@ -2663,6 +2663,7 @@
            ۱۷. مدیا، صوت و تصویر در تصویر ویدیویی (حل کامل باگ PIP)
            ========================================================================== */
         let activeModalVideo = null;
+        let panX = 0, panY = 0, isPanning = false, startPanX = 0, startPanY = 0;
 
         window.playVideo = function(url) {
             const vid = document.getElementById('liveStreamVideo');
@@ -2684,16 +2685,31 @@
             const extBtn = document.getElementById('mediaModalExternalBtn');
             const pipBtn = document.getElementById('pipBtn');
             const cinBtn = document.getElementById('cinematicBtn');
+            const modalBox = document.getElementById('mediaModalBox');
+
+            modalBox.classList.remove('cinematic-mode-box');
 
             if (type === 'series') {
-                content.innerHTML = `<video id="modalVideoPlayer" src="${item.url}" controls autoplay playsinline class="w-full h-full object-cover rounded-xl"></video>`;
+                content.innerHTML = `
+                    <div class="pro-video-wrapper">
+                        <video id="modalVideoPlayer" src="${item.url}" controls autoplay playsinline webkit-playsinline x5-playsinline></video>
+                    </div>`;
                 activeModalVideo = document.getElementById('modalVideoPlayer');
+                
+                if (activeModalVideo) {
+                    activeModalVideo.play().catch(() => {});
+                }
+
                 extBtn.classList.remove('hidden');
                 extBtn.href = item.url;
                 cinBtn.classList.remove('hidden');
                 pipBtn.classList.remove('hidden');
             } else {
-                content.innerHTML = `<img src="${item.image}" class="max-w-full max-h-[70vh] object-contain rounded-xl" alt="media">`;
+                panX = 0; panY = 0;
+                content.innerHTML = `
+                    <div class="zoomable-container">
+                        <img id="activeZoomImg" src="${item.image}" class="zoomable-img" onclick="toggleZoom(this)" alt="اینفوگرافیک">
+                    </div>`;
                 extBtn.classList.add('hidden');
                 pipBtn.classList.add('hidden');
                 cinBtn.classList.add('hidden');
@@ -2711,8 +2727,46 @@
             }
         };
 
+        window.toggleZoom = function(img) {
+            if (img.classList.contains('zoomed')) {
+                img.classList.remove('zoomed');
+                panX = 0; panY = 0;
+                img.style.transform = `translate(0px, 0px) scale(1)`;
+            } else {
+                img.classList.add('zoomed');
+                panX = 0; panY = 0;
+                img.style.transform = `translate(0px, 0px) scale(2.4)`;
+            }
+            window.triggerHaptic('light');
+        };
+
+        document.addEventListener('touchstart', (e) => {
+            const img = document.getElementById('activeZoomImg');
+            if (img && img.classList.contains('zoomed') && e.touches.length === 1) {
+                isPanning = true;
+                startPanX = e.touches[0].clientX - panX;
+                startPanY = e.touches[0].clientY - panY;
+            }
+        }, { passive: true });
+
+        document.addEventListener('touchmove', (e) => {
+            const img = document.getElementById('activeZoomImg');
+            if (isPanning && img && img.classList.contains('zoomed')) {
+                e.preventDefault();
+                panX = e.touches[0].clientX - startPanX;
+                panY = e.touches[0].clientY - startPanY;
+                img.style.transform = `translate(${panX}px, ${panY}px) scale(2.4)`;
+            }
+        }, { passive: false });
+
+        document.addEventListener('touchend', () => {
+            isPanning = false;
+        });
+
         window.toggleCinematicMode = function() {
-            document.getElementById('mediaModalBox').classList.toggle('cinematic-mode-box');
+            const modalBox = document.getElementById('mediaModalBox');
+            modalBox.classList.toggle('cinematic-mode-box');
+            window.triggerHaptic('medium');
         };
 
         window.openNativePiP = function() {
