@@ -11,7 +11,6 @@
     <!-- کتابخانه‌ها -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- استفاده از html2canvas و jsPDF به همراه راهکار بدون شکستگی متون فارسی -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script>
@@ -52,10 +51,9 @@
             font-family: var(--selected-font);
             font-size: var(--app-font-size);
             overflow-x: hidden;
-            /* اصلاح شده جهت رفع باگ درگ و تاچ در iOS */
             touch-action: pan-y pinch-zoom;
             color: #0f172a;
-            background-color: #f8fafc;
+            background-color: #080c14;
             transition: background-color 0.3s ease, color 0.3s ease;
         }
 
@@ -64,7 +62,7 @@
             background-color: #080c14;
         }
 
-        /* لایت مد ارگونومیک با کنتراست عمیق */
+        /* لایت مد فوق‌العاده جذاب با تفکیک رنگی غنی و کنتراست بالا */
         body.light {
             background-color: #f1f5f9;
             color: #0f172a;
@@ -82,20 +80,26 @@
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-        /* پس‌زمینه شبکه مدرن */
+        /* پس‌زمینه شبکه مدرن و اتمسفریک اصلی (احیای جذابیت اصیل) */
         .mesh-bg {
             background-color: #080c14;
             background-image: 
-                radial-gradient(at 10% 15%, rgba(197, 27, 36, 0.28) 0px, transparent 55%),
-                radial-gradient(at 90% 85%, rgba(245, 158, 11, 0.18) 0px, transparent 55%),
+                radial-gradient(at 10% 15%, rgba(197, 27, 36, 0.32) 0px, transparent 55%),
+                radial-gradient(at 90% 85%, rgba(245, 158, 11, 0.22) 0px, transparent 55%),
                 radial-gradient(at 50% 50%, rgba(8, 12, 20, 0.98) 0px, transparent 100%),
-                linear-gradient(rgba(245, 158, 11, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(245, 158, 11, 0.03) 1px, transparent 1px);
+                linear-gradient(rgba(245, 158, 11, 0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(245, 158, 11, 0.04) 1px, transparent 1px);
             background-size: 100% 100%, 100% 100%, 100% 100%, 32px 32px, 32px 32px;
         }
-        body:not(.dark):not(.oled-mode) .mesh-bg, body.light .mesh-bg {
+        body.light .mesh-bg, body:not(.dark):not(.oled-mode) .mesh-bg {
             background-color: #f8fafc;
-            background-image: radial-gradient(at 50% 50%, rgba(226, 232, 240, 0.85) 0px, transparent 100%);
+            background-image: 
+                radial-gradient(at 10% 15%, rgba(239, 68, 68, 0.12) 0px, transparent 50%),
+                radial-gradient(at 90% 85%, rgba(245, 158, 11, 0.12) 0px, transparent 50%),
+                radial-gradient(at 50% 50%, rgba(241, 245, 249, 0.92) 0px, transparent 100%),
+                linear-gradient(rgba(15, 23, 42, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(15, 23, 42, 0.03) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 100%, 100% 100%, 32px 32px, 32px 32px;
         }
 
         /* حالت ذخیره باتری */
@@ -157,34 +161,41 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
+        .light .text-gradient {
+            background: linear-gradient(135deg, #b45309 0%, #dc2626 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 900;
+        }
 
         /* ارتقای عمق لایه‌های شیشه‌ای (Glassmorphism Depth) */
         .ultra-glass {
-            background: rgba(13, 19, 33, 0.88);
-            backdrop-filter: blur(20px) saturate(180%);
-            -webkit-backdrop-filter: blur(20px) saturate(180%);
-            border: 1px solid rgba(245, 158, 11, 0.25);
-            box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.65), inset 0 1px 1px 0 rgba(255, 255, 255, 0.1);
+            background: rgba(13, 19, 33, 0.90);
+            backdrop-filter: blur(22px) saturate(180%);
+            -webkit-backdrop-filter: blur(22px) saturate(180%);
+            border: 1px solid rgba(245, 158, 11, 0.28);
+            box-shadow: 0 14px 35px -10px rgba(0, 0, 0, 0.7), inset 0 1px 1px 0 rgba(255, 255, 255, 0.12);
             color: #f8fafc;
             transform: translateZ(0);
             will-change: transform;
             transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .light .ultra-glass, body:not(.dark):not(.oled-mode) .ultra-glass {
-            background: rgba(255, 255, 255, 0.95);
-            border: 1px solid rgba(203, 213, 225, 0.85);
-            box-shadow: 0 8px 25px -6px rgba(15, 23, 42, 0.08), inset 0 1px 0 0 rgba(255, 255, 255, 1);
+            background: rgba(255, 255, 255, 0.96);
+            border: 1px solid rgba(203, 213, 225, 0.9);
+            box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.08), inset 0 1px 0 0 rgba(255, 255, 255, 1);
             color: #0f172a !important;
         }
         .light .ultra-glass p, body:not(.dark):not(.oled-mode) .ultra-glass p {
-            color: #334155 !important;
+            color: #1e293b !important;
+            font-weight: 500;
         }
 
         .settings-glass {
             background: rgba(13, 19, 33, 0.98);
             backdrop-filter: blur(25px);
             -webkit-backdrop-filter: blur(25px);
-            border: 1px solid rgba(245, 158, 11, 0.3);
+            border: 1px solid rgba(245, 158, 11, 0.35);
             color: #ffffff;
             box-shadow: 0 20px 45px rgba(0, 0, 0, 0.85);
         }
@@ -194,11 +205,11 @@
             color: #0f172a;
         }
 
-        /* هدر با تنظیم برای دکمه‌های تلگرام در iOS و اندروید */
+        /* هدر جذاب با گرادیان اصیل و هماهنگی کامل با حاشیه‌های تلگرام */
         #appHeader {
             transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
             will-change: transform, opacity;
-            padding-top: calc(var(--safe-area-top) + 4px);
+            padding-top: calc(var(--safe-area-top) + 6px);
         }
         .header-hidden {
             transform: translateY(-100%) !important;
@@ -206,10 +217,23 @@
             pointer-events: none !important;
         }
 
-        /* نوار ناوبری پایین با نشانگر متحرک پویای کشویی */
+        .header-bg {
+            background-color: #080c14 !important;
+            background-image: radial-gradient(at 50% 0%, rgba(197, 27, 36, 0.40) 0px, transparent 75%), 
+                              linear-gradient(180deg, rgba(8, 12, 20, 0.98) 0%, rgba(13, 19, 33, 0.96) 100%) !important;
+            border-bottom: 1px solid rgba(245, 158, 11, 0.3) !important;
+        }
+        .light .header-bg, body:not(.dark):not(.oled-mode) .header-bg {
+            background-color: #ffffff !important;
+            background-image: radial-gradient(at 50% 0%, rgba(239, 68, 68, 0.15) 0px, transparent 75%),
+                              linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%) !important;
+            border-bottom: 1px solid rgba(203, 213, 225, 0.8) !important;
+        }
+
+        /* نوار ناوبری پایین با نشانگر متحرک پویای کشویی دقیق و روان */
         .floating-nav {
             position: fixed;
-            background: rgba(10, 15, 28, 0.95) !important;
+            background: rgba(10, 15, 28, 0.96) !important;
             backdrop-filter: blur(25px) saturate(190%);
             -webkit-backdrop-filter: blur(25px) saturate(190%);
             border: 1px solid rgba(245, 158, 11, 0.35);
@@ -229,16 +253,23 @@
             pointer-events: none !important;
         }
 
+        /* نشانگر متحرک کپسولی اصلاح‌شده و کاملاً تطبیق‌پذیر */
         .nav-indicator-pill {
             position: absolute;
-            top: 6px;
-            bottom: 6px;
-            background: rgba(239, 68, 68, 0.15);
-            border: 1px solid rgba(239, 68, 68, 0.4);
+            top: 5px;
+            bottom: 5px;
+            background: rgba(239, 68, 68, 0.16);
+            border: 1px solid rgba(239, 68, 68, 0.45);
             border-radius: 1.25rem;
-            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), width 0.3s ease;
             pointer-events: none;
             z-index: 1;
+            box-shadow: 0 0 15px rgba(239, 68, 68, 0.2);
+        }
+        .light .nav-indicator-pill {
+            background: rgba(239, 68, 68, 0.12);
+            border: 1.5px solid rgba(239, 68, 68, 0.5);
+            box-shadow: 0 2px 8px rgba(239, 68, 68, 0.15);
         }
 
         .nav-btn {
@@ -248,10 +279,15 @@
             transition: color 0.25s ease, transform 0.2s ease;
             cursor: pointer;
         }
-        .light .nav-btn, body:not(.dark):not(.oled-mode) .nav-btn { color: #64748b !important; }
+        .light .nav-btn { color: #64748b !important; }
         .nav-btn.active-tab {
             color: #ef4444 !important;
             font-weight: 900 !important;
+            transform: translateY(-1px);
+        }
+        .nav-btn.active-tab i {
+            color: #ef4444 !important;
+            filter: drop-shadow(0 0 6px rgba(239, 68, 68, 0.4));
         }
 
         /* تعاملات لمسی بصری (Micro-Interactions) */
@@ -280,17 +316,6 @@
         @keyframes slideUpDrawer {
             from { transform: translateY(100%); opacity: 0; }
             to { transform: translateY(0); opacity: 1; }
-        }
-
-        .header-bg {
-            background-color: #080c14 !important;
-            background-image: radial-gradient(at 50% 0%, rgba(197, 27, 36, 0.35) 0px, transparent 75%), 
-                              linear-gradient(180deg, rgba(8, 12, 20, 0.98) 0%, rgba(13, 19, 33, 0.95) 100%) !important;
-            border-bottom: 1px solid rgba(245, 158, 11, 0.25) !important;
-        }
-        .light .header-bg, body:not(.dark):not(.oled-mode) .header-bg {
-            background: linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%) !important;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
         }
 
         #floatingAudioPlayer {
@@ -413,6 +438,11 @@
             margin-bottom: 0.75rem;
         }
         .dark .disclaimer-box { color: #fbbf24; }
+        .light .disclaimer-box {
+            background: rgba(245, 158, 11, 0.12);
+            color: #b45309;
+            font-weight: 600;
+        }
 
         .pro-video-wrapper {
             position: relative;
@@ -528,7 +558,7 @@
     </div>
 
     <!-- هدر برنامه -->
-    <header id="appHeader" class="sticky top-0 z-50 header-bg text-slate-800 dark:text-white shadow-md border-b border-black/5 dark:border-white/10">
+    <header id="appHeader" class="sticky top-0 z-50 header-bg text-slate-800 dark:text-white shadow-md">
         <div class="max-w-md mx-auto px-4 py-2 flex items-center justify-between text-[11px] relative z-20">
             <div class="flex flex-col space-y-0.5">
                 <div class="flex items-center space-x-1.5 space-x-reverse">
@@ -560,7 +590,7 @@
                 <button onclick="toggleTheme();" class="bg-black/10 dark:bg-white/20 px-3 py-1 rounded-xl font-medium cursor-pointer">تغییر پوسته</button>
             </div>
             <div class="flex items-center justify-between pb-2 border-b border-black/10 dark:border-white/15">
-                <span class="font-bold">صرفه‌جویی باتری و عملکرد بالا:</span>
+                <span class="font-bold">صرفه‌‌جویی باتری و عملکرد بالا:</span>
                 <button onclick="toggleBatterySaver();" id="batterySaverBtn" class="bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 px-3 py-1 rounded-xl font-medium cursor-pointer">فعال/غیرفعال</button>
             </div>
             <div class="flex items-center justify-between pb-2 border-b border-black/10 dark:border-white/15">
@@ -643,7 +673,7 @@
         <!-- تب ۱: اصطلاحات با سیستم فیلتر تراشه‌ای پیشرفته (Multi-tag Filters) -->
         <section id="dictionary-tab" class="page-section space-y-3">
             <div class="flex items-center justify-between mb-1">
-                <h2 class="font-black text-xs flex items-center text-gradient"><i class="fa-solid fa-book ml-1.5 text-red-500"></i> فرهنگ اصطلاحات حقوقی</h2>
+                <h2 class="font-black text-xs flex items-center text-red-600 dark:text-red-500"><i class="fa-solid fa-book ml-1.5"></i> فرهنگ اصطلاحات حقوقی</h2>
                 <span id="dictCounter" class="text-[10px] text-amber-500 font-bold"></span>
             </div>
             <!-- فیلترهای موضوعی و تراشه‌ای -->
@@ -660,11 +690,11 @@
 
         <!-- تب ۲: سامانه‌ها -->
         <section id="legal-tab" class="page-section hidden space-y-3">
-            <h2 class="font-black text-xs mb-2 text-gradient"><i class="fa-solid fa-scale-balanced ml-1 text-red-500"></i> سامانه‌های قضایی و استعلامی</h2>
+            <h2 class="font-black text-xs mb-2 text-red-600 dark:text-red-500 flex items-center"><i class="fa-solid fa-scale-balanced ml-1.5"></i> سامانه‌های قضایی و استعلامی</h2>
             <div id="legalSystemsContainer" class="space-y-2.5"><div class="custom-skeleton h-16 w-full"></div></div>
             <div class="ultra-glass p-4 rounded-2xl space-y-2 shadow-lg mt-4">
                 <h3 class="font-bold text-xs text-amber-500"><i class="fa-solid fa-circle-question ml-1"></i> راهنمای استعلام چک صیادی و مسدودی حساب</h3>
-                <div class="space-y-1.5 pt-1 text-[11px] text-slate-600 dark:text-slate-300 leading-relaxed">
+                <div class="space-y-1.5 pt-1 text-[11px] text-slate-700 dark:text-slate-300 leading-relaxed font-medium">
                     <div class="bg-black/5 dark:bg-slate-900/60 p-2.5 rounded-xl border border-black/5 dark:border-white/10">۱. استعلام وضعیت اعتباری صادرکننده چک از طریق سامانه صیاد بانک مرکزی</div>
                     <div class="bg-black/5 dark:bg-slate-900/60 p-2.5 rounded-xl border border-black/5 dark:border-white/10">۲. ورود شناسه صیادی ۱۶ رقمی و استعلام رنگ وضعیت حساب (سفید، زرد، نارنجی، قهوه‌ای، قرمز)</div>
                     <div class="bg-black/5 dark:bg-slate-900/60 p-2.5 rounded-xl border border-black/5 dark:border-white/10">۳. تایید یا رد سیستمی چک توسط ذینفع پیش از تحویل فیزیکی برگه چک</div>
@@ -674,14 +704,14 @@
 
         <!-- تب ۳: قوانین -->
         <section id="laws-tab" class="page-section hidden space-y-3">
-            <h2 class="font-black text-xs text-gradient"><i class="fa-solid fa-gavel ml-1 text-red-500"></i> آرشیو و متن قوانین کاربردی</h2>
+            <h2 class="font-black text-xs text-red-600 dark:text-red-500 flex items-center"><i class="fa-solid fa-gavel ml-1.5"></i> آرشیو و متن قوانین کاربردی</h2>
             <div id="lawsContainer" class="space-y-3"><div class="custom-skeleton h-24 w-full"></div></div>
             <div id="lawsLoadingObserver" class="h-4 w-full"></div>
         </section>
 
         <!-- تب ۴: کارت‌های حقوقی -->
         <section id="cards-tab" class="page-section hidden space-y-3">
-            <h2 class="font-black text-xs text-gradient"><i class="fa-solid fa-id-card ml-1 text-red-500"></i> کارت‌ها و استوری‌های حقوقی</h2>
+            <h2 class="font-black text-xs text-red-600 dark:text-red-500 flex items-center"><i class="fa-solid fa-id-card ml-1.5"></i> کارت‌ها و استوری‌های حقوقی</h2>
             <div class="flex space-x-3 space-x-reverse overflow-x-auto hide-scrollbar py-2" id="storyHighlightsBar"></div>
             <div id="shareCardsContainer" class="space-y-3 mt-2"><div class="custom-skeleton h-32 w-full"></div></div>
             <div id="cardsLoadingObserver" class="h-4 w-full"></div>
@@ -699,8 +729,8 @@
                     <i class="fa-solid fa-cloud-arrow-up ml-1"></i> ارتباط اینترنت قطع است؛ سوال شما در صف ذخیره شده و پس از اتصال ارسال خواهد شد.
                 </div>
 
-                <h2 class="font-extrabold text-xs text-gradient">سامانه پرسش از وکیل و مشاور قضایی</h2>
-                <select id="questionCategory" class="w-full bg-white dark:bg-slate-900 text-slate-800 dark:text-white rounded-xl p-2.5 text-xs border border-black/10 dark:border-white/20">
+                <h2 class="font-black text-xs text-red-600 dark:text-red-500">سامانه پرسش از وکیل و مشاور قضایی</h2>
+                <select id="questionCategory" class="w-full bg-white dark:bg-slate-900 text-slate-800 dark:text-white rounded-xl p-2.5 text-xs border border-black/10 dark:border-white/20 focus:outline-none">
                     <option value="حقوقی عمومی">حقوقی عمومی / قراردادها و تعهدات</option>
                     <option value="کیفری و جرایم">کیفری، سرقت، کلاهبرداری و خیانت در امانت</option>
                     <option value="خانواده و مهریه">خانواده، طلاق، مهریه و حضانت</option>
@@ -713,7 +743,7 @@
                 <button id="submitQuestionBtn" onclick="submitQuestion();" class="w-full bg-gradient-to-r from-red-600 to-red-700 py-2.5 text-xs font-bold text-white rounded-xl shadow-md cursor-pointer hover:opacity-95 transition">ارسال سوال به وکیل</button>
                 
                 <div class="pt-2">
-                    <span class="text-[10px] font-bold text-slate-500 dark:text-slate-400">تاریخچه سوالات و پاسخ‌ها:</span>
+                    <span class="text-[10px] font-bold text-slate-600 dark:text-slate-400">تاریخچه سوالات و پاسخ‌ها:</span>
                     <div id="userFaqsContainer" class="space-y-2.5 max-h-60 overflow-y-auto mt-2 pr-1"></div>
                 </div>
             </div>
@@ -723,8 +753,8 @@
         <section id="chatbot-tab" class="page-section hidden space-y-3">
             <div class="ultra-glass p-4 rounded-3xl space-y-3 shadow-xl flex flex-col h-[74vh]">
                 <div class="flex items-center justify-between pb-1 border-b border-black/10 dark:border-white/10">
-                    <h2 class="font-extrabold text-xs text-gradient flex items-center">
-                        <i class="fa-solid fa-robot ml-1.5 text-red-500"></i> دستیار هوشمند حقوقی SIJT
+                    <h2 class="font-black text-xs text-red-600 dark:text-red-500 flex items-center">
+                        <i class="fa-solid fa-robot ml-1.5"></i> دستیار هوشمند حقوقی SIJT
                     </h2>
                     <button onclick="clearChatHistory()" class="text-[10px] text-slate-500 hover:text-red-500 dark:text-slate-400 dark:hover:text-red-400 flex items-center space-x-1 space-x-reverse transition cursor-pointer">
                         <i class="fa-solid fa-trash-can"></i><span>پاکسازی گفتگو</span>
@@ -764,22 +794,22 @@
 
         <!-- تب ۷: جعبه ابزار محاسبات قضایی و فرم‌ساز مرحله‌ای -->
         <section id="tools-tab" class="page-section hidden space-y-4">
-            <h2 class="font-black text-xs mb-1 text-gradient"><i class="fa-solid fa-toolbox ml-1 text-red-500"></i> ابزارهای تخصصی و محاسبات قضایی</h2>
+            <h2 class="font-black text-xs mb-1 text-red-600 dark:text-red-500 flex items-center"><i class="fa-solid fa-toolbox ml-1.5"></i> ابزارهای تخصصی و محاسبات قضایی</h2>
             
             <!-- محاسبه‌گر جامع دیه اعضا و ارش -->
             <div class="ultra-glass p-4 rounded-2xl space-y-3 shadow-lg">
                 <h3 class="font-bold text-xs text-amber-500"><i class="fa-solid fa-user-injured ml-1"></i> محاسبه‌گر کامل دیه، ارش و ماه‌های حرام</h3>
                 <div class="grid grid-cols-2 gap-2">
                     <div>
-                        <label class="text-[10px] font-bold text-slate-500 dark:text-slate-400">ماه وقوع صدمه:</label>
-                        <select id="diyehMonthType" class="w-full bg-white dark:bg-slate-900 text-slate-800 dark:text-white rounded-xl p-2 text-xs border border-black/10 dark:border-white/20 mt-1">
+                        <label class="text-[10px] font-bold text-slate-600 dark:text-slate-400">ماه وقوع صدمه:</label>
+                        <select id="diyehMonthType" class="w-full bg-white dark:bg-slate-900 text-slate-800 dark:text-white rounded-xl p-2 text-xs border border-black/10 dark:border-white/20 mt-1 focus:outline-none">
                             <option value="normal">ماه‌های عادی</option>
                             <option value="haram">ماه حرام (تغلیظ دیه فوت)</option>
                         </select>
                     </div>
                     <div>
-                        <label class="text-[10px] font-bold text-slate-500 dark:text-slate-400">عضو یا مبنای آسیب:</label>
-                        <select id="diyehType" class="w-full bg-white dark:bg-slate-900 text-slate-800 dark:text-white rounded-xl p-2 text-xs border border-black/10 dark:border-white/20 mt-1" onchange="toggleDiyehArshInput(this.value)">
+                        <label class="text-[10px] font-bold text-slate-600 dark:text-slate-400">عضو یا مبنای آسیب:</label>
+                        <select id="diyehType" class="w-full bg-white dark:bg-slate-900 text-slate-800 dark:text-white rounded-xl p-2 text-xs border border-black/10 dark:border-white/20 mt-1 focus:outline-none" onchange="toggleDiyehArshInput(this.value)">
                             <option value="kamel">دیه کامل نفس</option>
                             <option value="eye_single">یک چشم (نصف دیه)</option>
                             <option value="eye_both">هر دو چشم (دیه کامل)</option>
@@ -794,19 +824,19 @@
                 </div>
 
                 <div id="diyehArshBox" class="hidden">
-                    <label class="text-[10px] font-bold text-slate-500 dark:text-slate-400">درصد ارش اعلامی نظریه پزشکی قانونی (%):</label>
-                    <input type="number" id="diyehArshPercent" placeholder="مثلاً: 2.5 یا 5" min="0.1" max="100" step="0.1" class="w-full bg-white dark:bg-slate-900 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20 mt-1">
+                    <label class="text-[10px] font-bold text-slate-600 dark:text-slate-400">درصد ارش اعلامی نظریه پزشکی قانونی (%):</label>
+                    <input type="number" id="diyehArshPercent" placeholder="مثلاً: 2.5 یا 5" min="0.1" max="100" step="0.1" class="w-full bg-white dark:bg-slate-900 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20 mt-1 focus:outline-none">
                 </div>
 
                 <button onclick="calculateDiyeh()" class="w-full bg-red-600 text-white py-2 rounded-xl text-xs font-bold shadow hover:bg-red-700 transition cursor-pointer">محاسبه نرخ مصوب دیه</button>
                 <div id="diyehResult" class="text-[11px] font-bold text-amber-600 dark:text-amber-300 mt-2 space-y-1"></div>
-                <button id="shareDiyehCardBtn" onclick="exportResultToCard('دیه و ارش قانونی', document.getElementById('diyehResult').innerText)" class="hidden w-full bg-black/20 dark:bg-white/10 hover:bg-black/30 text-amber-500 py-1.5 rounded-xl text-[10px] font-bold border border-amber-500/30 transition cursor-pointer"><i class="fa-solid fa-share-nodes ml-1"></i> صدور کارت گرافیکی اشتراک‌گذاری دیه</button>
+                <button id="shareDiyehCardBtn" onclick="exportResultToCard('دیه و ارش قانونی', document.getElementById('diyehResult').innerText)" class="hidden w-full bg-black/5 dark:bg-white/10 hover:bg-black/10 text-amber-600 dark:text-amber-400 py-1.5 rounded-xl text-[10px] font-bold border border-amber-500/30 transition cursor-pointer"><i class="fa-solid fa-share-nodes ml-1"></i> صدور کارت گرافیکی اشتراک‌گذاری دیه</button>
             </div>
 
             <!-- محاسبه‌گر تعرفه حق‌الوکاله و تمبر مالیاتی -->
             <div class="ultra-glass p-4 rounded-2xl space-y-3 shadow-lg">
-                <h3 class="font-bold text-xs text-amber-500"><i class="fa-solid fa-scale-unbalanced ml-1"></i> محاسبه‌گر حق‌الوکاله و تمبر مالیاتی وکیل</h3>
-                <input type="number" id="lawyerClaimAmount" placeholder="مبلغ خواسته دعوا (ریال)..." class="w-full bg-white dark:bg-slate-900 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20">
+                <h3 class="font-bold text-xs text-amber-500"><i class="fa-solid fa-scale-unbalanced ml-1"></i> محاسبه‌‌گر حق‌الوکاله و تمبر مالیاتی وکیل</h3>
+                <input type="number" id="lawyerClaimAmount" placeholder="مبلغ خواسته دعوا (ریال)..." class="w-full bg-white dark:bg-slate-900 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none">
                 <button onclick="calculateLawyerFee()" class="w-full bg-red-600 text-white py-2 rounded-xl text-xs font-bold shadow hover:bg-red-700 transition cursor-pointer">محاسبه تعرفه آیین‌نامه و مالیات</button>
                 <div id="lawyerFeeResult" class="text-[11px] font-bold text-amber-600 dark:text-amber-300 mt-2 space-y-1"></div>
             </div>
@@ -814,8 +844,8 @@
             <!-- محاسبه‌گر سهم‌الارث و نمودار درختی ترکه -->
             <div class="ultra-glass p-4 rounded-2xl space-y-3 shadow-lg">
                 <h3 class="font-bold text-xs text-amber-500"><i class="fa-solid fa-sitemap ml-1"></i> محاسبه‌گر سهم‌الارث و رسم نمودار ترکه</h3>
-                <input type="number" id="estateAmount" placeholder="مبلغ کل ماترک متوفی (ریال)..." class="w-full bg-white dark:bg-slate-900 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20">
-                <select id="heirsType" class="w-full bg-white dark:bg-slate-900 text-slate-800 dark:text-white rounded-xl p-2.5 text-xs border border-black/10 dark:border-white/20">
+                <input type="number" id="estateAmount" placeholder="مبلغ کل ماترک متوفی (ریال)..." class="w-full bg-white dark:bg-slate-900 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none">
+                <select id="heirsType" class="w-full bg-white dark:bg-slate-900 text-slate-800 dark:text-white rounded-xl p-2.5 text-xs border border-black/10 dark:border-white/20 focus:outline-none">
                     <option value="wife_1son_1daughter">همسر + ۱ پسر + ۱ دختر</option>
                     <option value="husband_2sons">شوهر + ۲ پسر</option>
                     <option value="only_parents">فقط پدر و مادر (بدون فرزند)</option>
@@ -829,8 +859,8 @@
             <div class="ultra-glass p-4 rounded-2xl space-y-3 shadow-lg">
                 <h3 class="font-bold text-xs text-amber-500"><i class="fa-solid fa-calculator ml-1"></i> محاسبه‌گر هزینه‌های دادرسی دعاوی مالی</h3>
                 <div class="grid grid-cols-2 gap-2">
-                    <input type="number" id="courtFeeInput" placeholder="مبلغ خواسته (ریال)..." class="bg-white dark:bg-slate-900 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20">
-                    <select id="courtStageSelect" class="bg-white dark:bg-slate-900 text-slate-800 dark:text-white rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20">
+                    <input type="number" id="courtFeeInput" placeholder="مبلغ خواسته (ریال)..." class="bg-white dark:bg-slate-900 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none">
+                    <select id="courtStageSelect" class="bg-white dark:bg-slate-900 text-slate-800 dark:text-white rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none">
                         <option value="badvi">مرحله بدوی</option>
                         <option value="tajdid">تجدیدنظر خواهی</option>
                         <option value="farjam">فرجام‌خواهی</option>
@@ -840,54 +870,54 @@
                 <div id="feeResult" class="text-[11px] font-bold text-amber-600 dark:text-amber-300 mt-2"></div>
             </div>
 
-            <!-- محاسبه‌گر مهریه بر اساس شاخص رسمی تورم بانک مرکزی (رفع باگ هاردکد سال و فرمول نامعتبر) -->
+            <!-- محاسبه‌گر مهریه بر اساس شاخص رسمی تورم بانک مرکزی -->
             <div class="ultra-glass p-4 rounded-2xl space-y-3 shadow-lg">
                 <h3 class="font-bold text-xs text-amber-500"><i class="fa-solid fa-coins ml-1"></i> محاسبه‌گر ارزش روز مهریه (شاخص رسمی بانک مرکزی)</h3>
                 <div class="grid grid-cols-2 gap-2">
-                    <select id="mahariyehMode" class="bg-white dark:bg-slate-900 text-slate-800 dark:text-white rounded-xl px-2 py-2 text-xs border border-black/10 dark:border-white/20" onchange="toggleMahariyehMode(this.value)">
+                    <select id="mahariyehMode" class="bg-white dark:bg-slate-900 text-slate-800 dark:text-white rounded-xl px-2 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none" onchange="toggleMahariyehMode(this.value)">
                         <option value="cash">مهریه وجه نقد (ریال)</option>
                         <option value="coin">مهریه سکه بهار آزادی</option>
                     </select>
-                    <input type="number" id="marriageYear" placeholder="سال وقوع عقد (مثلاً: 1375)" min="1330" max="1406" class="bg-white dark:bg-slate-900 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20">
+                    <input type="number" id="marriageYear" placeholder="سال وقوع عقد (مثلاً: 1375)" min="1330" max="1406" class="bg-white dark:bg-slate-900 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none">
                 </div>
                 <div id="mahariyehCashBox">
-                    <input type="number" id="mahariyehCashAmount" placeholder="مبلغ وجه نقد مندرج در سند ازدواج (ریال)..." class="w-full bg-white dark:bg-slate-900 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20">
+                    <input type="number" id="mahariyehCashAmount" placeholder="مبلغ وجه نقد مندرج در سند ازدواج (ریال)..." class="w-full bg-white dark:bg-slate-900 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none">
                 </div>
                 <div id="mahariyehCoinBox" class="hidden grid grid-cols-2 gap-2">
-                    <input type="number" id="mahariyehCoins" placeholder="تعداد تمام سکه..." class="bg-white dark:bg-slate-900 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20">
-                    <input type="number" id="currentCoinPrice" placeholder="قیمت روز سکه (ریال)..." class="bg-white dark:bg-slate-900 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20">
+                    <input type="number" id="mahariyehCoins" placeholder="تعداد تمام سکه..." class="bg-white dark:bg-slate-900 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none">
+                    <input type="number" id="currentCoinPrice" placeholder="قیمت روز سکه (ریال)..." class="bg-white dark:bg-slate-900 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none">
                 </div>
                 <button onclick="calculateBankCentralMahariyeh()" class="w-full bg-red-600 text-white py-2 rounded-xl text-xs font-bold shadow hover:bg-red-700 transition cursor-pointer">محاسبه ارزش تعدیل‌شده به نرخ روز</button>
                 <div id="mahariyehResult" class="text-[11px] font-bold text-amber-600 dark:text-amber-300 mt-2"></div>
-                <button id="shareMahariyehCardBtn" onclick="exportResultToCard('ارزش روز مهریه', document.getElementById('mahariyehResult').innerText)" class="hidden w-full bg-black/20 dark:bg-white/10 hover:bg-black/30 text-amber-500 py-1.5 rounded-xl text-[10px] font-bold border border-amber-500/30 transition cursor-pointer"><i class="fa-solid fa-share-nodes ml-1"></i> صدور کارت گرافیکی اشتراک‌گذاری مهریه</button>
+                <button id="shareMahariyehCardBtn" onclick="exportResultToCard('ارزش روز مهریه', document.getElementById('mahariyehResult').innerText)" class="hidden w-full bg-black/5 dark:bg-white/10 hover:bg-black/10 text-amber-600 dark:text-amber-400 py-1.5 rounded-xl text-[10px] font-bold border border-amber-500/30 transition cursor-pointer"><i class="fa-solid fa-share-nodes ml-1"></i> صدور کارت گرافیکی اشتراک‌گذاری مهریه</button>
             </div>
 
-            <!-- محاسبه‌گر تأخیر تأدیه (ماده ۵۲۲ آ.د.م) با شاخص تورم قطعی -->
+            <!-- محاسبه‌گر تأخیر تأدیه (ماده ۵۲۲ آ.د.م) -->
             <div class="ultra-glass p-4 rounded-2xl space-y-3 shadow-lg">
                 <h3 class="font-bold text-xs text-amber-500"><i class="fa-solid fa-chart-line ml-1"></i> محاسبه‌گر خسارت تأخیر تأدیه (ماده ۵۲۲ قانون آ.د.م)</h3>
-                <input type="number" id="principalAmount" placeholder="اصل مبلغ بدهی (ریال)..." class="w-full bg-white dark:bg-slate-900 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20">
+                <input type="number" id="principalAmount" placeholder="اصل مبلغ بدهی (ریال)..." class="w-full bg-white dark:bg-slate-900 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none">
                 <div class="grid grid-cols-2 gap-2">
-                    <input type="number" id="delayStartYear" placeholder="سال سررسید دین (مثلاً: 1395)" min="1360" max="1406" class="bg-white dark:bg-slate-900 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20">
-                    <input type="number" id="delayEndYear" placeholder="سال وصول دین (مثلاً: 1405)" min="1360" max="1406" class="bg-white dark:bg-slate-900 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20">
+                    <input type="number" id="delayStartYear" placeholder="سال سررسید دین (مثلاً: 1395)" min="1360" max="1406" class="bg-white dark:bg-slate-900 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none">
+                    <input type="number" id="delayEndYear" placeholder="سال وصول دین (مثلاً: 1405)" min="1360" max="1406" class="bg-white dark:bg-slate-900 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none">
                 </div>
                 <button onclick="calculateDelayCompensation()" class="w-full bg-red-600 text-white py-2 rounded-xl text-xs font-bold shadow hover:bg-red-700 transition cursor-pointer">محاسبه افت ارزش دین بر اساس تورم</button>
                 <div id="delayResult" class="text-[11px] font-bold text-amber-600 dark:text-amber-300 mt-2"></div>
-                <button id="shareDelayCardBtn" onclick="exportResultToCard('خسارت تأخیر تأدیه', document.getElementById('delayResult').innerText)" class="hidden w-full bg-black/20 dark:bg-white/10 hover:bg-black/30 text-amber-500 py-1.5 rounded-xl text-[10px] font-bold border border-amber-500/30 transition cursor-pointer"><i class="fa-solid fa-share-nodes ml-1"></i> صدور کارت گرافیکی اشتراک‌گذاری خسارت تأخیر</button>
+                <button id="shareDelayCardBtn" onclick="exportResultToCard('خسارت تأخیر تأدیه', document.getElementById('delayResult').innerText)" class="hidden w-full bg-black/5 dark:bg-white/10 hover:bg-black/10 text-amber-600 dark:text-amber-400 py-1.5 rounded-xl text-[10px] font-bold border border-amber-500/30 transition cursor-pointer"><i class="fa-solid fa-share-nodes ml-1"></i> صدور کارت گرافیکی اشتراک‌گذاری خسارت تأخیر</button>
             </div>
 
             <!-- فرم‌ساز قرارداد و مبایعه‌نامه رسمی -->
             <div class="ultra-glass p-4 rounded-2xl space-y-3 shadow-lg">
                 <h3 class="font-bold text-xs text-amber-500"><i class="fa-solid fa-file-contract ml-1"></i> فرم‌ساز قرارداد هوشمند با اسقاط کافه خیارات</h3>
-                <select id="contractType" class="w-full bg-white dark:bg-slate-900 text-slate-800 dark:text-white rounded-xl p-2.5 text-xs border border-black/10 dark:border-white/20">
+                <select id="contractType" class="w-full bg-white dark:bg-slate-900 text-slate-800 dark:text-white rounded-xl p-2.5 text-xs border border-black/10 dark:border-white/20 focus:outline-none">
                     <option value="rent">قرارداد اجاره اماکن مسکونی (قانون ۱۳۷۶)</option>
                     <option value="sale">مبایعه‌نامه قطعی انتقال ملک / خودرو</option>
                     <option value="peace">صلح‌نامه عمومی اسقاط حق</option>
                 </select>
                 <div class="grid grid-cols-2 gap-2">
-                    <input type="text" id="partyFirst" placeholder="مشخصات طرف اول (موجر/فروشنده)..." class="bg-white dark:bg-slate-900 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20">
-                    <input type="text" id="partySecond" placeholder="مشخصات طرف دوم (مستاجر/خریدار)..." class="bg-white dark:bg-slate-900 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20">
+                    <input type="text" id="partyFirst" placeholder="مشخصات طرف اول (موجر/فروشنده)..." class="bg-white dark:bg-slate-900 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none">
+                    <input type="text" id="partySecond" placeholder="مشخصات طرف دوم (مستاجر/خریدار)..." class="bg-white dark:bg-slate-900 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none">
                 </div>
-                <input type="text" id="contractAmount" placeholder="مبلغ کل قرارداد به ریال..." class="w-full bg-white dark:bg-slate-900 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20">
+                <input type="text" id="contractAmount" placeholder="مبلغ کل قرارداد به ریال..." class="w-full bg-white dark:bg-slate-900 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none">
                 <div class="flex space-x-2 space-x-reverse">
                     <button onclick="generateSmartContract()" class="flex-grow bg-red-600 text-white py-2 rounded-xl text-xs font-bold shadow hover:bg-red-700 transition cursor-pointer">تولید پیش‌نویس قانونی</button>
                     <button onclick="exportContractPDF()" title="دانلود PDF قرارداد" class="bg-amber-600 text-white px-3.5 py-2 rounded-xl text-xs font-bold shadow hover:bg-amber-700 transition cursor-pointer"><i class="fa-solid fa-print"></i></button>
@@ -896,12 +926,12 @@
             </div>
         </section>
 
-        <!-- تب ۸: یادداشت‌ها و پرونده شخصی (با رفع کامل خطای متون فارسی در PDF) -->
+        <!-- تب ۸: یادداشت‌ها و پرونده شخصی (با اصلاح کنتراست بالای تیتر در لایت‌مد) -->
         <section id="notes-tab" class="page-section hidden space-y-3">
-            <h2 class="font-black text-xs text-gradient"><i class="fa-solid fa-note-sticky ml-1 text-red-500"></i> مدیریت یادداشت‌ها و پرونده‌های شخصی</h2>
+            <h2 class="font-black text-xs text-red-600 dark:text-red-500 flex items-center"><i class="fa-solid fa-note-sticky ml-1.5"></i> مدیریت یادداشت‌ها و پرونده‌های شخصی</h2>
             <div class="ultra-glass p-4 rounded-2xl space-y-3 shadow-lg">
-                <input type="text" id="caseTitleInput" placeholder="عنوان پرونده یا موضوع لایحه..." class="w-full bg-white dark:bg-slate-900 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20">
-                <textarea id="caseNoteInput" placeholder="متن شرح پرونده، ادله، اظهارات یا مواد قانونی مرتبط..." class="w-full bg-white dark:bg-slate-900 text-slate-800 dark:text-amber-100 rounded-xl p-3 text-xs h-24 resize-none border border-black/10 dark:border-white/20"></textarea>
+                <input type="text" id="caseTitleInput" placeholder="عنوان پرونده یا موضوع لایحه..." class="w-full bg-white dark:bg-slate-900 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none">
+                <textarea id="caseNoteInput" placeholder="متن شرح پرونده، ادله، اظهارات یا مواد قانونی مرتبط..." class="w-full bg-white dark:bg-slate-900 text-slate-800 dark:text-amber-100 rounded-xl p-3 text-xs h-24 resize-none border border-black/10 dark:border-white/20 focus:outline-none"></textarea>
                 <div class="flex space-x-2 space-x-reverse">
                     <button onclick="savePersonalNote()" class="flex-grow bg-red-600 text-white py-2 rounded-xl text-xs font-bold shadow hover:bg-red-700 transition cursor-pointer">ذخیره در دیتابیس امن</button>
                     <button onclick="exportNotesPDF()" title="خروجی PDF یادداشت‌ها" class="bg-amber-600 text-white px-3.5 py-2 rounded-xl text-xs font-bold shadow hover:bg-amber-700 transition cursor-pointer"><i class="fa-solid fa-print"></i></button>
@@ -912,41 +942,41 @@
         </section>
         <!-- تب ۹: اخبار رسمی قضایی -->
         <section id="news-tab" class="page-section hidden space-y-3">
-            <h2 class="font-black text-xs text-gradient"><i class="fa-solid fa-bullhorn ml-1 text-red-500"></i> آخرین اخبار و اطلاعیه‌های رسمی قضایی</h2>
+            <h2 class="font-black text-xs text-red-600 dark:text-red-500 flex items-center"><i class="fa-solid fa-bullhorn ml-1.5"></i> آخرین اخبار و اطلاعیه‌های رسمی قضایی</h2>
             <div id="newsContainer" class="space-y-3"><div class="custom-skeleton h-20 w-full"></div></div>
             <div id="newsLoadingObserver" class="h-4 w-full"></div>
         </section>
 
         <!-- تب ۱۰: بانک سوالات متداول عمومی -->
         <section id="public-faq-tab" class="page-section hidden space-y-3">
-            <h2 class="font-black text-xs text-gradient"><i class="fa-solid fa-clipboard-question ml-1 text-red-500"></i> بانک سوالات متداول حقوقی</h2>
+            <h2 class="font-black text-xs text-red-600 dark:text-red-500 flex items-center"><i class="fa-solid fa-clipboard-question ml-1.5"></i> بانک سوالات متداول حقوقی</h2>
             <div id="publicFaqContainer" class="space-y-3"><div class="custom-skeleton h-24 w-full"></div></div>
             <div id="faqLoadingObserver" class="h-4 w-full"></div>
         </section>
 
         <!-- تب ۱۱: کانال‌های اینستاگرام -->
         <section id="instagram-tab" class="page-section hidden space-y-3">
-            <h2 class="font-black text-xs mb-2 text-gradient"><i class="fa-brands fa-instagram ml-1 text-red-500"></i> کانال‌ها و صفحات آموزشی</h2>
+            <h2 class="font-black text-xs mb-2 text-red-600 dark:text-red-500 flex items-center"><i class="fa-brands fa-instagram ml-1.5"></i> کانال‌ها و صفحات آموزشی</h2>
             <div id="instagramContainer" class="grid grid-cols-3 gap-3 text-center"></div>
         </section>
 
         <!-- تب ۱۲: پادکست‌های حقوقی -->
         <section id="podcasts-tab" class="page-section hidden space-y-3">
-            <h2 class="font-black text-xs text-gradient mb-2"><i class="fa-solid fa-podcast ml-1 text-red-500"></i> پادکست‌ها و تحلیل‌های صوتی پرونده‌ها</h2>
+            <h2 class="font-black text-xs text-red-600 dark:text-red-500 mb-2 flex items-center"><i class="fa-solid fa-podcast ml-1.5"></i> پادکست‌ها و تحلیل‌های صوتی پرونده‌ها</h2>
             <div id="podcastsContainer" class="space-y-3"></div>
             <div id="podcastsLoadingObserver" class="h-4 w-full"></div>
         </section>
 
         <!-- تب ۱۳: پرونده‌های ویژه -->
         <section id="files-tab" class="page-section hidden space-y-3">
-            <h2 class="font-black text-xs text-gradient mb-2"><i class="fa-solid fa-folder-open ml-1 text-red-500"></i> مستندات و پرونده‌های ویژه قضایی</h2>
+            <h2 class="font-black text-xs text-red-600 dark:text-red-500 mb-2 flex items-center"><i class="fa-solid fa-folder-open ml-1.5"></i> مستندات و پرونده‌های ویژه قضایی</h2>
             <div id="filesContainer" class="space-y-3"></div>
             <div id="filesLoadingObserver" class="h-4 w-full"></div>
         </section>
         
         <!-- تب ۱۴: پخش زنده شبکه‌ها -->
         <section id="multimedia-tab" class="page-section hidden space-y-3">
-            <h2 class="font-black text-xs text-gradient mb-2"><i class="fa-solid fa-tower-broadcast ml-1 text-red-500"></i> پخش زنده شبکه‌های خبری و تحلیلی</h2>
+            <h2 class="font-black text-xs text-red-600 dark:text-red-500 mb-2 flex items-center"><i class="fa-solid fa-tower-broadcast ml-1.5"></i> پخش زنده شبکه‌های خبری و تحلیلی</h2>
             <div class="ultra-glass rounded-3xl overflow-hidden p-3 space-y-3 shadow-xl">
                 <div class="relative w-full aspect-video rounded-2xl bg-slate-950 flex items-center justify-center overflow-hidden">
                     <video id="liveStreamVideo" class="w-full h-full object-cover rounded-2xl" controls playsinline webkit-playsinline></video>
@@ -958,13 +988,13 @@
 
         <!-- تب ۱۵: اینفوگرافیک‌های حقوقی -->
         <section id="infographics-tab" class="page-section hidden space-y-3">
-            <h2 class="font-black text-xs text-gradient mb-2"><i class="fa-solid fa-image ml-1 text-red-500"></i> اینفوگرافیک‌ها و راهنماهای تصویری</h2>
+            <h2 class="font-black text-xs text-red-600 dark:text-red-500 mb-2 flex items-center"><i class="fa-solid fa-image ml-1.5"></i> اینفوگرافیک‌ها و راهنماهای تصویری</h2>
             <div id="infographicsContainer" class="grid grid-cols-2 gap-3"></div>
         </section>
 
         <!-- تب ۱۶: ویدیوها و سریال‌ها -->
         <section id="series-tab" class="page-section hidden space-y-3">
-            <h2 class="font-black text-xs text-gradient mb-2"><i class="fa-solid fa-film ml-1 text-red-500"></i> ویدیوها، سریال‌ها و سکانس‌های آموزشی</h2>
+            <h2 class="font-black text-xs text-red-600 dark:text-red-500 mb-2 flex items-center"><i class="fa-solid fa-film ml-1.5"></i> ویدیوها، سریال‌ها و سکانس‌های آموزشی</h2>
             <div id="seriesContainer" class="grid grid-cols-2 gap-3"></div>
         </section>
 
@@ -987,7 +1017,7 @@
             <span class="font-bold text-xs text-amber-500">انتخاب حداکثر ۵ تب اصلی برای نوار پایین</span>
             <button onclick="closeNavEditor()" class="text-slate-400 hover:text-white p-1 cursor-pointer"><i class="fa-solid fa-xmark text-sm"></i></button>
         </div>
-        <p class="text-[10px] text-slate-400">تب‌های پرکاربرد خود را برای دسترسی سریع تیک بزنید:</p>
+        <p class="text-[10px] text-slate-500 dark:text-slate-400">تب‌های پرکاربرد خود را برای دسترسی سریع تیک بزنید:</p>
         <div id="navEditorList" class="grid grid-cols-2 gap-2 text-[10px] max-h-56 overflow-y-auto"></div>
         <button onclick="saveNavConfig()" class="w-full bg-amber-600 text-white py-2.5 rounded-xl font-bold shadow hover:bg-amber-700 transition cursor-pointer">ذخیره نوار سفارشی</button>
     </div>
@@ -995,7 +1025,7 @@
     <!-- باتم‌شیت نمایش سریع اصطلاحات و ارجاعات قانونی -->
     <div id="lawBottomSheet" class="settings-glass rounded-t-3xl shadow-2xl space-y-3">
         <div class="flex justify-between items-center pb-2 border-b border-amber-500/30">
-            <span id="lawBsTitle" class="font-black text-xs text-red-500">عنوان مستند</span>
+            <span id="lawBsTitle" class="font-black text-xs text-red-600 dark:text-red-500">عنوان مستند</span>
             <button onclick="closeLawBottomSheet()" class="text-slate-400 hover:text-white cursor-pointer"><i class="fa-solid fa-xmark text-lg"></i></button>
         </div>
         <div id="lawBsContent" class="text-xs leading-loose font-medium text-slate-800 dark:text-slate-100 max-h-64 overflow-y-auto pr-1"></div>
@@ -1034,14 +1064,14 @@
     <div id="advancedSearchModal" class="fixed inset-0 bg-black/80 z-[120] hidden flex items-center justify-center p-4">
         <div class="ultra-glass rounded-3xl max-w-sm w-full p-4 relative shadow-2xl space-y-3 text-center">
             <button onclick="closeAdvancedSearchModal();" class="absolute top-3 left-3 text-slate-300 p-2 cursor-pointer"><i class="fa-solid fa-xmark text-base"></i></button>
-            <h3 class="font-bold text-xs text-red-500 pt-1">جستجوی وب در مراجع قضایی</h3>
-            <input type="text" id="googleSearchInput" placeholder="عبارت مورد نظر یا شماره قانون..." class="w-full bg-white dark:bg-slate-900 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2.5 text-xs border border-black/10 dark:border-white/20">
+            <h3 class="font-bold text-xs text-red-600 dark:text-red-500 pt-1">جستجوی وب در مراجع قضایی</h3>
+            <input type="text" id="googleSearchInput" placeholder="عبارت مورد نظر یا شماره قانون..." class="w-full bg-white dark:bg-slate-900 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2.5 text-xs border border-black/10 dark:border-white/20 focus:outline-none">
             <button onclick="executeGoogleSearch()" class="w-full bg-red-600 text-white py-2.5 rounded-xl text-xs font-bold shadow hover:bg-red-700 transition cursor-pointer">جستجو در گوگل و پایگاه ملی قوانین</button>
         </div>
     </div> 
 
-    <!-- نوار ناوبری پایین با نشانگر متحرک پویای کشویی -->
-    <nav id="mainNavContainer" class="fixed floating-nav rounded-3xl max-w-md mx-auto py-2 px-3 flex z-50 items-center justify-around whitespace-nowrap left-3 right-3 select-none">
+    <!-- نوار ناوبری پایین با نشانگر متحرک پویای کشویی دقیق -->
+    <nav id="mainNavContainer" class="fixed floating-nav rounded-3xl max-w-md mx-auto py-1 px-2 flex z-50 items-center justify-around whitespace-nowrap left-3 right-3 select-none">
         <div id="navIndicatorPill" class="nav-indicator-pill"></div>
     </nav>
 
@@ -1408,7 +1438,7 @@
             setTimeout(() => { if (t.parentElement) t.remove(); }, 3200);
         };
         /* ==========================================================================
-           ۵. اسکرول هوشمند و نشانگر پویای کشویی تب‌ها (Sliding Tab Indicator)
+           ۵. اسکرول هوشمند و نشانگر پویای کشویی تب‌ها با فرمول دقیق RTL
            ========================================================================== */
         let lastScrollY = 0;
         let scrollTicking = false;
@@ -1530,7 +1560,7 @@
         };
 
         /* ==========================================================================
-           ۸. ساختار تب‌ها و ناوبری سفارشی همراه با ذخیره موقعیت اسکرول
+           ۸. ساختار تب‌ها و ناوبری سفارشی همراه با رفع قطعی کادر قرمز (RTL Sliding Pill)
            ========================================================================== */
         const ALL_TABS = [
             { id: 'dictionary-tab', icon: 'fa-book', label: 'اصطلاحات' },
@@ -1556,25 +1586,18 @@
             const drawer = document.getElementById('moreDrawerGrid');
             if (!nav || !drawer) return;
 
-            const pill = document.getElementById('navIndicatorPill');
             nav.querySelectorAll('.nav-btn').forEach(b => b.remove());
             drawer.innerHTML = '';
 
-            ALL_TABS.forEach(tab => {
-                if (userNav.includes(tab.id)) {
-                    const btn = document.createElement('button');
-                    btn.className = 'nav-btn flex flex-col items-center justify-center flex-1 py-1 cursor-pointer';
-                    btn.setAttribute('data-tab', tab.id);
-                    btn.innerHTML = `<i class="fa-solid ${tab.icon} text-base mb-1"></i><span class="text-[10px] font-bold">${tab.label}</span>`;
-                    btn.onclick = function() { window.switchTab(tab.id, this); window.triggerHaptic('light'); };
-                    nav.appendChild(btn);
-                } else {
-                    drawer.innerHTML += `
-                        <button onclick="switchTab('${tab.id}'); toggleMoreDrawer();" class="p-2.5 rounded-2xl bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 flex flex-col items-center space-y-1 text-slate-800 dark:text-slate-200 cursor-pointer">
-                            <i class="fa-solid ${tab.icon} text-sm text-red-500"></i>
-                            <span>${tab.label}</span>
-                        </button>`;
-                }
+            userNav.forEach(tabId => {
+                const tab = ALL_TABS.find(t => t.id === tabId);
+                if (!tab) return;
+                const btn = document.createElement('button');
+                btn.className = 'nav-btn flex flex-col items-center justify-center flex-1 py-1 cursor-pointer';
+                btn.setAttribute('data-tab', tab.id);
+                btn.innerHTML = `<i class="fa-solid ${tab.icon} text-base mb-1"></i><span class="text-[10px] font-bold">${tab.label}</span>`;
+                btn.onclick = function() { window.switchTab(tab.id, this); window.triggerHaptic('light'); };
+                nav.appendChild(btn);
             });
 
             const moreBtn = document.createElement('button');
@@ -1594,11 +1617,21 @@
             }, 100);
         };
 
+        // محاسبه دقیق بدون وابستگی به باگ ترنسفرم RTL مرورگرها
         window.updatePillPosition = function(activeBtn) {
             const pill = document.getElementById('navIndicatorPill');
-            if (!pill || !activeBtn) return;
-            pill.style.width = `${activeBtn.offsetWidth}px`;
-            pill.style.transform = `translateX(${activeBtn.offsetLeft}px)`;
+            const nav = document.getElementById('mainNavContainer');
+            if (!pill || !activeBtn || !nav) return;
+
+            const navRect = nav.getBoundingClientRect();
+            const btnRect = activeBtn.getBoundingClientRect();
+
+            // فاصله دقیق از سمت راست کانتینر
+            const rightOffset = navRect.right - btnRect.right;
+            pill.style.width = `${btnRect.width}px`;
+            pill.style.right = `${rightOffset}px`;
+            pill.style.left = 'auto';
+            pill.style.transform = 'none';
         };
 
         window.switchTab = function(tabId, btn) {
@@ -1626,6 +1659,11 @@
             const savedY = tabScrollPositions[tabId] || 0;
             window.scrollTo({ top: savedY, behavior: 'instant' });
         };
+
+        window.addEventListener('resize', () => {
+            const activeBtn = document.querySelector('#mainNavContainer .nav-btn.active-tab');
+            if (activeBtn) window.updatePillPosition(activeBtn);
+        });
 
         window.openNavEditor = function() {
             const list = document.getElementById('navEditorList');
@@ -2026,7 +2064,7 @@
         window.shareStoryCard = function() {
             const card = (appData.shareCards || [])[activeStoryIndex];
             if (!card) return;
-            const text = `⚖️️ نکته حقوقی: ${card.title}\n\n${card.text}\n\n📌 سامانه حقوقی SIJT`;
+            const text = `⚖️ نکته حقوقی: ${card.title}\n\n${card.text}\n\n📌 سامانه حقوقی SIJT`;
             if (tg?.openTelegramLink) {
                 tg.openTelegramLink(`https://t.me/share/url?url=${encodeURIComponent('https://t.me')}&text=${encodeURIComponent(text)}`);
             } else {
