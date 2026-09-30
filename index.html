@@ -11,7 +11,9 @@
     <!-- کتابخانه‌ها -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <!-- استفاده از html2canvas و jsPDF به همراه راهکار بدون شکستگی متون فارسی -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -50,7 +52,8 @@
             font-family: var(--selected-font);
             font-size: var(--app-font-size);
             overflow-x: hidden;
-            touch-action: pan-y;
+            /* اصلاح شده جهت رفع باگ درگ و تاچ در iOS */
+            touch-action: pan-y pinch-zoom;
             color: #0f172a;
             background-color: #f8fafc;
             transition: background-color 0.3s ease, color 0.3s ease;
@@ -59,6 +62,12 @@
         body.dark {
             color: #f8fafc;
             background-color: #080c14;
+        }
+
+        /* لایت مد ارگونومیک با کنتراست عمیق */
+        body.light {
+            background-color: #f1f5f9;
+            color: #0f172a;
         }
 
         .page-section p, 
@@ -86,7 +95,7 @@
         }
         body:not(.dark):not(.oled-mode) .mesh-bg, body.light .mesh-bg {
             background-color: #f8fafc;
-            background-image: radial-gradient(at 50% 50%, rgba(241, 245, 249, 0.9) 0px, transparent 100%);
+            background-image: radial-gradient(at 50% 50%, rgba(226, 232, 240, 0.85) 0px, transparent 100%);
         }
 
         /* حالت ذخیره باتری */
@@ -149,22 +158,22 @@
             -webkit-text-fill-color: transparent;
         }
 
-        /* بهینه‌سازی Glassmorphism با شتاب‌دهنده سخت‌افزاری */
+        /* ارتقای عمق لایه‌های شیشه‌ای (Glassmorphism Depth) */
         .ultra-glass {
-            background: rgba(13, 19, 33, 0.90);
-            backdrop-filter: blur(18px);
-            -webkit-backdrop-filter: blur(18px);
-            border: 1px solid rgba(245, 158, 11, 0.22);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            background: rgba(13, 19, 33, 0.88);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(245, 158, 11, 0.25);
+            box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.65), inset 0 1px 1px 0 rgba(255, 255, 255, 0.1);
             color: #f8fafc;
             transform: translateZ(0);
             will-change: transform;
-            transition: border-color 0.25s, box-shadow 0.25s;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .light .ultra-glass, body:not(.dark):not(.oled-mode) .ultra-glass {
-            background: rgba(255, 255, 255, 0.96);
-            border: 1px solid rgba(0, 0, 0, 0.08);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid rgba(203, 213, 225, 0.85);
+            box-shadow: 0 8px 25px -6px rgba(15, 23, 42, 0.08), inset 0 1px 0 0 rgba(255, 255, 255, 1);
             color: #0f172a !important;
         }
         .light .ultra-glass p, body:not(.dark):not(.oled-mode) .ultra-glass p {
@@ -177,19 +186,19 @@
             -webkit-backdrop-filter: blur(25px);
             border: 1px solid rgba(245, 158, 11, 0.3);
             color: #ffffff;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.85);
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.85);
         }
         .light .settings-glass, body:not(.dark):not(.oled-mode) .settings-glass {
             background: rgba(255, 255, 255, 0.98);
-            border: 1px solid rgba(0, 0, 0, 0.12);
+            border: 1px solid rgba(203, 213, 225, 0.9);
             color: #0f172a;
         }
 
-        /* هدر با ناپدید شدن در اسکرول به پایین و ظاهر شدن در اسکرول به بالا */
+        /* هدر با تنظیم برای دکمه‌های تلگرام در iOS و اندروید */
         #appHeader {
             transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
             will-change: transform, opacity;
-            padding-top: var(--safe-area-top);
+            padding-top: calc(var(--safe-area-top) + 4px);
         }
         .header-hidden {
             transform: translateY(-100%) !important;
@@ -197,11 +206,12 @@
             pointer-events: none !important;
         }
 
-        /* نوار ناوبری پایین با ناپدید شدن در اسکرول */
+        /* نوار ناوبری پایین با نشانگر متحرک پویای کشویی */
         .floating-nav {
+            position: fixed;
             background: rgba(10, 15, 28, 0.95) !important;
-            backdrop-filter: blur(25px) saturate(180%);
-            -webkit-backdrop-filter: blur(25px) saturate(180%);
+            backdrop-filter: blur(25px) saturate(190%);
+            -webkit-backdrop-filter: blur(25px) saturate(190%);
             border: 1px solid rgba(245, 158, 11, 0.35);
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7);
             transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
@@ -210,8 +220,8 @@
         }
         .light .floating-nav, body:not(.dark):not(.oled-mode) .floating-nav {
             background: rgba(255, 255, 255, 0.97) !important;
-            border: 1px solid #cbd5e1 !important;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1) !important;
+            border: 1px solid rgba(203, 213, 225, 0.9) !important;
+            box-shadow: 0 10px 25px rgba(15, 23, 42, 0.1) !important;
         }
         .nav-hidden {
             transform: translateY(200%) !important;
@@ -219,19 +229,37 @@
             pointer-events: none !important;
         }
 
+        .nav-indicator-pill {
+            position: absolute;
+            top: 6px;
+            bottom: 6px;
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            border-radius: 1.25rem;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            pointer-events: none;
+            z-index: 1;
+        }
+
         .nav-btn {
+            position: relative;
+            z-index: 2;
             color: #94a3b8;
-            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transition: color 0.25s ease, transform 0.2s ease;
             cursor: pointer;
         }
         .light .nav-btn, body:not(.dark):not(.oled-mode) .nav-btn { color: #64748b !important; }
         .nav-btn.active-tab {
             color: #ef4444 !important;
-            transform: scale(1.1) translateY(-2px);
-        }
-        .nav-btn.active-tab span {
-            color: #ef4444 !important;
             font-weight: 900 !important;
+        }
+
+        /* تعاملات لمسی بصری (Micro-Interactions) */
+        button, .clickable-card, .dict-chip, .nav-btn {
+            transition: transform 0.15s ease, filter 0.15s ease;
+        }
+        button:active, .clickable-card:active, .dict-chip:active {
+            transform: scale(0.96) !important;
         }
 
         /* دراورها و انیمیشن‌ها */
@@ -242,8 +270,8 @@
             z-index: 100;
             max-width: 28rem;
             margin: 0 auto;
-            border-top-left-radius: 1.5rem;
-            border-top-right-radius: 1.5rem;
+            border-top-left-radius: 1.75rem;
+            border-top-right-radius: 1.75rem;
             padding: 1.25rem;
             padding-bottom: calc(1.25rem + var(--safe-area-bottom));
             box-shadow: 0 -10px 40px rgba(0,0,0,0.8);
@@ -255,10 +283,14 @@
         }
 
         .header-bg {
-            background: linear-gradient(180deg, rgba(8, 12, 20, 0.98) 0%, rgba(13, 19, 33, 0.95) 100%);
+            background-color: #080c14 !important;
+            background-image: radial-gradient(at 50% 0%, rgba(197, 27, 36, 0.35) 0px, transparent 75%), 
+                              linear-gradient(180deg, rgba(8, 12, 20, 0.98) 0%, rgba(13, 19, 33, 0.95) 100%) !important;
+            border-bottom: 1px solid rgba(245, 158, 11, 0.25) !important;
         }
         .light .header-bg, body:not(.dark):not(.oled-mode) .header-bg {
-            background: linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%);
+            background: linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%) !important;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
         }
 
         #floatingAudioPlayer {
@@ -381,20 +413,7 @@
             margin-bottom: 0.75rem;
         }
         .dark .disclaimer-box { color: #fbbf24; }
-   /* تنظیم هدر تاریک و هماهنگ با بدنه */
-        .header-bg {
-            background-color: #080c14 !important;
-            background-image: radial-gradient(at 50% 0%, rgba(197, 27, 36, 0.35) 0px, transparent 75%), 
-                              linear-gradient(180deg, rgba(8, 12, 20, 0.98) 0%, rgba(13, 19, 33, 0.95) 100%) !important;
-            border-bottom: 1px solid rgba(245, 158, 11, 0.25) !important;
-        }
 
-        body.dark .floating-nav, html.dark .floating-nav {
-            background: rgba(10, 15, 28, 0.96) !important;
-            border: 1px solid rgba(245, 158, 11, 0.35) !important;
-        }
-
-        /* استایل پلیر و حالت سینمایی */
         .pro-video-wrapper {
             position: relative;
             width: 100%;
@@ -422,7 +441,6 @@
             max-height: 75vh;
         }
 
-        /* استایل زوم و جابجایی تصویر اینفوگرافیک */
         .zoomable-container {
             overflow: hidden;
             position: relative;
@@ -447,9 +465,26 @@
         .zoomable-img.zoomed {
             cursor: grab;
         }
+
+        /* کارت هدف تولید تصویر اشتراکی (Shareable Result Cards) */
+        .share-card-target {
+            background: linear-gradient(135deg, #0d1321 0%, #172554 100%);
+            border: 2px solid #f59e0b;
+            padding: 24px;
+            border-radius: 20px;
+            color: #ffffff;
+            direction: rtl;
+            font-family: 'Vazirmatn', Tahoma, sans-serif;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.8);
+        }
     </style>
 </head>
 <body id="bodyRoot" class="dark mesh-bg min-h-screen flex flex-col relative select-none">
+
+    <!-- لایه Pull-To-Refresh فعال با رخدادهای اختصاصی تاچ -->
+    <div id="ptr-indicator" class="h-0 overflow-hidden flex items-center justify-center transition-all duration-200">
+        <div id="ptrSpinner" class="w-6 h-6 border-2 border-amber-500 border-t-transparent rounded-full"></div>
+    </div>
 
     <!-- اسپلش اسکرین پایدار -->
     <div id="splashScreen" class="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#080c14] transition-opacity duration-300">
@@ -464,7 +499,6 @@
 
     <div class="noise-overlay"></div>
     <div id="toastContainer"></div>
-    <div id="ptr-indicator" class="h-0 overflow-hidden flex items-center justify-center transition-all duration-200"><div class="w-6 h-6 border-2 border-amber-500 border-t-transparent rounded-full animate-spin"></div></div>
 
     <!-- کانتینر تصویر در تصویر ویدیویی (PiP) -->
     <div id="floatingPipContainer">
@@ -587,11 +621,11 @@
             </div>
         </div>
 
-        <!-- نوار جستجوی جامع و ایمن بدون باگ کاراکتر خاص -->
+        <!-- نوار جستجوی جامع با مکانیزم Debounce -->
         <div class="max-w-md mx-auto px-4 py-2 relative z-20">
             <div class="flex space-x-2 space-x-reverse relative items-center">
                 <div class="relative flex-grow">
-                    <input type="text" id="searchInput" oninput="handleUniversalSearch(this.value)" placeholder="جستجوی جامع در تمامی قوانین، واژگان و ابزارها..." class="w-full bg-white dark:bg-slate-900 text-slate-800 dark:text-amber-100 placeholder-slate-400 rounded-xl px-4 py-2.5 pr-9 pl-14 text-xs focus:outline-none border border-black/10 dark:border-amber-500/30 shadow-inner">
+                    <input type="text" id="searchInput" oninput="debouncedSearch(this.value)" placeholder="جستجوی جامع در تمامی قوانین، واژگان و ابزارها..." class="w-full bg-white dark:bg-slate-900 text-slate-800 dark:text-amber-100 placeholder-slate-400 rounded-xl px-4 py-2.5 pr-9 pl-14 text-xs focus:outline-none border border-black/10 dark:border-amber-500/30 shadow-inner">
                     <i class="fa-solid fa-magnifying-glass absolute right-3 top-3 text-amber-500 text-xs"></i>
                     <button onclick="startVoiceDictation('searchInput')" title="جستجوی صوتی" class="absolute left-7 top-2 text-amber-500 p-1 text-xs cursor-pointer"><i class="fa-solid fa-microphone"></i></button>
                     <button id="clearSearchBtn" onclick="clearSearchInput()" class="hidden absolute left-2 top-2.5 text-slate-400 hover:text-slate-600 dark:hover:text-white text-xs cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
@@ -603,19 +637,22 @@
             <div id="liveSuggestionsBox" class="hidden absolute right-4 left-4 top-full mt-1.5 settings-glass rounded-2xl shadow-2xl z-[100] max-h-72 overflow-y-auto p-2.5 space-y-1.5"></div>
         </div>
     </header>
-
     <!-- محتوای اصلی -->
     <main id="mainContentArea" class="max-w-md mx-auto w-full p-4 flex-grow mb-28 transition-transform duration-200">
 
-        <!-- تب ۱: اصطلاحات -->
+        <!-- تب ۱: اصطلاحات با سیستم فیلتر تراشه‌ای پیشرفته (Multi-tag Filters) -->
         <section id="dictionary-tab" class="page-section space-y-3">
             <div class="flex items-center justify-between mb-1">
                 <h2 class="font-black text-xs flex items-center text-gradient"><i class="fa-solid fa-book ml-1.5 text-red-500"></i> فرهنگ اصطلاحات حقوقی</h2>
                 <span id="dictCounter" class="text-[10px] text-amber-500 font-bold"></span>
             </div>
-            <div class="flex space-x-2 space-x-reverse overflow-x-auto hide-scrollbar pb-1 text-[11px]">
+            <!-- فیلترهای موضوعی و تراشه‌ای -->
+            <div class="flex space-x-2 space-x-reverse overflow-x-auto hide-scrollbar pb-1 text-[11px]" id="dictFilterBar">
                 <button onclick="filterDictCategory('all', this); triggerHaptic('light');" class="dict-chip px-3 py-1.5 rounded-full bg-red-600 text-white font-bold flex-shrink-0 shadow shadow-red-600/30 cursor-pointer">همه واژگان</button>
-                <button onclick="filterDictCategory('bookmarks', this); triggerHaptic('light');" class="dict-chip px-3 py-1.5 rounded-full bg-slate-200 text-slate-700 dark:bg-slate-800 dark:text-slate-200 flex-shrink-0 cursor-pointer"><i class="fa-solid fa-bookmark ml-1"></i>نشانک‌های من</button>
+                <button onclick="filterDictCategory('مدنی', this); triggerHaptic('light');" class="dict-chip px-3 py-1.5 rounded-full bg-slate-200 text-slate-700 dark:bg-slate-800 dark:text-slate-200 flex-shrink-0 cursor-pointer">حقوقی / مدنی</button>
+                <button onclick="filterDictCategory('کیفری', this); triggerHaptic('light');" class="dict-chip px-3 py-1.5 rounded-full bg-slate-200 text-slate-700 dark:bg-slate-800 dark:text-slate-200 flex-shrink-0 cursor-pointer">کیفری و جزا</button>
+                <button onclick="filterDictCategory('املاک', this); triggerHaptic('light');" class="dict-chip px-3 py-1.5 rounded-full bg-slate-200 text-slate-700 dark:bg-slate-800 dark:text-slate-200 flex-shrink-0 cursor-pointer">املاک و سرقفلی</button>
+                <button onclick="filterDictCategory('bookmarks', this); triggerHaptic('light');" class="dict-chip px-3 py-1.5 rounded-full bg-slate-200 text-slate-700 dark:bg-slate-800 dark:text-slate-200 flex-shrink-0 cursor-pointer"><i class="fa-solid fa-bookmark ml-1 text-amber-500"></i>نشانک‌های من</button>
             </div>
             <div id="dictionaryContainer" class="space-y-2 mt-2"><div class="custom-skeleton h-20 w-full"></div></div>
             <div id="dictLoadingObserver" class="h-4 w-full"></div>
@@ -681,7 +718,8 @@
                 </div>
             </div>
         </section>
-        <!-- تب ۶: چت‌بات هوش مصنوعی پیشرفته و ایمن -->
+
+        <!-- تب ۶: چت‌بات هوش مصنوعی پیشرفته با معماری امن DOM (Safe Anti-XSS) -->
         <section id="chatbot-tab" class="page-section hidden space-y-3">
             <div class="ultra-glass p-4 rounded-3xl space-y-3 shadow-xl flex flex-col h-[74vh]">
                 <div class="flex items-center justify-between pb-1 border-b border-black/10 dark:border-white/10">
@@ -724,11 +762,11 @@
             </div>
         </section>
 
-        <!-- تب ۷: جعبه ابزار محاسبات قضایی -->
+        <!-- تب ۷: جعبه ابزار محاسبات قضایی و فرم‌ساز مرحله‌ای -->
         <section id="tools-tab" class="page-section hidden space-y-4">
             <h2 class="font-black text-xs mb-1 text-gradient"><i class="fa-solid fa-toolbox ml-1 text-red-500"></i> ابزارهای تخصصی و محاسبات قضایی</h2>
             
-            <!-- محاسبه‌گر جامع دیه اعضا و ارش (رفع کامل باگ المان‌های مفقود) -->
+            <!-- محاسبه‌گر جامع دیه اعضا و ارش -->
             <div class="ultra-glass p-4 rounded-2xl space-y-3 shadow-lg">
                 <h3 class="font-bold text-xs text-amber-500"><i class="fa-solid fa-user-injured ml-1"></i> محاسبه‌گر کامل دیه، ارش و ماه‌های حرام</h3>
                 <div class="grid grid-cols-2 gap-2">
@@ -736,7 +774,7 @@
                         <label class="text-[10px] font-bold text-slate-500 dark:text-slate-400">ماه وقوع صدمه:</label>
                         <select id="diyehMonthType" class="w-full bg-white dark:bg-slate-900 text-slate-800 dark:text-white rounded-xl p-2 text-xs border border-black/10 dark:border-white/20 mt-1">
                             <option value="normal">ماه‌های عادی</option>
-                            <option value="haram">ماه حرام (تغلیظ دیه - رجب، ذی‌القعده، ذی‌الحجه، محرم)</option>
+                            <option value="haram">ماه حرام (تغلیظ دیه فوت)</option>
                         </select>
                     </div>
                     <div>
@@ -762,6 +800,7 @@
 
                 <button onclick="calculateDiyeh()" class="w-full bg-red-600 text-white py-2 rounded-xl text-xs font-bold shadow hover:bg-red-700 transition cursor-pointer">محاسبه نرخ مصوب دیه</button>
                 <div id="diyehResult" class="text-[11px] font-bold text-amber-600 dark:text-amber-300 mt-2 space-y-1"></div>
+                <button id="shareDiyehCardBtn" onclick="exportResultToCard('دیه و ارش قانونی', document.getElementById('diyehResult').innerText)" class="hidden w-full bg-black/20 dark:bg-white/10 hover:bg-black/30 text-amber-500 py-1.5 rounded-xl text-[10px] font-bold border border-amber-500/30 transition cursor-pointer"><i class="fa-solid fa-share-nodes ml-1"></i> صدور کارت گرافیکی اشتراک‌گذاری دیه</button>
             </div>
 
             <!-- محاسبه‌گر تعرفه حق‌الوکاله و تمبر مالیاتی -->
@@ -772,7 +811,7 @@
                 <div id="lawyerFeeResult" class="text-[11px] font-bold text-amber-600 dark:text-amber-300 mt-2 space-y-1"></div>
             </div>
 
-            <!-- محاسبه‌گر سهم‌الارث و نمودار درختی -->
+            <!-- محاسبه‌گر سهم‌الارث و نمودار درختی ترکه -->
             <div class="ultra-glass p-4 rounded-2xl space-y-3 shadow-lg">
                 <h3 class="font-bold text-xs text-amber-500"><i class="fa-solid fa-sitemap ml-1"></i> محاسبه‌گر سهم‌الارث و رسم نمودار ترکه</h3>
                 <input type="number" id="estateAmount" placeholder="مبلغ کل ماترک متوفی (ریال)..." class="w-full bg-white dark:bg-slate-900 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20">
@@ -801,7 +840,7 @@
                 <div id="feeResult" class="text-[11px] font-bold text-amber-600 dark:text-amber-300 mt-2"></div>
             </div>
 
-            <!-- محاسبه‌گر مهریه بر اساس شاخص رسمی تورم بانک مرکزی (رفع فرمول غیرواقعی) -->
+            <!-- محاسبه‌گر مهریه بر اساس شاخص رسمی تورم بانک مرکزی (رفع باگ هاردکد سال و فرمول نامعتبر) -->
             <div class="ultra-glass p-4 rounded-2xl space-y-3 shadow-lg">
                 <h3 class="font-bold text-xs text-amber-500"><i class="fa-solid fa-coins ml-1"></i> محاسبه‌گر ارزش روز مهریه (شاخص رسمی بانک مرکزی)</h3>
                 <div class="grid grid-cols-2 gap-2">
@@ -809,7 +848,7 @@
                         <option value="cash">مهریه وجه نقد (ریال)</option>
                         <option value="coin">مهریه سکه بهار آزادی</option>
                     </select>
-                    <input type="number" id="marriageYear" placeholder="سال وقوع عقد (مثلاً: 1375)" min="1330" max="1405" class="bg-white dark:bg-slate-900 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20">
+                    <input type="number" id="marriageYear" placeholder="سال وقوع عقد (مثلاً: 1375)" min="1330" max="1406" class="bg-white dark:bg-slate-900 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20">
                 </div>
                 <div id="mahariyehCashBox">
                     <input type="number" id="mahariyehCashAmount" placeholder="مبلغ وجه نقد مندرج در سند ازدواج (ریال)..." class="w-full bg-white dark:bg-slate-900 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20">
@@ -820,18 +859,20 @@
                 </div>
                 <button onclick="calculateBankCentralMahariyeh()" class="w-full bg-red-600 text-white py-2 rounded-xl text-xs font-bold shadow hover:bg-red-700 transition cursor-pointer">محاسبه ارزش تعدیل‌شده به نرخ روز</button>
                 <div id="mahariyehResult" class="text-[11px] font-bold text-amber-600 dark:text-amber-300 mt-2"></div>
+                <button id="shareMahariyehCardBtn" onclick="exportResultToCard('ارزش روز مهریه', document.getElementById('mahariyehResult').innerText)" class="hidden w-full bg-black/20 dark:bg-white/10 hover:bg-black/30 text-amber-500 py-1.5 rounded-xl text-[10px] font-bold border border-amber-500/30 transition cursor-pointer"><i class="fa-solid fa-share-nodes ml-1"></i> صدور کارت گرافیکی اشتراک‌گذاری مهریه</button>
             </div>
 
-            <!-- محاسبه‌گر تأخیر تأدیه (ماده ۵۲۲ آ.د.م) با شاخص رسمی -->
+            <!-- محاسبه‌گر تأخیر تأدیه (ماده ۵۲۲ آ.د.م) با شاخص تورم قطعی -->
             <div class="ultra-glass p-4 rounded-2xl space-y-3 shadow-lg">
                 <h3 class="font-bold text-xs text-amber-500"><i class="fa-solid fa-chart-line ml-1"></i> محاسبه‌گر خسارت تأخیر تأدیه (ماده ۵۲۲ قانون آ.د.م)</h3>
                 <input type="number" id="principalAmount" placeholder="اصل مبلغ بدهی (ریال)..." class="w-full bg-white dark:bg-slate-900 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20">
                 <div class="grid grid-cols-2 gap-2">
-                    <input type="number" id="delayStartYear" placeholder="سال سررسید دین (مثلاً: 1398)" min="1360" max="1405" class="bg-white dark:bg-slate-900 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20">
-                    <input type="number" id="delayEndYear" placeholder="سال وصول یا جاری (مثلاً: 1405)" min="1360" max="1405" class="bg-white dark:bg-slate-900 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20">
+                    <input type="number" id="delayStartYear" placeholder="سال سررسید دین (مثلاً: 1395)" min="1360" max="1406" class="bg-white dark:bg-slate-900 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20">
+                    <input type="number" id="delayEndYear" placeholder="سال وصول دین (مثلاً: 1405)" min="1360" max="1406" class="bg-white dark:bg-slate-900 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20">
                 </div>
                 <button onclick="calculateDelayCompensation()" class="w-full bg-red-600 text-white py-2 rounded-xl text-xs font-bold shadow hover:bg-red-700 transition cursor-pointer">محاسبه افت ارزش دین بر اساس تورم</button>
                 <div id="delayResult" class="text-[11px] font-bold text-amber-600 dark:text-amber-300 mt-2"></div>
+                <button id="shareDelayCardBtn" onclick="exportResultToCard('خسارت تأخیر تأدیه', document.getElementById('delayResult').innerText)" class="hidden w-full bg-black/20 dark:bg-white/10 hover:bg-black/30 text-amber-500 py-1.5 rounded-xl text-[10px] font-bold border border-amber-500/30 transition cursor-pointer"><i class="fa-solid fa-share-nodes ml-1"></i> صدور کارت گرافیکی اشتراک‌گذاری خسارت تأخیر</button>
             </div>
 
             <!-- فرم‌ساز قرارداد و مبایعه‌نامه رسمی -->
@@ -855,7 +896,7 @@
             </div>
         </section>
 
-        <!-- تب ۸: یادداشت‌ها و پرونده شخصی -->
+        <!-- تب ۸: یادداشت‌ها و پرونده شخصی (با رفع کامل خطای متون فارسی در PDF) -->
         <section id="notes-tab" class="page-section hidden space-y-3">
             <h2 class="font-black text-xs text-gradient"><i class="fa-solid fa-note-sticky ml-1 text-red-500"></i> مدیریت یادداشت‌ها و پرونده‌های شخصی</h2>
             <div class="ultra-glass p-4 rounded-2xl space-y-3 shadow-lg">
@@ -869,8 +910,7 @@
             </div>
             <div id="personalNotesContainer" class="space-y-2 mt-2"></div>
         </section>
-
-        <!-- تب ۹: اخبار رسمی -->
+        <!-- تب ۹: اخبار رسمی قضایی -->
         <section id="news-tab" class="page-section hidden space-y-3">
             <h2 class="font-black text-xs text-gradient"><i class="fa-solid fa-bullhorn ml-1 text-red-500"></i> آخرین اخبار و اطلاعیه‌های رسمی قضایی</h2>
             <div id="newsContainer" class="space-y-3"><div class="custom-skeleton h-20 w-full"></div></div>
@@ -961,7 +1001,7 @@
         <div id="lawBsContent" class="text-xs leading-loose font-medium text-slate-800 dark:text-slate-100 max-h-64 overflow-y-auto pr-1"></div>
     </div>
 
-    <!-- مودال نمایش کامل کارت و استوری حقوقی (رفع خطای تابع مفقود openStorySheet) -->
+    <!-- مودال نمایش کامل کارت و استوری حقوقی -->
     <div id="storySheetModal" class="settings-glass rounded-t-3xl shadow-2xl space-y-3">
         <div class="flex justify-between items-center pb-2 border-b border-amber-500/30">
             <span id="storySheetTitle" class="font-black text-xs text-amber-500">نکته کلیدی حقوقی</span>
@@ -1000,8 +1040,14 @@
         </div>
     </div> 
 
-    <!-- نوار ناوبری پایین با ناپدید شدن هوشمند در اسکرول -->
-    <nav id="mainNavContainer" class="fixed floating-nav rounded-3xl max-w-md mx-auto py-2 px-3 flex space-x-1.5 space-x-reverse overflow-x-auto hide-scrollbar z-50 items-center justify-around whitespace-nowrap left-3 right-3"></nav>
+    <!-- نوار ناوبری پایین با نشانگر متحرک پویای کشویی -->
+    <nav id="mainNavContainer" class="fixed floating-nav rounded-3xl max-w-md mx-auto py-2 px-3 flex z-50 items-center justify-around whitespace-nowrap left-3 right-3 select-none">
+        <div id="navIndicatorPill" class="nav-indicator-pill"></div>
+    </nav>
+
+    <!-- کانتینر اختصاصی رندر پنهان کارت‌های گرافیکی اشتراک‌گذاری -->
+    <div id="shareRenderBox" class="fixed -left-[9999px] top-0 w-[420px]"></div>
+
     <script>
         /* ==========================================================================
            ۱. پیکربندی پایه، دیتابیس امن INDEXEDDB و صف آفلاین
@@ -1011,6 +1057,7 @@
         let bookmarks = [];
         let chatConversationHistory = [];
         let userNav = ['dictionary-tab', 'legal-tab', 'laws-tab', 'cards-tab', 'lawyer-tab'];
+        const tabScrollPositions = {};
 
         const tg = window.Telegram?.WebApp;
         if (tg) {
@@ -1021,16 +1068,16 @@
             } catch (e) {}
         }
 
-        // شناسه کاربر
+        // شناسه یکتا کاربر
         let userId = localStorage.getItem('mizan_user_id');
         if (!userId) {
             userId = (tg?.initDataUnsafe?.user?.id) ? 'tg_' + tg.initDataUnsafe.user.id : 'user_' + Math.random().toString(36).substring(2, 11);
             localStorage.setItem('mizan_user_id', userId);
         }
 
-        // پیاده‌سازی کامل IndexedDB با فال‌بک خودکار
+        // پیاده‌سازی کامل و پایدار IndexedDB
         const DB_NAME = 'SIJT_Database';
-        const DB_VERSION = 1;
+        const DB_VERSION = 2;
         let dbInstance = null;
 
         function initIndexedDB() {
@@ -1169,7 +1216,7 @@
         }
 
         /* ==========================================================================
-           ۲. جدول رسمی شاخص تورم بانک مرکزی (محاسبه واقعی مهریه و تأخیر تأدیه)
+           ۲. جدول رسمی شاخص تورم بانک مرکزی با متد داینامیک محاسبه سال جاری
            ========================================================================== */
         const CENTRAL_BANK_INFLATION_INDEX = {
             1370: 0.72, 1371: 0.90, 1372: 1.10, 1373: 1.49, 1374: 2.22,
@@ -1180,6 +1227,17 @@
             1395: 60.70, 1396: 66.50, 1397: 87.20, 1398: 123.10, 1399: 167.90,
             1400: 236.00, 1401: 345.80, 1402: 508.30, 1403: 722.00, 1404: 1010.80, 1405: 1395.00
         };
+
+        function getDynamicInflationIndex(targetYear) {
+            if (CENTRAL_BANK_INFLATION_INDEX[targetYear]) {
+                return CENTRAL_BANK_INFLATION_INDEX[targetYear];
+            }
+            const sortedYears = Object.keys(CENTRAL_BANK_INFLATION_INDEX).map(Number).sort((a,b) => b - a);
+            if (targetYear > sortedYears[0]) {
+                return CENTRAL_BANK_INFLATION_INDEX[sortedYears[0]];
+            }
+            return CENTRAL_BANK_INFLATION_INDEX[sortedYears[sortedYears.length - 1]];
+        }
 
         /* ==========================================================================
            ۳. مدیریت پوسته، حالت ذخیره باتری، فونت و دسترس‌پذیری
@@ -1192,7 +1250,7 @@
             }
         };
 
-       window.initThemes = function() {
+        window.initThemes = function() {
             const savedTheme = localStorage.getItem('mizan_theme');
             if (savedTheme === 'light') {
                 document.documentElement.classList.remove('dark');
@@ -1215,6 +1273,7 @@
             window.updateMetaThemeColor(isDark ? '#080c14' : '#ffffff');
             window.triggerHaptic('light');
         };
+
         window.toggleBatterySaver = function() {
             const isSaver = document.body.classList.toggle('battery-saver');
             localStorage.setItem('battery_saver', isSaver);
@@ -1282,7 +1341,6 @@
             window.triggerHaptic('light');
         };
 
-        // بستن منوی کشویی تنظیمات با کلیک در بیرون
         document.addEventListener('click', (e) => {
             const dd = document.getElementById('settingsDropdown');
             const btn = document.getElementById('settingsBtn');
@@ -1294,7 +1352,7 @@
         });
 
         /* ==========================================================================
-           ۴. صدا و موتور بازخورد لمسی (حل مشکل AUTOPLAY و تعاملات)
+           ۴. صدا، مدیریت تعلیق صوتی (Audio Autoplay Policy) و فیدبک لمسی
            ========================================================================== */
         let audioCtx = null;
         function getSafeAudioContext() {
@@ -1303,7 +1361,7 @@
                 if (AudioCtxClass) audioCtx = new AudioCtxClass();
             }
             if (audioCtx && audioCtx.state === 'suspended') {
-                audioCtx.resume();
+                audioCtx.resume().catch(() => {});
             }
             return audioCtx;
         }
@@ -1349,9 +1407,8 @@
             container.appendChild(t);
             setTimeout(() => { if (t.parentElement) t.remove(); }, 3200);
         };
-
         /* ==========================================================================
-           ۵. اسکرول هوشمند: محو شدن هدر و فوتر در اسکرول
+           ۵. اسکرول هوشمند و نشانگر پویای کشویی تب‌ها (Sliding Tab Indicator)
            ========================================================================== */
         let lastScrollY = 0;
         let scrollTicking = false;
@@ -1370,13 +1427,10 @@
                         if (backToTop) backToTop.classList.add('hidden');
                     }
 
-                    // تشخیص جهت اسکرول
                     if (currentScrollY > lastScrollY && currentScrollY > 70) {
-                        // اسکرول به پایین -> مخفی کردن
                         if (header) header.classList.add('header-hidden');
                         if (nav) nav.classList.add('nav-hidden');
                     } else {
-                        // اسکرول به بالا -> نمایش مجدد
                         if (header) header.classList.remove('header-hidden');
                         if (nav) nav.classList.remove('nav-hidden');
                     }
@@ -1389,7 +1443,43 @@
         }, { passive: true });
 
         /* ==========================================================================
-           ۶. تقویم، وضعیت آب و هوا و نصب PWA
+           ۶. پیاده‌سازی عملیاتی PULL-TO-REFRESH بدون تداخل با تاچ بومی
+           ========================================================================== */
+        let ptrStartY = 0;
+        let ptrCurrentY = 0;
+
+        document.addEventListener('touchstart', (e) => {
+            if (window.scrollY === 0) {
+                ptrStartY = e.touches[0].clientY;
+            }
+        }, { passive: true });
+
+        document.addEventListener('touchmove', (e) => {
+            if (window.scrollY === 0 && ptrStartY > 0) {
+                ptrCurrentY = e.touches[0].clientY - ptrStartY;
+                if (ptrCurrentY > 0 && ptrCurrentY < 120) {
+                    const ind = document.getElementById('ptr-indicator');
+                    const spin = document.getElementById('ptrSpinner');
+                    if (ind && spin) {
+                        ind.style.height = `${ptrCurrentY}px`;
+                        spin.style.transform = `rotate(${ptrCurrentY * 3.5}deg)`;
+                    }
+                }
+            }
+        }, { passive: true });
+
+        document.addEventListener('touchend', () => {
+            if (ptrCurrentY > 75) {
+                window.manualRefresh();
+            }
+            const ind = document.getElementById('ptr-indicator');
+            if (ind) ind.style.height = '0px';
+            ptrStartY = 0;
+            ptrCurrentY = 0;
+        });
+
+        /* ==========================================================================
+           ۷. تقویم، آب و هوا و نصب PWA
            ========================================================================== */
         window.updateDateTime = function() {
             const now = new Date();
@@ -1440,7 +1530,7 @@
         };
 
         /* ==========================================================================
-           ۷. ساختار تب‌ها و ناوبری سفارشی
+           ۸. ساختار تب‌ها و ناوبری سفارشی همراه با ذخیره موقعیت اسکرول
            ========================================================================== */
         const ALL_TABS = [
             { id: 'dictionary-tab', icon: 'fa-book', label: 'اصطلاحات' },
@@ -1453,7 +1543,7 @@
             { id: 'notes-tab', icon: 'fa-note-sticky', label: 'یادداشت' },
             { id: 'news-tab', icon: 'fa-bullhorn', label: 'اخبار' },
             { id: 'public-faq-tab', icon: 'fa-clipboard-question', label: 'سوالات' },
-            { id: 'instagram-tab', icon: 'fa-instagram', label: 'اینستاگرام' },
+            { id: 'instagram-tab', icon: 'fa-brands fa-instagram', label: 'اینستاگرام' },
             { id: 'podcasts-tab', icon: 'fa-podcast', label: 'پادکست' },
             { id: 'files-tab', icon: 'fa-folder-open', label: 'پرونده' },
             { id: 'multimedia-tab', icon: 'fa-tower-broadcast', label: 'پخش زنده' },
@@ -1465,16 +1555,19 @@
             const nav = document.getElementById('mainNavContainer');
             const drawer = document.getElementById('moreDrawerGrid');
             if (!nav || !drawer) return;
-            nav.innerHTML = '';
+
+            const pill = document.getElementById('navIndicatorPill');
+            nav.querySelectorAll('.nav-btn').forEach(b => b.remove());
             drawer.innerHTML = '';
 
             ALL_TABS.forEach(tab => {
                 if (userNav.includes(tab.id)) {
-                    nav.innerHTML += `
-                        <button onclick="switchTab('${tab.id}', this); triggerHaptic('light');" class="nav-btn flex flex-col items-center px-2 py-1 cursor-pointer">
-                            <i class="fa-solid ${tab.icon} text-base mb-1"></i>
-                            <span class="text-[10px] font-bold">${tab.label}</span>
-                        </button>`;
+                    const btn = document.createElement('button');
+                    btn.className = 'nav-btn flex flex-col items-center justify-center flex-1 py-1 cursor-pointer';
+                    btn.setAttribute('data-tab', tab.id);
+                    btn.innerHTML = `<i class="fa-solid ${tab.icon} text-base mb-1"></i><span class="text-[10px] font-bold">${tab.label}</span>`;
+                    btn.onclick = function() { window.switchTab(tab.id, this); window.triggerHaptic('light'); };
+                    nav.appendChild(btn);
                 } else {
                     drawer.innerHTML += `
                         <button onclick="switchTab('${tab.id}'); toggleMoreDrawer();" class="p-2.5 rounded-2xl bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 flex flex-col items-center space-y-1 text-slate-800 dark:text-slate-200 cursor-pointer">
@@ -1484,17 +1577,54 @@
                 }
             });
 
-            nav.innerHTML += `
-                <button onclick="toggleMoreDrawer();" class="nav-btn flex flex-col items-center px-2 py-1 cursor-pointer">
-                    <i class="fa-solid fa-bars-staggered text-base mb-1"></i>
-                    <span class="text-[10px] font-bold">بیشتر</span>
-                </button>`;
+            const moreBtn = document.createElement('button');
+            moreBtn.className = 'nav-btn flex flex-col items-center justify-center flex-1 py-1 cursor-pointer';
+            moreBtn.innerHTML = `<i class="fa-solid fa-bars-staggered text-base mb-1"></i><span class="text-[10px] font-bold">بیشتر</span>`;
+            moreBtn.onclick = function() { window.toggleMoreDrawer(); window.triggerHaptic('light'); };
+            nav.appendChild(moreBtn);
 
-            const activeSec = document.querySelector('.page-section:not(.hidden)');
-            if (activeSec) {
-                const btn = Array.from(nav.querySelectorAll('button')).find(b => b.getAttribute('onclick')?.includes(activeSec.id));
-                if (btn) btn.classList.add('active-tab');
+            setTimeout(() => {
+                const activeSec = document.querySelector('.page-section:not(.hidden)');
+                const targetTabId = activeSec ? activeSec.id : userNav[0];
+                const activeBtn = nav.querySelector(`[data-tab="${targetTabId}"]`);
+                if (activeBtn) {
+                    activeBtn.classList.add('active-tab');
+                    window.updatePillPosition(activeBtn);
+                }
+            }, 100);
+        };
+
+        window.updatePillPosition = function(activeBtn) {
+            const pill = document.getElementById('navIndicatorPill');
+            if (!pill || !activeBtn) return;
+            pill.style.width = `${activeBtn.offsetWidth}px`;
+            pill.style.transform = `translateX(${activeBtn.offsetLeft}px)`;
+        };
+
+        window.switchTab = function(tabId, btn) {
+            const currentActiveSec = document.querySelector('.page-section:not(.hidden)');
+            if (currentActiveSec) {
+                tabScrollPositions[currentActiveSec.id] = window.scrollY;
             }
+
+            document.querySelectorAll('.page-section').forEach(s => s.classList.add('hidden'));
+            const targetSec = document.getElementById(tabId);
+            if (targetSec) targetSec.classList.remove('hidden');
+
+            document.querySelectorAll('#mainNavContainer .nav-btn').forEach(b => b.classList.remove('active-tab'));
+            const targetBtn = btn || document.querySelector(`#mainNavContainer [data-tab="${tabId}"]`);
+            if (targetBtn) {
+                targetBtn.classList.add('active-tab');
+                window.updatePillPosition(targetBtn);
+            }
+
+            if (tabId !== 'multimedia-tab') {
+                const vid = document.getElementById('liveStreamVideo');
+                if (vid && !vid.paused) vid.pause();
+            }
+
+            const savedY = tabScrollPositions[tabId] || 0;
+            window.scrollTo({ top: savedY, behavior: 'instant' });
         };
 
         window.openNavEditor = function() {
@@ -1525,7 +1655,7 @@
         };
 
         /* ==========================================================================
-           ۸. داده‌های پیش‌فرض و دانشنامه محلی
+           ۹. پایگاه داده آفلاین پیش‌فرض و دانشنامه محلی هوش مصنوعی
            ========================================================================== */
         const fallbackData = {
             dictionary: [
@@ -1598,107 +1728,19 @@
         ];
 
         /* ==========================================================================
-           ۹. راه‌اندازی و دریافت داده‌ها
-           ========================================================================== */
-        window.initApp = async function() {
-            await initIndexedDB();
-            window.initThemes();
-
-            userNav = (await AppStorage.get('mizan_custom_nav')) || ['dictionary-tab', 'legal-tab', 'laws-tab', 'cards-tab', 'lawyer-tab'];
-            bookmarks = (await AppStorage.get('mizan_bookmarks')) || [];
-
-            window.renderBottomNav();
-            window.renderAll();
-            window.updateDateTime();
-            setInterval(window.updateDateTime, 1000);
-            window.fetchTehranWeather();
-            updateNetworkStatus(navigator.onLine);
-
-            setTimeout(() => {
-                const s = document.getElementById('splashScreen');
-                if (s) {
-                    s.style.opacity = '0';
-                    setTimeout(() => s.remove(), 300);
-                }
-            }, 600);
-
-            // همگام‌سازی از سرور با مدیریت کش پایدار
-            try {
-                const cached = await AppStorage.get('mizan_cache');
-                if (cached) {
-                    appData = { ...fallbackData, ...cached };
-                    window.renderAll();
-                }
-                const res = await fetch(API_URL + "?action=get_all&t=" + Date.now(), { mode: 'cors' });
-                if (res.ok) {
-                    const newData = await res.json();
-                    if (newData && Object.keys(newData).length > 0) {
-                        appData = { ...fallbackData, ...newData };
-                        await AppStorage.set('mizan_cache', appData);
-                        window.renderAll();
-                    }
-                }
-            } catch (e) {
-                if (!appData.dictionary) appData = fallbackData;
-            }
-
-            window.renderPersonalNotes();
-            window.setupInfiniteScrolls();
-            window.loadUserFaqs();
-            window.OfflineSync.syncAll();
-        };
-
-        window.manualRefresh = async function() {
-            const icon = document.getElementById('refreshIcon');
-            if (icon) icon.classList.add('fa-spin');
-            window.showToast('در حال همگام‌سازی داده‌ها...');
-            try {
-                const res = await fetch(API_URL + "?action=get_all&t=" + Date.now());
-                if (!res.ok) throw new Error();
-                const newData = await res.json();
-                if (newData && Object.keys(newData).length > 0) {
-                    appData = { ...fallbackData, ...newData };
-                    await AppStorage.set('mizan_cache', appData);
-                    window.renderAll();
-                    window.showToast('اطلاعات با موفقیت به‌روزرسانی شد');
-                }
-            } catch (e) {
-                window.showToast('به‌دلیل قطعی ارتباط، داده‌های پایدار آفلاین لود شدند', 'error');
-            } finally {
-                if (icon) icon.classList.remove('fa-spin');
-            }
-        };
-
-        /* ==========================================================================
-           ۱۰. رندرهای اختصاصی بخش‌ها
+           ۱۰. رندرهای بخش‌ها با فیلترهای تراشه‌ای و Empty State جذاب
            ========================================================================== */
         let pageLimits = { dict: 12, laws: 8, news: 6, faq: 8, cards: 5, podcasts: 6, files: 4 };
-
-        window.renderAll = function() {
-            window.renderDictionary(true);
-            window.renderLegalSystems();
-            window.renderLaws(true);
-            window.renderShareCards(true);
-            window.renderNews(true);
-            window.renderPublicFaqs(true);
-            window.renderInstagram();
-            window.renderPodcasts(true);
-            window.renderFiles(true);
-            window.renderInfographics();
-            window.renderSeries();
-            window.renderLiveChannels();
-            window.renderStoryHighlights();
-        };
-
         let selectedDictCat = 'all';
+
         window.filterDictCategory = function(cat, btn) {
             selectedDictCat = cat;
-            document.querySelectorAll('.dict-chip').forEach(b => {
-                b.classList.remove('bg-red-600', 'bg-amber-600', 'text-white', 'shadow');
-                b.classList.add('bg-slate-200', 'dark:bg-slate-800', 'text-slate-700', 'dark:text-slate-200');
+            document.querySelectorAll('#dictFilterBar .dict-chip').forEach(b => {
+                b.className = 'dict-chip px-3 py-1.5 rounded-full bg-slate-200 text-slate-700 dark:bg-slate-800 dark:text-slate-200 flex-shrink-0 cursor-pointer';
             });
-            btn.classList.remove('bg-slate-200', 'dark:bg-slate-800', 'text-slate-700', 'dark:text-slate-200');
-            btn.classList.add(cat === 'bookmarks' ? 'bg-amber-600' : 'bg-red-600', 'text-white', 'shadow');
+            if (btn) {
+                btn.className = `dict-chip px-3 py-1.5 rounded-full ${cat === 'bookmarks' ? 'bg-amber-600' : 'bg-red-600'} text-white font-bold flex-shrink-0 shadow cursor-pointer`;
+            }
             window.renderDictionary(true);
         };
 
@@ -1723,10 +1765,16 @@
             let list = appData.dictionary || [];
             if (selectedDictCat === 'bookmarks') {
                 list = list.filter(d => bookmarks.includes(d.term));
+            } else if (selectedDictCat !== 'all') {
+                list = list.filter(d => d.category === selectedDictCat);
             }
             document.getElementById('dictCounter').innerText = `${list.length} اصطلاح ثبت‌شده`;
             if (list.length === 0) {
-                c.innerHTML = `<div class="text-center p-4 text-xs text-slate-500">موردی یافت نشد.</div>`;
+                c.innerHTML = `
+                    <div class="text-center p-8 ultra-glass rounded-2xl space-y-2">
+                        <i class="fa-solid fa-folder-open text-3xl text-amber-500/50"></i>
+                        <p class="text-xs font-bold text-slate-400">هیچ اصطلاحی در این دسته‌بندی یافت نشد.</p>
+                    </div>`;
                 return;
             }
 
@@ -1918,6 +1966,22 @@
             }
         };
 
+        window.renderAll = function() {
+            window.renderDictionary(true);
+            window.renderLegalSystems();
+            window.renderLaws(true);
+            window.renderShareCards(true);
+            window.renderNews(true);
+            window.renderPublicFaqs(true);
+            window.renderInstagram();
+            window.renderPodcasts(true);
+            window.renderFiles(true);
+            window.renderInfographics();
+            window.renderSeries();
+            window.renderLiveChannels();
+            window.renderStoryHighlights();
+        };
+
         window.setupInfiniteScrolls = function() {
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(e => {
@@ -1942,7 +2006,7 @@
         };
 
         /* ==========================================================================
-           ۱۱. پیاده‌سازی مودال استوری‌ها و ارجاعات قانونی
+           ۱۱. استوری‌ها و ارجاعات قانونی
            ========================================================================== */
         let activeStoryIndex = 0;
         window.openStorySheet = function(idx) {
@@ -1962,7 +2026,7 @@
         window.shareStoryCard = function() {
             const card = (appData.shareCards || [])[activeStoryIndex];
             if (!card) return;
-            const text = `⚖️ نکته حقوقی: ${card.title}\n\n${card.text}\n\n📌 سامانه حقوقی SIJT`;
+            const text = `⚖️️ نکته حقوقی: ${card.title}\n\n${card.text}\n\n📌 سامانه حقوقی SIJT`;
             if (tg?.openTelegramLink) {
                 tg.openTelegramLink(`https://t.me/share/url?url=${encodeURIComponent('https://t.me')}&text=${encodeURIComponent(text)}`);
             } else {
@@ -1986,7 +2050,7 @@
         };
 
         /* ==========================================================================
-           ۱۲. یادداشت‌ها و پرونده‌های شخصی
+           ۱۲. یادداشت‌ها و پرونده‌های شخصی و خروجی PDF بدون باگ فارسی
            ========================================================================== */
         window.savePersonalNote = async function() {
             const title = document.getElementById('caseTitleInput').value.trim();
@@ -2014,7 +2078,11 @@
             if (!container) return;
             let notes = (await AppStorage.get('mizan_personal_notes')) || [];
             if (notes.length === 0) {
-                container.innerHTML = `<div class="text-center p-4 text-xs text-slate-500">هیچ یادداشت یا پرونده‌ای ثبت نشده است.</div>`;
+                container.innerHTML = `
+                    <div class="text-center p-6 ultra-glass rounded-2xl space-y-2">
+                        <i class="fa-solid fa-note-sticky text-3xl text-amber-500/50"></i>
+                        <p class="text-xs font-bold text-slate-400">هیچ یادداشت یا پرونده‌ای ثبت نشده است.</p>
+                    </div>`;
                 return;
             }
             container.innerHTML = notes.map((n, idx) => `
@@ -2052,32 +2120,40 @@
             let notes = (await AppStorage.get('mizan_personal_notes')) || [];
             if (notes.length === 0) return window.showToast('یادداشتی برای چاپ وجود ندارد', 'error');
 
-            const tempDiv = document.createElement('div');
-            tempDiv.style.background = '#ffffff';
-            tempDiv.style.color = '#000000';
-            tempDiv.style.padding = '25px';
-            tempDiv.style.direction = 'rtl';
-            tempDiv.style.fontFamily = 'Tahoma, sans-serif';
-            tempDiv.innerHTML = `
-                <h2 style="color:#c51b24; border-bottom:2px solid #c51b24; padding-bottom:8px; margin-bottom:15px; font-size:16px;">گزارش پرونده‌ها و یادداشت‌های حقوقی شخصی</h2>
+            const tempContainer = document.createElement('div');
+            tempContainer.style.position = 'fixed';
+            tempContainer.style.left = '-9999px';
+            tempContainer.style.top = '0';
+            tempContainer.style.width = '700px';
+            tempContainer.style.background = '#ffffff';
+            tempContainer.style.color = '#000000';
+            tempContainer.style.padding = '30px';
+            tempContainer.style.direction = 'rtl';
+            tempContainer.style.fontFamily = 'Tahoma, sans-serif';
+
+            tempContainer.innerHTML = `
+                <h2 style="color:#c51b24; border-bottom:2px solid #c51b24; padding-bottom:10px; margin-bottom:15px; font-size:16px;">گزارش پرونده‌ها و یادداشت‌های حقوقی شخصی SIJT</h2>
                 ${notes.map(n => `
                     <div style="border-bottom:1px solid #ddd; margin-bottom:12px; padding-bottom:8px;">
-                        <h4 style="margin:0 0 5px 0; color:#333; font-size:13px;">${escapeHTML(n.title)} <span style="color:#777; font-size:10px;">(${escapeHTML(n.date)})</span></h4>
-                        <p style="line-height:1.8; font-size:11px; margin:0;">${escapeHTML(n.note)}</p>
+                        <h4 style="margin:0 0 5px 0; color:#222; font-size:13px;">${escapeHTML(n.title)} <span style="color:#777; font-size:10px;">(${escapeHTML(n.date)})</span></h4>
+                        <p style="line-height:1.9; font-size:11px; margin:0;">${escapeHTML(n.note)}</p>
                     </div>`).join('')}`;
 
-            window.showToast('در حال تولید فایل PDF...');
+            document.body.appendChild(tempContainer);
+            window.showToast('در حال صدور فایل PDF با متون خوانا...');
+
             try {
-                const opt = {
-                    margin: 10,
-                    filename: 'SIJT_Personal_Notes.pdf',
-                    image: { type: 'jpeg', quality: 0.98 },
-                    html2canvas: { scale: 2, useCORS: true },
-                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-                };
-                html2pdf().set(opt).from(tempDiv).save();
+                const canvas = await html2canvas(tempContainer, { scale: 2, useCORS: true });
+                const imgData = canvas.toDataURL('image/jpeg', 0.98);
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                pdf.addImage(imgData, 'JPEG', 10, 10, 190, 0);
+                pdf.save('SIJT_Personal_Notes.pdf');
+                window.showToast('فایل PDF با موفقیت ذخیره شد');
             } catch (e) {
-                window.showToast('خطا در تولید PDF', 'error');
+                window.showToast('خطا در صدور PDF', 'error');
+            } finally {
+                tempContainer.remove();
             }
         };
 
@@ -2144,7 +2220,7 @@
         };
 
         /* ==========================================================================
-           ۱۴. جعبه ابزار محاسبات قضایی و حقوقی
+           ۱۴. جعبه ابزار محاسبات قضایی و صدور کارت اشتراک
            ========================================================================== */
         window.toggleDiyehArshInput = function(val) {
             const box = document.getElementById('diyehArshBox');
@@ -2155,10 +2231,9 @@
         };
 
         window.calculateDiyeh = function() {
-            // مبنای نرخ مصوب سال ۱۴۰۴/۱۴۰۵: دیه کامل نفس در ماه عادی = ۱۶,۰۰۰,۰۰۰,۰۰۰ ریال
             const BASE_DIYEH_NORMAL = 16000000000;
             const isHaram = document.getElementById('diyehMonthType').value === 'haram';
-            const multiplierHaram = isHaram ? (4 / 3) : 1; // تغلیظ دیه در ماه حرام (یک سوم اضافه می‌شود)
+            const multiplierHaram = isHaram ? (4 / 3) : 1;
             const type = document.getElementById('diyehType').value;
             let percent = 100;
 
@@ -2176,7 +2251,6 @@
                     break;
             }
 
-            // توجه قانونی: تغلیظ دیه مختص فوت در ماه حرام است و در صدمات و ارش غیرفوت لحاظ نمی‌شود مگر در قتل
             const finalMultiplier = (type === 'kamel' && isHaram) ? multiplierHaram : 1;
             const amount = (BASE_DIYEH_NORMAL * (percent / 100)) * finalMultiplier;
 
@@ -2186,6 +2260,9 @@
                     <div class="text-xs">مبلغ قابل پرداخت: <span class="font-bold text-emerald-600 dark:text-emerald-400">${Math.round(amount).toLocaleString()} ریال</span></div>
                     <div class="text-[10px] text-slate-500">معادل: ${(Math.round(amount) / 10000000).toLocaleString()} میلیون تومان</div>
                 </div>`;
+            
+            const shareBtn = document.getElementById('shareDiyehCardBtn');
+            if (shareBtn) shareBtn.classList.remove('hidden');
             window.triggerHaptic('medium');
         };
 
@@ -2262,7 +2339,7 @@
         window.calculateCourtFee = function() {
             const amt = parseFloat(document.getElementById('courtFeeInput').value) || 0;
             const stage = document.getElementById('courtStageSelect').value;
-            let rate = 0.035; // بدوی تا سقف معمول
+            let rate = 0.035;
             if (stage === 'tajdid') rate = 0.045;
             if (stage === 'farjam') rate = 0.055;
 
@@ -2287,6 +2364,7 @@
             const mode = document.getElementById('mahariyehMode').value;
             const marriageYear = parseInt(document.getElementById('marriageYear').value) || 0;
             const resultBox = document.getElementById('mahariyehResult');
+            const shareBtn = document.getElementById('shareMahariyehCardBtn');
 
             if (mode === 'coin') {
                 const coins = parseFloat(document.getElementById('mahariyehCoins').value) || 0;
@@ -2294,26 +2372,26 @@
                 if (coins <= 0 || coinPrice <= 0) return window.showToast('تعداد و قیمت روز سکه را وارد کنید', 'error');
                 const total = coins * coinPrice;
                 resultBox.innerHTML = `ارزش روز کل سکه‌ها: <span class="text-emerald-500 font-bold">${total.toLocaleString()} ریال</span>`;
+                if (shareBtn) shareBtn.classList.remove('hidden');
                 return;
             }
 
-            // محاسبه بر اساس آیین‌نامه اجرایی قانون الحاق یک تبصره به ماده ۱۰۸۲ قانون مدنی
             const cash = parseFloat(document.getElementById('mahariyehCashAmount').value) || 0;
-            if (cash <= 0 || !CENTRAL_BANK_INFLATION_INDEX[marriageYear]) {
+            if (cash <= 0 || marriageYear < 1330) {
                 return window.showToast('مبلغ وجه نقد و سال معتبر عقد را وارد فرمایید', 'error');
             }
 
-            // شاخص سال قبل از وصول یا سال جاری
-            const currentYearIndex = CENTRAL_BANK_INFLATION_INDEX[1404] || 1010.80;
-            const marriageYearIndex = CENTRAL_BANK_INFLATION_INDEX[marriageYear];
+            const currentYearIndex = getDynamicInflationIndex(1405);
+            const marriageYearIndex = getDynamicInflationIndex(marriageYear);
             const updatedValue = Math.round((currentYearIndex / marriageYearIndex) * cash);
 
             resultBox.innerHTML = `
                 <div class="bg-black/5 dark:bg-slate-900 p-2.5 rounded-xl space-y-1">
                     <div>شاخص سال عقد (${marriageYear}): <span class="font-bold">${marriageYearIndex}</span></div>
-                    <div>شاخص سال محاسبه (۱۴۰۴): <span class="font-bold">${currentYearIndex}</span></div>
+                    <div>شاخص مبنای محاسبه: <span class="font-bold">${currentYearIndex}</span></div>
                     <div>ارزش تعدیل‌شده روز: <span class="text-emerald-500 font-bold text-xs">${updatedValue.toLocaleString()} ریال</span></div>
                 </div>`;
+            if (shareBtn) shareBtn.classList.remove('hidden');
             window.showToast('محاسبه طبق شاخص رسمی بانک مرکزی انجام شد');
         };
 
@@ -2321,13 +2399,14 @@
             const principal = parseFloat(document.getElementById('principalAmount').value) || 0;
             const startYear = parseInt(document.getElementById('delayStartYear').value) || 0;
             const endYear = parseInt(document.getElementById('delayEndYear').value) || 0;
+            const shareBtn = document.getElementById('shareDelayCardBtn');
 
-            if (principal <= 0 || !CENTRAL_BANK_INFLATION_INDEX[startYear] || !CENTRAL_BANK_INFLATION_INDEX[endYear]) {
+            if (principal <= 0 || startYear < 1360 || endYear < 1360) {
                 return window.showToast('اطلاعات اصل طلب و سال‌ها را به درستی وارد کنید', 'error');
             }
 
-            const startIndex = CENTRAL_BANK_INFLATION_INDEX[startYear];
-            const endIndex = CENTRAL_BANK_INFLATION_INDEX[endYear];
+            const startIndex = getDynamicInflationIndex(startYear);
+            const endIndex = getDynamicInflationIndex(endYear);
             const compensation = Math.round(principal * ((endIndex - startIndex) / startIndex));
             const totalWithDelay = principal + Math.max(0, compensation);
 
@@ -2336,7 +2415,38 @@
                     <div>خسارت کاهش ارزش پول: <span class="text-red-500 font-bold">${Math.max(0, compensation).toLocaleString()} ریال</span></div>
                     <div>مجموع اصل و خسارت تأخیر: <span class="text-emerald-500 font-bold">${totalWithDelay.toLocaleString()} ریال</span></div>
                 </div>`;
+            if (shareBtn) shareBtn.classList.remove('hidden');
             window.triggerHaptic('light');
+        };
+
+        window.exportResultToCard = async function(title, contentText) {
+            const renderBox = document.getElementById('shareRenderBox');
+            if (!renderBox) return;
+            renderBox.innerHTML = `
+                <div class="share-card-target" id="renderedCardItem">
+                    <div style="font-size:16px; font-weight:900; color:#ef4444; border-bottom:1.5px solid rgba(245,158,11,0.4); padding-bottom:8px; margin-bottom:12px; display:flex; justify-content:space-between; align-items:center;">
+                        <span>سامانه حقوقی SIJT</span>
+                        <span style="font-size:11px; color:#f59e0b;">${escapeHTML(title)}</span>
+                    </div>
+                    <div style="font-size:12px; line-height:2.1; color:#f8fafc; white-space:pre-wrap;">${contentText}</div>
+                    <div style="margin-top:16px; padding-top:8px; border-top:1px dashed rgba(255,255,255,0.15); display:flex; justify-content:space-between; font-size:10px; color:#94a3b8;">
+                        <span>شناسه پیگیری: ${Math.random().toString(36).substring(2, 9).toUpperCase()}</span>
+                        <span>تاریخ: ${new Date().toLocaleDateString('fa-IR')}</span>
+                    </div>
+                </div>`;
+
+            window.showToast('در حال طراحی و صدور کارت اشتراک...');
+            try {
+                const targetNode = document.getElementById('renderedCardItem');
+                const canvas = await html2canvas(targetNode, { scale: 2.5, useCORS: true, backgroundColor: '#000' });
+                const imgData = canvas.toDataURL('image/png');
+                const newWin = window.open();
+                if (newWin) {
+                    newWin.document.write(`<div style="display:flex; justify-content:center; align-items:center; min-height:100vh; background:#080c14; margin:0;"><img src="${imgData}" style="max-width:92%; border-radius:18px; box-shadow:0 15px 40px rgba(0,0,0,0.8);" /></div>`);
+                }
+            } catch (e) {
+                window.showToast('خطا در صدور کارت اشتراک تصویری', 'error');
+            }
         };
 
         window.generateSmartContract = function() {
@@ -2360,38 +2470,47 @@
             window.showToast('پیش‌نویس قرارداد تولید شد');
         };
 
-        window.exportContractPDF = function() {
+        window.exportContractPDF = async function() {
             const box = document.getElementById('contractOutputBox');
             if (box.classList.contains('hidden') || !box.innerText) {
                 return window.showToast('ابتدا قرارداد را تولید کنید', 'error');
             }
 
-            const tempDiv = document.createElement('div');
-            tempDiv.style.background = '#ffffff';
-            tempDiv.style.color = '#000000';
-            tempDiv.style.padding = '30px';
-            tempDiv.style.direction = 'rtl';
-            tempDiv.style.fontFamily = 'Tahoma, sans-serif';
-            tempDiv.innerHTML = `
-                <h2 style="color:#c51b24; border-bottom:2px solid #c51b24; padding-bottom:10px; font-size:16px;">سامانه قراردادهای حقوقی SIJT</h2>
-                <pre style="font-family:Tahoma, sans-serif; white-space:pre-wrap; line-height:2; font-size:12px;">${escapeHTML(box.innerText)}</pre>`;
+            const tempContainer = document.createElement('div');
+            tempContainer.style.position = 'fixed';
+            tempContainer.style.left = '-9999px';
+            tempContainer.style.top = '0';
+            tempContainer.style.width = '700px';
+            tempContainer.style.background = '#ffffff';
+            tempContainer.style.color = '#000000';
+            tempContainer.style.padding = '35px';
+            tempContainer.style.direction = 'rtl';
+            tempContainer.style.fontFamily = 'Tahoma, sans-serif';
 
-            window.showToast('در حال صدور PDF...');
+            tempContainer.innerHTML = `
+                <h2 style="color:#c51b24; border-bottom:2px solid #c51b24; padding-bottom:10px; font-size:16px;">سامانه قراردادهای حقوقی SIJT</h2>
+                <pre style="font-family:Tahoma, sans-serif; white-space:pre-wrap; line-height:2.2; font-size:12px; margin-top:20px;">${escapeHTML(box.innerText)}</pre>`;
+
+            document.body.appendChild(tempContainer);
+            window.showToast('در حال صدور PDF قرارداد...');
+
             try {
-                const opt = {
-                    margin: 10,
-                    filename: 'Smart_Contract.pdf',
-                    html2canvas: { scale: 2 },
-                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-                };
-                html2pdf().set(opt).from(tempDiv).save();
+                const canvas = await html2canvas(tempContainer, { scale: 2, useCORS: true });
+                const imgData = canvas.toDataURL('image/jpeg', 0.98);
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                pdf.addImage(imgData, 'JPEG', 10, 10, 190, 0);
+                pdf.save('Smart_Contract.pdf');
+                window.showToast('فایل قرارداد دانلود شد');
             } catch (e) {
-                window.showToast('خطا در تولید فایل PDF', 'error');
+                window.showToast('خطا در صدور PDF قرارداد', 'error');
+            } finally {
+                tempContainer.remove();
             }
         };
 
         /* ==========================================================================
-           ۱۵. چت‌بات هوش مصنوعی پیشرفته (ضد XSS با ویجت‌های یکتا)
+           ۱۵. چت‌بات هوش مصنوعی پیشرفته با معماری ایمن DOM (Safe Anti-XSS)
            ========================================================================== */
         window.sendQuickChat = function(text) {
             document.getElementById('aiPromptInput').value = text;
@@ -2434,7 +2553,6 @@
                     answer = data.answer || data.result;
                 } else throw new Error();
             } catch (e) {
-                // پاسخ بومی با موتور استنتاج محلی
                 answer = LegalNlpEngine.analyze(prompt, chatConversationHistory);
             }
 
@@ -2473,54 +2591,74 @@
         };
 
         window.renderChatUI = function() {
-            const c = document.getElementById('chatMessagesContainer');
-            if (!c) return;
+            const container = document.getElementById('chatMessagesContainer');
+            if (!container) return;
+            container.innerHTML = '';
 
-            c.innerHTML = chatConversationHistory.map((msg, idx) => {
+            chatConversationHistory.forEach((msg, idx) => {
                 const isUser = msg.role === 'user';
-                let rawText = escapeHTML(msg.text);
+                const row = document.createElement('div');
+                row.className = `flex justify-${isUser ? 'end' : 'start'}`;
 
-                // حل مشکل شناسه تکراری با آی‌دی اختصاصی برای هر ویجت
-                if (rawText.includes('[WIDGET:COURT_FEE]')) {
-                    const uniqueInputId = `chatFeeInp_${idx}`;
-                    const widgetHTML = `
-                        <div class="mt-2 p-2 bg-black/5 dark:bg-black/40 rounded-xl border border-amber-500/30">
-                            <input type="number" id="${uniqueInputId}" placeholder="مبلغ خواسته (ریال)..." class="w-full bg-white dark:bg-slate-900 text-slate-800 dark:text-white rounded p-1.5 mb-1 text-[11px] focus:outline-none">
-                            <button onclick="calculateInlineFee('${uniqueInputId}')" class="w-full bg-red-600 text-white rounded p-1.5 text-[11px] font-bold shadow">محاسبه سریع هزینه</button>
-                        </div>`;
-                    rawText = rawText.replace('[WIDGET:COURT_FEE]', widgetHTML);
+                const bubble = document.createElement('div');
+                bubble.className = `${isUser ? 'bg-red-600 text-white rounded-br-none' : 'bg-white dark:bg-slate-800 border border-black/5 dark:border-white/10 text-slate-800 dark:text-slate-100 rounded-bl-none'} p-3 rounded-2xl max-w-[88%] leading-relaxed shadow-sm`;
+
+                const cleanText = msg.text.replace('[WIDGET:COURT_FEE]', '').trim();
+                const contentPara = document.createElement('div');
+                contentPara.innerText = cleanText;
+                bubble.appendChild(contentPara);
+
+                if (msg.text.includes('[WIDGET:COURT_FEE]')) {
+                    const widgetNode = document.createElement('div');
+                    widgetNode.className = 'mt-2 p-2.5 bg-black/5 dark:bg-black/40 rounded-xl border border-amber-500/30 space-y-1.5';
+                    
+                    const inp = document.createElement('input');
+                    inp.type = 'number';
+                    inp.placeholder = 'مبلغ خواسته (ریال)...';
+                    inp.className = 'w-full bg-white dark:bg-slate-900 text-slate-800 dark:text-white rounded-lg p-2 text-xs border border-white/10 focus:outline-none';
+                    
+                    const btn = document.createElement('button');
+                    btn.className = 'w-full bg-red-600 text-white font-bold py-1.5 rounded-lg text-xs shadow hover:bg-red-700 transition cursor-pointer';
+                    btn.innerText = 'محاسبه سریع هزینه دادرسی';
+                    btn.onclick = () => {
+                        const val = parseFloat(inp.value) || 0;
+                        if (val <= 0) return window.showToast('مبلغ خواسته را وارد کنید', 'error');
+                        const fee = Math.round(val * 0.035);
+                        alert(`هزینه دادرسی بدوی تقریبی: ${fee.toLocaleString()} ریال`);
+                    };
+
+                    widgetNode.appendChild(inp);
+                    widgetNode.appendChild(btn);
+                    bubble.appendChild(widgetNode);
                 }
 
-                return `
-                    <div class="flex justify-${isUser ? 'end' : 'start'}">
-                        <div class="${isUser ? 'bg-red-600 text-white rounded-br-none' : 'bg-white dark:bg-slate-800 border border-black/5 dark:border-white/10 text-slate-800 dark:text-slate-100 rounded-bl-none'} p-3 rounded-2xl max-w-[88%] leading-relaxed shadow-sm">
-                            ${rawText.replace(/\n/g, '<br>')}
-                        </div>
-                    </div>`;
-            }).join('');
+                row.appendChild(bubble);
+                container.appendChild(row);
+            });
 
-            c.scrollTop = c.scrollHeight;
-        };
-
-        window.calculateInlineFee = function(inputId) {
-            const input = document.getElementById(inputId);
-            if (!input || !input.value) return window.showToast('مبلغ را وارد فرمایید', 'error');
-            const fee = Math.round(parseFloat(input.value) * 0.035);
-            alert(`هزینه دادرسی بدوی تقریبی: ${fee.toLocaleString()} ریال`);
+            container.scrollTop = container.scrollHeight;
         };
 
         /* ==========================================================================
-           ۱۶. جستجوی جامع و ایمن بدون باگ کاراکتر خاص و کوتیشن
+           ۱۶. جستجوی جامع با مکانیزم Debounce و بازنشانی دسته‌بندی‌ها
            ========================================================================== */
+        let searchDebounceTimer = null;
+        window.debouncedSearch = function(query) {
+            clearTimeout(searchDebounceTimer);
+            searchDebounceTimer = setTimeout(() => {
+                window.handleUniversalSearch(query);
+            }, 250);
+        };
+
         function normalizeText(str) {
             if (!str) return '';
             let s = String(str).toLowerCase()
-                .replace(/[\u064B-\u065F\u0670]/g, '') // حذف اعراب
+                .replace(/[\u064B-\u065F\u0670]/g, '')
                 .replace(/[آأإ]/g, 'ا')
                 .replace(/[يى]/g, 'ی')
                 .replace(/[ك]/g, 'ک')
                 .replace(/[ۀة]/g, 'ه')
-                .replace(/\u200c/g, ' ') // نیم‌فاصله به فاصله
+                .replace(/\u200c/g, ' ')
                 .replace(/[\s\t\n]+/g, ' ');
 
             const persianNumbers = [/۰/g, /۱/g, /۲/g, /۳/g, /۴/g, /۵/g, /۶/g, /۷/g, /۸/g, /۹/g];
@@ -2562,53 +2700,48 @@
 
             let results = [];
 
-            // ۱. جستجو در واژگان
             (appData.dictionary || []).forEach(d => {
                 if (normalizeText(d.term).includes(q) || normalizeText(d.definition).includes(q)) {
                     results.push({ tab: 'dictionary-tab', title: d.term, badge: 'اصطلاح' });
                 }
             });
 
-            // ۲. جستجو در قوانین
             (appData.laws || []).forEach(l => {
                 if (normalizeText(l.title).includes(q) || normalizeText(l.content).includes(q)) {
                     results.push({ tab: 'laws-tab', title: l.title, badge: 'قانون' });
                 }
             });
 
-            // ۳. جستجو در سوالات متداول
             (appData.publicFaqs || []).forEach(f => {
                 if (normalizeText(f.question).includes(q) || normalizeText(f.answer).includes(q)) {
                     results.push({ tab: 'public-faq-tab', title: f.question, badge: 'سوال' });
                 }
             });
 
-            // ۴. جستجو در سامانه‌ها
             (appData.legalSystems || []).forEach(s => {
                 if (normalizeText(s.title).includes(q)) {
                     results.push({ tab: 'legal-tab', title: s.title, badge: 'سامانه' });
                 }
             });
 
+            box.innerHTML = '';
             if (results.length === 0) {
                 box.innerHTML = `<div class="p-3 text-xs text-slate-400 text-center">موردی یافت نشد.</div>`;
                 return;
             }
 
-            box.innerHTML = results.slice(0, 7).map(item => `
-                <div class="search-result-row p-2 text-xs cursor-pointer hover:bg-black/10 dark:hover:bg-white/10 rounded-xl flex items-center justify-between"
-                     data-tab="${item.tab}" data-target="${escapeHTML(item.title)}">
+            results.slice(0, 7).forEach(item => {
+                const row = document.createElement('div');
+                row.className = 'search-result-row p-2 text-xs cursor-pointer hover:bg-black/10 dark:hover:bg-white/10 rounded-xl flex items-center justify-between';
+                row.innerHTML = `
                     <span class="font-bold truncate text-slate-800 dark:text-slate-100">${escapeHTML(item.title)}</span>
-                    <span class="text-[9px] bg-red-600/10 text-red-500 px-2 py-0.5 rounded-md font-bold">${item.badge}</span>
-                </div>`).join('');
-
-            // اتصال رویداد امن بدون وابستگی به رشته درون onclick
-            box.querySelectorAll('.search-result-row').forEach(row => {
-                row.addEventListener('click', () => {
-                    const tabId = row.getAttribute('data-tab');
-                    const target = row.getAttribute('data-target');
-                    window.gotoSection(tabId, target);
-                });
+                    <span class="text-[9px] bg-red-600/10 text-red-500 px-2 py-0.5 rounded-md font-bold">${item.badge}</span>`;
+                row.onclick = () => {
+                    selectedDictCat = 'all';
+                    window.renderDictionary();
+                    window.gotoSection(item.tab, item.title);
+                };
+                box.appendChild(row);
             });
         };
 
@@ -2651,7 +2784,7 @@
                     const input = document.getElementById(targetInputId);
                     if (input) {
                         input.value = text;
-                        if (targetInputId === 'searchInput') window.handleUniversalSearch(text);
+                        if (targetInputId === 'searchInput') window.debouncedSearch(text);
                     }
                 };
             } catch (e) {
@@ -2660,7 +2793,7 @@
         };
 
         /* ==========================================================================
-           ۱۷. مدیا، صوت و تصویر در تصویر ویدیویی (حل کامل باگ PIP)
+           ۱۷. مدیا، صوت و مدیریت زوم بدون ایجاد باگ در تاچ iOS
            ========================================================================== */
         let activeModalVideo = null;
         let panX = 0, panY = 0, isPanning = false, startPanX = 0, startPanY = 0;
@@ -2692,14 +2825,12 @@
             if (type === 'series') {
                 content.innerHTML = `
                     <div class="pro-video-wrapper">
-                        <video id="modalVideoPlayer" src="${item.url}" controls autoplay playsinline webkit-playsinline x5-playsinline></video>
+                        <video id="modalVideoPlayer" src="${item.url}" controls autoplay playsinline webkit-playsinline></video>
                     </div>`;
                 activeModalVideo = document.getElementById('modalVideoPlayer');
-                
                 if (activeModalVideo) {
                     activeModalVideo.play().catch(() => {});
                 }
-
                 extBtn.classList.remove('hidden');
                 extBtn.href = item.url;
                 cinBtn.classList.remove('hidden');
@@ -2742,7 +2873,7 @@
 
         document.addEventListener('touchstart', (e) => {
             const img = document.getElementById('activeZoomImg');
-            if (img && img.classList.contains('zoomed') && e.touches.length === 1) {
+            if (img && img.classList.contains('zoomed') && e.target === img && e.touches.length === 1) {
                 isPanning = true;
                 startPanX = e.touches[0].clientX - panX;
                 startPanY = e.touches[0].clientY - panY;
@@ -2752,7 +2883,7 @@
         document.addEventListener('touchmove', (e) => {
             const img = document.getElementById('activeZoomImg');
             if (isPanning && img && img.classList.contains('zoomed')) {
-                e.preventDefault();
+                if (e.target === img) e.preventDefault();
                 panX = e.touches[0].clientX - startPanX;
                 panY = e.touches[0].clientY - startPanY;
                 img.style.transform = `translate(${panX}px, ${panY}px) scale(2.4)`;
@@ -2796,7 +2927,6 @@
             activeModalVideo = null;
         };
 
-        // پخش‌کننده صوت شناور
         const audioElm = document.getElementById('mainAudioObj');
         window.playAudio = function(url, title, img) {
             audioElm.src = url;
@@ -2812,7 +2942,7 @@
 
         window.toggleAudioPlay = function() {
             if (audioElm.paused) {
-                audioElm.play();
+                audioElm.play().catch(() => {});
                 document.getElementById('playerPlayBtn').innerHTML = '<i class="fa-solid fa-circle-pause"></i>';
             } else {
                 audioElm.pause();
@@ -2829,31 +2959,6 @@
         window.closeAudioPlayer = function() {
             audioElm.pause();
             document.getElementById('floatingAudioPlayer').classList.remove('show');
-        };
-
-        /* ==========================================================================
-           ۱۸. سوییچ تب‌ها و عملکردهای جانبی
-           ========================================================================== */
-        window.switchTab = function(tabId, btn) {
-            document.querySelectorAll('.page-section').forEach(s => s.classList.add('hidden'));
-            const targetSec = document.getElementById(tabId);
-            if (targetSec) targetSec.classList.remove('hidden');
-
-            document.querySelectorAll('#mainNavContainer button').forEach(b => b.classList.remove('active-tab'));
-            if (btn) {
-                btn.classList.add('active-tab');
-            } else {
-                const foundBtn = Array.from(document.querySelectorAll('#mainNavContainer button')).find(b => b.getAttribute('onclick')?.includes(tabId));
-                if (foundBtn) foundBtn.classList.add('active-tab');
-            }
-
-            // توقف ویدیو هنگام خروج از تب پخش زنده
-            if (tabId !== 'multimedia-tab') {
-                const vid = document.getElementById('liveStreamVideo');
-                if (vid && !vid.paused) vid.pause();
-            }
-
-            window.scrollTo({ top: 0, behavior: 'smooth' });
         };
 
         window.toggleMoreDrawer = function() {
@@ -2887,7 +2992,77 @@
             navigator.clipboard.writeText(text);
         };
 
-        // راه‌اندازی پس از بارگذاری کامل ساختار سند DOM
+        /* ==========================================================================
+           ۱۸. راه‌اندازی و اتصال نهایی
+           ========================================================================== */
+        window.initApp = async function() {
+            await initIndexedDB();
+            window.initThemes();
+
+            userNav = (await AppStorage.get('mizan_custom_nav')) || ['dictionary-tab', 'legal-tab', 'laws-tab', 'cards-tab', 'lawyer-tab'];
+            bookmarks = (await AppStorage.get('mizan_bookmarks')) || [];
+
+            window.renderBottomNav();
+            window.renderAll();
+            window.updateDateTime();
+            setInterval(window.updateDateTime, 1000);
+            window.fetchTehranWeather();
+            updateNetworkStatus(navigator.onLine);
+
+            setTimeout(() => {
+                const s = document.getElementById('splashScreen');
+                if (s) {
+                    s.style.opacity = '0';
+                    setTimeout(() => s.remove(), 300);
+                }
+            }, 600);
+
+            try {
+                const cached = await AppStorage.get('mizan_cache');
+                if (cached) {
+                    appData = { ...fallbackData, ...cached };
+                    window.renderAll();
+                }
+                const res = await fetch(API_URL + "?action=get_all&t=" + Date.now(), { mode: 'cors' });
+                if (res.ok) {
+                    const newData = await res.json();
+                    if (newData && Object.keys(newData).length > 0) {
+                        appData = { ...fallbackData, ...newData };
+                        await AppStorage.set('mizan_cache', appData);
+                        window.renderAll();
+                    }
+                }
+            } catch (e) {
+                if (!appData.dictionary) appData = fallbackData;
+            }
+
+            window.renderPersonalNotes();
+            window.setupInfiniteScrolls();
+            window.loadUserFaqs();
+            window.OfflineSync.syncAll();
+        };
+
+        window.manualRefresh = async function() {
+            const icon = document.getElementById('refreshIcon');
+            if (icon) icon.classList.add('fa-spin');
+            window.showToast('در حال همگام‌سازی داده‌ها...');
+            try {
+                const res = await fetch(API_URL + "?action=get_all&t=" + Date.now());
+                if (!res.ok) throw new Error();
+                const newData = await res.json();
+                if (newData && Object.keys(newData).length > 0) {
+                    appData = { ...fallbackData, ...newData };
+                    await AppStorage.set('mizan_cache', appData);
+                    window.renderAll();
+                    window.showToast('اطلاعات با موفقیت به‌روزرسانی شد');
+                }
+            } catch (e) {
+                window.showToast('به‌دلیل قطعی ارتباط، داده‌های پایدار آفلاین لود شدند', 'error');
+            } finally {
+                if (icon) icon.classList.remove('fa-spin');
+            }
+        };
+
         window.addEventListener('DOMContentLoaded', window.initApp);
     </script>
 </body>
