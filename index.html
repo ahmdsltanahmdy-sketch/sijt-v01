@@ -59,7 +59,7 @@
             padding: 0;
         }
 
-        /* استایل حالت روشن (Light Mode) با کنتراست ارگونومیک و کاملاً شفاف */
+        /* لایت مد ارگونومیک با تفکیک رنگی دقیق و شفاف */
         body.light {
             background-color: #f1f5f9 !important;
             color: #0f172a !important;
@@ -77,7 +77,7 @@
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-        /* پس‌زمینه شبکه مدرن و نئونی در حالت دارک */
+        /* پس‌زمینه شبکه مدرن، نئونی و زنده */
         .mesh-bg {
             background-color: #080c14;
             background-image: 
@@ -89,7 +89,6 @@
             background-size: 100% 100%, 100% 100%, 100% 100%, 32px 32px, 32px 32px;
             background-attachment: fixed;
         }
-        /* پس‌زمینه زنده و چشم‌نواز در حالت روشن */
         body.light .mesh-bg, html:not(.dark) .mesh-bg {
             background-color: #f8fafc !important;
             background-image: 
@@ -97,81 +96,16 @@
                 radial-gradient(at 90% 85%, rgba(245, 158, 11, 0.12) 0px, transparent 55%),
                 linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px) !important;
-            background-size: 100% 100%, 100% 100%, 32px 32px, 32px 32px;
+            background-size: 100% 100%, 100% 100%, 100% 100%, 32px 32px, 32px 32px;
         }
 
-        /* حالت ذخیره باتری */
-        body.battery-saver .noise-overlay { display: none !important; }
-        body.battery-saver * {
-            backdrop-filter: none !important;
-            -webkit-backdrop-filter: none !important;
-            box-shadow: none !important;
-            animation-duration: 0.001ms !important;
-            transition-duration: 0.001ms !important;
-        }
-        body.battery-saver .ultra-glass {
-            background: #111827 !important;
-            border: 1px solid #374151 !important;
-        }
-        body.light.battery-saver .ultra-glass {
-            background: #ffffff !important;
-            border: 1px solid #cbd5e1 !important;
-        }
-
-        /* حالت OLED و High Contrast */
-        body.oled-mode {
-            background-color: #000000 !important;
-            color: #ffffff !important;
-            background-image: none !important;
-        }
-        body.oled-mode .ultra-glass {
-            background: #050505 !important;
-            border: 1px solid rgba(255, 255, 255, 0.2) !important;
-            color: #ffffff !important;
-        }
-
-        body.high-contrast {
-            background-color: #000000 !important;
-            color: #ffff00 !important;
-            background-image: none !important;
-        }
-        body.high-contrast .ultra-glass, 
-        body.high-contrast .settings-glass {
-            background: #000000 !important;
-            border: 2px solid #ffff00 !important;
-            color: #ffff00 !important;
-        }
-        body.high-contrast p, body.high-contrast span, body.high-contrast h2, body.high-contrast h3, body.high-contrast div {
-            color: #ffff00 !important;
-        }
-
-        .noise-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.02'/%3E%3C/svg%3E");
-            pointer-events: none;
-            z-index: 998;
-            contain: paint;
-        }
-
-        .text-gradient {
-            background: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        body.light .text-gradient {
-            background: linear-gradient(135deg, #b45309 0%, #dc2626 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        /* کارت‌های شیشه‌ای عمیق با تفکیک استاندارد دارک و لایت */
+        /* کارت‌های شیشه‌ای شفاف (Ultra Glass) */
         .ultra-glass {
             background: rgba(13, 19, 33, 0.90);
             backdrop-filter: blur(20px) saturate(180%);
             -webkit-backdrop-filter: blur(20px) saturate(180%);
             border: 1px solid rgba(245, 158, 11, 0.28);
-            box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.65), inset 0 1px 1px 0 rgba(255, 255, 255, 0.12);
+            box-shadow: 0 14px 35px -10px rgba(0, 0, 0, 0.7), inset 0 1px 1px 0 rgba(255, 255, 255, 0.12);
             color: #f8fafc;
             border-radius: 1.25rem;
             transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
@@ -179,7 +113,7 @@
         body.light .ultra-glass {
             background: rgba(255, 255, 255, 0.98) !important;
             border: 1px solid rgba(203, 213, 225, 0.9) !important;
-            box-shadow: 0 8px 25px -6px rgba(15, 23, 42, 0.08) !important;
+            box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.08) !important;
             color: #0f172a !important;
         }
         body.light .ultra-glass p {
@@ -197,11 +131,11 @@
         }
         body.light .settings-glass {
             background: rgba(255, 255, 255, 0.98) !important;
-            border: 1px solid rgba(203, 213, 225, 0.9) !important;
-            color: #0f172a !important;
+            border: 1px solid rgba(203, 213, 225, 0.9);
+            color: #0f172a;
         }
 
-        /* هدر چسبنده با رفع کامل مشکل تداخل رنگ متون در لایت‌مد */
+        /* هدر برنامه با تصویر محو شیشه‌ای و گرادیان متالیک */
         #appHeader {
             transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
             will-change: transform, opacity;
@@ -215,18 +149,23 @@
 
         .header-bg {
             background-color: #080c14 !important;
-            background-image: radial-gradient(at 50% 0%, rgba(197, 27, 36, 0.40) 0px, transparent 75%), 
-                              linear-gradient(180deg, rgba(8, 12, 20, 0.98) 0%, rgba(13, 19, 33, 0.96) 100%) !important;
+            background-image: 
+                radial-gradient(at 50% 0%, rgba(197, 27, 36, 0.45) 0px, transparent 75%),
+                linear-gradient(180deg, rgba(8, 12, 20, 0.98) 0%, rgba(13, 19, 33, 0.95) 100%),
+                url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E") !important;
+            backdrop-filter: blur(22px);
+            -webkit-backdrop-filter: blur(22px);
             border-bottom: 1px solid rgba(245, 158, 11, 0.3) !important;
         }
         body.light .header-bg {
             background-color: #ffffff !important;
-            background-image: radial-gradient(at 50% 0%, rgba(239, 68, 68, 0.15) 0px, transparent 75%),
-                              linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%) !important;
+            background-image: 
+                radial-gradient(at 50% 0%, rgba(239, 68, 68, 0.18) 0px, transparent 75%),
+                linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%) !important;
             border-bottom: 1px solid rgba(203, 213, 225, 0.85) !important;
         }
 
-        /* نوار ناوبری پایین با نشانگر کپسولی کشویی */
+        /* نوار ناوبری پایین با نشانگر کشویی اصلاح‌شده در RTL */
         .floating-nav {
             position: fixed;
             background: rgba(10, 15, 28, 0.96) !important;
@@ -237,6 +176,7 @@
             transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
             bottom: calc(0.75rem + var(--safe-area-bottom));
             will-change: transform, opacity;
+            z-index: 50;
         }
         body.light .floating-nav {
             background: rgba(255, 255, 255, 0.98) !important;
@@ -249,7 +189,6 @@
             pointer-events: none !important;
         }
 
-        /* کپسول متحرک هماهنگ با RTL */
         .nav-indicator-pill {
             position: absolute;
             top: 5px;
@@ -257,10 +196,10 @@
             background: rgba(239, 68, 68, 0.18);
             border: 1.5px solid rgba(239, 68, 68, 0.5);
             border-radius: 1.25rem;
-            transition: right 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), width 0.3s ease;
+            transition: right 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), width 0.25s ease;
             pointer-events: none;
             z-index: 1;
-            box-shadow: 0 0 15px rgba(239, 68, 68, 0.2);
+            box-shadow: 0 0 15px rgba(239, 68, 68, 0.25);
         }
 
         .nav-btn {
@@ -281,15 +220,7 @@
             filter: drop-shadow(0 0 6px rgba(239, 68, 68, 0.5));
         }
 
-        /* تعاملات لمسی بصری */
-        button, .clickable-card, .dict-chip, .nav-btn {
-            transition: transform 0.15s ease, filter 0.15s ease;
-        }
-        button:active, .clickable-card:active, .dict-chip:active {
-            transform: scale(0.96) !important;
-        }
-
-        /* دراورها و مودال‌ها */
+        /* دراورها و انیمیشن‌ها */
         #moreDrawer, #navEditorDrawer, #lawBottomSheet, #storySheetModal {
             display: none;
             position: fixed;
@@ -492,6 +423,18 @@
         .zoomable-img.zoomed {
             cursor: grab;
         }
+
+        /* الگوی کارت گرافیکی اشتراک‌گذاری */
+        .share-card-target {
+            background: linear-gradient(135deg, #0d1321 0%, #172554 100%);
+            border: 2px solid #f59e0b;
+            padding: 24px;
+            border-radius: 20px;
+            color: #ffffff;
+            direction: rtl;
+            font-family: 'Vazirmatn', Tahoma, sans-serif;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.8);
+        }
     </style>
 </head>
 <body id="bodyRoot" class="dark mesh-bg min-h-screen flex flex-col relative select-none">
@@ -542,7 +485,7 @@
         </div>
     </div>
 
-    <!-- هدر برنامه با اصلاح رنگ متون در پوسته روز -->
+    <!-- هدر برنامه -->
     <header id="appHeader" class="sticky top-0 z-50 header-bg shadow-md">
         <div class="max-w-md mx-auto px-4 py-2 flex items-center justify-between text-[11px] relative z-20">
             <div class="flex flex-col space-y-0.5">
@@ -820,7 +763,7 @@
 
             <!-- محاسبه‌‌گر تعرفه حق‌الوکاله و تمبر مالیاتی -->
             <div class="ultra-glass p-4 rounded-2xl space-y-3 shadow-lg">
-                <h3 class="font-bold text-xs text-amber-500"><i class="fa-solid fa-scale-unbalanced ml-1"></i> محاسبه‌‌گر حق‌الوکاله و تمبر مالیاتی وکیل</h3>
+                <h3 class="font-bold text-xs text-amber-500"><i class="fa-solid fa-scale-unbalanced ml-1"></i> محاسبه‌گر حق‌الوکاله و تمبر مالیاتی وکیل</h3>
                 <input type="number" id="lawyerClaimAmount" placeholder="مبلغ خواسته دعوا (ریال)..." class="w-full bg-slate-100 dark:bg-slate-900 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none">
                 <button onclick="calculateLawyerFee()" class="w-full bg-red-600 text-white py-2 rounded-xl text-xs font-bold shadow hover:bg-red-700 transition cursor-pointer">محاسبه تعرفه آیین‌نامه و مالیات</button>
                 <div id="lawyerFeeResult" class="text-[11px] font-bold text-amber-600 dark:text-amber-400 mt-2 space-y-1"></div>
@@ -848,7 +791,7 @@
                     <select id="courtStageSelect" class="bg-slate-100 dark:bg-slate-900 text-slate-800 dark:text-white rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none">
                         <option value="badvi">مرحله بدوی</option>
                         <option value="tajdid">تجدیدنظر خواهی</option>
-                        <option value="farjam">فرجام‌‌خواهی</option>
+                        <option value="farjam">فرجام‌خواهی</option>
                     </select>
                 </div>
                 <button onclick="calculateCourtFee()" class="w-full bg-red-600 text-white py-2 rounded-xl text-xs font-bold shadow hover:bg-red-700 transition cursor-pointer">محاسبه دقیق هزینه تمبر دادرسی</button>
@@ -1677,7 +1620,7 @@
         };
 
         /* ==========================================================================
-           ۹. پایگاه داده آفلاین پیش‌‌فرض و دانشنامه محلی هوش مصنوعی
+           ۹. پایگاه داده آفلاین پیش‌فرض و دانشنامه محلی هوش مصنوعی
            ========================================================================== */
         const fallbackData = {
             dictionary: [
@@ -3058,7 +3001,7 @@
 
         window.fetchRemoteDataInBackground = async function() {
             const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), 7000); // جلوگیری از گیر کردن و کندی گوگل شیت
+            const timeoutId = setTimeout(() => controller.abort(), 7000);
 
             try {
                 const res = await fetch(API_URL + "?action=get_all&t=" + Date.now(), { 
@@ -3075,7 +3018,7 @@
                     }
                 }
             } catch (e) {
-                // در صورت تایم‌اوت، برنامه بدون قطعی به کار خود با کش محلی ادامه می‌دهد
+                // در صورت بروز تایم‌اوت، سیستم بدون اختلال با دیتای کش محلی ادامه می‌دهد
             }
         };
 
