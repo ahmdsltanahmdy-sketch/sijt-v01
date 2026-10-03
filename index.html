@@ -2457,7 +2457,25 @@
             window.updateDateTime();
             window.showToast('فرمت تقویم به‌روزرسانی شد');
         };
-
+/* ==========================================================================
+           پاکسازی حافظه کش IndexedDB، دیتابیس محلی و راه‌اندازی مجدد اپلیکیشن
+           ========================================================================== */
+        window.clearIndexedDBCache = async function() {
+            if (dbInstance) {
+                try {
+                    const tx = dbInstance.transaction('store', 'readwrite');
+                    tx.objectStore('store').clear();
+                } catch (e) {}
+            }
+            localStorage.removeItem('mizan_cache');
+            sessionStorage.removeItem('mizan_active_chat');
+            window.showToast('حافظه کش با موفقیت پاکسازی شد');
+            window.triggerHaptic('medium');
+            setTimeout(() => {
+                location.reload();
+            }, 400);
+        };
+        
         window.toggleMicroInteractions = function(enabled) {
             localStorage.setItem('micro_interactions', enabled);
             AppStorage.set('micro_interactions', enabled);
