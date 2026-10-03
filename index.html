@@ -127,42 +127,109 @@
             -webkit-user-select: text !important;
         }
 
-        /* لایت مد ارگونومیک، باکنتراست بالا و سطوح تفکیک‌شده */
-        body.light {
-            background-color: #f8fafc !important;
-            color: #0f172a !important;
+      /* ===================================================
+           سیستم جامع و هماهنگ پوسته‌ها (حل قطعی مشکل ناخوانایی)
+           =================================================== */
+        :root {
+            --bg-page: #f8fafc;
+            --card-bg: #ffffff;
+            --card-border: #e2e8f0;
+            --card-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.06), 0 2px 6px -1px rgba(15, 23, 42, 0.04);
+            --text-main: #0f172a;
+            --text-muted: #334155;
+            --dropdown-bg: #ffffff;
+            --dropdown-border: #cbd5e1;
         }
 
-        body.light .mesh-bg, html:not(.dark) .mesh-bg {
+        html.dark {
+            --bg-page: #080c14;
+            --card-bg: rgba(13, 19, 33, 0.88);
+            --card-border: rgba(245, 158, 11, 0.22);
+            --card-shadow: 0 14px 35px -10px rgba(0, 0, 0, 0.7);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --dropdown-bg: rgba(13, 19, 33, 0.98);
+            --dropdown-border: rgba(245, 158, 11, 0.35);
+        }
+
+        /* کارت‌های اصلی (Ultra Glass) */
+        .ultra-glass {
+            background: var(--card-bg) !important;
+            border: 1px solid var(--card-border) !important;
+            box-shadow: var(--card-shadow) !important;
+            color: var(--text-main) !important;
+            border-radius: 1.25rem;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* تضمین ۱۰۰٪ خوانایی متون روی کارت‌ها در تم روشن */
+        html:not(.dark) .ultra-glass p,
+        html:not(.dark) .ultra-glass span:not(.text-red-500):not(.text-red-600):not(.text-amber-500):not(.text-emerald-500),
+        html:not(.dark) .ultra-glass div {
+            color: var(--text-muted) !important;
+        }
+
+        html:not(.dark) .ultra-glass h2,
+        html:not(.dark) .ultra-glass h3,
+        html:not(.dark) .ultra-glass h4 {
+            color: #b91c1c !important;
+        }
+
+        /* منوی کشویی تنظیمات (Settings Glass) */
+        .settings-glass {
+            background: var(--dropdown-bg) !important;
+            border: 1px solid var(--dropdown-border) !important;
+            color: var(--text-main) !important;
+            border-radius: 1.5rem;
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.15) !important;
+        }
+
+        html.dark .settings-glass {
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.85) !important;
+        }
+
+        html:not(.dark) .settings-glass span,
+        html:not(.dark) .settings-glass label,
+        html:not(.dark) .settings-glass p {
+            color: #0f172a !important;
+            font-weight: 600;
+        }
+
+        html:not(.dark) .settings-glass select {
+            background-color: #f1f5f9 !important;
+            color: #0f172a !important;
+            border: 1px solid #cbd5e1 !important;
+        }
+
+        html:not(.dark) .settings-glass button:not(.bg-amber-500\/20):not(.bg-red-500\/20):not(.bg-emerald-500\/20):not(.bg-yellow-500\/20):not(.bg-indigo-500\/20):not(.bg-sky-500\/20) {
+            background-color: #f1f5f9 !important;
+            color: #0f172a !important;
+            border: 1px solid #e2e8f0 !important;
+        }
+
+        /* پس‌زمینه کلی صفحه */
+        body {
+            background-color: var(--bg-page) !important;
+            color: var(--text-main) !important;
+        }
+
+        html:not(.dark) .mesh-bg {
             background-color: #f8fafc !important;
             background-image: 
-                radial-gradient(at 10% 15%, rgba(239, 68, 68, 0.08) 0px, transparent 55%),
-                radial-gradient(at 90% 85%, rgba(245, 158, 11, 0.08) 0px, transparent 55%),
+                radial-gradient(at 10% 15%, rgba(239, 68, 68, 0.05) 0px, transparent 55%),
+                radial-gradient(at 90% 85%, rgba(245, 158, 11, 0.05) 0px, transparent 55%),
                 linear-gradient(rgba(0, 0, 0, 0.02) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(0, 0, 0, 0.02) 1px, transparent 1px) !important;
-            background-size: 100% 100%, 100% 100%, 28px 28px, 28px 28px;
         }
 
-        body.light .ultra-glass {
-            background: #ffffff !important;
-            border: 1px solid #e2e8f0 !important;
-            box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.06), 0 2px 6px -1px rgba(15, 23, 42, 0.04) !important;
-            color: #0f172a !important;
-        }
-
-        body.light .ultra-glass p,
-        body.light .ultra-glass div {
+        /* جعبه‌های توضیحی خاکستری داخل کارت‌ها در تم روشن */
+        html:not(.dark) .bg-black\/5,
+        html:not(.dark) .bg-slate-900\/60,
+        html:not(.dark) .bg-slate-900\/80 {
+            background-color: #f1f5f9 !important;
             color: #1e293b !important;
-            font-weight: 500;
+            border: 1px solid #e2e8f0 !important;
         }
-
-        body.light .settings-glass {
-            background: rgba(255, 255, 255, 0.98) !important;
-            border: 1px solid #cbd5e1 !important;
-            color: #0f172a !important;
-            box-shadow: 0 20px 40px -10px rgba(15, 23, 42, 0.15) !important;
-        }
-
         /* حالت مشکی مطلق (True OLED Black Mode) برای صرفه‌جویی باتری و وضوح بی‌نهایت */
         body.oled-mode {
             background-color: #000000 !important;
@@ -2185,26 +2252,95 @@
         };
 
         window.initThemesAndSettings = async function() {
-            // ۱. بازیابی و اعمال پوسته اصلی (Dark / Light)
-            const savedTheme = (await AppStorage.get('mizan_theme')) || localStorage.getItem('mizan_theme') || 'dark';
-            if (savedTheme === 'light') {
-                document.documentElement.classList.remove('dark');
-                document.body.classList.remove('dark');
-                document.body.classList.add('light');
-                window.updateMetaThemeColor('#ffffff');
-            } else {
+         /* ==========================================================================
+           ۷. مدیریت تم‌ها، همگام‌سازی کامل تگ‌های html و body و بازیابی تنظیمات
+           ========================================================================== */
+        window.applyTheme = function(theme) {
+            const isDark = theme === 'dark';
+            if (isDark) {
                 document.documentElement.classList.add('dark');
+                document.documentElement.classList.remove('light');
                 document.body.classList.add('dark');
                 document.body.classList.remove('light');
                 window.updateMetaThemeColor('#080c14');
+            } else {
+                document.documentElement.classList.remove('dark');
+                document.documentElement.classList.add('light');
+                document.body.classList.remove('dark');
+                document.body.classList.add('light');
+                window.updateMetaThemeColor('#ffffff');
             }
+            localStorage.setItem('mizan_theme', theme);
+            AppStorage.set('mizan_theme', theme);
+        };
+
+        window.toggleTheme = function() {
+            const currentIsDark = document.documentElement.classList.contains('dark');
+            const newTheme = currentIsDark ? 'light' : 'dark';
+            window.applyTheme(newTheme);
+            window.triggerHaptic('light');
+        };
+
+        window.initThemesAndSettings = async function() {
+            // ۱. بازیابی و اعمال تم ذخیره‌شده
+            const savedTheme = (await AppStorage.get('mizan_theme')) || localStorage.getItem('mizan_theme') || 'dark';
+            window.applyTheme(savedTheme);
 
             // ۲. بازیابی حالت مشکی عمیق (OLED Mode)
             const isOled = (await AppStorage.get('oled_mode')) === true || localStorage.getItem('oled_mode') === 'true';
-            if (isOled) {
+            if (isOled && document.documentElement.classList.contains('dark')) {
                 document.body.classList.add('oled-mode');
                 window.updateMetaThemeColor('#000000');
             }
+
+            // ۳. بازیابی حالت صرفه‌جویی باتری (Battery Saver)
+            const isSaver = (await AppStorage.get('battery_saver')) === true || localStorage.getItem('battery_saver') === 'true';
+            if (isSaver) {
+                document.body.classList.add('battery-saver');
+                const btn = document.getElementById('batterySaverBtn');
+                if (btn) btn.classList.add('bg-emerald-500/40');
+            }
+
+            // ۴. بازیابی حالت کنتراست بالا (High Contrast)
+            const isHc = (await AppStorage.get('high_contrast')) === true || localStorage.getItem('high_contrast') === 'true';
+            if (isHc) {
+                document.body.classList.add('high-contrast');
+            }
+
+            // ۵. بازیابی قلم سفارشی (Font Family)
+            const savedFont = (await AppStorage.get('mizan_font')) || localStorage.getItem('mizan_font');
+            if (savedFont) {
+                document.documentElement.style.setProperty('--selected-font', savedFont);
+                const fontSelect = document.getElementById('fontSelect');
+                if (fontSelect) fontSelect.value = savedFont;
+            }
+
+            // ۶. بازیابی اندازه فونت سراسری (Font Size)
+            const savedFontSize = (await AppStorage.get('mizan_font_size')) || localStorage.getItem('mizan_font_size');
+            if (savedFontSize) {
+                document.documentElement.style.setProperty('--app-font-size', savedFontSize);
+            }
+
+            // ۷. بازیابی فاصله بین خطوط (Line Height)
+            const savedLineHeight = (await AppStorage.get('mizan_line_height')) || localStorage.getItem('mizan_line_height');
+            if (savedLineHeight) {
+                document.documentElement.style.setProperty('--line-height', savedLineHeight);
+                const lhSelect = document.getElementById('lineHeightSelect');
+                if (lhSelect) lhSelect.value = savedLineHeight;
+            }
+
+            // ۸. بازیابی نوع تقویم
+            const savedCal = (await AppStorage.get('mizan_calendar')) || localStorage.getItem('mizan_calendar');
+            if (savedCal) {
+                const calSelect = document.getElementById('calendarSelect');
+                if (calSelect) calSelect.value = savedCal;
+            }
+
+            // ۹. بازیابی وضعیت افکت صوتی کلیک
+            const microSound = (await AppStorage.get('micro_interactions')) !== false && localStorage.getItem('micro_interactions') !== 'false';
+            const soundCheck = document.getElementById('microInteractionsCheck');
+            if (soundCheck) soundCheck.checked = microSound;
+        };
 
             // ۳. بازیابی حالت صرفه‌جویی باتری (Battery Saver)
             const isSaver = (await AppStorage.get('battery_saver')) === true || localStorage.getItem('battery_saver') === 'true';
