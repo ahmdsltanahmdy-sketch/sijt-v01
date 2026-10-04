@@ -2541,6 +2541,9 @@
         /* ==========================================================================
            ۴. ذخیره‌سازی ابری کاملاً ترتیبی (حل نامرتبی چانک‌ها در CloudStorage تلگرام)
            ========================================================================== */
+        /* ==========================================================================
+           موتور ذخیره‌سازی بهینه، ضد فریز و پرسرعت (Optimized AppStorage)
+           ========================================================================== */
         window.AppStorage = {
             async set(key, value) {
                 try {
@@ -2548,88 +2551,211 @@
                 } catch (e) {
                     if (e.name === 'QuotaExceededError') {
                         localStorage.removeItem('sijt_cache');
-                        try {
-                            localStorage.setItem(key, JSON.stringify(value));
-                        } catch (err) {}
+                        try { localStorage.setItem(key, JSON.stringify(value)); } catch (err) {}
                     }
                 }
 
                 if (dbInstance) {
                     try {
                         const tx = dbInstance.transaction('store', 'readwrite');
-                        tx.onabort = () => {};
-                        tx.onerror = () => {};
                         tx.objectStore('store').put(value, key);
                     } catch (e) {}
                 }
 
                 if (tg?.CloudStorage) {
                     try {
-                        const serialized = JSON.stringify(value);
-                        const CHUNK_SIZE = 3500;
-                        if (serialized.length <= CHUNK_SIZE) {
-                            await new Promise(res => tg.CloudStorage.setItem(key, serialized, () => res(true)));
-                            await new Promise(res => tg.CloudStorage.removeItem(key + '_chunks', () => res(true)));
-                        } else {
-                            const chunks = Math.ceil(serialized.length / CHUNK_SIZE);
-                            await new Promise(res => tg.CloudStorage.setItem(key + '_chunks', String(chunks), () => res(true)));
-                            for (let i = 0; i < chunks; i++) {
-                                const chunkStr = serialized.substr(i * CHUNK_SIZE, CHUNK_SIZE);
-                                await new Promise(res => tg.CloudStorage.setItem(`${key}_chunk_${i}`, chunkStr, () => res(true)));
-                            }
-                        }
+                        const s = JSON.stringify(value);
+                        if (s.length <= 3500) tg.CloudStorage.setItem(key, s, () => {});
                     } catch (e) {}
                 }
             },
 
             async get(key) {
-                if (tg?.CloudStorage) {
-                    try {
-                        const chunksCountStr = await new Promise(r => tg.CloudStorage.getItem(key + '_chunks', (err, res) => r(!err ? res : null)));
-                        if (chunksCountStr) {
-                            const chunks = parseInt(chunksCountStr, 10);
-                            let fullStr = '';
-                            let isCorrupted = false;
-                            for (let i = 0; i < chunks; i++) {
-                                const part = await new Promise(r => tg.CloudStorage.getItem(`${key}_chunk_${i}`, (err, res) => r(!err ? res : '')));
-                                if (part === undefined || part === null) {
-                                    isCorrupted = true;
-                                    break;
-                                }
-                                fullStr += part;
-                            }
-                            if (!isCorrupted && fullStr) {
-                                try {
-                                    return JSON.parse(fullStr);
-                                } catch (e) {}
-                            }
-                        } else {
-                            const single = await new Promise(r => tg.CloudStorage.getItem(key, (err, res) => r(!err && res ? JSON.parse(res) : null)));
-                            if (single !== null && single !== undefined) return single;
-                        }
-                    } catch (e) {}
-                }
-
-                if (dbInstance) {
-                    try {
-                        const dbVal = await new Promise((res) => {
-                            const tx = dbInstance.transaction('store', 'readonly');
-                            const req = tx.objectStore('store').get(key);
-                            req.onsuccess = () => res(req.result);
-                            req.onerror = () => res(null);
-                        });
-                        if (dbVal !== undefined && dbVal !== null) return dbVal;
-                    } catch (e) {}
-                }
-
+                // ۱. خواندن فوق‌سریع از localStorage بدون معطلی
                 try {
-                    const localVal = localStorage.getItem(key);
-                    if (localVal) return JSON.parse(localVal);
+                    const local = localStorage.getItem(key);
+                    if (local !== null && local !== undefined) {
+                        return JSON.parse(local);
+                    }
                 } catch (e) {}
 
+                // ۲. خواندن از IndexedDB با تایم‌اوت ۲۰۰ میلی‌ثانیه‌ای (ضد گیر کردن)
+                if (dbInstance) {
+                    try {
+                        const val = await Promise.race([
+                            new Promise((res) => {
+                                const tx = dbInstance.transaction('store', 'readonly');
+                                const req = tx.objectStore('store').get(key);
+                                req.onsuccess = () => res(req.result);
+                                req.onerror = () => res(null);
+                            }),
+                            new Promise(res => setTimeout(() => res(null), 200))
+                        ]);
+                        if (val !== undefined && val !== null) return val;
+                    } catch (e) {}
+                }
                 return null;
             }
         };
+
+        /* ==========================================================================
+           تابع حذف تضمینی اسپلش‌اسکرین (Fail-Safe Dismissal)
+           ========================================================================== */
+        window.dismissSplashScreen = function() {
+            const s = document.getElementById('splashScreen');
+            if (s) {
+                s.style.transition = 'opacity 0.25s ease';
+                s.style.opacity = '0';
+                s.style.pointerEvents = 'none';
+                setTimeout(() => {
+                    if (s.parentElement) s.remove();
+                }, 260);
+            }
+        };
+
+        /* ==========================================================================
+           تازه‌سازی دستی ضد قفل با تایم‌اوت ۷ ثانیه‌ای گوگل شیت
+           ========================================================================== */
+        window.manualRefresh = async function() {
+            const icon = document.getElementById('refreshIcon');
+            if (icon) icon.classList.add('fa-spin');
+            window.showToast('در حال همگام‌سازی با گوگل شیت...');
+
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 7000);
+
+            try {
+                const res = await fetch(API_URL + "?action=get_all&t=" + Date.now(), {
+                    signal: controller.signal
+                });
+                clearTimeout(timeoutId);
+
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data && typeof data === 'object') {
+                        appData = { ...fallbackData, ...data };
+                        await AppStorage.set('sijt_cache', appData);
+                        window.renderAll(true);
+                        window.showToast('اطلاعات با موفقیت به‌روزرسانی شد');
+                    }
+                } else {
+                    throw new Error("خطا در پاسخ سرور");
+                }
+            } catch (e) {
+                if (!appData || Object.keys(appData).length === 0) {
+                    appData = fallbackData;
+                }
+                window.renderAll(false);
+                window.showToast('امکان اتصال به شیت نبود؛ داده‌های آفلاین لود شدند', 'error');
+            } finally {
+                if (icon) icon.classList.remove('fa-spin');
+            }
+        };
+
+        /* ==========================================================================
+           راه‌اندازی فوق‌سریع و موازی برنامه (InitApp)
+           ========================================================================== */
+        window.initApp = async function() {
+            // تضمین بسته شدن لودینگ در کسری از ثانیه
+            setTimeout(window.dismissSplashScreen, 400);
+
+            try { await initIndexedDB(); } catch (e) {}
+
+            // خواندن هم‌زمان و موازی داده‌ها (رفع توقف‌های متوالی ۱۰ گانه)
+            const [
+                savedTheme, isOled, isSaver, isHc,
+                savedFont, savedLineHeight, savedNav,
+                savedBookmarks, savedLawBookmarks, cached
+            ] = await Promise.all([
+                AppStorage.get('sijt_theme'),
+                AppStorage.get('oled_mode'),
+                AppStorage.get('battery_saver'),
+                AppStorage.get('high_contrast'),
+                AppStorage.get('sijt_font'),
+                AppStorage.get('sijt_line_height'),
+                AppStorage.get('sijt_custom_nav'),
+                AppStorage.get('sijt_bookmarks'),
+                AppStorage.get('sijt_law_bookmarks'),
+                AppStorage.get('sijt_cache')
+            ]);
+
+            // اعمال تم و فونت
+            window.applyTheme(savedTheme || 'dark');
+            if (isOled && (savedTheme || 'dark') === 'dark') document.body.classList.add('oled-mode');
+            if (isSaver) {
+                document.body.classList.add('battery-saver');
+                const b = document.getElementById('batterySaverBtn');
+                if (b) b.classList.add('bg-emerald-500/30');
+            }
+            if (isHc) document.body.classList.add('high-contrast');
+            if (savedFont) {
+                document.documentElement.style.setProperty('--selected-font', savedFont);
+                const f = document.getElementById('fontSelect');
+                if (f) f.value = savedFont;
+            }
+            if (savedLineHeight) {
+                document.documentElement.style.setProperty('--line-height', savedLineHeight);
+                const l = document.getElementById('lineHeightSelect');
+                if (l) l.value = savedLineHeight;
+            }
+
+            userNav = savedNav || ['dictionary-tab', 'legal-tab', 'laws-tab', 'cards-tab', 'lawyer-tab'];
+            bookmarks = savedBookmarks || [];
+            lawBookmarks = savedLawBookmarks || [];
+
+            // لود داده‌ها و رندر فوری
+            appData = (cached && Object.keys(cached).length > 0) ? { ...fallbackData, ...cached } : { ...fallbackData };
+
+            window.renderBottomNav();
+            window.renderAll(false);
+            window.updateDateTime();
+            window.fetchTehranWeather();
+
+            // بستن قطعی اسپلش
+            window.dismissSplashScreen();
+
+            // بارهای سنگین در پس‌‌زمینه
+            setTimeout(() => {
+                window.renderPersonalNotes();
+                window.setupInfiniteScrolls();
+                window.loadUserFaqs();
+                window.OfflineSync.syncAll();
+            }, 60);
+
+            // بازیابی تاریخچه سشن چت
+            try {
+                const cHistory = sessionStorage.getItem('sijt_active_chat');
+                if (cHistory) {
+                    const parsed = JSON.parse(cHistory);
+                    if (Array.isArray(parsed)) {
+                        chatConversationHistory = parsed;
+                        window.renderChatUI();
+                    }
+                }
+            } catch (e) {}
+
+            // سینک نامحسوس از گوگل شیت در پس‌زمینه
+            fetch(API_URL + "?action=get_all&t=" + Date.now())
+                .then(r => r.json())
+                .then(newData => {
+                    if (newData && typeof newData === 'object' && Object.keys(newData).length > 0) {
+                        appData = { ...fallbackData, ...newData };
+                        AppStorage.set('sijt_cache', appData);
+                        window.renderAll(false);
+                    }
+                })
+                .catch(() => {});
+        };
+
+        // لیسنر راه‌اندازی
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', window.initApp);
+        } else {
+            window.initApp();
+        }
+
+        // سوپاپ اطمینان نهایی: محو شدن اسپلش بعد از ۱ ثانیه تحت هر شرایطی
+        setTimeout(window.dismissSplashScreen, 1000);
 
         /* ==========================================================================
            ۵. صف هماهنگ‌سازی و ارسال آفلاین پرسش‌ها (Offline Queue)
@@ -5288,122 +5414,6 @@
             ptrStartY = 0;
             ptrCurrentY = 0;
         });
-
-        window.manualRefresh = async function() {
-            const icon = document.getElementById('refreshIcon');
-            if (icon) icon.classList.add('fa-spin');
-            window.showToast('در حال همگام‌سازی اطلاعات با گوگل شیت...');
-            try {
-                const res = await fetch(API_URL + "?action=get_all&t=" + Date.now());
-                if (res.ok) {
-                    const data = await res.json();
-                    if (data && Object.keys(data).length > 0) {
-                        appData = { ...fallbackData, ...data };
-                        await AppStorage.set('sijt_cache', appData);
-                        window.renderAll(true);
-                        window.showToast('اطلاعات با موفقیت به‌روزرسانی شد');
-                    }
-                }
-            } catch (e) {
-                window.renderAll(false);
-                window.showToast('داده‌های محلی بارگذاری شدند');
-            } finally {
-                if (icon) icon.classList.remove('fa-spin');
-            }
-        };
-
-        window.initApp = async function() {
-            await initIndexedDB();
-
-            const savedTheme = (await AppStorage.get('sijt_theme')) || 'dark';
-            window.applyTheme(savedTheme);
-
-            const isOled = (await AppStorage.get('oled_mode')) === true;
-            if (isOled && savedTheme === 'dark') document.body.classList.add('oled-mode');
-
-            const isSaver = (await AppStorage.get('battery_saver')) === true;
-            if (isSaver) {
-                document.body.classList.add('battery-saver');
-                const btn = document.getElementById('batterySaverBtn');
-                if (btn) btn.classList.add('bg-emerald-500/30');
-            }
-
-            const isHc = (await AppStorage.get('high_contrast')) === true;
-            if (isHc) document.body.classList.add('high-contrast');
-
-            const savedFont = (await AppStorage.get('sijt_font'));
-            if (savedFont) {
-                document.documentElement.style.setProperty('--selected-font', savedFont);
-                const fs = document.getElementById('fontSelect');
-                if (fs) fs.value = savedFont;
-            }
-
-            const savedLineHeight = (await AppStorage.get('sijt_line_height'));
-            if (savedLineHeight) {
-                document.documentElement.style.setProperty('--line-height', savedLineHeight);
-                const ls = document.getElementById('lineHeightSelect');
-                if (ls) ls.value = savedLineHeight;
-            }
-
-            userNav = (await AppStorage.get('sijt_custom_nav')) || ['dictionary-tab', 'legal-tab', 'laws-tab', 'cards-tab', 'lawyer-tab'];
-            bookmarks = (await AppStorage.get('sijt_bookmarks')) || [];
-            lawBookmarks = (await AppStorage.get('sijt_law_bookmarks')) || [];
-
-            const cached = await AppStorage.get('sijt_cache');
-            appData = (cached && Object.keys(cached).length > 0) ? { ...fallbackData, ...cached } : fallbackData;
-
-            window.renderBottomNav();
-            window.renderAll(false);
-            window.updateDateTime();
-            setInterval(window.updateDateTime, 30000);
-            window.fetchTehranWeather();
-
-            // حذف اسپلش با انیمیشن روان
-            setTimeout(() => {
-                const s = document.getElementById('splashScreen');
-                if (s) {
-                    s.style.opacity = '0';
-                    setTimeout(() => s.remove(), 320);
-                }
-            }, 350);
-
-            window.renderPersonalNotes();
-            window.setupInfiniteScrolls();
-            window.loadUserFaqs();
-            window.OfflineSync.syncAll();
-
-            // بازیابی تاریخچه سشن چت با اعتبارسنجی خطا
-            try {
-                const cHistory = sessionStorage.getItem('sijt_active_chat');
-                if (cHistory) {
-                    const parsed = JSON.parse(cHistory);
-                    if (Array.isArray(parsed)) {
-                        chatConversationHistory = parsed;
-                        window.renderChatUI();
-                    }
-                }
-            } catch (e) {}
-
-            // دریافت به‌روزرسانی پس‌زمینه از گوگل شیت
-            fetch(API_URL + "?action=get_all&t=" + Date.now())
-                .then(r => r.json())
-                .then(newData => {
-                    if (newData && Object.keys(newData).length > 0) {
-                        appData = { ...fallbackData, ...newData };
-                        AppStorage.set('sijt_cache', appData);
-                        window.renderAll(false);
-                    }
-                }).catch(() => {});
-        };
-
-        // راه‌اندازی اولیه
-        window.addEventListener('DOMContentLoaded', window.initApp);
-
-        // سوپاپ اطمینان حذف اسپلش در صورت بروز هرگونه اختلال رندر
-        setTimeout(() => {
-            const s = document.getElementById('splashScreen');
-            if (s && s.parentElement) s.remove();
-        }, 2000);
     </script>
 </body>
 </html>
