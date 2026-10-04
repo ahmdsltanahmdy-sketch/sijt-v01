@@ -450,7 +450,7 @@
 </head>
 <body class="antialiased">
     <!-- اسپلش‌اسکرین رسمی و سبک (حذف تضمینی و سریع جهت جلوگیری از فریز) -->
-    <div id="splashScreen" class="fixed inset-0 z-[200] flex flex-col items-center justify-center bg-[#070d1e] text-white">
+    <div id="splashScreen" onclick="this.remove()" class="fixed inset-0 z-[200] flex flex-col items-center justify-center bg-[#070d1e] text-white transition-opacity duration-300">
         <div class="relative flex flex-col items-center space-y-4">
             <div class="w-20 h-20 rounded-3xl p-1 bg-gradient-to-tr from-red-600 via-amber-500 to-red-700 shadow-2xl shadow-red-900/50 animate-pulse">
                 <div class="w-full h-full rounded-[22px] bg-[#0b1329] flex items-center justify-center border border-white/15">
@@ -5210,81 +5210,88 @@
             }
         };
         window.initApp = async function() {
-            // بستن سریع اسپلش‌اسکرین برای جلوگیری از هرگونه فریز شدن
-            setTimeout(window.dismissSplashScreen, 400);
+            // ۱. بستن آنی و بدون قید و شرط صفحه لودینگ در نخستین گام
+            window.dismissSplashScreen();
 
+            // ۲. مقداردهی اولیه پایگاه داده آفلاین با هندل کردن کامل خطا
             try {
                 await initIndexedDB();
             } catch (e) {
-                console.warn("خطای ایندکس‌دی‌‌بی:", e);
+                console.warn("DB Init bypassed:", e);
             }
 
-            // خواندن موازی و یکجای تنظیمات جهت به صفر رساندن تاخیر لود
-            const [
-                savedTheme, isOled, isSaver, isHc,
-                savedFont, savedLineHeight, savedNav,
-                savedBookmarks, savedLawBookmarks, cached
-            ] = await Promise.all([
-                AppStorage.get('sijt_theme'),
-                AppStorage.get('oled_mode'),
-                AppStorage.get('battery_saver'),
-                AppStorage.get('high_contrast'),
-                AppStorage.get('sijt_font'),
-                AppStorage.get('sijt_line_height'),
-                AppStorage.get('sijt_custom_nav'),
-                AppStorage.get('sijt_bookmarks'),
-                AppStorage.get('sijt_law_bookmarks'),
-                AppStorage.get('sijt_cache')
-            ]);
-
-            window.applyTheme(savedTheme || 'dark');
-
-            if (isOled && (savedTheme || 'dark') === 'dark') document.body.classList.add('oled-mode');
-            if (isSaver) {
-                document.body.classList.add('battery-saver');
-                const btn = document.getElementById('batterySaverBtn');
-                if (btn) btn.classList.add('bg-emerald-500/30');
-            }
-            if (isHc) document.body.classList.add('high-contrast');
-
-            if (savedFont) {
-                document.documentElement.style.setProperty('--selected-font', savedFont);
-                const fs = document.getElementById('fontSelect');
-                if (fs) fs.value = savedFont;
+            // ۳. بازخوانی امن تنظیمات با مقادیر پیش‌فرض
+            try {
+                const savedTheme = await AppStorage.get('sijt_theme');
+                window.applyTheme(savedTheme || 'dark');
+            } catch (e) {
+                window.applyTheme('dark');
             }
 
-            if (savedLineHeight) {
-                document.documentElement.style.setProperty('--line-height', savedLineHeight);
-                const ls = document.getElementById('lineHeightSelect');
-                if (ls) ls.value = savedLineHeight;
+            try {
+                const isOled = await AppStorage.get('oled_mode');
+                if (isOled) document.body.classList.add('oled-mode');
+            } catch (e) {}
+
+            try {
+                const savedNav = await AppStorage.get('sijt_custom_nav');
+                if (Array.isArray(savedNav) && savedNav.length > 0) userNav = savedNav;
+            } catch (e) {}
+
+            try {
+                const savedBmk = await AppStorage.get('sijt_bookmarks');
+                if (Array.isArray(savedBmk)) bookmarks = savedBmk;
+            } catch (e) {}
+
+            try {
+                const cached = await AppStorage.get('sijt_cache');
+                const defaultDataset = (typeof fallbackData !== 'undefined') ? fallbackData : {};
+                appData = (cached && Object.keys(cached).length > 0) ? { ...defaultDataset, ...cached } : { ...defaultDataset };
+            } catch (e) {
+                appData = (typeof fallbackData !== 'undefined') ? fallbackData : {};
             }
 
-            userNav = savedNav || ['dictionary-tab', 'legal-tab', 'laws-tab', 'cards-tab', 'lawyer-tab'];
-            bookmarks = savedBookmarks || [];
-            lawBookmarks = savedLawBookmarks || [];
+            // ۴. رندر ساختار نوار و صفحات بدون معطلی سرور
+            try {
+                window.renderBottomNav();
+                window.renderAll(false);
+                window.updateDateTime();
+                setInterval(window.updateDateTime, 30000);
+                window.fetchTehranWeather();
+            } catch (renderErr) {
+                console.error("Render Error:", renderErr);
+            }
 
-            // سوپاپ اطمینان آبجکت دیتاست پیش‌فرض
-            const defaultDataset = (typeof fallbackData !== 'undefined') ? fallbackData : {};
-            appData = (cached && Object.keys(cached).length > 0) ? { ...defaultDataset, ...cached } : { ...defaultDataset };
-
-            // رندر فوری عناصر رابط کاربری
-            window.renderBottomNav();
-            window.renderAll(false);
-            window.updateDateTime();
-            setInterval(window.updateDateTime, 30000);
-            window.fetchTehranWeather();
-
-            // حذف قطعی اسپلش‌‌اسکرین پس از رندر
+            // ۵. حذف مجدد اسپلش‌اسکرین به عنوان سوپاپ اطمینان
             window.dismissSplashScreen();
 
-            // فرآیندهای پس‌زمینه بدون مسدودسازی ترد اصلی
+            // ۶. اجرای فرآیندهای پس‌زمینه در پس از رندر
             setTimeout(() => {
-                window.renderPersonalNotes();
-                window.setupInfiniteScrolls();
-                window.loadUserFaqs();
-                window.OfflineSync.syncAll();
-            }, 60);
+                try {
+                    window.renderPersonalNotes();
+                    window.setupInfiniteScrolls();
+                    window.loadUserFaqs();
+                    window.OfflineSync.syncAll();
+                } catch (bgErr) {}
+            }, 50);
 
+            // ۷. دریافت بی‌صدا و نامتقارن داده‌ها از سرور گوگل
+            window.fetchAppDataUniversal()
+                .then(newData => {
+                    if (newData && typeof newData === 'object' && Object.keys(newData).length > 0) {
+                        appData = { ...fallbackData, ...newData };
+                        AppStorage.set('sijt_cache', appData);
+                        window.renderAll(false);
+                    }
+                })
+                .catch(() => {});
+        };
+
+        // پاک‌کننده اضطراری DOM: حذف فیزیکی اسپلش‌اسکرین پس از حداکثر ۳۵۰ میلی‌ثانیه
+        setTimeout(() => {
+            const s = document.getElementById('splashScreen');
+            if (s) s.remove();
+        }, 350);
             // بازیابی تاریخچه سشن چت
             try {
                 const cHistory = sessionStorage.getItem('sijt_active_chat');
