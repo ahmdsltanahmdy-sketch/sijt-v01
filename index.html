@@ -2162,7 +2162,7 @@
             } catch (e) {}
         }
 
-        const API_URL = "https://script.google.com/macros/s/AKfycbwUq0g0Z_y6Wk7WJvGg6s5qjXj0v-Wd7GfXlA/exec";
+        const API_URL = "https://script.google.com/macros/s/AKfycbyrMOSKpL5rwv5C9okpDQvbKE07-1JFP2ZE5xt7Xt4Y9sSvIUwbXZWU6ssTbBgQRgSZ/exec";
         const userId = tg?.initDataUnsafe?.user?.id ? String(tg.initDataUnsafe.user.id) : ('guest_' + Math.floor(Math.random() * 1000000));
         const telegramInitData = tg?.initData || '';
 
@@ -5093,7 +5093,7 @@
         /* ==========================================================================
            ۳۳. موتور ارتباط شبکه قدرتمند، رفع باگ CORS/302 و مکانیزم اضطراری JSONP
            ========================================================================== */
-        window.fetchDataJsonp = function(url) {
+    window.fetchDataJsonp = function(url) {
             return new Promise((resolve, reject) => {
                 const callbackName = 'sijt_cb_' + Math.round(100000 * Math.random());
                 const script = document.createElement('script');
@@ -5103,7 +5103,7 @@
                 const timer = setTimeout(() => {
                     cleanup();
                     reject(new Error('JSONP Timeout'));
-                }, 18000);
+                }, 15000);
 
                 function cleanup() {
                     clearTimeout(timer);
@@ -5126,17 +5126,15 @@
         };
 
         window.fetchAppDataUniversal = async function() {
-            const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), 18000); // مهلت ۱۸ ثانیه‌ای برای Cold Start گوگل
-            const reqUrl = `${API_URL}?action=get_all&_nocache=${Date.now()}`;
-
+            // حالت اول: درخواست با پارامتر get_all
             try {
-                // تلاش اول: پروتکل استاندارد Fetch با تعقیب خودکار ریدایرکت‌های ۳۰۲ گوگل
-                const res = await fetch(reqUrl, {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 12000);
+                
+                const res = await fetch(`${API_URL}?action=get_all`, {
                     method: 'GET',
                     mode: 'cors',
                     redirect: 'follow',
-                    cache: 'no-store',
                     signal: controller.signal
                 });
                 clearTimeout(timeoutId);
@@ -5146,40 +5144,48 @@
                     try {
                         const parsed = JSON.parse(text);
                         if (parsed && typeof parsed === 'object') return parsed;
-                    } catch (err) {
-                        // در صورت برگشت صفحه خطا به جای جیسون
-                        console.warn("پاسخ سرور جیسون معتبر نبود، تست اتصال کمکی...");
-                    }
+                    } catch (e) {}
                 }
-                throw new Error("Fetch failed, fallback to JSONP");
-            } catch (fetchErr) {
-                clearTimeout(timeoutId);
-                // تلاش دوم: استفاده از متد کمکی JSONP برای دور زدن کامل خطاهای مسدودسازی مرورگر
-                try {
-                    const jsonpData = await window.fetchDataJsonp(reqUrl);
-                    if (jsonpData && typeof jsonpData === 'object') return jsonpData;
-                } catch (jsonpErr) {
-                    throw new Error("Both Fetch and JSONP failed");
-                }
-            }
-        };
+            } catch (err1) {}
 
-        window.dismissSplashScreen = function() {
-            const s = document.getElementById('splashScreen');
-            if (s) {
-                s.style.transition = 'opacity 0.25s ease';
-                s.style.opacity = '0';
-                s.style.pointerEvents = 'none';
-                setTimeout(() => {
-                    if (s.parentElement) s.remove();
-                }, 260);
+            // حالت دوم: درخواست مستقیم بدون پارامتر
+            try {
+                const controller2 = new AbortController();
+                const timeoutId2 = setTimeout(() => controller2.abort(), 12000);
+                
+                const res2 = await fetch(API_URL, {
+                    method: 'GET',
+                    mode: 'cors',
+                    redirect: 'follow',
+                    signal: controller2.signal
+                });
+                clearTimeout(timeoutId2);
+
+                if (res2.ok) {
+                    const text2 = await res2.text();
+                    try {
+                        const parsed2 = JSON.parse(text2);
+                        if (parsed2 && typeof parsed2 === 'object') return parsed2;
+                    } catch (e) {}
+                }
+            } catch (err2) {}
+
+            // حالت سوم: اتصال با تگ اسکریپت (JSONP)
+            try {
+                const jsonpData = await window.fetchDataJsonp(`${API_URL}?action=get_all`);
+                if (jsonpData && typeof jsonpData === 'object') return jsonpData;
+            } catch (err3) {
+                const jsonpDataRaw = await window.fetchDataJsonp(API_URL);
+                if (jsonpDataRaw && typeof jsonpDataRaw === 'object') return jsonpDataRaw;
             }
+
+            throw new Error("امکان اتصال به سرور وجود ندارد.");
         };
 
         window.manualRefresh = async function() {
             const icon = document.getElementById('refreshIcon');
             if (icon) icon.classList.add('fa-spin');
-            window.showToast('در حال همگام‌سازی با سرور دادرسی...');
+            window.showToast('در حال همگام‌سازی با گوگل شیت...');
 
             try {
                 const data = await window.fetchAppDataUniversal();
@@ -5197,13 +5203,12 @@
                     appData = fallbackData;
                 }
                 window.renderAll(false);
-                window.showToast('امکان اتصال به سرور نبود؛ داده‌های آفلاین لود شدند', 'error');
+                window.showToast('عدم اتصال به سرور؛ داده‌های آفلاین لود شدند', 'error');
                 window.triggerHaptic('error');
             } finally {
                 if (icon) icon.classList.remove('fa-spin');
             }
         };
-
         window.initApp = async function() {
             // بستن سریع اسپلش‌اسکرین برای جلوگیری از هرگونه فریز شدن
             setTimeout(window.dismissSplashScreen, 400);
