@@ -4026,56 +4026,102 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
         /* ==========================================================================
            ۱۳. پخش‌کننده‌های مدیا، استریم Hls.js و پادکست
            ========================================================================== */
-        let activeHlsInstance = null;
+let activeHlsInstance = null;
 
-        window.playLiveHlsStream = function(titleEnc, urlEnc, fallbackEnc) {
-            const title = decodeURIComponent(titleEnc);
-            const primaryUrl = decodeURIComponent(urlEnc);
-            const fallbackUrl = decodeURIComponent(fallbackEnc || '');
-            const video = document.getElementById('liveStreamVideo');
-            const placeholder = document.getElementById('liveStreamPlaceholder');
-            const titleEl = document.getElementById('currentLiveTitle');
+window.playLiveHlsStream = function(titleEnc, urlEnc, fallbackEnc) {
+    const title = decodeURIComponent(titleEnc || '');
+    let primaryUrl = decodeURIComponent(urlEnc || '');
+    let fallbackUrl = fallbackEnc ? decodeURIComponent(fallbackEnc) : '';
 
-            if (!video) return;
+    const video = document.getElementById('liveStreamVideo');
+    const placeholder = document.getElementById('liveStreamPlaceholder');
+    const titleEl = document.getElementById('currentLiveTitle');
 
-            if (titleEl) titleEl.innerText = title;
-            if (placeholder) placeholder.classList.add('hidden');
+    if (!video) return;
 
-            if (activeHlsInstance) {
-                activeHlsInstance.destroy();
-                activeHlsInstance = null;
+    if (titleEl) titleEl.innerText = title;
+    if (placeholder) placeholder.classList.add('hidden');
+
+    // آزادسازی منابع قبلی
+    if (activeHlsInstance) {
+        activeHlsInstance.destroy();
+        activeHlsInstance = null;
+    }
+
+    video.pause();
+    video.removeAttribute('src');
+    video.load();
+    video.muted = true; // الزامی برای رفع خطای Autoplay سیاست مرورگر
+
+    // ۱. اولویت اول: پخش با موتور پیش‌فرض مرورگر (مخصوص Safari، آیفون و تلگرام iOS بدون مشکل CORS)
+    if (video.canPlayType('application/vnd.apple.mpegurl')) {
+        video.src = primaryUrl;
+        video.addEventListener('loadedmetadata', () => {
+            video.play().catch(e => console.warn("Autoplay prevented:", e));
+        }, { once: true });
+
+        video.onerror = function() {
+            if (fallbackUrl && video.src !== fallbackUrl) {
+                console.warn("Switching to fallback native...");
+                video.src = fallbackUrl;
+                video.play().catch(() => {});
+            } else {
+                window.showToast('خطا در بارگذاری استریم (سرور پخش اجازه دسترسی وب نداد)', 'error');
             }
-
-            video.muted = true; // پذیرش سیاست Autoplay در مرورگرها
-
-            function loadStreamSource(srcUrl, isFallback = false) {
-                if (Hls.isSupported()) {
-                    activeHlsInstance = new Hls({ enableWorker: true });
-                    activeHlsInstance.loadSource(srcUrl);
-                    activeHlsInstance.attachMedia(video);
-                    activeHlsInstance.on(Hls.Events.MANIFEST_PARSED, () => {
-                        video.play().catch(() => {});
-                    });
-                    activeHlsInstance.on(Hls.Events.ERROR, (event, data) => {
-                        if (data.fatal) {
-                            if (!isFallback && fallbackUrl) {
-                                activeHlsInstance.destroy();
-                                loadStreamSource(fallbackUrl, true);
-                            } else {
-                                window.showToast('خطا در لود استریم؛ محدودیت CORS یا شبکه را بررسی فرمایید.', 'error');
-                            }
-                        }
-                    });
-                } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-                    video.src = srcUrl;
-                    video.addEventListener('loadedmetadata', () => {
-                        video.play().catch(() => {});
-                    });
-                }
-            }
-
-            loadStreamSource(primaryUrl);
         };
+        return;
+    }
+
+    // ۲. اولویت دوم: استفاده از Hls.js با تنظیمات ضد خطای شبکه و دور زدن کش
+    if (Hls.isSupported()) {
+        activeHlsInstance = new Hls({
+            enableWorker: true,
+            lowLatencyMode: true,
+            backBufferLength: 30,
+            xhrSetup: function(xhr, url) {
+                xhr.withCredentials = false; // جلوگیری از بلاک شدن توسط احراز هویت‌های هدر CORS
+            }
+        });
+
+        function tryLoad(streamUrl, isFallback = false) {
+            activeHlsInstance.loadSource(streamUrl);
+            activeHlsInstance.attachMedia(video);
+
+            activeHlsInstance.on(Hls.Events.MANIFEST_PARSED, () => {
+                video.play().catch(e => console.warn("Autoplay blocked:", e));
+            });
+
+            activeHlsInstance.on(Hls.Events.ERROR, (event, data) => {
+                if (data.fatal) {
+                    switch (data.type) {
+                        case Hls.ErrorTypes.NETWORK_ERROR:
+                            console.error("HLS Network Error:", data);
+                            if (!isFallback && fallbackUrl) {
+                                window.showToast('تلاش مجدد با خط پشتیبان...', 'info');
+                                activeHlsInstance.destroy();
+                                tryLoad(fallbackUrl, true);
+                            } else {
+                                activeHlsInstance.startLoad(); // تلاش مجدد خودکار
+                            }
+                            break;
+                        case Hls.ErrorTypes.MEDIA_ERROR:
+                            console.warn("HLS Media Error, recovering...");
+                            activeHlsInstance.recoverMediaError();
+                            break;
+                        default:
+                            activeHlsInstance.destroy();
+                            window.showToast('خطای عدم دسترسی سرور پخش یا قطع فیلترشکن', 'error');
+                            break;
+                    }
+                }
+            });
+        }
+
+        tryLoad(primaryUrl);
+    } else {
+        window.showToast('مرورگر شما از پخش زنده HLS پشتیبانی نمی‌کند', 'error');
+    }
+};
 
         window.playAudioTrack = function(titleEnc, urlEnc, thumbEnc) {
             const title = decodeURIComponent(titleEnc);
