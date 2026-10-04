@@ -5093,7 +5093,10 @@
         /* ==========================================================================
            ۳۳. موتور ارتباط شبکه قدرتمند، رفع باگ CORS/302 و مکانیزم اضطراری JSONP
            ========================================================================== */
-    window.fetchDataJsonp = function(url) {
+   /* ==========================================================================
+           موتور دریافت اطلاعات و لود برنامه (بدون هیچ خطای سینتکس)
+           ========================================================================== */
+        window.fetchDataJsonp = function(url) {
             return new Promise((resolve, reject) => {
                 const callbackName = 'sijt_cb_' + Math.round(100000 * Math.random());
                 const script = document.createElement('script');
@@ -5126,7 +5129,6 @@
         };
 
         window.fetchAppDataUniversal = async function() {
-            // حالت اول: درخواست با پارامتر get_all
             try {
                 const controller = new AbortController();
                 const timeoutId = setTimeout(() => controller.abort(), 12000);
@@ -5148,7 +5150,6 @@
                 }
             } catch (err1) {}
 
-            // حالت دوم: درخواست مستقیم بدون پارامتر
             try {
                 const controller2 = new AbortController();
                 const timeoutId2 = setTimeout(() => controller2.abort(), 12000);
@@ -5170,7 +5171,6 @@
                 }
             } catch (err2) {}
 
-            // حالت سوم: اتصال با تگ اسکریپت (JSONP)
             try {
                 const jsonpData = await window.fetchDataJsonp(`${API_URL}?action=get_all`);
                 if (jsonpData && typeof jsonpData === 'object') return jsonpData;
@@ -5179,7 +5179,19 @@
                 if (jsonpDataRaw && typeof jsonpDataRaw === 'object') return jsonpDataRaw;
             }
 
-            throw new Error("امکان اتصال به سرور وجود ندارد.");
+            throw new Error("عدم برقراری ارتباط با وب‌اپ گوگل");
+        };
+
+        window.dismissSplashScreen = function() {
+            const s = document.getElementById('splashScreen');
+            if (s) {
+                s.style.transition = 'opacity 0.25s ease';
+                s.style.opacity = '0';
+                s.style.pointerEvents = 'none';
+                setTimeout(() => {
+                    if (s.parentElement) s.remove();
+                }, 260);
+            }
         };
 
         window.manualRefresh = async function() {
@@ -5209,18 +5221,14 @@
                 if (icon) icon.classList.remove('fa-spin');
             }
         };
+
         window.initApp = async function() {
-            // ۱. بستن آنی و بدون قید و شرط صفحه لودینگ در نخستین گام
             window.dismissSplashScreen();
 
-            // ۲. مقداردهی اولیه پایگاه داده آفلاین با هندل کردن کامل خطا
             try {
                 await initIndexedDB();
-            } catch (e) {
-                console.warn("DB Init bypassed:", e);
-            }
+            } catch (e) {}
 
-            // ۳. بازخوانی امن تنظیمات با مقادیر پیش‌فرض
             try {
                 const savedTheme = await AppStorage.get('sijt_theme');
                 window.applyTheme(savedTheme || 'dark');
@@ -5251,7 +5259,6 @@
                 appData = (typeof fallbackData !== 'undefined') ? fallbackData : {};
             }
 
-            // ۴. رندر ساختار نوار و صفحات بدون معطلی سرور
             try {
                 window.renderBottomNav();
                 window.renderAll(false);
@@ -5262,10 +5269,8 @@
                 console.error("Render Error:", renderErr);
             }
 
-            // ۵. حذف مجدد اسپلش‌اسکرین به عنوان سوپاپ اطمینان
             window.dismissSplashScreen();
 
-            // ۶. اجرای فرآیندهای پس‌زمینه در پس از رندر
             setTimeout(() => {
                 try {
                     window.renderPersonalNotes();
@@ -5275,7 +5280,6 @@
                 } catch (bgErr) {}
             }, 50);
 
-            // ۷. دریافت بی‌صدا و نامتقارن داده‌ها از سرور گوگل
             window.fetchAppDataUniversal()
                 .then(newData => {
                     if (newData && typeof newData === 'object' && Object.keys(newData).length > 0) {
@@ -5287,7 +5291,12 @@
                 .catch(() => {});
         };
 
-        // پاک‌کننده اضطراری DOM: حذف فیزیکی اسپلش‌اسکرین پس از حداکثر ۳۵۰ میلی‌ثانیه
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', window.initApp);
+        } else {
+            window.initApp();
+        }
+
         setTimeout(() => {
             const s = document.getElementById('splashScreen');
             if (s) s.remove();
@@ -5311,8 +5320,6 @@
                         appData = { ...defaultDataset, ...newData };
                         AppStorage.set('sijt_cache', appData);
                         window.renderAll(false);
-                    }
-                })
                 .catch(() => {});
         };
 
