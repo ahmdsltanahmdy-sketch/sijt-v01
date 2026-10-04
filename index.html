@@ -7,21 +7,21 @@
     
     <title>سامانه هوشمند قضایی SIJT | دستیار دادرسی و محاسبات حقوقی</title>
     
-    <!-- متاتگ‌های تلگرام و وب‌اپلیکیشن پیش‌رونده (PWA) -->
+    <!-- متاتگ‌های وب‌اپلیکیشن تلگرام و PWA -->
     <meta name="theme-color" content="#070d1e">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="format-detection" content="telephone=no">
 
-    <!-- قلم‌های استاندارد فارسی رسمی قوه قضائیه و وب (وزیرمتن و شبنم) -->
+    <!-- بارگذاری قلم‌های استاندارد فارسی رسمی قوه قضائیه -->
     <link rel="preconnect" href="https://cdn.jsdelivr.net">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/misc/Farsi-Digits/Vazirmatn-FD-font-face.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/rastikerdar/shabnam-font@v5.0.1/dist/font-face.css">
 
-    <!-- کتابخانه آیکون‌های FontAwesome نسخه ۶ پرو/رایگان -->
+    <!-- فونت آیکون FontAwesome ۶ پرو -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-    <!-- فریم‌ورک استایل‌دهی Tailwind CSS -->
+    <!-- فریم‌‌ورک استایل‌دهی Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -41,21 +41,14 @@
         };
     </script>
 
-    <!-- کتابخانه وب‌اپ تلگرام رسمی -->
+    <!-- کتابخانه‌های موتور وب‌اپلیکیشن، پردازش اسناد و چندرسانه‌ای -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-
-    <!-- موتور اسکن نوری اسناد OCR (Tesseract.js) -->
     <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
-
-    <!-- موتور تولید بارکد دوبعدی QR Code با اصلاح سطح انطباق M -->
     <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
-
-    <!-- کتابخانه‌های رندر گرافیکی کارت و خروجی اسناد PDF استاندارد A4 چندصفحه‌ای -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-
-    <!-- استریم پروتکل HLS جهت پخش زنده دادگاه‌ها و شبکه‌ها -->
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+
     <style>
         :root {
             --selected-font: 'Vazirmatn', -apple-system, BlinkMacSystemFont, Tahoma, sans-serif;
@@ -63,8 +56,8 @@
             --line-height: 1.8;
             --bg-color-light: #f8fafc;
             --bg-color-dark: #070d1e;
-            --card-bg-light: rgba(255, 255, 255, 0.85);
-            --card-bg-dark: rgba(11, 19, 41, 0.75);
+            --card-bg-light: rgba(255, 255, 255, 0.88);
+            --card-bg-dark: rgba(11, 19, 41, 0.85);
             --border-light: rgba(0, 0, 0, 0.08);
             --border-dark: rgba(255, 255, 255, 0.12);
             --gold-accent: #f59e0b;
@@ -100,7 +93,7 @@
             color: #f1f5f9;
         }
 
-        /* حالت مشکی مطلق OLED */
+        /* حالت تاریک مطلق مخصوص نمایشگرهای OLED */
         body.oled-mode {
             background-color: #000000 !important;
             color: #ffffff !important;
@@ -116,7 +109,7 @@
             -webkit-backdrop-filter: none !important;
         }
 
-        /* حالت صرفه‌جویی مصرف باتری */
+        /* حالت بهینه‌سازی مصرف باتری */
         body.battery-saver * {
             animation: none !important;
             transition: none !important;
@@ -125,7 +118,7 @@
             -webkit-backdrop-filter: none !important;
         }
 
-        /* حالت کنتراست فوق‌العاده بالا */
+        /* حالت کنتراست ارتقایافته */
         body.high-contrast {
             --border-light: #000000;
             --border-dark: #ffffff;
@@ -134,7 +127,7 @@
             font-weight: 700 !important;
         }
 
-        /* استایل‌های گلس‌مورفیسم پیشرفته */
+        /* افکت‌های شیشه‌ای مورفیسم */
         .ultra-glass {
             background: var(--card-bg-light);
             backdrop-filter: blur(16px);
@@ -174,7 +167,6 @@
             border: 1px solid var(--border-dark);
         }
 
-        /* مخفی‌ساز اسکرول‌بار */
         .hide-scrollbar::-webkit-scrollbar {
             display: none;
         }
@@ -183,7 +175,6 @@
             scrollbar-width: none;
         }
 
-        /* چیدمان منعطف دسکتاپ و موبایل */
         #appRoot {
             min-height: 100vh;
             display: flex;
@@ -192,16 +183,16 @@
 
         .layout-container {
             width: 100%;
-            max-w: 1280px;
+            max-width: 1280px;
             margin: 0 auto;
             display: flex;
             flex: 1;
-            padding-bottom: 80px;
+            padding-bottom: 120px;
         }
 
         @media (min-width: 1024px) {
             .layout-container {
-                padding-bottom: 24px;
+                padding-bottom: 32px;
                 padding-top: 16px;
                 gap: 24px;
                 padding-left: 20px;
@@ -209,7 +200,7 @@
             }
         }
 
-        /* سایدبار دسکتاپ */
+        /* سایدبار ناوبری عریض دسکتاپ */
         #desktopSidebar {
             display: none;
             width: 280px;
@@ -232,7 +223,6 @@
         .desktop-nav-item {
             display: flex;
             align-items: center;
-            space-x: 10px;
             width: 100%;
             padding: 10px 14px;
             border-radius: 16px;
@@ -267,7 +257,6 @@
             border-right-color: #f59e0b;
         }
 
-        /* محتوای اصلی */
         #mainContentArea {
             flex: 1;
             min-width: 0;
@@ -280,7 +269,7 @@
             }
         }
 
-        /* هدر چسبان هوشمند */
+        /* هدر فوقانی با لایه محو شیشه‌ای */
         #appHeader {
             position: sticky;
             top: 0;
@@ -301,7 +290,7 @@
             transform: translateY(-110%);
         }
 
-        /* نوار ناوبری شناور ارگونومیک موبایل با کپسول لغزان */
+        /* نوار ناوبری ارگونومیک شناور موبایل */
         .floating-nav {
             position: fixed;
             bottom: 16px;
@@ -309,10 +298,10 @@
             transform: translateX(-50%);
             width: calc(100% - 32px);
             max-width: 480px;
-            height: 62px;
+            height: 64px;
             border-radius: 32px;
             z-index: 90;
-            background: rgba(255, 255, 255, 0.85);
+            background: rgba(255, 255, 255, 0.88);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid var(--border-light);
@@ -325,7 +314,7 @@
         }
 
         html.dark .floating-nav {
-            background: rgba(11, 19, 41, 0.85);
+            background: rgba(11, 19, 41, 0.88);
             border: 1px solid var(--border-dark);
             box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45);
         }
@@ -334,12 +323,6 @@
             .floating-nav {
                 display: none !important;
             }
-        }
-
-        .nav-hidden {
-            transform: translate(-50%, 120%) !important;
-            opacity: 0;
-            pointer-events: none;
         }
 
         .nav-btn {
@@ -378,7 +361,6 @@
             transform: translateY(-2px) scale(1.1);
         }
 
-        /* کپسول متحرک نشانگر تب فعال */
         .nav-indicator-pill {
             position: absolute;
             top: 6px;
@@ -391,10 +373,10 @@
             pointer-events: none;
         }
 
-        /* پلیر شناور پادکست و رسانه */
+        /* پخش‌کننده صوتی شناور */
         #floatingAudioPlayer {
             position: fixed;
-            bottom: 84px;
+            bottom: 90px;
             left: 50%;
             transform: translateX(-50%) translateY(200%);
             width: calc(100% - 32px);
@@ -428,7 +410,6 @@
             }
         }
 
-        /* دراورهای کشویی پایین (Bottom Drawers) */
         .bottom-drawer {
             display: none;
             position: fixed;
@@ -447,7 +428,7 @@
             to { transform: translateY(0); }
         }
 
-        /* کارت‌های اسکلتون پیش‌لودر */
+        /* اسکلتون لودینگ برای پیش‌نمایش بارگذاری محتوا */
         .skeleton-card {
             border-radius: 20px;
             background: linear-gradient(90deg, rgba(255,255,255,0.04) 25%, rgba(255,255,255,0.09) 50%, rgba(255,255,255,0.04) 75%);
@@ -468,71 +449,7 @@
         .skeleton-podcast { height: 68px; width: 100%; }
         .skeleton-media-grid { height: 150px; width: 100%; }
 
-        /* نشانگر کشیدن جهت بازخوانی (PTR) */
-        .ptr-indicator {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 0px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            z-index: 100;
-            pointer-events: none;
-            transition: height 0.15s ease-out;
-        }
-
-        .ptr-refreshing {
-            animation: ptrSpin 0.8s linear infinite;
-        }
-
-        @keyframes ptrSpin {
-            100% { transform: rotate(360deg); }
-        }
-
-        /* دکمه بازگشت به بالا */
-        #backToTopBtn {
-            position: fixed;
-            bottom: 88px;
-            left: 20px;
-            z-index: 75;
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.25s ease;
-        }
-
-        @media (min-width: 1024px) {
-            #backToTopBtn {
-                bottom: 30px;
-                left: 30px;
-            }
-        }
-
-        /* پنجره شناور تصویر در تصویر (PiP) دستی */
-        #floatingPipContainer {
-            display: none;
-            position: fixed;
-            bottom: 96px;
-            left: 16px;
-            width: 220px;
-            height: 124px;
-            border-radius: 18px;
-            overflow: hidden;
-            z-index: 95;
-            border: 2px solid var(--gold-accent);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-            background: #000;
-            touch-action: none;
-        }
-
-        /* کانتینر تعاملی زوم و Pan تصویر اینفوگرافیک */
+        /* ویوپورت تعاملی زوم لمسی و Pan اینفوگرافیک */
         .zoom-pan-viewport {
             width: 100%;
             height: 65vh;
@@ -559,21 +476,10 @@
             transition: transform 0.08s ease-out;
             will-change: transform;
         }
-
-        /* هایلایت انیمیشن جستجو */
-        .search-highlight {
-            animation: highlightPulse 2s ease forwards;
-        }
-
-        @keyframes highlightPulse {
-            0% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.8); }
-            50% { box-shadow: 0 0 0 8px rgba(245, 158, 11, 0); }
-            100% { box-shadow: none; }
-        }
     </style>
 </head>
 <body class="bg-[#f8fafc] dark:bg-[#070d1e] text-slate-800 dark:text-slate-100 min-h-screen">
-    <!-- اسپلش‌اسکرین ایمن، سبک و با قابلیت حذف اضطراری جهت ممانعت از فریز -->
+    <!-- اسپلش‌اسکرین ایمن با امکان حذف اضطراری لمسی جهت ممانعت از فریز -->
     <div id="splashScreen" onclick="this.remove()" class="fixed inset-0 z-[200] flex flex-col items-center justify-center bg-[#070d1e] text-white transition-opacity duration-300 pointer-events-auto">
         <div class="relative flex flex-col items-center space-y-4">
             <div class="w-20 h-20 rounded-3xl p-1 bg-gradient-to-tr from-red-600 via-amber-500 to-red-700 shadow-2xl shadow-red-900/50 animate-pulse">
@@ -594,9 +500,9 @@
     </div>
 
     <!-- نشانگر انیمیشن بازخوانی لمسی صفحه (Pull to Refresh Indicator) -->
-    <div id="ptr-indicator" class="ptr-indicator bg-transparent text-amber-500 text-xs font-bold space-x-1.5 space-x-reverse">
+    <div id="ptr-indicator" class="ptr-indicator bg-transparent text-amber-500 text-xs font-bold space-x-1.5 space-x-reverse hidden">
         <i id="ptrScaleIcon" class="fa-solid fa-scale-unbalanced-flip text-base transition-transform duration-200"></i>
-        <span id="ptrText">برای به‌روزرسانی به پایین بکشید...</span>
+        <span id="ptrText">برای به‌‌روزرسانی به پایین بکشید...</span>
     </div>
 
     <!-- کانتینر پیام‌های شناور توست (Toast Notifications Container) -->
@@ -616,9 +522,9 @@
                 </div>
             </div>
 
-            <!-- ویجت‌های آب‌وهوا، تقویم و کنترل‌های سریع هدر -->
+            <!-- ویجت‌های تقویم پویا، آب‌وهوا و کنترل‌های سریع هدر -->
             <div class="flex items-center space-x-1.5 space-x-reverse">
-                <!-- تقویم هجری خورشیدی پویا -->
+                <!-- تقویم پویا -->
                 <div id="headerCalendarWidget" class="hidden sm:flex items-center text-[10px] font-bold text-slate-600 dark:text-slate-300 bg-black/5 dark:bg-white/10 px-2.5 py-1 rounded-xl">
                     در حال دریافت تاریخ...
                 </div>
@@ -645,17 +551,18 @@
                     <span class="w-2 h-2 rounded-full bg-red-600 absolute top-1.5 right-1.5"></span>
                 </button>
 
-                <!-- نصب PWA -->
+                <!-- نصب وب‌اپ PWA -->
                 <button onclick="installPWA(); triggerHaptic('light');" title="نصب اپلیکیشن" aria-label="نصب برنامه" class="w-8 h-8 rounded-xl bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/15 flex items-center justify-center text-slate-700 dark:text-slate-200 transition cursor-pointer border-none">
                     <i class="fa-solid fa-download text-xs text-emerald-500"></i>
                 </button>
 
-                <!-- منوی تنظیمات -->
+                <!-- کلید دسترسی به منوی تنظیمات جامع -->
                 <button id="settingsBtn" onclick="toggleSettingsMenu(event); triggerHaptic('light');" title="تنظیمات سامانه" aria-label="تنظیمات" class="w-8 h-8 rounded-xl bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/15 flex items-center justify-center text-slate-700 dark:text-slate-200 transition cursor-pointer border-none">
                     <i class="fa-solid fa-sliders text-xs text-amber-500"></i>
                 </button>
             </div>
         </div>
+
         <!-- منوی تنظیمات جامع کشویی (Settings Dropdown) -->
         <div id="settingsDropdown" class="hidden absolute left-4 top-12 z-50 w-72 settings-glass p-3.5 space-y-3">
             <div class="flex justify-between items-center pb-2 border-b border-black/10 dark:border-white/10">
@@ -665,7 +572,7 @@
                 <span class="text-[9px] text-slate-400 font-medium">نسخه ۳.۰ پرو</span>
             </div>
 
-            <!-- حالت تم تاریک و روشن و حالت اولد -->
+            <!-- انتخاب حالت تم تاریک و روشن و حالت اولد -->
             <div class="grid grid-cols-2 gap-2 text-[10px]">
                 <button onclick="toggleTheme(); triggerHaptic('light');" class="p-2 rounded-xl bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/15 flex items-center justify-center space-x-1.5 space-x-reverse font-bold text-slate-800 dark:text-slate-100 transition cursor-pointer border-none">
                     <i class="fa-solid fa-circle-half-stroke text-amber-500 ml-1"></i>
@@ -677,11 +584,11 @@
                 </button>
             </div>
 
-            <!-- صرفه‌جویی باتری و کنتراست بالا -->
+            <!-- بهینه‌ساز باتری و کنتراست بالا -->
             <div class="grid grid-cols-2 gap-2 text-[10px]">
                 <button id="batterySaverBtn" onclick="toggleBatterySaver();" class="p-2 rounded-xl bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/15 flex items-center justify-center space-x-1.5 space-x-reverse font-bold text-slate-800 dark:text-slate-100 transition cursor-pointer border-none">
                     <i class="fa-solid fa-bolt text-emerald-500 ml-1"></i>
-                    <span>صرفه‌جویی باتری</span>
+                    <span>صرفه‌‌جویی باتری</span>
                 </button>
                 <button onclick="toggleHighContrast();" class="p-2 rounded-xl bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/15 flex items-center justify-center space-x-1.5 space-x-reverse font-bold text-slate-800 dark:text-slate-100 transition cursor-pointer border-none">
                     <i class="fa-solid fa-eye text-amber-400 ml-1"></i>
@@ -689,7 +596,7 @@
                 </button>
             </div>
 
-            <!-- انتخاب قلم فارسی -->
+            <!-- انتخاب قلم فارسی سامانه -->
             <div class="space-y-1">
                 <label for="fontSelect" class="text-[10px] font-bold text-slate-600 dark:text-slate-400 block text-right">انتخاب قلم فارسی سامانه:</label>
                 <select id="fontSelect" onchange="changeFontFamily(this.value);" class="w-full rounded-xl p-2 text-xs bg-slate-100 dark:bg-slate-900 text-slate-800 dark:text-slate-100 border border-black/10 dark:border-white/20 focus:outline-none focus:border-amber-500 transition cursor-pointer">
@@ -699,7 +606,7 @@
                 </select>
             </div>
 
-            <!-- اندازه متن و ارتفاع خطوط -->
+            <!-- اندازه قلم و فاصله خطوط -->
             <div class="grid grid-cols-2 gap-2">
                 <div class="space-y-1">
                     <label for="fontSizeSelect" class="text-[10px] font-bold text-slate-600 dark:text-slate-400 block text-right">اندازه قلم:</label>
@@ -720,17 +627,17 @@
                 </div>
             </div>
 
-            <!-- نوع تقویم نمایش داده شده -->
+            <!-- نوع تقویم هدر -->
             <div class="space-y-1">
                 <label for="calendarTypeSelect" class="text-[10px] font-bold text-slate-600 dark:text-slate-400 block text-right">مبنای تقویم هدر:</label>
                 <select id="calendarTypeSelect" onchange="changeCalendarType(this.value);" class="w-full rounded-xl p-2 text-xs bg-slate-100 dark:bg-slate-900 text-slate-800 dark:text-slate-100 border border-black/10 dark:border-white/20 focus:outline-none focus:border-amber-500 transition cursor-pointer">
                     <option value="persian" selected>تقویم رسمی هجری خورشیدی</option>
-                    <option value="gregorian">تقویم میلادی بین‌المللی</option>
+                    <option value="gregorian">تقویم میلادی بین‌‌المللی</option>
                     <option value="lunar">تقویم هجری قمری</option>
                 </select>
             </div>
 
-            <!-- گزینه‌های پشتیبان‌گیری، کش و خروج -->
+            <!-- گزینه‌های پشتیبان‌گیری، کش و سفارشی‌سازی نوار -->
             <div class="pt-2 border-t border-black/10 dark:border-white/10 space-y-2 text-[10px]">
                 <div class="flex space-x-2 space-x-reverse">
                     <button onclick="exportAppBackup(); triggerHaptic('light');" class="flex-1 p-2 rounded-xl bg-black/5 dark:bg-white/10 hover:bg-black/10 text-slate-800 dark:text-slate-100 font-bold transition cursor-pointer border-none flex items-center justify-center">
@@ -770,7 +677,7 @@
                     </button>
                 </div>
 
-                <!-- پنل نمایش پیشنهادات زنده جستجو (Live Autocomplete Panel) -->
+                <!-- پنل پیشنهادات زنده جستجو (Live Autocomplete Panel) -->
                 <div id="liveSuggestionsBox" class="hidden absolute top-12 left-0 right-0 z-40 settings-glass p-2 space-y-1 max-h-64 overflow-y-auto selectable-text"></div>
             </div>
         </div>
@@ -778,18 +685,46 @@
         <!-- ردیف گردان هایلایت‌های استوری (Legal Stories Highlights) -->
         <div class="max-w-7xl mx-auto px-4 pb-2">
             <div id="storyHighlightsContainer" class="flex items-center space-x-3 space-x-reverse overflow-x-auto hide-scrollbar snap-scroll-bar py-1">
-                <!-- ساختار اسکلتون استوری تا پیش از دریافت داده‌ها -->
-                <div class="flex flex-col items-center space-y-1 flex-shrink-0 cursor-pointer">
-                    <div class="w-12 h-12 rounded-full p-0.5 bg-gradient-to-tr from-amber-500 to-red-600 animate-pulse">
-                        <div class="w-full h-full rounded-full bg-slate-900 border border-white/20"></div>
+                <!-- ساختار اولیه استوری‌ها -->
+                <div class="flex flex-col items-center space-y-1 flex-shrink-0 cursor-pointer" onclick="openStoryModal('نکات کلیدی چک', 'در صورت برگشت چک صیادی، بر اساس ماده ۲۳ قانون صدور چک می‌توانید مستقیماً از دادگاه تقاضای صدور برگ اجراییه بدون نیاز به دادرسی بدوی نمایید.');">
+                    <div class="w-12 h-12 rounded-full p-0.5 bg-gradient-to-tr from-amber-500 to-red-600">
+                        <div class="w-full h-full rounded-full bg-[#0b1329] border border-white/20 flex items-center justify-center">
+                            <i class="fa-solid fa-money-check text-xs text-amber-500"></i>
+                        </div>
                     </div>
-                    <span class="text-[9px] text-slate-400 w-12 truncate text-center">نکات کلیدی</span>
+                    <span class="text-[9px] text-slate-400 w-12 truncate text-center">چک صیادی</span>
+                </div>
+
+                <div class="flex flex-col items-center space-y-1 flex-shrink-0 cursor-pointer" onclick="openStoryModal('تخلیه فوری ملک', 'قرارداد اجاره عادی باید در دو نسخه با امضای موجر، مستاجر و دو شاهد معتمد تنظیم گردد تا از مزیت دستور تخلیه فوری یک‌هفته‌ای شورای حل اختلاف یا دادگاه صلح بهره‌مند شوید.');">
+                    <div class="w-12 h-12 rounded-full p-0.5 bg-gradient-to-tr from-red-600 to-amber-500">
+                        <div class="w-full h-full rounded-full bg-[#0b1329] border border-white/20 flex items-center justify-center">
+                            <i class="fa-solid fa-house-chimney text-xs text-amber-500"></i>
+                        </div>
+                    </div>
+                    <span class="text-[9px] text-slate-400 w-12 truncate text-center">دستور تخلیه</span>
+                </div>
+
+                <div class="flex flex-col items-center space-y-1 flex-shrink-0 cursor-pointer" onclick="openStoryModal('دادگاه‌های صلح', 'مطابق قانون شوراهای حل اختلاف ۱۴۰۲، دعاوی مالی تا ۱۰۰ میلیون تومان، حصر وراثت، جنبه مالی تصادفات و تخلیه منحصراً در صلاحیت شعب دادگاه صلح قرار گرفته است.');">
+                    <div class="w-12 h-12 rounded-full p-0.5 bg-gradient-to-tr from-amber-500 to-red-600">
+                        <div class="w-full h-full rounded-full bg-[#0b1329] border border-white/20 flex items-center justify-center">
+                            <i class="fa-solid fa-scale-balanced text-xs text-amber-500"></i>
+                        </div>
+                    </div>
+                    <span class="text-[9px] text-slate-400 w-12 truncate text-center">دادگاه صلح</span>
+                </div>
+
+                <div class="flex flex-col items-center space-y-1 flex-shrink-0 cursor-pointer" onclick="openStoryModal('خسارت تأخیر تأدیه', 'مطابق ماده ۵۲۲ آیین دادرسی مدنی، خسارت کاهش ارزش پول در دیون وجه نقد بر مبنای شاخص ماهانه بانک مرکزی از تاریخ مطالبه رسمی یا اظهارنامه تعلق می‌گیرد.');">
+                    <div class="w-12 h-12 rounded-full p-0.5 bg-gradient-to-tr from-red-600 to-amber-500">
+                        <div class="w-full h-full rounded-full bg-[#0b1329] border border-white/20 flex items-center justify-center">
+                            <i class="fa-solid fa-arrow-trend-up text-xs text-amber-500"></i>
+                        </div>
+                    </div>
+                    <span class="text-[9px] text-slate-400 w-12 truncate text-center">تأخیر دین</span>
                 </div>
             </div>
         </div>
     </header>
-
-    <!-- کانتینر اصلی اپلیکیشن و چیدمان ریسپانسیو دسکتاپ و موبایل -->
+<!-- کانتینر اصلی اپلیکیشن و چیدمان ریسپانسیو دسکتاپ و موبایل -->
     <div id="appRoot">
         <div class="layout-container">
             <!-- سایدبار اختصاصی صفحات عریض و دسکتاپ (Responsive Desktop Sidebar) -->
@@ -875,7 +810,7 @@
                 <!-- پانویس سایدبار دسکتاپ -->
                 <div class="pt-3 mt-2 border-t border-black/10 dark:border-white/10 flex items-center justify-between text-[10px] text-slate-400">
                     <span>قانون شوراهای حل اختلاف ۱۴۰۲</span>
-                    <button onclick="openAboutModal();" class="text-amber-500 hover:underline cursor-pointer border-none bg-transparent">درباره</button>
+                    <span class="text-amber-500 font-bold">نسخه ۳.۰ پرو</span>
                 </div>
             </aside>
 
@@ -956,6 +891,7 @@
                         <div class="skeleton-card h-28 w-full"></div>
                     </div>
                 </section>
+
                 <!-- ==========================================================================
                      تب ۳: بانک جامع قوانین، مواد قانونی، بخشنامه‌ها و آرای وحدت رویه
                      ========================================================================== -->
@@ -1022,7 +958,7 @@
                     <!-- ناظر اسکرول نامحدود کارت‌ها -->
                     <div id="cardsLoadingObserver" class="h-6 w-full flex items-center justify-center text-[10px] text-slate-500"></div>
                 </section>
-                <!-- ==========================================================================
+<!-- ==========================================================================
                      تب ۵: پرسش و پاسخ مستقیم از وکیل با صف آفلاین و پیگیری اختصاصی
                      ========================================================================== -->
                 <section id="lawyer-tab" class="page-section hidden space-y-3.5">
@@ -1073,7 +1009,6 @@
                             </button>
                         </div>
                         <div id="userFaqsContainer" class="space-y-2 selectable-text">
-                            <!-- به صورت پویا با loadUserFaqs پر می‌شود -->
                             <div class="text-center p-4 text-[10px] text-slate-500 ultra-glass rounded-2xl">
                                 در حال بارگذاری پرسش‌های پیشین...
                             </div>
@@ -1107,7 +1042,7 @@
                         </button>
                     </div>
 
-                    <!-- محیط مکالمه چت‌بات -->
+                    <!-- محیط مکالمه چت‌‌بات -->
                     <div id="chatMessagesContainer" class="ultra-glass rounded-3xl p-3 h-80 overflow-y-auto space-y-2.5 selectable-text text-xs leading-relaxed">
                         <div class="flex justify-start">
                             <div class="bg-white dark:bg-slate-800 border border-black/5 dark:border-white/10 text-slate-800 dark:text-slate-100 rounded-2xl rounded-bl-none p-3 max-w-[90%] shadow-sm">
@@ -1136,6 +1071,7 @@
                         </div>
                     </div>
                 </section>
+
                 <!-- ==========================================================================
                      تب ۷: جعبه‌ابزار جامع محاسبات قضایی، احوال شخصیه و دعاوی مالی
                      ========================================================================== -->
@@ -1230,6 +1166,7 @@
 
                         <div id="feeResult" class="selectable-text"></div>
                     </div>
+
                     <!-- بخش ۳: محاسبه ارزش روز مهریه (شاخص سال قبل از وصول بانک مرکزی و سکه) -->
                     <div class="ultra-glass p-4 rounded-3xl space-y-3 shadow-md">
                         <div class="flex items-center justify-between pb-2 border-b border-black/10 dark:border-white/10">
@@ -1379,6 +1316,7 @@
                             <i class="fa-solid fa-share-nodes ml-1"></i> صدور کارت استناد دادسرا و دادگاه صلح
                         </button>
                     </div>
+
                     <!-- بخش ۶: تعرفه پلکانی حق‌الوکاله و تمبر مالیاتی وکیل (آیین‌نامه تعرفه مصوب ۱۳۹۸) -->
                     <div class="ultra-glass p-4 rounded-3xl space-y-3 shadow-md">
                         <div class="flex items-center justify-between pb-2 border-b border-black/10 dark:border-white/10">
@@ -1464,7 +1402,7 @@
                                 </select>
                             </div>
                             <div class="space-y-1">
-                                <label for="carDamageArea" class="text-[10px] font-bold text-slate-600 dark:text-slate-400 block text-right">ناحیه صدمه‌‌دیده در تصادف:</label>
+                                <label for="carDamageArea" class="text-[10px] font-bold text-slate-600 dark:text-slate-400 block text-right">ناحیه صدمه‌دیده در تصادف:</label>
                                 <select id="carDamageArea" class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-2 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none cursor-pointer">
                                     <option value="chassis">شاسی و سینی جلو یا عقب (۱۰ تا ۱۲٪)</option>
                                     <option value="roof">سقف و چپ‌شدگی کامل (۱۰ تا ۱۵٪)</option>
@@ -1482,6 +1420,7 @@
 
                         <div id="carDepreciationResult" class="selectable-text"></div>
                     </div>
+
                     <!-- بخش ۹: محاسبه‌گر دقیق مواعد قانونی دادرسی بر اساس مواد ۴۴۴ و ۴۴۵ ق.آ.د.م -->
                     <div class="ultra-glass p-4 rounded-3xl space-y-3 shadow-md">
                         <div class="flex items-center justify-between pb-2 border-b border-black/10 dark:border-white/10">
@@ -1527,7 +1466,7 @@
 
                         <div class="grid grid-cols-2 gap-2">
                             <div class="space-y-1">
-                                <label for="mahariyehTotalCoins" class="text-[10px] font-bold text-slate-600 dark:text-slate-400 block text-right">تعداد کل سکه محکوم‌‌به:</label>
+                                <label for="mahariyehTotalCoins" class="text-[10px] font-bold text-slate-600 dark:text-slate-400 block text-right">تعداد کل سکه محکوم‌‌‌‌به:</label>
                                 <input type="number" id="mahariyehTotalCoins" placeholder="مثال: ۱۱۰" class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-2 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none text-center">
                             </div>
                             <div class="space-y-1">
@@ -1590,7 +1529,7 @@
 
                         <div class="space-y-1">
                             <label for="adliranBody" class="text-[10px] font-bold text-slate-600 dark:text-slate-400 block text-right">شرح کامل دادخواست / شکواییه:</label>
-                            <textarea id="adliranBody" placeholder="ریاست محترم شعبه... با سلام، احتراماً به استحضار می‌‌رساند که..." class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-2xl p-3 text-xs h-28 resize-none border border-black/10 dark:border-white/20 focus:outline-none leading-relaxed"></textarea>
+                            <textarea id="adliranBody" placeholder="ریاست محترم شعبه... با سلام، احتراماً به استحضار می‌رساند که..." class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-2xl p-3 text-xs h-28 resize-none border border-black/10 dark:border-white/20 focus:outline-none leading-relaxed"></textarea>
                         </div>
 
                         <button onclick="formatForAdliranPortal(); triggerHaptic('medium');" class="w-full bg-gradient-to-r from-red-600 to-amber-500 text-white font-bold py-2 rounded-xl text-xs border-none cursor-pointer shadow transition hover:opacity-90">
@@ -1614,7 +1553,7 @@
                             <select id="contractType" class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none cursor-pointer">
                                 <option value="rent">قرارداد اجاره اماکن مسکونی (مطابق قانون ۱۳۷۶ جهت تخلیه فوری)</option>
                                 <option value="sale">مبایعه‌نامه انتقال قطعی و بیع اموال / خودرو</option>
-                                <option value="settlement">صلح‌نامه قطعی و سازش‌‌نامه جامع حقوقی</option>
+                                <option value="settlement">صلح‌نامه قطعی و سازش‌نامه جامع حقوقی</option>
                             </select>
                         </div>
 
@@ -1720,7 +1659,7 @@
 
                             <div class="grid grid-cols-2 gap-2">
                                 <button onclick="sendOcrToChatbot();" class="p-2 rounded-xl bg-black/5 dark:bg-white/10 hover:bg-black/10 text-slate-800 dark:text-slate-200 text-[10px] font-bold transition cursor-pointer border border-black/10 dark:border-white/15 flex items-center justify-center">
-                                    <i class="fa-solid fa-robot ml-1 text-red-500"></i> تحلیل با چت‌بات
+                                    <i class="fa-solid fa-robot ml-1 text-red-500"></i> تحلیل با چت‌‌بات
                                 </button>
                                 <button onclick="saveOcrToPersonalNotes();" class="p-2 rounded-xl bg-black/5 dark:bg-white/10 hover:bg-black/10 text-slate-800 dark:text-slate-200 text-[10px] font-bold transition cursor-pointer border border-black/10 dark:border-white/15 flex items-center justify-center">
                                     <i class="fa-solid fa-note-sticky ml-1 text-amber-500"></i> انتقال به یادداشت‌ها
@@ -1811,7 +1750,8 @@
                     <!-- ناظر اسکرول نامحدود اخبار -->
                     <div id="newsLoadingObserver" class="h-6 w-full flex items-center justify-center text-[10px] text-slate-500"></div>
                 </section>
-<!-- ==========================================================================
+
+                <!-- ==========================================================================
                      تب ۱۰: بانک جامع سوالات متداول حقوقی، کیفری و ثبتی
                      ========================================================================== -->
                 <section id="public-faq-tab" class="page-section hidden space-y-3">
@@ -1892,7 +1832,8 @@
                     <!-- ناظر اسکرول نامحدود پادکست‌ها -->
                     <div id="podcastsLoadingObserver" class="h-6 w-full flex items-center justify-center text-[10px] text-slate-500"></div>
                 </section>
-<!-- ==========================================================================
+
+                <!-- ==========================================================================
                      تب ۱۳: آرشیو فرم‌ها، نمونه دادخواست‌ها، شکواییه‌ها و لوایح دفاعیه
                      ========================================================================== -->
                 <section id="files-tab" class="page-section hidden space-y-3">
@@ -2085,7 +2026,7 @@
         </div>
     </div>
 
-    <!-- بک‌‌دراپ تاریک مشترک دراورها -->
+    <!-- بک‌دراپ تاریک مشترک دراورها -->
     <div id="globalModalBackdrop" onclick="closeAllActiveDrawers();" class="hidden fixed inset-0 z-[98] bg-black/60 backdrop-blur-sm transition-opacity"></div>
 
     <!-- دراور کشویی تب‌های بیشتر (More Actions Drawer) -->
@@ -2136,7 +2077,7 @@
         <div id="lawBsContent" class="overflow-y-auto text-xs leading-loose text-slate-800 dark:text-slate-100 selectable-text flex-1"></div>
     </div>
 
-    <!-- مودال نمایش استوری تمام‌‌صفحه -->
+    <!-- مودال نمایش استوری تمام‌صفحه -->
     <div id="storySheetModal" class="hidden fixed inset-0 z-[130] bg-black/90 flex items-center justify-center p-4">
         <div class="relative w-full max-w-md h-[80vh] bg-slate-900 rounded-3xl overflow-hidden flex flex-col justify-between p-4 border border-white/10">
             <div class="flex items-center justify-between z-10">
@@ -2172,7 +2113,7 @@
 
     <!-- کانتینر رندر مخفی کارت تصویری با کیفیت بالا جهت خروجی html2canvas -->
     <div id="shareRenderBox" style="position:fixed; left:-9999px; top:-9999px; width:450px; opacity:0; pointer-events:none;"></div>
-    <!-- ==========================================================================
+<!-- ==========================================================================
          آغاز منطق اجرایی، ماژول‌ها و هوش محاسباتی اپلیکیشن
          ========================================================================== -->
     <script>
@@ -2188,12 +2129,12 @@
             } catch (e) {}
         }
 
-        // آدرس دقیق و تست‌شده سرور اختصاصی گوگل شما
+        // آدرس دقیق سرور اختصاصی Google Apps Script
         const API_URL = "https://script.google.com/macros/s/AKfycbyrMOSKpL5rwv5C9okpDQvbKE07-1JFP2ZE5xt7Xt4Y9sSvIUwbXZWU6ssTbBgQRgSZ/exec";
         const userId = tg?.initDataUnsafe?.user?.id ? String(tg.initDataUnsafe.user.id) : ('guest_' + Math.floor(Math.random() * 1000000));
         const telegramInitData = tg?.initData || '';
 
-        // وضعیت‌های رابط کاربری
+        // وضعیت‌های سراسری برنامه
         let appData = {};
         let userNav = ['dictionary-tab', 'legal-tab', 'laws-tab', 'cards-tab', 'lawyer-tab'];
         let bookmarks = [];
@@ -2202,8 +2143,9 @@
         let chatConversationHistory = [];
         let selectedDictCat = 'all';
         let selectedLawsCat = 'all';
+        let personalNotes = [];
 
-        // صفحه‌بندی اسکرول نامحدود
+        // محدودیت‌های صفحه‌بندی برای اسکرول نامحدود
         const pageLimits = {
             dict: 10,
             laws: 8,
@@ -2217,7 +2159,7 @@
         const tabScrollPositions = {};
 
         /* ==========================================================================
-           ۲. دیتاست پایدار آفلاین (Fallback Data) - سوپاپ اطمینان جلوگیری از ReferenceError
+           ۲. دیتاست پایدار آفلاین (Fallback Data) - منبع داده‌های مستقل و سوپاپ اطمینان
            ========================================================================== */
         window.fallbackData = {
             dictionary: [
@@ -2269,8 +2211,8 @@
                 { id: 'fl2', title: 'لایحه دفاعیه اعسار از پرداخت محکوم‌به', image: 'https://raw.githubusercontent.com/ahmdsltanahmdy-sketch/sijt-v01/main/01.png', description: 'فرم و لایحه استشهادیه محلی به انضمام صورت کلیه اموال و حساب‌های بانکی', url: '#' }
             ],
             livestream: [
-                { id: 'lv1', title: 'شبکه خبر دادرسی عدالت', description: 'پخش زنده اخبار حقوقی و همایش‌های قضایی', url: 'https://live.irib.ir/hls/irib_irannews.m3u8', fallback: '' },
-                { id: 'lv2', title: 'استریم جلسات رسیدگی علنی', description: 'پخش زنده دادگاه‌های علنی برخط', url: 'https://live.irib.ir/hls/irib_quran.m3u8', fallback: '' }
+                { id: 'lv1', title: 'استریم رسمی دادرسی و دادگاه (خط اصلی)', description: 'پخش زنده جلسات رسیدگی علنی', url: 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8', fallback: 'https://cph-p2p-msl.akamaized.net/hls/live/200034/test/master.m3u8' },
+                { id: 'lv2', title: 'شبکه عدالت و رویدادهای قضایی', description: 'پخش زنده اخبار و مصاحبه‌های حقوقی', url: 'https://cph-p2p-msl.akamaized.net/hls/live/200034/test/master.m3u8', fallback: 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8' }
             ],
             infographics: [
                 { id: 'inf1', title: 'مراحل گردش کار دادگاه‌های صلح', image: 'https://raw.githubusercontent.com/ahmdsltanahmdy-sketch/sijt-v01/main/01.png' },
@@ -2282,7 +2224,7 @@
         };
 
         /* ==========================================================================
-           ۳. موتور اعلان‌ها (Toast)، لرزش هپتیک و تاریخچه ناوبری دکمه فیزیکی بازگشت
+           ۳. سیستم پیام‌های شناور توست (Toast)، هپتیک و پشته ناوبری دکمه فیزیکی بازگشت
            ========================================================================== */
         window.showToast = function(msg, type = 'info') {
             const container = document.getElementById('toastContainer');
@@ -2341,7 +2283,7 @@
         window.handleTelegramBackClick = function() {
             if (backNavigationStack.length > 0) {
                 const fn = backNavigationStack.pop();
-                if (typeof fn === 'function') fn({ isTriggeredByBackButton: true });
+                if (typeof fn === 'function') fn();
             }
             if (backNavigationStack.length === 0 && tg?.BackButton) {
                 tg.BackButton.hide();
@@ -2349,7 +2291,7 @@
         };
 
         /* ==========================================================================
-           ۴. پایگاه داده IndexedDB و صف آفلاین هماهنگ (OfflineSync Engine)
+           ۴. پایگاه داده آفلاین IndexedDB و صف هماهنگ‌سازی (OfflineSync Engine)
            ========================================================================== */
         let dbInstance = null;
 
@@ -2391,7 +2333,6 @@
                                 await fetch(API_URL, {
                                     method: 'POST',
                                     mode: 'cors',
-                                    redirect: 'follow',
                                     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                                     body: JSON.stringify(it)
                                 });
@@ -2403,7 +2344,8 @@
                 } catch (e) {}
             }
         };
-/* ==========================================================================
+
+        /* ==========================================================================
            ۵. موتور ذخیره‌سازی محلی مقاوم و همه‌کاره (AppStorage Engine)
            ========================================================================== */
         window.AppStorage = {
@@ -2462,9 +2404,8 @@
                 return null;
             }
         };
-
-        /* ==========================================================================
-           ۶. الگوریتم دقیق تبدیل تاریخ میلادی به هجری خورشیدی (جلالی ۳۳ ساله رسمی)
+/* ==========================================================================
+           ۶. الگوریتم دقیق تبدیل تاریخ میلادی، هجری خورشیدی و قمری
            ========================================================================== */
         function gregorianToJalali(gy, gm, gd) {
             const g_d_m = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334];
@@ -2483,20 +2424,35 @@
             return [jy, jm, jd];
         }
 
+        function gregorianToHijri(d) {
+            const jd = Math.floor((d.getTime() / 86400000) + 2440587.5);
+            const l = jd - 1948440 + 10632;
+            const n = Math.floor((l - 1) / 10631);
+            const l2 = l - 10631 * n + 354;
+            const j = (Math.floor((10985 - l2) / 5316)) * (Math.floor((50 * l2) / 17719)) + (Math.floor(l2 / 5670)) * (Math.floor((43 * l2) / 15238));
+            const l3 = l2 - (Math.floor((30 - j) / 15)) * (Math.floor((17719 * j) / 50)) - (Math.floor(j / 16)) * (Math.floor((15238 * j) / 43)) + 29;
+            const m = Math.floor((24 * l3) / 709);
+            const day = l3 - Math.floor((709 * m) / 24);
+            const year = 30 * n + j - 30;
+            return [year, m, day];
+        }
+
         window.updateDateTime = function() {
             const now = new Date();
-            const [jy, jm, jd] = gregorianToJalali(now.getFullYear(), now.getMonth() + 1, now.getDate());
-            const months = ['فروردین','اردیبهشت','خرداد','تیر','مرداد','شهریور','مهر','آبان','آذر','دی','بهمن','اسفند'];
             const calType = document.getElementById('calendarTypeSelect')?.value || 'persian';
             const widget = document.getElementById('headerCalendarWidget');
             if (!widget) return;
 
             if (calType === 'persian') {
+                const [jy, jm, jd] = gregorianToJalali(now.getFullYear(), now.getMonth() + 1, now.getDate());
+                const months = ['فروردین','اردیبهشت','خرداد','تیر','مرداد','شهریور','مهر','آبان','آذر','دی','بهمن','اسفند'];
                 widget.innerText = `${jd} ${months[jm - 1]} ${jy}`;
             } else if (calType === 'gregorian') {
                 widget.innerText = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
             } else {
-                widget.innerText = `${jd} ${months[jm - 1]} (قمری تقریبی)`;
+                const [hy, hm, hd] = gregorianToHijri(now);
+                const lMonths = ['محرم','صفر','ربیع‌الاول','ربیع‌الثانی','جمادی‌الاول','جمادی‌الثانی','رجب','شعبان','رمضان','شوال','ذی‌القعده','ذی‌الحجه'];
+                widget.innerText = `${hd} ${lMonths[hm - 1]} ${hy}`;
             }
         };
 
@@ -2513,9 +2469,8 @@
         };
 
         /* ==========================================================================
-           ۷. جداول رسمی شاخص بهای کالاها و خدمات مصرفی بانک مرکزی جمهوری اسلامی ایران
+           ۷. جداول رسمی شاخص بهای کالاها و خدمات مصرفی بانک مرکزی
            ========================================================================== */
-        // جدول شاخص کل سالانه (مبنای محاسبه ارزش روز مهریه)
         const cpiYearlyTable = {
             1370: 1.5, 1371: 1.8, 1372: 2.3, 1373: 3.1, 1374: 4.6, 1375: 5.7, 1376: 6.7, 1377: 8.0,
             1378: 9.6, 1379: 10.8, 1380: 12.1, 1381: 14.0, 1382: 16.2, 1383: 18.7, 1384: 20.6, 1385: 23.1,
@@ -2524,19 +2479,9 @@
             1401: 677.4, 1402: 994.5, 1403: 1382.3, 1404: 1890.0, 1405: 2550.0
         };
 
-        // جدول شاخص‌های ماهانه معتبر (جهت خسارت تأخیر تأدیه ماده ۵۲۲ ق.آ.د.م)
         const cpiMonthlyBase = {
-            1395: 100.0,
-            1396: 109.6,
-            1397: 143.8,
-            1398: 193.0,
-            1399: 263.0,
-            1400: 368.0,
-            1401: 539.0,
-            1402: 790.0,
-            1403: 1100.0,
-            1404: 1510.0,
-            1405: 2040.0
+            1395: 100.0, 1396: 109.6, 1397: 143.8, 1398: 193.0, 1399: 263.0,
+            1400: 368.0, 1401: 539.0, 1402: 790.0, 1403: 1100.0, 1404: 1510.0, 1405: 2040.0
         };
 
         function getMonthlyCpi(year, month) {
@@ -2546,7 +2491,7 @@
         }
 
         /* ==========================================================================
-           ۸. توابع کمکی امنیتی، پاکسازی ورودی‌ها و فرمت اعداد
+           ۸. توابع کمکی امنیتی، فرمت اعداد و ریال
            ========================================================================== */
         function escapeHTML(str) {
             if (!str) return '';
@@ -2567,11 +2512,12 @@
             if (isNaN(valRial) || valRial === null || valRial === undefined) return '۰ تومان';
             return Math.round(valRial / 10).toLocaleString('fa-IR') + ' تومان';
         }
-/* ==========================================================================
-           ۹. توابع اجرایی محاسبات قضایی (جعبه‌ابزار محاسباتی دادگستری)
+
+        /* ==========================================================================
+           ۹. توابع اجرایی ۱۲ ابزار محاسباتی دادگستری و اسکنر OCR
            ========================================================================== */
 
-        // محاسبه خسارت تأخیر تأدیه دین با شاخص ماهانه (ماده ۵۲۲ ق.آ.د.م)
+        // ابزار ۱: محاسبه خسارت تأخیر تأدیه دین با شاخص ماهانه (ماده ۵۲۲ ق.آ.د.م)
         window.calculateDelayCompensationMonthly = function() {
             const principal = parseFloat(document.getElementById('principalAmount')?.value);
             const startYear = parseInt(document.getElementById('delayStartYear')?.value);
@@ -2616,7 +2562,7 @@
             if (shareBtn) shareBtn.classList.remove('hidden');
         };
 
-        // محاسبه هزینه دادرسی مراحل مختلف
+        // ابزار ۲: محاسبه هزینه دادرسی دعاوی مالی
         window.calculateCourtFee = function() {
             const amount = parseFloat(document.getElementById('courtFeeInput')?.value);
             const stage = document.getElementById('courtStageSelect')?.value;
@@ -2631,10 +2577,10 @@
             let formulaDesc = '';
 
             if (stage === 'peace_badvi') {
-                const threshold = 2000000000; // ۲۰۰ میلیون تومان به ریال
+                const threshold = 2000000000;
                 if (amount <= threshold) {
                     fee = amount * 0.025;
-                    formulaDesc = '۲.۵ درصد برای کل مبلغ (کمتر از ۲۰۰ میلیون تومان)';
+                    formulaDesc = '۲.۵ درصد برای کل مبلغ (تا سقف ۲۰۰ میلیون تومان)';
                 } else {
                     fee = (threshold * 0.025) + ((amount - threshold) * 0.035);
                     formulaDesc = '۲.۵ درصد تا ۲۰۰ میلیون تومان + ۳.۵ درصد نسبت به مازاد';
@@ -2665,7 +2611,7 @@
             }
         };
 
-        // تغییر حالت فرم مهریه
+        // ابزار ۳: تغییر حالت و محاسبه ارزش روز مهریه (ماده ۱۰۸۲ قانون مدنی)
         window.toggleMahariyehMode = function(mode) {
             const cashBox = document.getElementById('mahariyehCashBox');
             const coinBox = document.getElementById('mahariyehCoinBox');
@@ -2678,7 +2624,6 @@
             }
         };
 
-        // محاسبه ارزش روز مهریه (ماده ۱۰۸۲ قانون مدنی)
         window.calculateBankCentralMahariyeh = function() {
             const mode = document.getElementById('mahariyehMode')?.value;
             const resBox = document.getElementById('mahariyehResult');
@@ -2741,7 +2686,7 @@
             if (shareBtn) shareBtn.classList.remove('hidden');
         };
 
-        // تغییر وضعیت حاجب ارث
+        // ابزار ۴: تقسیم ترکه، سهم‌الارث و حجب نقصان
         window.handleInheritanceHeirsChange = function(val) {
             const note = document.getElementById('maternalHajibNote');
             if (val === 'only_parents_with_hajib') {
@@ -2751,7 +2696,6 @@
             }
         };
 
-        // محاسبه و رسم نمودار درختی ارث
         window.calculateInheritanceVisual = function() {
             const amount = parseFloat(document.getElementById('estateAmount')?.value);
             const type = document.getElementById('heirsType')?.value;
@@ -2765,9 +2709,9 @@
             let breakdownHtml = '';
 
             if (type === 'wife_1son_1daughter') {
-                const wifeShare = amount * (1 / 8); // یک‌هشتم فرض زوجه با فرزند
+                const wifeShare = amount * (1 / 8);
                 const remaining = amount - wifeShare;
-                const sonShare = (remaining * 2) / 3; // پسر دو برابر دختر
+                const sonShare = (remaining * 2) / 3;
                 const daughterShare = remaining / 3;
 
                 breakdownHtml = `
@@ -2777,14 +2721,14 @@
                     <div class="flex justify-between text-emerald-400"><span>دختر متوفی (یک سهم):</span><span class="font-bold">${formatToman(daughterShare)}</span></div>
                 `;
             } else if (type === 'only_parents_with_hajib') {
-                const motherShare = amount * (1 / 6); // تقلیل به یک‌ششم به دلیل حجب نقصان اخوه
+                const motherShare = amount * (1 / 6);
                 const fatherShare = amount - motherShare;
 
                 breakdownHtml = `
                     <div class="font-bold text-amber-500 pb-1 border-b border-black/10 dark:border-white/10">تقسیم با اعمال حجب نقصان مادر (ماده ۸۹۲ ق.م):</div>
                     <div class="flex justify-between"><span>مادر متوفی (یک‌ششم به دلیل وجود اخوه):</span><span class="font-bold">${formatToman(motherShare)}</span></div>
                     <div class="flex justify-between text-emerald-400"><span>پدر متوفی (باقیمانده ترکه):</span><span class="font-bold">${formatToman(fatherShare)}</span></div>
-                    <div class="text-[9px] text-slate-400 pt-1">برادران و خواهران حاجب خود ارث نمی‌برند اما سهم مادر را کاهش دادند.</div>
+                    <div class="text-[9px] text-slate-400 pt-1">برادران و خواهران حاجب خود ارث نمی‌برند اما سهم مادر را از ۱/۳ به ۱/۶ تقلیل دادند.</div>
                 `;
             } else if (type === 'only_parents_no_hajib') {
                 const motherShare = amount * (1 / 3);
@@ -2812,7 +2756,7 @@
             }
         };
 
-        // موتور صدمات دیه و ارش
+        // ابزار ۵: موتور تجمیع صدمات دیات، ارش و قاعده تغلیظ
         window.handleDiyehSelectorChange = function(val) {
             const arshBox = document.getElementById('customArshBox');
             if (val.startsWith('custom_arsh')) {
@@ -2873,14 +2817,13 @@
             }
 
             const monthType = document.getElementById('diyehMonthType')?.value;
-            const fullDiyehRial = 16000000000; // نرخ مصوب ریالی دیه کامل سال ۱۴۰۵
+            const fullDiyehRial = 16000000000;
             let totalPercent = cumulativeInjuries.reduce((sum, item) => sum + item.percent, 0);
 
             let totalDiyeh = (fullDiyehRial * totalPercent) / 100;
             let taghlizAdded = 0;
 
             if (monthType === 'haram') {
-                // قاعده تغلیظ ماده ۵۵۵ ق.م.ا منحصراً مربوط به فوت است
                 const hasDeath = cumulativeInjuries.some(i => i.title.includes('فوت') || i.percent === 100);
                 if (hasDeath) {
                     taghlizAdded = fullDiyehRial / 3;
@@ -2900,7 +2843,7 @@
                         </div>
                         ${taghlizAdded > 0 ? `
                             <div class="flex justify-between text-red-500 font-bold">
-                                <span>تغلیظ ماه حرام (یک‌سوم دیه کامل):</span>
+                                <span>تغلیظ ماه حرام (یک‌سوم دیه کامل نفس):</span>
                                 <span>${formatToman(taghlizAdded)}</span>
                             </div>
                         ` : ''}
@@ -2914,7 +2857,7 @@
             if (shareBtn) shareBtn.classList.remove('hidden');
         };
 
-        // حق‌الوکاله و تمبر مالیاتی
+        // ابزار ۶: محاسبه حق‌الوکاله و ابطال تمبر مالیاتی
         window.calculateLawyerFee = function() {
             const amount = parseFloat(document.getElementById('lawyerClaimAmount')?.value);
             const stage = document.getElementById('lawyerStageSelect')?.value;
@@ -2925,7 +2868,6 @@
                 return;
             }
 
-            // آیین‌نامه تعرفه پلکانی
             let fee = 0;
             if (amount <= 500000000) fee = amount * 0.08;
             else if (amount <= 2000000000) fee = (500000000 * 0.08) + ((amount - 500000000) * 0.07);
@@ -2935,8 +2877,8 @@
             if (stage === 'badvi') fee *= 0.6;
             else if (stage === 'tajdid') fee *= 0.4;
 
-            const taxStamp = fee * 0.05; // ۵٪ تمبر مالیاتی
-            const fundShare = fee * 0.04; // ۴٪ صندوق حمایت
+            const taxStamp = fee * 0.05;
+            const fundShare = fee * 0.04;
 
             if (resBox) {
                 resBox.innerHTML = `
@@ -2958,7 +2900,7 @@
             }
         };
 
-        // دستمزد کارشناسان رسمی
+        // ابزار ۷: دستمزد کارشناسان رسمی دادگستری
         window.calculateExpertFee = function() {
             const val = parseFloat(document.getElementById('expertValueInput')?.value);
             const resBox = document.getElementById('expertFeeResult');
@@ -2992,7 +2934,7 @@
             }
         };
 
-        // افت قیمت خودرو
+        // ابزار ۸: افت قیمت خودرو در تصادفات
         window.calculateCarDepreciation = function() {
             const carVal = parseFloat(document.getElementById('carValueBefore')?.value);
             const area = document.getElementById('carDamageArea')?.value;
@@ -3032,13 +2974,13 @@
                             <span>مبلغ خسارت افت قیمت قابل مطالبه:</span>
                             <span>${formatToman(lossAmount)}</span>
                         </div>
-                        <div class="text-[9px] text-slate-400">قابل طرح در دادگاه صلح با جلب نظر کارشناس رسمی تصادفات</div>
+                        <div class="text-[9px] text-slate-400">قابل طرح در صلاحیت دادگاه صلح با جلب نظر کارشناس رسمی تصادفات</div>
                     </div>
                 `;
             }
         };
 
-        // مواعد قانونی دادرسی
+        // ابزار ۹: مواعد قانونی دادرسی
         window.calculateExactLegalDeadline = function() {
             const dateStr = document.getElementById('noticeDateInput')?.value?.trim();
             const action = document.getElementById('deadlineActionType')?.value;
@@ -3056,7 +2998,7 @@
             else if (action === 'court_correction' || action === 'judgment_exec') { days = 10; title = 'رفع نقص / اجرای حکم'; }
 
             const parts = dateStr.split('/').map(Number);
-            let day = parts[2] + days + 1; // روز ابلاغ و روز اقدام طبق ماده ۴۴۵ محاسبه نمی‌شود
+            let day = parts[2] + days + 1;
             let month = parts[1];
             let year = parts[0];
 
@@ -3083,7 +3025,7 @@
             }
         };
 
-        // ماشین‌حساب اعسار مهریه
+        // ابزار ۱۰: برآورد اعسار مهریه و تقسیط سکه
         window.calculateDowryInsolvency = function() {
             const totalCoins = parseInt(document.getElementById('mahariyehTotalCoins')?.value);
             const income = parseFloat(document.getElementById('debtorMonthlyIncome')?.value);
@@ -3096,7 +3038,6 @@
                 return;
             }
 
-            // فرمول عرفی محاکم خانواده بر مبنای تناسب با حداقل دستمزد
             let freeIncomeRatio = 0.35;
             if (housing === 'tenant') freeIncomeRatio -= 0.1;
             freeIncomeRatio -= (deps * 0.05);
@@ -3128,7 +3069,7 @@
             }
         };
 
-        // آماده‌ساز و تفکیک دادخواست برای عدل‌ایران
+        // ابزار ۱۱: تفکیک دادخواست برای درگاه خودکاربری عدل‌ایران
         window.formatForAdliranPortal = function() {
             const subj = document.getElementById('adliranSubject')?.value || '';
             const p = document.getElementById('adliranPlaintiff')?.value || '';
@@ -3143,8 +3084,6 @@
             }
 
             const fullText = `خواهان: ${p}\nخوانده: ${d}\nموضوع: ${subj}\nدلایل و منضمات: ${ev}\n\nشرح دادخواست:\n${body}`;
-            
-            // تقسیم بر مبنای حداکثر ۸۰۰ کاراکتر برای هر بخش درگاه خودکاربری
             const chunkSize = 800;
             const chunks = [];
             for (let i = 0; i < fullText.length; i += chunkSize) {
@@ -3167,7 +3106,7 @@
             }
         };
 
-        // فرم‌ساز قراردادها
+        // ابزار ۱۲: فرم‌ساز هوشمند قرارداد و صدور PDF استاندارد A4
         window.generateSmartContract = function() {
             const type = document.getElementById('contractType')?.value;
             const p1 = document.getElementById('partyFirst')?.value || 'طرف اول';
@@ -3208,7 +3147,6 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
             }
         };
 
-        // خروجی PDF قرارداد با jsPDF
         window.exportContractPDF = function() {
             const text = document.getElementById('contractOutputBox')?.innerText;
             if (!text) {
@@ -3228,7 +3166,7 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
             }
         };
 
-        // موتور OCR سندخوان Tesseract.js
+        // ابزار ۱۳: اسکنر نوری اسناد و احکام قضایی OCR (Tesseract.js)
         let selectedOcrFile = null;
 
         window.handleOcrImageSelect = function(e) {
@@ -3331,8 +3269,8 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
                     </div>
                     <div style="font-weight:800; font-size:13px; color:#dc2626; margin-bottom:10px;">${escapeHTML(title)}</div>
                     <div style="font-size:11px; line-height:2; color:#e2e8f0; white-space:pre-wrap;">${escapeHTML(bodyText)}</div>
-                    <div style="margin-top:16px; pt:8px; border-top:1px dashed rgba(255,255,255,0.2); font-size:9px; color:#64748b; text-align:center;">
-                        تأییدیه استناد و محاسبه خودکار بر مبنای قوانین و آیین‌نامه‌های رسمی
+                    <div style="margin-top:16px; padding-top:8px; border-top:1px dashed rgba(255,255,255,0.2); font-size:9px; color:#64748b; text-align:center;">
+                        تأییدیه استناد و محاسبه خودکار بر مبنای قوانین و آیین‌‌نامه‌های رسمی
                     </div>
                 </div>
             `;
@@ -3350,8 +3288,9 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
                 window.showToast('خطا در تبدیل کارت گرافیکی', 'error');
             }
         };
-
-        // دستیار هوش مصنوعی و تحلیل پرونده
+/* ==========================================================================
+           ۱۰. دستیار هوشمند حقوقی و چت‌بات تحلیلی (متد POST مقاوم در برابر متون طولانی)
+           ========================================================================== */
         window.runAiAssistant = async function() {
             const input = document.getElementById('aiPromptInput');
             const prompt = input?.value?.trim();
@@ -3360,7 +3299,7 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
 
             if (!prompt) return;
 
-            // پیام کاربر
+            // نمایش حباب پیام کاربر در محیط چت
             const userMsg = document.createElement('div');
             userMsg.className = 'flex justify-end';
             userMsg.innerHTML = `
@@ -3374,11 +3313,17 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
             typing?.classList.remove('hidden');
 
             try {
-                // ارسال به سرور گوگل شیت با اکشن ai_chat
-                const res = await fetch(`${API_URL}?action=ai_chat&userId=${encodeURIComponent(userId)}&prompt=${encodeURIComponent(prompt)}`, {
-                    method: 'GET',
+                // ارسال امن به صورت POST جهت حذف محدودیت کاراکتر در URL
+                const res = await fetch(API_URL, {
+                    method: 'POST',
                     mode: 'cors',
-                    redirect: 'follow'
+                    redirect: 'follow',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify({
+                        action: 'ai_chat',
+                        userId: userId,
+                        prompt: prompt
+                    })
                 });
 
                 let reply = '';
@@ -3388,8 +3333,7 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
                 }
 
                 if (!reply) {
-                    // پاسخ پیش‌فرض تحلیلی سیستم در صورت قطعی اتصال موقت هوش مصنوعی سرور
-                    reply = `در خصوص سوال مطروحه پیرامون «${prompt.substring(0, 35)}...»، بررسی حقوقی نشان می‌دهد که وفق مقررات جاری و صلاحیت‌های محاکم، رعایت مهلت‌های اخطاریه و حفظ اسناد مثبته و استناد به مواد مرتبط ضروری است. در صورت نیاز به بررسی تفصیلی، لایحه و مدارک خود را در تب «پرسش از وکیل» ارسال فرمایید.`;
+                    reply = `در خصوص سوال مطروحه پیرامون «${prompt.substring(0, 35)}...»، بررسی حقوقی نشان می‌دهد که وفق مقررات جاری، حفظ اسناد مثبته، رعایت مواعد قانونی و استناد به مواد مرتبط در مراجع قضایی دارای صلاحیت ذاتی (دادگاه صلح / عمومی حقوقی) الزامی است. جهت بررسی تفصیلی، سوال خود را در تب «پرسش از وکیل» ثبت نمایید.`;
                 }
 
                 const botMsg = document.createElement('div');
@@ -3405,7 +3349,7 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
                 errMsg.className = 'flex justify-start';
                 errMsg.innerHTML = `
                     <div class="bg-red-500/10 border border-red-500/20 text-red-500 rounded-2xl rounded-bl-none p-2.5 text-xs">
-                        پاسخ موقت: وفق ماده قانونی مربوطه اقدام نمایید؛ ارتباط با سرور دچار اختلال است.
+                        عدم برقراری ارتباط با هسته هوش مصنوعی سرور؛ وفق مقررات و آیین دادرسی مدنی اقدام فرمایید.
                     </div>
                 `;
                 container?.appendChild(errMsg);
@@ -3437,7 +3381,7 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
             }
         };
 
-        // ثبت پرسش از وکیل با پشتیبانی از صف آفلاین
+        // ثبت پرسش حقوقی و ارسال به کارتابل وکیل
         window.submitQuestion = async function() {
             const cat = document.getElementById('questionCategory')?.value;
             const input = document.getElementById('questionInput');
@@ -3472,7 +3416,7 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
                 if (input) input.value = '';
             } catch (err) {
                 await window.OfflineSync.addQuestion(item);
-                window.showToast('عدم برقراری ارتباط با سرور؛ پرسش در صف آفلاین ذخیره شد و به محض اتصال ارسال می‌گردد.', 'info');
+                window.showToast('عدم برقراری ارتباط؛ پرسش در صف آفلاین ذخیره شد و به محض اتصال ارسال می‌گردد.', 'info');
                 if (input) input.value = '';
             } finally {
                 if (btn) btn.disabled = false;
@@ -3480,16 +3424,18 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
             }
         };
 
-        // بازخوانی پاسخ‌های اختصاصی وکیل
+        // بازخوانی پاسخ‌های اختصاصی ثبت‌شده برای کاربر
         window.loadUserFaqs = async function() {
             const box = document.getElementById('userFaqsContainer');
             if (!box) return;
 
             try {
-                const res = await fetch(`${API_URL}?action=get_user_faqs&userId=${encodeURIComponent(userId)}`, {
-                    method: 'GET',
+                const res = await fetch(API_URL, {
+                    method: 'POST',
                     mode: 'cors',
-                    redirect: 'follow'
+                    redirect: 'follow',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify({ action: 'get_user_faqs', userId: userId })
                 });
                 if (res.ok) {
                     const list = await res.json();
@@ -3511,11 +3457,10 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
 
             box.innerHTML = `<div class="text-center p-4 text-[10px] text-slate-500 ultra-glass rounded-2xl">هنوز پاسخی ثبت نشده است. پرسش‌های جدید پس از بررسی وکیل در اینجا نمایش می‌یابند.</div>`;
         };
-/* ==========================================================================
-           ۱۰. رندرهای رابط کاربری (UI Renders)، تب‌ها و نشانک‌ها
-           ========================================================================== */
 
-        // ناوبری و تغییر تب‌های سامانه
+        /* ==========================================================================
+           ۱۱. مدیریت ناوبری تب‌ها، نشانک‌ها و رندرهای رابط کاربری
+           ========================================================================== */
         window.switchTab = function(tabId) {
             const currentActive = document.querySelector('.page-section:not(.hidden)');
             if (currentActive) {
@@ -3530,16 +3475,11 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
                 window.scrollTo({ top: prevY, behavior: 'instant' });
             }
 
-            // به‌روزرسانی فعال‌بودن آیتم‌های سایدبار دسکتاپ
             document.querySelectorAll('.desktop-nav-item').forEach(btn => {
-                if (btn.getAttribute('data-tab') === tabId) {
-                    btn.classList.add('active');
-                } else {
-                    btn.classList.remove('active');
-                }
+                if (btn.getAttribute('data-tab') === tabId) btn.classList.add('active');
+                else btn.classList.remove('active');
             });
 
-            // به‌روزرسانی دکمه‌های نوار ناوبری موبایل و تنظیم کپسول شناور
             document.querySelectorAll('.nav-btn').forEach(btn => {
                 if (btn.getAttribute('data-tab') === tabId) {
                     btn.classList.add('active-tab');
@@ -3557,14 +3497,11 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
 
             const navRect = navContainer.getBoundingClientRect();
             const btnRect = activeBtn.getBoundingClientRect();
-
-            // در زبان فارسی و RTL، فاصله از سمت راست معیار است
             const rightOffset = navRect.right - btnRect.right;
             pill.style.width = `${btnRect.width}px`;
             pill.style.right = `${rightOffset}px`;
         }
 
-        // رندر نوار ناوبری ارگونومیک پایین
         window.renderBottomNav = function() {
             const nav = document.getElementById('mainNavContainer');
             if (!nav) return;
@@ -3602,7 +3539,6 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
                 `;
             });
 
-            // دکمه منوی دراور "بیشتر"
             navHtml += `
                 <button onclick="openMoreDrawer(); triggerHaptic('light');" class="nav-btn" data-tab="more-drawer">
                     <i class="fa-solid fa-ellipsis"></i>
@@ -3617,7 +3553,6 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
             }, 100);
         };
 
-        // رندر ترمینولوژی و اصطلاحات
         window.filterDictionaryCategory = function(cat, btn) {
             selectedDictCat = cat;
             document.querySelectorAll('#dictFilterPills .dict-pill').forEach(p => {
@@ -3668,7 +3603,7 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
                                 <button onclick="toggleBookmark('${item.id}');" class="text-xs ${isBookmarked ? 'text-amber-500' : 'text-slate-400'} border-none bg-transparent cursor-pointer p-1">
                                     <i class="${isBookmarked ? 'fa-solid' : 'fa-regular'} fa-bookmark"></i>
                                 </button>
-                                <button onclick="shareTextSnippet('${escapeHTML(item.term)}', '${escapeHTML(item.definition)}');" class="text-xs text-slate-400 hover:text-white border-none bg-transparent cursor-pointer p-1">
+                                <button onclick="navigator.clipboard.writeText('${escapeHTML(item.term)}: ${escapeHTML(item.definition)}'); window.showToast('متن اصطلاح کپی شد', 'success');" class="text-xs text-slate-400 hover:text-white border-none bg-transparent cursor-pointer p-1">
                                     <i class="fa-solid fa-share-nodes"></i>
                                 </button>
                             </div>
@@ -3692,7 +3627,6 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
             triggerHaptic('light');
         };
 
-        // رندر سامانه‌های خدمات قضایی
         function renderLegalSystems() {
             const container = document.getElementById('legalSystemsContainer');
             if (!container) return;
@@ -3716,7 +3650,6 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
             `).join('');
         }
 
-        // رندر قوانین و مواد حقوقی
         window.filterLawsCategory = function(cat, btn) {
             selectedLawsCat = cat;
             document.querySelectorAll('#lawsFilterPills .law-pill').forEach(p => {
@@ -3790,7 +3723,6 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
             triggerHaptic('light');
         };
 
-        // رندر کارت‌های کاربردی دادرسی
         function renderShareCards() {
             const container = document.getElementById('shareCardsContainer');
             if (!container) return;
@@ -3815,7 +3747,6 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
             `).join('');
         }
 
-        // رندر اخبار و بخشنامه‌ها
         function renderNews() {
             const container = document.getElementById('newsContainer');
             if (!container) return;
@@ -3832,7 +3763,6 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
             `).join('');
         }
 
-        // رندر سوالات متداول
         function renderPublicFaqs() {
             const container = document.getElementById('publicFaqContainer');
             const counter = document.getElementById('faqCounter');
@@ -3852,7 +3782,6 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
             `).join('');
         }
 
-        // رندر رسانه‌ها و آموزش‌های ویدیویی
         function renderInstagramMedia() {
             const container = document.getElementById('instagramContainer');
             if (!container) return;
@@ -3869,7 +3798,6 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
             `).join('');
         }
 
-        // رندر پادکست‌ها
         function renderPodcasts() {
             const container = document.getElementById('podcastsContainer');
             if (!container) return;
@@ -3890,7 +3818,6 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
             `).join('');
         }
 
-        // رندر آرشیو فرم‌ها و لوایح
         function renderFiles() {
             const container = document.getElementById('filesContainer');
             if (!container) return;
@@ -3915,7 +3842,6 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
             `).join('');
         }
 
-        // رندر اینفوگرافیک‌ها
         function renderInfographics() {
             const container = document.getElementById('infographicsContainer');
             if (!container) return;
@@ -3931,7 +3857,6 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
             `).join('');
         }
 
-        // رندر ویدیوها و سریال‌ها
         function renderSeries() {
             const container = document.getElementById('seriesContainer');
             if (!container) return;
@@ -3950,21 +3875,19 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
             `).join('');
         }
 
-        // رندر شبکه‌های پخش زنده دادگاه و سیما
         function renderLiveChannels() {
             const container = document.getElementById('liveChannelsSelector');
             if (!container) return;
 
             const list = appData.livestream || fallbackData.livestream || [];
-            container.innerHTML = list.map((item, idx) => `
-                <button onclick="playLiveHlsStream('${encodeURIComponent(item.title)}', '${encodeURIComponent(item.url)}');" class="p-2 rounded-xl ultra-glass hover:border-red-500/50 text-right space-y-0.5 border border-black/5 dark:border-white/10 cursor-pointer transition">
+            container.innerHTML = list.map(item => `
+                <button onclick="playLiveHlsStream('${encodeURIComponent(item.title)}', '${encodeURIComponent(item.url)}', '${encodeURIComponent(item.fallback || '')}');" class="p-2 rounded-xl ultra-glass hover:border-red-500/50 text-right space-y-0.5 border border-black/5 dark:border-white/10 cursor-pointer transition">
                     <span class="font-bold text-[11px] text-amber-500 block truncate">${escapeHTML(item.title)}</span>
                     <span class="text-[9px] text-slate-400 block truncate">${escapeHTML(item.description || 'استریم آنلاین')}</span>
                 </button>
             `).join('');
         }
 
-        // رندر جامع کلیه بخش‌ها
         window.renderAll = function(isRefresh = false) {
             renderDictionary();
             renderLegalSystems();
@@ -3989,10 +3912,8 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
         };
 
         /* ==========================================================================
-           ۱۱. مدیریت یادداشت‌های شخصی و پرونده‌ها
+           ۱۲. کارتابل پرونده‌ها و یادداشت‌های شخصی
            ========================================================================== */
-        let personalNotes = [];
-
         window.savePersonalNote = async function() {
             const title = document.getElementById('caseTitleInput')?.value?.trim();
             const note = document.getElementById('caseNoteInput')?.value?.trim();
@@ -4095,24 +4016,22 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
             if (personalNotes.length === 0) return;
             let full = "گزارش یادداشت‌های پرونده SIJT:\n\n";
             personalNotes.forEach(n => {
-                full += `🔹 ${n.title}\n${n.text}\n\n`;
+                full += `📌 ${n.title}\n${n.text}\n\n`;
             });
-            if (tg?.sendData) {
-                tg.sendData(full);
-            } else {
-                navigator.clipboard.writeText(full);
-                window.showToast('متن پرونده‌ها در حافظه کپی شد', 'success');
-            }
+            const shareUrl = `https://t.me/share/url?url=${encodeURIComponent(full)}`;
+            if (tg?.openTelegramLink) tg.openTelegramLink(shareUrl);
+            else window.open(shareUrl, '_blank');
         };
 
         /* ==========================================================================
-           ۱۲. پخش‌کننده‌های رسانه، پلیر صوت، استریم HLS و زوم Pan اینفوگرافیک
+           ۱۳. پخش‌کننده‌های مدیا، استریم Hls.js و پادکست
            ========================================================================== */
         let activeHlsInstance = null;
 
-        window.playLiveHlsStream = function(titleEnc, urlEnc) {
+        window.playLiveHlsStream = function(titleEnc, urlEnc, fallbackEnc) {
             const title = decodeURIComponent(titleEnc);
-            const url = decodeURIComponent(urlEnc);
+            const primaryUrl = decodeURIComponent(urlEnc);
+            const fallbackUrl = decodeURIComponent(fallbackEnc || '');
             const video = document.getElementById('liveStreamVideo');
             const placeholder = document.getElementById('liveStreamPlaceholder');
             const titleEl = document.getElementById('currentLiveTitle');
@@ -4127,22 +4046,37 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
                 activeHlsInstance = null;
             }
 
-            if (Hls.isSupported()) {
-                activeHlsInstance = new Hls({ enableWorker: true });
-                activeHlsInstance.loadSource(url);
-                activeHlsInstance.attachMedia(video);
-                activeHlsInstance.on(Hls.Events.MANIFEST_PARSED, () => {
-                    video.play().catch(() => {});
-                });
-            } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-                video.src = url;
-                video.addEventListener('loadedmetadata', () => {
-                    video.play().catch(() => {});
-                });
+            video.muted = true; // پذیرش سیاست Autoplay در مرورگرها
+
+            function loadStreamSource(srcUrl, isFallback = false) {
+                if (Hls.isSupported()) {
+                    activeHlsInstance = new Hls({ enableWorker: true });
+                    activeHlsInstance.loadSource(srcUrl);
+                    activeHlsInstance.attachMedia(video);
+                    activeHlsInstance.on(Hls.Events.MANIFEST_PARSED, () => {
+                        video.play().catch(() => {});
+                    });
+                    activeHlsInstance.on(Hls.Events.ERROR, (event, data) => {
+                        if (data.fatal) {
+                            if (!isFallback && fallbackUrl) {
+                                activeHlsInstance.destroy();
+                                loadStreamSource(fallbackUrl, true);
+                            } else {
+                                window.showToast('خطا در لود استریم؛ محدودیت CORS یا شبکه را بررسی فرمایید.', 'error');
+                            }
+                        }
+                    });
+                } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                    video.src = srcUrl;
+                    video.addEventListener('loadedmetadata', () => {
+                        video.play().catch(() => {});
+                    });
+                }
             }
+
+            loadStreamSource(primaryUrl);
         };
 
-        // پلیر صوتی شناور
         window.playAudioTrack = function(titleEnc, urlEnc, thumbEnc) {
             const title = decodeURIComponent(titleEnc);
             const url = decodeURIComponent(urlEnc);
@@ -4244,7 +4178,7 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
         };
 
         window.handleAudioPlaybackError = function() {
-            window.showToast('خطا در پخش فایل صوتی', 'error');
+            window.showToast('خطا در پخش فایل صوتی پادکست', 'error');
         };
 
         // مودال ویدیویی
@@ -4271,7 +4205,7 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
             pushBackHandler(closeMediaModal);
         };
 
-        // اینفوگرافیک با زوم و Pan با استفاده از Pointer Events
+        // اینفوگرافیک با زوم و Pan بر مبنای Pointer Events
         window.openInfographicModal = function(titleEnc, imgEnc) {
             const title = decodeURIComponent(titleEnc);
             const img = decodeURIComponent(imgEnc);
@@ -4359,7 +4293,7 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
         };
 
         /* ==========================================================================
-           ۱۳. دراورها، استوری و مودال‌های جانبی
+           ۱۴. دراورها، استوری و پنجره‌های تنظیمات
            ========================================================================== */
         window.openMoreDrawer = function() {
             const d = document.getElementById('moreDrawer');
@@ -4416,7 +4350,7 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
                 { id: 'cards-tab', label: 'کارت‌های دادرسی' },
                 { id: 'lawyer-tab', label: 'پرسش از وکیل' },
                 { id: 'chatbot-tab', label: 'هوش مصنوعی' },
-                { id: 'tools-tab', label: 'جعبه‌ابزار محاسبات' },
+                { id: 'tools-tab', label: 'جعبه‌‌ابزار محاسبات' },
                 { id: 'notes-tab', label: 'یادداشت‌های پرونده' },
                 { id: 'news-tab', label: 'اخبار و بخشنامه‌ها' },
                 { id: 'public-faq-tab', label: 'پرسش‌های متداول' }
@@ -4467,7 +4401,6 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
             popBackHandler(closeAllActiveDrawers);
         };
 
-        // باتم‌شیت شرح کامل مواد قانونی
         window.openLawBottomSheet = function(titleEnc, contentEnc) {
             const title = decodeURIComponent(titleEnc);
             const content = decodeURIComponent(contentEnc);
@@ -4500,7 +4433,41 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
             }
         };
 
-        // منوی کشویی تنظیمات
+        let storyProgressTimer = null;
+        window.openStoryModal = function(title, content) {
+            const modal = document.getElementById('storySheetModal');
+            const titleEl = document.getElementById('storyTitle');
+            const container = document.getElementById('storyMediaContainer');
+            const pBar = document.getElementById('storyProgressBar');
+
+            if (!modal || !container) return;
+            if (titleEl) titleEl.innerText = title;
+            container.innerText = content;
+
+            modal.classList.remove('hidden');
+            if (pBar) pBar.style.width = '0%';
+
+            let progress = 0;
+            clearInterval(storyProgressTimer);
+            storyProgressTimer = setInterval(() => {
+                progress += 2;
+                if (pBar) pBar.style.width = progress + '%';
+                if (progress >= 100) {
+                    clearInterval(storyProgressTimer);
+                    closeStoryModal();
+                }
+            }, 100);
+
+            pushBackHandler(closeStoryModal);
+        };
+
+        window.closeStoryModal = function() {
+            clearInterval(storyProgressTimer);
+            const modal = document.getElementById('storySheetModal');
+            if (modal) modal.classList.add('hidden');
+            popBackHandler(closeStoryModal);
+        };
+
         window.toggleSettingsMenu = function(e) {
             if (e) e.stopPropagation();
             const m = document.getElementById('settingsDropdown');
@@ -4515,7 +4482,6 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
             }
         });
 
-        // تم و حالات گرافیکی
         window.toggleTheme = async function() {
             const html = document.documentElement;
             const isDark = html.classList.toggle('dark');
@@ -4535,7 +4501,7 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
 
         window.toggleBatterySaver = function() {
             document.body.classList.toggle('battery-saver');
-            window.showToast('حالت صرفه‌جویی باتری تغییر یافت');
+            window.showToast('حالت صرفه‌جویی باتری اعمال شد');
         };
 
         window.toggleHighContrast = function() {
@@ -4558,7 +4524,7 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
             window.updateDateTime();
         };
 
-        // جستجوی هوشمند
+        // جستجوی هوشمند اصطلاحات و قوانین
         let searchDebounceTimer = null;
         window.debouncedSearch = function(query) {
             clearTimeout(searchDebounceTimer);
@@ -4641,7 +4607,7 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
                     }
                 };
                 recognition.onerror = () => {
-                    window.showToast('تایپ صوتی متوقف شد یا خطایی رخ داد.', 'error');
+                    window.showToast('تایپ صوتی متوقف شد.', 'error');
                 };
             } catch (e) {
                 window.showToast('عدم دسترسی به میکروفون', 'error');
@@ -4721,7 +4687,6 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
         };
 
         window.setupInfiniteScrolls = function() {
-            // اسکرول نامحدود اصطلاحات
             const dictObs = document.getElementById('dictLoadingObserver');
             if (dictObs) {
                 new IntersectionObserver((entries) => {
@@ -4731,7 +4696,7 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
                     }
                 }).observe(dictObs);
             }
-            // اسکرول نامحدود قوانین
+
             const lawsObs = document.getElementById('lawsLoadingObserver');
             if (lawsObs) {
                 new IntersectionObserver((entries) => {
@@ -4744,7 +4709,7 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
         };
 
         /* ==========================================================================
-           ۱۴. موتور همگام‌سازی سه‌مرحله‌ای (Fetch استاندارد + پارامترها + JSONP اضطراری)
+           ۱۵. همگام‌سازی سه‌مرحله‌ای با سرور گوگل (Fetch استاندارد + JSONP اضطراری)
            ========================================================================== */
         window.fetchDataJsonp = function(url) {
             return new Promise((resolve, reject) => {
@@ -4779,15 +4744,17 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
         };
 
         window.fetchAppDataUniversal = async function() {
-            // تلاش ۱: ارتباط استاندارد با اکشن get_all
+            // تلاش ۱: فراخوانی با متد POST جهت پیشگیری از خطای ریدایرکت گوگل
             try {
                 const controller = new AbortController();
                 const timeoutId = setTimeout(() => controller.abort(), 12000);
 
-                const res = await fetch(`${API_URL}?action=get_all`, {
-                    method: 'GET',
+                const res = await fetch(API_URL, {
+                    method: 'POST',
                     mode: 'cors',
                     redirect: 'follow',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify({ action: 'get_all' }),
                     signal: controller.signal
                 });
                 clearTimeout(timeoutId);
@@ -4801,12 +4768,12 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
                 }
             } catch (err1) {}
 
-            // تلاش ۲: درخواست بدون پارامتر مستقیم
+            // تلاش ۲: فراخوانی با متد GET استاندارد
             try {
                 const controller2 = new AbortController();
                 const timeoutId2 = setTimeout(() => controller2.abort(), 12000);
 
-                const res2 = await fetch(API_URL, {
+                const res2 = await fetch(`${API_URL}?action=get_all`, {
                     method: 'GET',
                     mode: 'cors',
                     redirect: 'follow',
@@ -4823,14 +4790,11 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
                 }
             } catch (err2) {}
 
-            // تلاش ۳: متد JSONP اضطراری جهت دور زدن محدودیت‌های CORS
+            // تلاش ۳: متد اضطراری JSONP جهت عبور از خطاهای CORS
             try {
                 const jsonpData = await window.fetchDataJsonp(`${API_URL}?action=get_all`);
                 if (jsonpData && typeof jsonpData === 'object') return jsonpData;
-            } catch (err3) {
-                const jsonpDataRaw = await window.fetchDataJsonp(API_URL);
-                if (jsonpDataRaw && typeof jsonpDataRaw === 'object') return jsonpDataRaw;
-            }
+            } catch (err3) {}
 
             throw new Error("عدم برقراری ارتباط با وب‌اپ گوگل");
         };
@@ -4868,7 +4832,7 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
                     appData = fallbackData;
                 }
                 window.renderAll(false);
-                window.showToast('عدم اتصال به سرور؛ داده‌های آفلاین لود شدند', 'error');
+                window.showToast('عدم اتصال به سرور؛ داده‌های پایدار آفلاین لود شدند', 'error');
                 window.triggerHaptic('error');
             } finally {
                 if (icon) icon.classList.remove('fa-spin');
@@ -4876,18 +4840,15 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
         };
 
         /* ==========================================================================
-           ۱۵. تابع اصلی مقداردهی و اجرای برنامه (Entry Point)
+           ۱۶. تابع اصلی راه‌اندازی و اجرای برنامه (App Initialization)
            ========================================================================== */
         window.initApp = async function() {
-            // ۱. تضمین حذف آنی لایه لودینگ پیش از هر پردازش سنگین
             window.dismissSplashScreen();
 
-            // ۲. راه‌اندازی پایگاه داده آفلاین
             try {
                 await initIndexedDB();
             } catch (e) {}
 
-            // ۳. بازیابی تنظیمات کاربری ذخیره‌شده
             try {
                 const savedTheme = await AppStorage.get('sijt_theme');
                 window.applyTheme(savedTheme || 'dark');
@@ -4915,7 +4876,6 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
                 if (Array.isArray(savedLawBmk)) lawBookmarks = savedLawBmk;
             } catch (e) {}
 
-            // ۴. لود داده‌های کش محلی یا دیتاست آفلاین
             try {
                 const cached = await AppStorage.get('sijt_cache');
                 const defaultDataset = (typeof fallbackData !== 'undefined') ? fallbackData : {};
@@ -4924,7 +4884,6 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
                 appData = (typeof fallbackData !== 'undefined') ? fallbackData : {};
             }
 
-            // ۵. رندر نوارها و صفحات
             try {
                 window.renderBottomNav();
                 window.renderAll(false);
@@ -4935,10 +4894,8 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
                 console.error("Render Error:", renderErr);
             }
 
-            // ۶. حذف مجدد اسپلش‌اسکرین به عنوان سوپاپ اطمینان دوم
             window.dismissSplashScreen();
 
-            // ۷. فرآیندهای پس‌زمینه
             setTimeout(() => {
                 try {
                     window.renderPersonalNotes();
@@ -4948,7 +4905,7 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
                 } catch (bgErr) {}
             }, 50);
 
-            // ۸. فراخوانی نامتقارن داده‌های زنده از سرور گوگل شما
+            // فراخوانی در پس‌زمینه بدون مسدودسازی رابط کاربری
             window.fetchAppDataUniversal()
                 .then(newData => {
                     if (newData && typeof newData === 'object' && Object.keys(newData).length > 0) {
@@ -4960,14 +4917,13 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
                 .catch(() => {});
         };
 
-        // راه‌اندازی پس از بارگذاری سند
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', window.initApp);
         } else {
             window.initApp();
         }
 
-        // سوپاپ اطمینان قطعی DOM جهت جلوگیری مطلق از قفل ماندن اسپلش‌اسکرین
+        // سوپاپ اطمینان حذف اضطراری اسپلش‌اسکرین
         setTimeout(() => {
             const s = document.getElementById('splashScreen');
             if (s) s.remove();
