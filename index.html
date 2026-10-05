@@ -2225,15 +2225,15 @@
         };
 
         window.triggerHaptic = function(type = 'light') {
-    if (!tg?.HapticFeedback) return;
-    try {
-        if (type === 'light') tg.HapticFeedback.impactOccurred('light');
-        else if (type === 'medium') tg.HapticFeedback.impactOccurred('medium');
-        else if (type === 'selection') tg.HapticFeedback.selectionChanged();
-        else if (type === 'success') tg.HapticFeedback.notificationOccurred('success');
-        else if (type === 'error') tg.HapticFeedback.notificationOccurred('error');
-    } catch (e) {}
-};
+            if (!tg?.HapticFeedback) return;
+            try {
+                if (type === 'light') tg.HapticFeedback.impactOccurred('light');
+                else if (type === 'medium') tg.HapticFeedback.impactOccurred('medium');
+                else if (type === 'selection') tg.HapticFeedback.selectionChanged();
+                else if (type === 'success') tg.HapticFeedback.notificationOccurred('success');
+                else if (type === 'error') tg.HapticFeedback.notificationOccurred('error');
+            } catch (e) {}
+        };
 ```html
     <!-- ==========================================================================
          آغاز منطق اجرایی جاوااسکریپت و ماژول‌های هسته سامانه قضایی SIJT
