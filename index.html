@@ -3519,7 +3519,124 @@
             `;
             showToast('تاریخچه چت پاک شد', 'info');
         };
+/* ==========================================================================
+           مدیریت یادداشت‌ها و پرونده‌های شخصی
+           ========================================================================== */
+        window.renderPersonalNotes = function() {
+            const container = document.getElementById('personalNotesContainer');
+            if (!container) return;
 
+            if (!personalNotes || personalNotes.length === 0) {
+                container.innerHTML = '<div class="text-center p-4 text-[10px] text-slate-400 ultra-glass rounded-2xl">هنوز پرونده یا یادداشتی ثبت نکرده‌اید.</div>';
+                return;
+            }
+
+            container.innerHTML = personalNotes.map(n => `
+                <div class="ultra-glass p-3 rounded-2xl space-y-1.5 border border-black/5 dark:border-white/10 text-right">
+                    <div class="flex justify-between items-center">
+                        <span class="font-bold text-xs text-amber-500">${escapeHTML(n.title)}</span>
+                        <div class="flex items-center space-x-2 space-x-reverse">
+                            <span class="text-[9px] text-slate-400 font-mono">${escapeHTML(n.date || '')}</span>
+                            <button onclick="deletePersonalNote('${n.id}');" class="text-red-500 hover:text-red-400 border-none bg-transparent cursor-pointer p-1">
+                                <i class="fa-solid fa-trash-can text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <p class="text-xs leading-relaxed text-slate-700 dark:text-slate-300 m-0">${escapeHTML(n.content).replace(/\n/g, '<br>')}</p>
+                </div>
+            `).join('');
+        };
+
+        window.savePersonalNote = function() {
+            const titleInput = document.getElementById('caseTitleInput');
+            const noteInput = document.getElementById('caseNoteInput');
+            const title = titleInput.value.trim() || 'یادداشت حقوقی بدون عنوان';
+            const content = noteInput.value.trim();
+
+            if (!content) {
+                showToast('متن یادداشت نمی‌تواند خالی باشد', 'error');
+                return;
+            }
+
+            const newNote = {
+                id: generateUniqueId('note'),
+                title: title,
+                content: content,
+                date: new Date().toLocaleDateString('fa-IR')
+            };
+
+            personalNotes.unshift(newNote);
+            AppStorage.set('personal_notes', personalNotes);
+            renderPersonalNotes();
+
+            titleInput.value = '';
+            noteInput.value = '';
+            showToast('یادداشت در کارتابل پرونده‌ها ذخیره شد', 'success');
+        };
+
+        window.deletePersonalNote = function(id) {
+            personalNotes = personalNotes.filter(n => n.id !== id);
+            AppStorage.set('personal_notes', personalNotes);
+            renderPersonalNotes();
+            showToast('یادداشت حذف شد', 'info');
+        };
+
+        window.filterPersonalNotes = function(query) {
+            const q = query.trim().toLowerCase();
+            const container = document.getElementById('personalNotesContainer');
+            if (!container) return;
+
+            const filtered = personalNotes.filter(n => 
+                (n.title && n.title.toLowerCase().includes(q)) || 
+                (n.content && n.content.toLowerCase().includes(q))
+            );
+
+            if (filtered.length === 0) {
+                container.innerHTML = '<div class="text-center p-3 text-[10px] text-slate-400">یادداشتی با این عبارت یافت نشد.</div>';
+                return;
+            }
+
+            container.innerHTML = filtered.map(n => `
+                <div class="ultra-glass p-3 rounded-2xl space-y-1.5 border border-black/5 dark:border-white/10 text-right">
+                    <div class="flex justify-between items-center">
+                        <span class="font-bold text-xs text-amber-500">${escapeHTML(n.title)}</span>
+                        <span class="text-[9px] text-slate-400 font-mono">${escapeHTML(n.date || '')}</span>
+                    </div>
+                    <p class="text-xs leading-relaxed text-slate-700 dark:text-slate-300 m-0">${escapeHTML(n.content)}</p>
+                </div>
+            `).join('');
+        };
+
+        window.exportNotesPDF = function() {
+            if (!personalNotes || personalNotes.length === 0) {
+                showToast('یادداشتی برای صدور وجود ندارد', 'error');
+                return;
+            }
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4' });
+            doc.text("SIJT Case Notes Archive", 20, 20);
+            let y = 30;
+            personalNotes.forEach((n, idx) => {
+                doc.text(`${idx + 1}. ${n.title} (${n.date})`, 20, y);
+                y += 10;
+                const lines = doc.splitTextToSize(n.content, 170);
+                doc.text(lines, 20, y);
+                y += (lines.length * 7) + 10;
+                if (y > 270) { doc.addPage(); y = 20; }
+            });
+            doc.save("SIJT_Notes.pdf");
+            showToast('فایل PDF یادداشت‌ها دریافت شد', 'success');
+        };
+
+        window.shareNotesTelegram = function() {
+            if (!personalNotes || personalNotes.length === 0) {
+                showToast('یادداشتی برای ارسال وجود ندارد', 'error');
+                return;
+            }
+            const txt = personalNotes.map(n => `📌 ${n.title}\n📅 ${n.date}\n${n.content}`).join('\n\n---\n\n');
+            const url = `https://t.me/share/url?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(txt)}`;
+            window.open(url, '_blank');
+        };
         /* ==========================================================================
            ۱۰. رندر داده‌های ۱۵ تب گوگل شیت در قالب رابط کاربری
            ========================================================================== */
@@ -4139,6 +4256,16 @@
     // سپس در پس‌زمینه آپدیت از شیت انجام شود
     fetchInitialData();
 });
+window.manualRefresh = async function() {
+            const icon = document.getElementById('refreshIcon');
+            if (icon) icon.classList.add('fa-spin');
+            showToast('در حال دریافت اطلاعات از سرور...', 'info');
+            
+            await fetchInitialData();
+            
+            if (icon) icon.classList.remove('fa-spin');
+            showToast('اطلاعات با موفقیت به‌روزرسانی شد', 'success');
+        };        
     </script>
 </body>
 </html>
