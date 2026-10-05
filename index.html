@@ -2225,13 +2225,15 @@
         };
 
         window.triggerHaptic = function(type = 'light') {
-            if (!tg?.HapticFeedback) return;
-            try {
-                if (type === 'light') tg.HapticFeedback.impactOccurred('light');
-                else if (type === 'medium') tg.HapticFeedback.impactOccurred('medium');
-                else if (type === 'heavy') tg.HapticFeedback.impactOccurred('heavy');
-                else if (type === 'selectionاین **بخش ۱۴** است که شامل آغاز تگ `<script>`، تعریف متغیرهای سراسری برنامه، مقداردهی اولیه تلگرام وب‌اپ، سیستم یکپارچه هپتیک فیدبک، پشته دکمه بازگشت (Back Button) تلگرام، سیستم پیام‌های شناور توست (Toast)، راه‌اندازی و تعامل پایدار با IndexedDB (به‌همراه مدیریت صف ارسال آفلاین سوالات `OfflineSync`) و سیستم چندلایه ذخیره‌سازی محلی `AppStorage` است:
-
+    if (!tg?.HapticFeedback) return;
+    try {
+        if (type === 'light') tg.HapticFeedback.impactOccurred('light');
+        else if (type === 'medium') tg.HapticFeedback.impactOccurred('medium');
+        else if (type === 'selection') tg.HapticFeedback.selectionChanged();
+        else if (type === 'success') tg.HapticFeedback.notificationOccurred('success');
+        else if (type === 'error') tg.HapticFeedback.notificationOccurred('error');
+    } catch (e) {}
+};
 ```html
     <!-- ==========================================================================
          آغاز منطق اجرایی جاوااسکریپت و ماژول‌های هسته سامانه قضایی SIJT
