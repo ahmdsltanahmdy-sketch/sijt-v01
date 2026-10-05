@@ -3337,36 +3337,31 @@
         /* ==========================================================================
            ۹. ارتباط شبکه با Google Apps Script، هوش مصنوعی و تب UserFaqs
            ========================================================================== */
-        async function fetchInitialData() {
-            try {
-                const cached = await AppStorage.get('sijt_cached_app_data');
-                if (cached) {
-                    appData = cached;
-                    renderAllDataTabs();
-                }
-            } catch (e) {}
+      async function fetchInitialData() {
+    try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 4000); // ۴ ثانیه تایم‌اوت
 
-            try {
-                const res = await fetch(`${API_URL}?action=get_all_data`, { method: 'GET' });
-                if (res.ok) {
-                    const freshData = await res.json();
-                    if (freshData && Object.keys(freshData).length > 0) {
-                        appData = { ...window.fallbackData, ...freshData };
-                        await AppStorage.set('sijt_cached_app_data', appData);
-                        renderAllDataTabs();
-                    }
-                }
-            } catch (err) {
-                if (!appData || Object.keys(appData).length === 0) {
-                    appData = window.fallbackData;
-                    renderAllDataTabs();
-                }
-            } finally {
-                hideSplashScreen();
-                loadUserFaqs();
+        const res = await fetch(`${API_URL}?action=get_all_data`, { 
+            method: 'GET',
+            signal: controller.signal 
+        });
+        clearTimeout(timeoutId);
+
+        if (res.ok) {
+            const freshData = await res.json();
+            if (freshData && Object.keys(freshData).length > 0) {
+                appData = { ...window.fallbackData, ...freshData };
+                await AppStorage.set('sijt_cached_app_data', appData);
+                renderAllDataTabs();
             }
         }
-
+    } catch (err) {
+        console.warn('Backend fetch bypassed, using local data.');
+    } finally {
+        hideSplashScreen();
+    }
+}
         window.submitQuestion = async function() {
             const cat = document.getElementById('questionCategory').value;
             const q = document.getElementById('questionInput').value.trim();
@@ -4078,13 +4073,15 @@
         };
 
         function hideSplashScreen() {
-            const s = document.getElementById('splashScreen');
-            if (s) {
-                s.style.opacity = '0';
-                setTimeout(() => s.remove(), 320);
-            }
-        }
-
+    const s = document.getElementById('splashScreen');
+    if (s) {
+        s.style.pointerEvents = 'none'; // بلافاصله لمس صفحه آزاد شود
+        s.style.opacity = '0';
+        setTimeout(() => {
+            s.remove();
+        }, 300);
+    }
+}
         window.addEventListener('online', () => {
             document.getElementById('networkStatusIcon').className = 'fa-solid fa-wifi text-emerald-500 text-[9px]';
             document.getElementById('networkStatusText').innerText = 'برخط';
@@ -4118,6 +4115,30 @@
             fetchInitialData();
             switchTab('dictionary-tab');
         });
+        window.addEventListener('DOMContentLoaded', async () => {
+    // تایمر اضطراری: اگر پس از ۱.۵ ثانیه اسپلش برداشته نشد، اجباراً محو شود
+    setTimeout(() => {
+        hideSplashScreen();
+    }, 1500);
+
+    try {
+        await initIndexedDB();
+        bookmarks = (await AppStorage.get('sijt_bookmarks')) || [];
+        lawBookmarks = (await AppStorage.get('sijt_law_bookmarks')) || [];
+        personalNotes = (await AppStorage.get('personal_notes')) || [];
+        userNav = (await AppStorage.get('sijt_user_nav')) || ['dictionary-tab', 'legal-tab', 'laws-tab', 'cards-tab', 'lawyer-tab'];
+    } catch (e) {
+        console.warn('Storage init fallback', e);
+    }
+
+    // ابتدا لود سریع از دیتای محلی آفلاین
+    appData = window.fallbackData;
+    renderAllDataTabs();
+    hideSplashScreen(); // فوراً اسپلش برداشته شود
+
+    // سپس در پس‌زمینه آپدیت از شیت انجام شود
+    fetchInitialData();
+});
     </script>
 </body>
 </html>
