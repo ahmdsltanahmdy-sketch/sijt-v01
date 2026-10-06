@@ -418,8 +418,9 @@
             }
         }
 
+        /* استایل بهینه‌شده و پایدار دراورها بدون باگ !important */
         .bottom-drawer {
-            display: none !important;
+            display: none;
             position: fixed;
             bottom: 0;
             left: 0;
@@ -670,7 +671,7 @@
                     <input type="file" id="backupFileInput" accept=".json" class="hidden" onchange="importAppBackup(event);">
                 </div>
 
-                <button onclick="openNavEditor(); toggleSettingsMenu(); triggerHaptic('light');" class="w-full p-2 rounded-xl bg-black/5 dark:bg-white/10 hover:bg-black/10 text-slate-800 dark:text-slate-100 font-bold transition cursor-pointer border-none flex items-center justify-center">
+                <button onclick="openNavEditor(); triggerHaptic('light');" class="w-full p-2 rounded-xl bg-black/5 dark:bg-white/10 hover:bg-black/10 text-slate-800 dark:text-slate-100 font-bold transition cursor-pointer border-none flex items-center justify-center">
                     <i class="fa-solid fa-bars ml-1.5 text-red-500"></i> ویرایش تب‌های نوار پایین
                 </button>
 
@@ -784,7 +785,7 @@
                     </button>
                     <button onclick="switchTab('chatbot-tab'); triggerHaptic('light');" class="desktop-nav-item" data-tab="chatbot-tab">
                         <i class="fa-solid fa-robot text-red-500 w-5 text-center"></i>
-                        <span>چت‌‌بات و هوش مصنوعی</span>
+                        <span>چت‌بات و هوش مصنوعی</span>
                     </button>
                     <button onclick="switchTab('tools-tab'); triggerHaptic('light');" class="desktop-nav-item" data-tab="tools-tab">
                         <i class="fa-solid fa-toolbox text-red-500 w-5 text-center"></i>
@@ -838,7 +839,7 @@
             <!-- نوار ناوبری ارگونومیک شناور موبایل -->
             <nav id="mainNavContainer" class="floating-nav">
                 <div id="navIndicatorPill" class="nav-indicator-pill"></div>
-                <!-- تب‌های نوار پایین به صورت پویا با تابع renderBottomNav تزریق می‌‌گردند -->
+                <!-- تب‌های نوار پایین به صورت پویا با تابع renderBottomNav تزریق می‌گردند -->
             </nav>
 
             <!-- کانتینر اصلی محتوا (Main Content Area) -->
@@ -1197,7 +1198,7 @@
                             <span class="font-bold text-xs text-red-600 dark:text-red-500 flex items-center">
                                 <i class="fa-solid fa-ring ml-1.5 text-amber-500"></i> محاسبه ارزش روز مهریه (ماده ۱۰۸۲ قانون مدنی)
                             </span>
-                            <span class="text-[9px] text-slate-400">آیین‌‌نامه اجرایی تبصره الحاقی</span>
+                            <span class="text-[9px] text-slate-400">آیین‌نامه اجرایی تبصره الحاقی</span>
                         </div>
 
                         <div class="space-y-1">
@@ -1344,7 +1345,7 @@
                         </button>
                     </div>
 
-                    <!-- بخش ۶: تعرفه پلکانی حق‌الوکاله و تمبر مالیاتی وکیل (آیین‌نامه تعرفه مصوب ۱۳۹۸) -->
+                    <!-- بخش ۶: تعرفه پلکانی حق‌الوکاله و تمبر مالیاتی وکیل (آیین‌‌نامه تعرفه مصوب ۱۳۹۸) -->
                     <div class="ultra-glass p-4 rounded-3xl space-y-3 shadow-md">
                         <div class="flex items-center justify-between pb-2 border-b border-black/10 dark:border-white/10">
                             <span class="font-bold text-xs text-red-600 dark:text-red-500 flex items-center">
@@ -1601,7 +1602,7 @@
 
                         <div class="grid grid-cols-2 gap-2">
                             <div class="space-y-1">
-                                <label for="contractAmount" class="text-[10px] font-bold text-slate-600 dark:text-slate-400 block text-right">مبلغ ثمن / قرض‌الحسنه / مال‌‌الصلح (ریال):</label>
+                                <label for="contractAmount" class="text-[10px] font-bold text-slate-600 dark:text-slate-400 block text-right">مبلغ ثمن / قرض‌الحسنه / مال‌الصلح (ریال):</label>
                                 <input type="number" id="contractAmount" oninput="formatNumberInputDisplay(this);" placeholder="مبلغ به ریال" class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-2 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none font-mono">
                                 <div class="text-[9px] text-amber-500 font-medium text-left" id="contractAmount_words"></div>
                             </div>
@@ -1738,7 +1739,7 @@
                                 <i class="fa-solid fa-file-pdf text-red-500 ml-1"></i>
                                 <span>PDF</span>
                             </button>
-                            <button onclick="shareNotesTelegram(); triggerHaptic('light');" class="bg-black/5 dark:bg-white/10 hover:bg-black/10 text-slate-800 dark:text-slate-200 px-3 py-2 rounded-xl text-xs font-bold transition cursor-pointer flex items-center space-x-1 space-x-reverse border border-black/10 dark:border-white/10" title="اشتراک‌گذاری تلگرام">
+                            <button onclick="shareNotesTelegram(); triggerHaptic('light');" class="bg-black/5 dark:bg-white/10 hover:bg-black/10 text-slate-800 dark:text-slate-200 px-3 py-2 rounded-xl text-xs font-bold transition cursor-pointer flex items-center space-x-1 space-x-reverse border border-black/10 dark:border-white/10" title="اشتراک‌‌گذاری تلگرام">
                                 <i class="fa-brands fa-telegram text-sky-400 ml-1"></i>
                                 <span>ارسال</span>
                             </button>
@@ -1851,7 +1852,7 @@
 
                     <div class="sub-box text-[10px] leading-relaxed text-slate-600 dark:text-slate-300 flex items-center space-x-1.5 space-x-reverse">
                         <i class="fa-solid fa-headphones text-amber-500 text-xs ml-1"></i>
-                        <span>اپیزودهای صوتی با خروج از تب و در پس‌زمینه همچنان ادامه می‌یابند. سرعت پخش نیز در پلیر قابل تنظیم است.</span>
+                        <span>اپیزودهای صوتی با خروج از تب و در پس‌‌زمینه همچنان ادامه می‌یابند. سرعت پخش نیز در پلیر قابل تنظیم است.</span>
                     </div>
 
                     <!-- کانتینر پادکست‌های صوتی -->
@@ -2468,7 +2469,7 @@
         };
 
         /* ==========================================================================
-           ۵. تقویم رسمی و آب‌‌وهوا با Intl.DateTimeFormat (حل قطعی سال‌های کبیسه)
+           ۵. تقویم رسمی و آب‌و‌هوا با Intl.DateTimeFormat (حل قطعی سال‌های کبیسه)
            ========================================================================== */
         window.updateDateTime = function() {
             const now = new Date();
@@ -2850,7 +2851,7 @@
                 `;
             } else if (type === 'only_parents_no_hajib') {
                 const motherShare = amount * (1 / 3);
-                const fatherShare = amount * (2 / 3);
+                const fatherShare = amount - motherShare;
 
                 breakdownHtml = `
                     <div class="font-bold text-amber-500 pb-1 border-b border-black/10 dark:border-white/10">تقسیم بین ابوین بدون حاجب (ماده ۹۰۶ ق.م):</div>
@@ -3119,7 +3120,7 @@
             function getPersianMonthDays(y, m) {
                 if (m <= 6) return 31;
                 if (m <= 11) return 30;
-                // بررسی کبیسه شمسی بر مبنای جدول حسابی
+                // بررسی کبیسه شمسی بر مبنای جدول حسابی ۳۳ ساله
                 const rem = y % 33;
                 const isLeap = [1, 5, 9, 13, 17, 22, 26, 30].includes(rem);
                 return isLeap ? 30 : 29;
@@ -3622,7 +3623,7 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
                 }
             } catch (e) {}
 
-            box.innerHTML = `<div class="text-center p-4 text-[10px] text-slate-500 ultra-glass rounded-2xl">هنوز پاسخی ثبت نشده است. پرسش‌های جدید پس از بررسی وکیل در اینجا نمایش می‌یابند.</div>`;
+            box.innerHTML = `<div class="text-center p-4 text-[10px] text-slate-500 ultra-glass rounded-2xl">هنوز پاسخی ثبت نشده است. پرسش‌های جدید پس از بررسی وکیل در اینجا نمایش می‌‌یابند.</div>`;
         };
 
         /* ==========================================================================
@@ -4554,12 +4555,12 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
         };
 
         /* ==========================================================================
-           ۱۵. دراورها، باتم‌شیت‌ها، استوری و مودال‌های کمکی
+           ۱۵. دراورها، باتم‌‌شیت‌ها، استوری و مودال‌های کمکی (با رفع ریشه‌ای باگ باز نشدن)
            ========================================================================== */
         window.closeAllActiveDrawers = function() {
             document.querySelectorAll('.bottom-drawer').forEach(d => {
                 d.classList.remove('active-drawer');
-                d.style.setProperty('display', 'none', 'important');
+                d.style.removeProperty('display'); // اصلاح اساسی: حذف اینلاین‌استایل مخرب !important
             });
             const b = document.getElementById('globalModalBackdrop');
             if (b) b.classList.add('hidden');
@@ -4567,9 +4568,12 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
         };
 
         window.openMoreDrawer = function() {
+            window.closeAllActiveDrawers();
+            renderMoreDrawer();
             const d = document.getElementById('moreDrawer');
             const b = document.getElementById('globalModalBackdrop');
             if (d && b) {
+                d.style.removeProperty('display');
                 d.classList.add('active-drawer');
                 b.classList.remove('hidden');
                 pushBackHandler(closeAllActiveDrawers);
@@ -4609,6 +4613,10 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
         }
 
         window.openNavEditor = function() {
+            window.closeAllActiveDrawers();
+            const settingsMenu = document.getElementById('settingsDropdown');
+            if (settingsMenu) settingsMenu.classList.add('hidden'); // بستن منوی تنظیمات تا تداخل z-index ایجاد نشود
+
             const d = document.getElementById('navEditorDrawer');
             const b = document.getElementById('globalModalBackdrop');
             const list = document.getElementById('navEditorList');
@@ -4630,13 +4638,14 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
             list.innerHTML = allTabs.map(t => {
                 const checked = userNav.includes(t.id) ? 'checked' : '';
                 return `
-                    <label class="flex items-center space-x-2 space-x-reverse p-2 rounded-xl bg-black/5 dark:bg-white/5 cursor-pointer">
-                        <input type="checkbox" value="${t.id}" ${checked} class="nav-editor-check accent-red-600">
-                        <span class="text-[10px] font-bold text-slate-800 dark:text-slate-200">${t.label}</span>
+                    <label class="flex items-center space-x-2 space-x-reverse p-2.5 rounded-xl bg-black/5 dark:bg-white/5 cursor-pointer hover:bg-black/10 transition">
+                        <input type="checkbox" value="${t.id}" ${checked} class="nav-editor-check accent-red-600 w-4 h-4 rounded">
+                        <span class="text-[11px] font-bold text-slate-800 dark:text-slate-200 mr-1.5">${t.label}</span>
                     </label>
                 `;
             }).join('');
 
+            d.style.removeProperty('display');
             d.classList.add('active-drawer');
             b.classList.remove('hidden');
             pushBackHandler(closeNavEditor);
@@ -4676,6 +4685,7 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
             if (titleBox) titleBox.innerText = title;
             if (contentBox) contentBox.innerText = content;
 
+            sheet.style.removeProperty('display');
             sheet.classList.add('active-drawer');
             b.classList.remove('hidden');
             pushBackHandler(closeLawBottomSheet);
@@ -4803,6 +4813,35 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
             }
         };
 
+        // تابع ناوبری مستقیم از طریق کلیک روی نتایج سرچ به همراه اسکرول و هایلایت بصری
+        window.navigateToSearchResult = function(tabId, targetTerm) {
+            const box = document.getElementById('liveSuggestionsBox');
+            if (box) {
+                box.classList.add('hidden');
+                box.innerHTML = '';
+            }
+
+            window.switchTab(tabId);
+
+            setTimeout(() => {
+                const container = tabId === 'dictionary-tab' 
+                    ? document.getElementById('dictionaryContainer') 
+                    : document.getElementById('lawsContainer');
+
+                if (!container) return;
+
+                const cards = container.children;
+                for (let card of cards) {
+                    if (card.innerText.includes(targetTerm)) {
+                        card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        card.classList.add('ring-2', 'ring-amber-500', 'transition-all');
+                        setTimeout(() => card.classList.remove('ring-2', 'ring-amber-500'), 2500);
+                        break;
+                    }
+                }
+            }, 200);
+        };
+
         function executeInstantSearch(query) {
             const box = document.getElementById('liveSuggestionsBox');
             if (!box) return;
@@ -4814,29 +4853,36 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
                 return;
             }
 
-            const dictMatches = (appData.dictionary || fallbackData.dictionary || []).filter(d => d.term.toLowerCase().includes(q) || d.definition.toLowerCase().includes(q));
-            const lawMatches = (appData.laws || fallbackData.laws || []).filter(l => l.title.toLowerCase().includes(q) || l.content.toLowerCase().includes(q));
+            const dictMatches = (appData.dictionary || fallbackData.dictionary || []).filter(d => 
+                d.term.toLowerCase().includes(q) || d.definition.toLowerCase().includes(q)
+            );
+            const lawMatches = (appData.laws || fallbackData.laws || []).filter(l => 
+                l.title.toLowerCase().includes(q) || l.content.toLowerCase().includes(q)
+            );
 
             if (dictMatches.length === 0 && lawMatches.length === 0) {
-                box.innerHTML = `<div class="p-2 text-center text-[10px] text-slate-400">موردی یافت نشد.</div>`;
+                box.innerHTML = `<div class="p-3 text-center text-[10px] text-slate-400">موردی یافت نشد.</div>`;
                 box.classList.remove('hidden');
                 return;
             }
 
             let html = '';
-            dictMatches.slice(0, 3).forEach(d => {
+            dictMatches.slice(0, 4).forEach(d => {
+                const safeTerm = escapeHTML(d.term);
                 html += `
-                    <div onclick="switchTab('dictionary-tab'); document.getElementById('liveSuggestionsBox').classList.add('hidden');" class="p-2 rounded-xl hover:bg-black/5 dark:hover:bg-white/5 cursor-pointer text-right">
-                        <span class="text-xs font-bold text-amber-500">📖 ${escapeHTML(d.term)}</span>
-                        <p class="text-[10px] text-slate-400 truncate m-0">${escapeHTML(d.definition)}</p>
+                    <div onpointerdown="navigateToSearchResult('dictionary-tab', '${safeTerm}');" class="p-2.5 rounded-xl hover:bg-black/10 dark:hover:bg-white/10 cursor-pointer text-right transition border-b border-black/5 dark:border-white/5 last:border-none">
+                        <span class="text-xs font-bold text-amber-500 block">📖 ${safeTerm}</span>
+                        <p class="text-[10px] text-slate-400 truncate m-0 mt-0.5">${escapeHTML(d.definition)}</p>
                     </div>
                 `;
             });
-            lawMatches.slice(0, 3).forEach(l => {
+
+            lawMatches.slice(0, 4).forEach(l => {
+                const safeTitle = escapeHTML(l.title);
                 html += `
-                    <div onclick="switchTab('laws-tab'); document.getElementById('liveSuggestionsBox').classList.add('hidden');" class="p-2 rounded-xl hover:bg-black/5 dark:hover:bg-white/5 cursor-pointer text-right">
-                        <span class="text-xs font-bold text-red-500">⚖ ${escapeHTML(l.title)}</span>
-                        <p class="text-[10px] text-slate-400 truncate m-0">${escapeHTML(l.content)}</p>
+                    <div onpointerdown="navigateToSearchResult('laws-tab', '${safeTitle}');" class="p-2.5 rounded-xl hover:bg-black/10 dark:hover:bg-white/10 cursor-pointer text-right transition border-b border-black/5 dark:border-white/5 last:border-none">
+                        <span class="text-xs font-bold text-red-500 block">⚖ ${safeTitle}</span>
+                        <p class="text-[10px] text-slate-400 truncate m-0 mt-0.5">${escapeHTML(l.content)}</p>
                     </div>
                 `;
             });
@@ -5084,7 +5130,7 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
                 if (jsonpData && typeof jsonpData === 'object') return jsonpData;
             } catch (err3) {}
 
-            throw new Error("عدم برقراری ارتباط با وب‌اپ گوگل");
+            throw new Error("عدم برقراری ارتباط با وب‌‌اپ گوگل");
         };
 
         window.dismissSplashScreen = function() {
