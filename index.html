@@ -7,21 +7,30 @@
     
     <title>سامانه هوشمند قضایی SIJT | دستیار دادرسی و محاسبات حقوقی</title>
     
-    <!-- متاتگ‌های تخصصی تلگرام وب‌اپ و PWA -->
+    <!-- متاتگ‌های تخصصی تلگرام وب‌اپ، PWA و قابلیت‌های موبایلی نیتیو -->
     <meta name="theme-color" content="#070d1e">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="format-detection" content="telephone=no">
+    <meta name="description" content="سامانه فوق‌تخصصی دادرسی، محاسبات قضایی، دیات، خسارت تأخیر تأدیه و دستیار حقوقی هوشمند">
 
-    <!-- قلم‌های رسمی استاندارد فارسی -->
+    <!-- بارگذاری بهینه قلم‌های استاندارد فارسی با font-display: swap -->
     <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/misc/Farsi-Digits/Vazirmatn-FD-font-face.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/rastikerdar/shabnam-font@v5.0.1/dist/font-face.css">
 
     <!-- فونت‌آیکون FontAwesome ۶ پرو -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-    <!-- فریم‌‌ورک استایل Tailwind CSS -->
+    <!-- کتابخانه‌های پردازشی مستقل: بارگذاری هماهنگ بدون ایجاد گلوگاه -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+
+    <!-- فریم‌ورک استایل Tailwind CSS با کانفیگ سفارشی پالت سازمانی SIJT -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -31,22 +40,24 @@
                     colors: {
                         sijt: {
                             navy: '#070d1e',
-                            card: '#0b1329',
+                            darkCard: '#0b1329',
                             gold: '#f59e0b',
-                            crimson: '#dc2626'
+                            goldLight: '#fbbf24',
+                            crimson: '#dc2626',
+                            crimsonDark: '#991b1b',
+                            slateGlass: 'rgba(15, 23, 42, 0.75)'
                         }
+                    },
+                    boxShadow: {
+                        'neon-gold': '0 0 20px rgba(245, 158, 11, 0.25)',
+                        'neon-crimson': '0 0 20px rgba(220, 38, 38, 0.35)',
+                        'glass-surface': '0 8px 32px 0 rgba(0, 0, 0, 0.37)'
                     }
                 }
             }
         };
     </script>
 
-    <!-- موتورهای پردازش اسناد، چندرسانه‌ای و تلگرام -->
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
     <style>
         :root {
             --selected-font: 'Vazirmatn', -apple-system, BlinkMacSystemFont, Tahoma, sans-serif;
@@ -84,17 +95,25 @@
             padding: 0;
             overflow-x: hidden;
             transition: background-color 0.25s ease, color 0.25s ease;
+            text-rendering: optimizeLegibility;
+            -webkit-font-smoothing: antialiased;
         }
 
         html.dark body {
             background-color: var(--bg-color-dark);
             color: #f1f5f9;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(220, 38, 38, 0.08) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(245, 158, 11, 0.06) 0px, transparent 50%);
+            background-attachment: fixed;
         }
 
         body.oled-mode {
             background-color: #000000 !important;
             color: #ffffff !important;
+            background-image: none !important;
         }
+
         body.oled-mode .ultra-glass,
         body.oled-mode .settings-glass,
         body.oled-mode .sub-box,
@@ -118,6 +137,7 @@
             --border-light: #000000;
             --border-dark: #ffffff;
         }
+
         body.high-contrast * {
             font-weight: 700 !important;
         }
@@ -164,6 +184,7 @@
         .hide-scrollbar::-webkit-scrollbar {
             display: none;
         }
+
         .hide-scrollbar {
             -ms-overflow-style: none;
             scrollbar-width: none;
@@ -222,7 +243,7 @@
             font-size: 11px;
             font-weight: 700;
             color: #64748b;
-            transition: all 0.2s ease;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
             cursor: pointer;
             border: none;
             background: transparent;
@@ -237,6 +258,7 @@
         .desktop-nav-item:hover {
             background: rgba(220, 38, 38, 0.08);
             color: #dc2626;
+            transform: translateX(-2px);
         }
 
         .desktop-nav-item.active {
@@ -337,7 +359,7 @@
 
         .nav-btn i {
             font-size: 15px;
-            transition: transform 0.2s ease;
+            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
         .nav-btn.active-tab {
@@ -345,7 +367,7 @@
         }
 
         .nav-btn.active-tab i {
-            transform: translateY(-2px) scale(1.1);
+            transform: translateY(-2px) scale(1.15);
         }
 
         .nav-indicator-pill {
@@ -356,7 +378,7 @@
             background: linear-gradient(135deg, #dc2626, #f59e0b);
             box-shadow: 0 4px 14px rgba(220, 38, 38, 0.35);
             z-index: 1;
-            transition: right 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), width 0.3s ease;
+            transition: right 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), width 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
             pointer-events: none;
         }
 
@@ -396,7 +418,6 @@
             }
         }
 
-        /* اصلاح اساسی: پنهان بودن قطعی دراورها تا پیش از فعال‌سازی */
         .bottom-drawer {
             display: none !important;
             position: fixed;
@@ -406,7 +427,7 @@
             z-index: 110;
             border-radius: 32px 32px 0 0;
             padding: 20px;
-            box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.5);
             animation: slideUpDrawer 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
@@ -422,7 +443,7 @@
 
         .skeleton-card {
             border-radius: 20px;
-            background: linear-gradient(90deg, rgba(255,255,255,0.04) 25%, rgba(255,255,255,0.09) 50%, rgba(255,255,255,0.04) 75%);
+            background: linear-gradient(90deg, rgba(255,255,255,0.04) 25%, rgba(255,255,255,0.11) 50%, rgba(255,255,255,0.04) 75%);
             background-size: 200% 100%;
             animation: skeletonLoading 1.5s infinite;
         }
@@ -479,7 +500,7 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: all 0.25s ease;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         #floatingPipContainer {
@@ -498,7 +519,7 @@
     </style>
 </head>
 <body class="bg-[#f8fafc] dark:bg-[#070d1e] text-slate-800 dark:text-slate-100 min-h-screen">
-    <!-- اسپلش‌اسکرین با حذف استاندارد و بدون تداخل Race Condition -->
+    <!-- اسپلش‌اسکرین رسمی و بدون مسدودسازی رندر نهایی -->
     <div id="splashScreen" class="fixed inset-0 z-[200] flex flex-col items-center justify-center bg-[#070d1e] text-white transition-opacity duration-300 pointer-events-auto">
         <div class="relative flex flex-col items-center space-y-4">
             <div class="w-20 h-20 rounded-3xl p-1 bg-gradient-to-tr from-red-600 via-amber-500 to-red-700 shadow-2xl shadow-red-900/50 animate-pulse">
@@ -518,13 +539,13 @@
         </div>
     </div>
 
-    <!-- کانتینر پیام‌های شناور توست (Toast) -->
+    <!-- کانتینر پیام‌های شناور توست (Toast) با پشته امنیتی -->
     <div id="toastContainer" class="fixed top-4 left-4 right-4 z-[150] pointer-events-none flex flex-col space-y-2 max-w-sm mx-auto"></div>
 
-    <!-- هدر اصلی و منوی ابزارهای سریع -->
+    <!-- هدر اصلی و منوی کنترل‌های سریع -->
     <header id="appHeader" class="w-full">
         <div class="max-w-7xl mx-auto px-4 py-2.5 flex items-center justify-between">
-            <!-- لوگو و برند -->
+            <!-- لوگو و برند سازمانی سامانه -->
             <div class="flex items-center space-x-2.5 space-x-reverse cursor-pointer" onclick="switchTab('dictionary-tab'); triggerHaptic('light');">
                 <div class="w-9 h-9 rounded-2xl bg-gradient-to-tr from-red-600 to-amber-500 flex items-center justify-center text-white shadow-md shadow-red-600/30">
                     <i class="fa-solid fa-scale-balanced text-sm"></i>
@@ -535,7 +556,7 @@
                 </div>
             </div>
 
-            <!-- ویجت‌های تقویم، وضعیت شبکه، آب‌وهوا و کنترل‌ها -->
+            <!-- ویجت‌های تقویم رسمی، آب‌وهوا، شبکه و ابزارها -->
             <div class="flex items-center space-x-1.5 space-x-reverse">
                 <div id="headerCalendarWidget" class="hidden sm:flex items-center text-[10px] font-bold text-slate-600 dark:text-slate-300 bg-black/5 dark:bg-white/10 px-2.5 py-1 rounded-xl">
                     در حال محاسبه تقویم رسمی...
@@ -563,7 +584,8 @@
                 </button>
             </div>
         </div>
-        <!-- منوی کشویی تنظیمات شخصی‌سازی و تم -->
+
+        <!-- منوی کشویی تنظیمات شخصی‌سازی، تم و فونت -->
         <div id="settingsDropdown" class="hidden absolute left-4 top-12 z-50 w-72 settings-glass p-3.5 space-y-3">
             <div class="flex justify-between items-center pb-2 border-b border-black/10 dark:border-white/10">
                 <span class="font-bold text-xs text-amber-500 flex items-center">
@@ -572,7 +594,7 @@
                 <span class="text-[9px] text-slate-400 font-medium">نسخه ۳.۲ پرو</span>
             </div>
 
-            <!-- تم، اولد و کنتراست -->
+            <!-- حالت تم شب، روز، OLED و کنتراست بالا -->
             <div class="grid grid-cols-2 gap-2 text-[10px]">
                 <button onclick="toggleTheme(); triggerHaptic('light');" class="p-2 rounded-xl bg-black/5 dark:bg-white/10 hover:bg-black/10 flex items-center justify-center font-bold text-slate-800 dark:text-slate-100 transition cursor-pointer border-none">
                     <i class="fa-solid fa-circle-half-stroke text-amber-500 ml-1"></i>
@@ -595,7 +617,7 @@
                 </button>
             </div>
 
-            <!-- قلم فارسی -->
+            <!-- انتخاب قلم رسمی سامانه -->
             <div class="space-y-1">
                 <label for="fontSelect" class="text-[10px] font-bold text-slate-600 dark:text-slate-400 block text-right">انتخاب قلم سامانه:</label>
                 <select id="fontSelect" onchange="changeFontFamily(this.value);" class="w-full rounded-xl p-2 text-xs bg-slate-100 dark:bg-slate-900 text-slate-800 dark:text-slate-100 border border-black/10 dark:border-white/20 focus:outline-none focus:border-amber-500 transition cursor-pointer">
@@ -605,7 +627,7 @@
                 </select>
             </div>
 
-            <!-- اندازه قلم و فاصله خطوط -->
+            <!-- اندازه متن و فاصله خطوط -->
             <div class="grid grid-cols-2 gap-2">
                 <div class="space-y-1">
                     <label for="fontSizeSelect" class="text-[10px] font-bold text-slate-600 dark:text-slate-400 block text-right">اندازه متن:</label>
@@ -658,7 +680,7 @@
             </div>
         </div>
 
-        <!-- نوار جستجوی پیشرفته متصل به اصطلاحات و قوانین -->
+        <!-- نوار جستجوی پیشرفته متصل به اصطلاحات، قوانین و استعلامات -->
         <div class="max-w-7xl mx-auto px-4 pb-2.5 pt-1">
             <div class="relative w-full">
                 <input type="text" id="searchInput" oninput="debouncedSearch(this.value);" placeholder="جستجوی هوشمند در قوانین، اصطلاحات، دیات و دادخواست‌ها..." class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-slate-100 placeholder-slate-400 rounded-2xl px-4 py-2.5 pr-10 pl-20 text-xs border border-black/10 dark:border-white/15 focus:outline-none focus:border-red-500 transition shadow-inner">
@@ -681,7 +703,7 @@
             </div>
         </div>
 
-        <!-- ردیف هایلایت‌های استوری حقوقی -->
+        <!-- ردیف استوری‌های آموزشی و نکات طلایی دادرسی -->
         <div class="max-w-7xl mx-auto px-4 pb-2">
             <div id="storyHighlightsContainer" class="flex items-center space-x-3 space-x-reverse overflow-x-auto hide-scrollbar snap-scroll-bar py-1">
                 <div class="flex flex-col items-center space-y-1 flex-shrink-0 cursor-pointer" onclick="openStoryModal('نکات کلیدی چک', 'در صورت برگشت چک صیادی، بر اساس ماده ۲۳ قانون صدور چک می‌توانید مستقیماً از دادگاه تقاضای صدور برگ اجراییه بدون نیاز به دادرسی بدوی نمایید.');">
@@ -722,6 +744,7 @@
             </div>
         </div>
     </header>
+
     <!-- کانتینر اصلی اپلیکیشن و چیدمان ریسپانسیو دسکتاپ و موبایل -->
     <div id="appRoot">
         <div class="layout-container">
@@ -737,7 +760,7 @@
                     </div>
                 </div>
 
-                <!-- آیتم‌های پیمایش سریع سایدبار عریض دسکتاپ -->
+                <!-- آیتم‌های پیمایش سریع سایدبار عریض دسکتاپ (کل ۱۶ تب تخصصی) -->
                 <nav class="space-y-1 text-right flex-1 overflow-y-auto hide-scrollbar">
                     <button onclick="switchTab('dictionary-tab'); triggerHaptic('light');" class="desktop-nav-item active" data-tab="dictionary-tab">
                         <i class="fa-solid fa-book text-red-500 w-5 text-center"></i>
@@ -761,7 +784,7 @@
                     </button>
                     <button onclick="switchTab('chatbot-tab'); triggerHaptic('light');" class="desktop-nav-item" data-tab="chatbot-tab">
                         <i class="fa-solid fa-robot text-red-500 w-5 text-center"></i>
-                        <span>چت‌بات و هوش مصنوعی</span>
+                        <span>چت‌‌بات و هوش مصنوعی</span>
                     </button>
                     <button onclick="switchTab('tools-tab'); triggerHaptic('light');" class="desktop-nav-item" data-tab="tools-tab">
                         <i class="fa-solid fa-toolbox text-red-500 w-5 text-center"></i>
@@ -812,15 +835,15 @@
                 </div>
             </aside>
 
-            <!-- نوار ناوبری ارگونومیک موبایل با کپسول متحرک شناور -->
+            <!-- نوار ناوبری ارگونومیک شناور موبایل -->
             <nav id="mainNavContainer" class="floating-nav">
                 <div id="navIndicatorPill" class="nav-indicator-pill"></div>
-                <!-- تب‌های فعال به صورت پویا با renderBottomNav تولید می‌شوند -->
+                <!-- تب‌های نوار پایین به صورت پویا با تابع renderBottomNav تزریق می‌‌گردند -->
             </nav>
 
             <!-- کانتینر اصلی محتوا (Main Content Area) -->
             <main id="mainContentArea">
-               <!-- ==========================================================================
+                <!-- ==========================================================================
                      تب ۱: ترمینولوژی و اصطلاحات تخصصی حقوقی (با قابلیت فیلتر، نشانک و جستجو)
                      ========================================================================== -->
                 <section id="dictionary-tab" class="page-section space-y-3">
@@ -835,13 +858,13 @@
 
                     <!-- ردیف فیلتر دسته‌بندی موضوعی اصطلاحات -->
                     <div class="flex items-center space-x-1.5 space-x-reverse overflow-x-auto hide-scrollbar pb-1 text-[10px]" id="dictFilterPills">
-                        <button onclick="filterDictionaryCategory('all', this);" class="dict-pill active px-3 py-1.5 rounded-full bg-red-600 text-white font-bold transition flex-shrink-0 cursor-pointer border-none">همه واژگان</button>
-                        <button onclick="filterDictionaryCategory('مدنی', this);" class="dict-pill px-3 py-1.5 rounded-full bg-black/5 dark:bg-white/10 text-slate-700 dark:text-slate-300 font-bold transition flex-shrink-0 cursor-pointer border-none">حقوق مدنی</button>
-                        <button onclick="filterDictionaryCategory('کیفری', this);" class="dict-pill px-3 py-1.5 rounded-full bg-black/5 dark:bg-white/10 text-slate-700 dark:text-slate-300 font-bold transition flex-shrink-0 cursor-pointer border-none">کیفری و جزا</button>
-                        <button onclick="filterDictionaryCategory('تجاری', this);" class="dict-pill px-3 py-1.5 rounded-full bg-black/5 dark:bg-white/10 text-slate-700 dark:text-slate-300 font-bold transition flex-shrink-0 cursor-pointer border-none">اسناد تجاری و چک</button>
-                        <button onclick="filterDictionaryCategory('خانواده', this);" class="dict-pill px-3 py-1.5 rounded-full bg-black/5 dark:bg-white/10 text-slate-700 dark:text-slate-300 font-bold transition flex-shrink-0 cursor-pointer border-none">دعاوی خانواده</button>
-                        <button onclick="filterDictionaryCategory('صلح', this);" class="dict-pill px-3 py-1.5 rounded-full bg-black/5 dark:bg-white/10 text-slate-700 dark:text-slate-300 font-bold transition flex-shrink-0 cursor-pointer border-none">دادگاه‌های صلح</button>
-                        <button onclick="filterDictionaryCategory('bookmarks', this);" class="dict-pill px-3 py-1.5 rounded-full bg-black/5 dark:bg-white/10 text-amber-500 font-bold transition flex-shrink-0 cursor-pointer border-none flex items-center">
+                        <button onclick="filterDictionaryCategory('all', this);" class="dict-pill active px-3 py-1.5 rounded-full bg-red-600 text-white font-bold transition flex-shrink-0 cursor-pointer border-none shadow-sm">همه واژگان</button>
+                        <button onclick="filterDictionaryCategory('مدنی', this);" class="dict-pill px-3 py-1.5 rounded-full bg-black/5 dark:bg-white/10 text-slate-700 dark:text-slate-300 font-bold transition flex-shrink-0 cursor-pointer border-none hover:bg-black/10 dark:hover:bg-white/15">حقوق مدنی</button>
+                        <button onclick="filterDictionaryCategory('کیفری', this);" class="dict-pill px-3 py-1.5 rounded-full bg-black/5 dark:bg-white/10 text-slate-700 dark:text-slate-300 font-bold transition flex-shrink-0 cursor-pointer border-none hover:bg-black/10 dark:hover:bg-white/15">کیفری و جزا</button>
+                        <button onclick="filterDictionaryCategory('تجاری', this);" class="dict-pill px-3 py-1.5 rounded-full bg-black/5 dark:bg-white/10 text-slate-700 dark:text-slate-300 font-bold transition flex-shrink-0 cursor-pointer border-none hover:bg-black/10 dark:hover:bg-white/15">اسناد تجاری و چک</button>
+                        <button onclick="filterDictionaryCategory('خانواده', this);" class="dict-pill px-3 py-1.5 rounded-full bg-black/5 dark:bg-white/10 text-slate-700 dark:text-slate-300 font-bold transition flex-shrink-0 cursor-pointer border-none hover:bg-black/10 dark:hover:bg-white/15">دعاوی خانواده</button>
+                        <button onclick="filterDictionaryCategory('صلح', this);" class="dict-pill px-3 py-1.5 rounded-full bg-black/5 dark:bg-white/10 text-slate-700 dark:text-slate-300 font-bold transition flex-shrink-0 cursor-pointer border-none hover:bg-black/10 dark:hover:bg-white/15">دادگاه‌های صلح</button>
+                        <button onclick="filterDictionaryCategory('bookmarks', this);" class="dict-pill px-3 py-1.5 rounded-full bg-black/5 dark:bg-white/10 text-amber-500 font-bold transition flex-shrink-0 cursor-pointer border-none flex items-center hover:bg-black/10 dark:hover:bg-white/15">
                             <i class="fa-solid fa-bookmark ml-1 text-xs"></i>
                             <span>نشان‌شده‌ها</span>
                         </button>
@@ -889,6 +912,7 @@
                         <div class="skeleton-card h-28 w-full"></div>
                     </div>
                 </section>
+
                 <!-- ==========================================================================
                      تب ۳: بانک جامع قوانین، مواد قانونی، بخشنامه‌ها و آرای وحدت رویه
                      ========================================================================== -->
@@ -904,13 +928,13 @@
 
                     <!-- ردیف فیلتر دسته‌بندی موضوعی قوانین -->
                     <div class="flex items-center space-x-1.5 space-x-reverse overflow-x-auto hide-scrollbar pb-1 text-[10px]" id="lawsFilterPills">
-                        <button onclick="filterLawsCategory('all', this);" class="law-pill active px-3 py-1.5 rounded-full bg-red-600 text-white font-bold transition flex-shrink-0 cursor-pointer border-none">همه قوانین</button>
-                        <button onclick="filterLawsCategory('قانون مدنی', this);" class="law-pill px-3 py-1.5 rounded-full bg-black/5 dark:bg-white/10 text-slate-700 dark:text-slate-300 font-bold transition flex-shrink-0 cursor-pointer border-none">قانون مدنی</button>
-                        <button onclick="filterLawsCategory('آیین دادرسی مدنی', this);" class="law-pill px-3 py-1.5 rounded-full bg-black/5 dark:bg-white/10 text-slate-700 dark:text-slate-300 font-bold transition flex-shrink-0 cursor-pointer border-none">آیین دادرسی مدنی</button>
-                        <button onclick="filterLawsCategory('مجازات اسلامی', this);" class="law-pill px-3 py-1.5 rounded-full bg-black/5 dark:bg-white/10 text-slate-700 dark:text-slate-300 font-bold transition flex-shrink-0 cursor-pointer border-none">قانون مجازات اسلامی</button>
-                        <button onclick="filterLawsCategory('دادگاه صلح', this);" class="law-pill px-3 py-1.5 rounded-full bg-black/5 dark:bg-white/10 text-slate-700 dark:text-slate-300 font-bold transition flex-shrink-0 cursor-pointer border-none">دادگاه‌های صلح</button>
-                        <button onclick="filterLawsCategory('صدور چک', this);" class="law-pill px-3 py-1.5 rounded-full bg-black/5 dark:bg-white/10 text-slate-700 dark:text-slate-300 font-bold transition flex-shrink-0 cursor-pointer border-none">قانون صدور چک</button>
-                        <button onclick="filterLawsCategory('bookmarks', this);" class="law-pill px-3 py-1.5 rounded-full bg-black/5 dark:bg-white/10 text-amber-500 font-bold transition flex-shrink-0 cursor-pointer border-none flex items-center">
+                        <button onclick="filterLawsCategory('all', this);" class="law-pill active px-3 py-1.5 rounded-full bg-red-600 text-white font-bold transition flex-shrink-0 cursor-pointer border-none shadow-sm">همه قوانین</button>
+                        <button onclick="filterLawsCategory('قانون مدنی', this);" class="law-pill px-3 py-1.5 rounded-full bg-black/5 dark:bg-white/10 text-slate-700 dark:text-slate-300 font-bold transition flex-shrink-0 cursor-pointer border-none hover:bg-black/10 dark:hover:bg-white/15">قانون مدنی</button>
+                        <button onclick="filterLawsCategory('آیین دادرسی مدنی', this);" class="law-pill px-3 py-1.5 rounded-full bg-black/5 dark:bg-white/10 text-slate-700 dark:text-slate-300 font-bold transition flex-shrink-0 cursor-pointer border-none hover:bg-black/10 dark:hover:bg-white/15">آیین دادرسی مدنی</button>
+                        <button onclick="filterLawsCategory('مجازات اسلامی', this);" class="law-pill px-3 py-1.5 rounded-full bg-black/5 dark:bg-white/10 text-slate-700 dark:text-slate-300 font-bold transition flex-shrink-0 cursor-pointer border-none hover:bg-black/10 dark:hover:bg-white/15">قانون مجازات اسلامی</button>
+                        <button onclick="filterLawsCategory('دادگاه صلح', this);" class="law-pill px-3 py-1.5 rounded-full bg-black/5 dark:bg-white/10 text-slate-700 dark:text-slate-300 font-bold transition flex-shrink-0 cursor-pointer border-none hover:bg-black/10 dark:hover:bg-white/15">دادگاه‌های صلح</button>
+                        <button onclick="filterLawsCategory('صدور چک', this);" class="law-pill px-3 py-1.5 rounded-full bg-black/5 dark:bg-white/10 text-slate-700 dark:text-slate-300 font-bold transition flex-shrink-0 cursor-pointer border-none hover:bg-black/10 dark:hover:bg-white/15">قانون صدور چک</button>
+                        <button onclick="filterLawsCategory('bookmarks', this);" class="law-pill px-3 py-1.5 rounded-full bg-black/5 dark:bg-white/10 text-amber-500 font-bold transition flex-shrink-0 cursor-pointer border-none flex items-center hover:bg-black/10 dark:hover:bg-white/15">
                             <i class="fa-solid fa-bookmark ml-1 text-xs"></i>
                             <span>نشان‌شده‌ها</span>
                         </button>
@@ -955,7 +979,8 @@
                     <!-- ناظر اسکرول نامحدود کارت‌ها -->
                     <div id="cardsLoadingObserver" class="h-6 w-full flex items-center justify-center text-[10px] text-slate-500"></div>
                 </section>
-              <!-- ==========================================================================
+
+                <!-- ==========================================================================
                      تب ۵: پرسش و پاسخ مستقیم از وکیل با صف آفلاین و پیگیری اختصاصی
                      ========================================================================== -->
                 <section id="lawyer-tab" class="page-section hidden space-y-3.5">
@@ -1068,7 +1093,8 @@
                         </div>
                     </div>
                 </section>
-            <!-- ==========================================================================
+
+                <!-- ==========================================================================
                      تب ۷: جعبه‌ابزار جامع محاسبات قضایی، احوال شخصیه و دعاوی مالی
                      ========================================================================== -->
                 <section id="tools-tab" class="page-section hidden space-y-4">
@@ -1092,14 +1118,15 @@
 
                         <div class="space-y-1">
                             <label for="principalAmount" class="text-[10px] font-bold text-slate-600 dark:text-slate-400 block text-right">اصل مبلغ طلب به ریال (یا وجه چک / سفته):</label>
-                            <input type="number" id="principalAmount" placeholder="مثال: 500000000" class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none focus:border-red-500 transition">
+                            <input type="number" id="principalAmount" oninput="formatNumberInputDisplay(this);" placeholder="مثال: 500000000" class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none focus:border-red-500 transition font-mono">
+                            <div class="text-[9px] text-amber-500 font-medium text-left" id="principalAmount_words"></div>
                         </div>
 
                         <div class="grid grid-cols-2 gap-2">
                             <div class="space-y-1">
                                 <label class="text-[10px] font-bold text-slate-600 dark:text-slate-400 block text-right">سررسید دین (سال و ماه):</label>
                                 <div class="flex space-x-1 space-x-reverse">
-                                    <input type="number" id="delayStartYear" placeholder="سال (۱۳۹۸)" class="w-2/3 bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-2 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none text-center">
+                                    <input type="number" id="delayStartYear" placeholder="سال (۱۳۹۸)" class="w-2/3 bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-2 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none text-center font-mono">
                                     <select id="delayStartMonth" class="w-1/3 bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-1 py-2 text-[10px] border border-black/10 dark:border-white/20 focus:outline-none cursor-pointer">
                                         <option value="1">فروردین</option><option value="2">اردیبهشت</option><option value="3">خرداد</option>
                                         <option value="4">تیر</option><option value="5">مرداد</option><option value="6">شهریور</option>
@@ -1111,7 +1138,7 @@
                             <div class="space-y-1">
                                 <label class="text-[10px] font-bold text-slate-600 dark:text-slate-400 block text-right">تاریخ وصول / تسویه طلب:</label>
                                 <div class="flex space-x-1 space-x-reverse">
-                                    <input type="number" id="delayEndYear" placeholder="سال (۱۴۰۵)" value="1405" class="w-2/3 bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-2 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none text-center">
+                                    <input type="number" id="delayEndYear" placeholder="سال (۱۴۰۵)" value="1405" class="w-2/3 bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-2 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none text-center font-mono">
                                     <select id="delayEndMonth" class="w-1/3 bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-1 py-2 text-[10px] border border-black/10 dark:border-white/20 focus:outline-none cursor-pointer">
                                         <option value="1">فروردین</option><option value="2">اردیبهشت</option><option value="3">خرداد</option>
                                         <option value="4">تیر</option><option value="5">مرداد</option><option value="6">شهریور</option>
@@ -1143,7 +1170,8 @@
 
                         <div class="space-y-1">
                             <label for="courtFeeInput" class="text-[10px] font-bold text-slate-600 dark:text-slate-400 block text-right">مبلغ بهای خواسته یا ارزش منطقه‌ای به ریال:</label>
-                            <input type="number" id="courtFeeInput" placeholder="مثال: 1000000000" class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none focus:border-red-500 transition">
+                            <input type="number" id="courtFeeInput" oninput="formatNumberInputDisplay(this);" placeholder="مثال: 1000000000" class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none focus:border-red-500 transition font-mono">
+                            <div class="text-[9px] text-amber-500 font-medium text-left" id="courtFeeInput_words"></div>
                         </div>
 
                         <div class="space-y-1">
@@ -1169,7 +1197,7 @@
                             <span class="font-bold text-xs text-red-600 dark:text-red-500 flex items-center">
                                 <i class="fa-solid fa-ring ml-1.5 text-amber-500"></i> محاسبه ارزش روز مهریه (ماده ۱۰۸۲ قانون مدنی)
                             </span>
-                            <span class="text-[9px] text-slate-400">آیین‌نامه اجرایی تبصره الحاقی</span>
+                            <span class="text-[9px] text-slate-400">آیین‌‌نامه اجرایی تبصره الحاقی</span>
                         </div>
 
                         <div class="space-y-1">
@@ -1184,16 +1212,17 @@
                         <div id="mahariyehCashBox" class="space-y-2">
                             <div class="space-y-1">
                                 <label for="mahariyehCashAmount" class="text-[10px] font-bold text-slate-600 dark:text-slate-400 block text-right">مبلغ اسمی مهریه مندرج در قباله به ریال:</label>
-                                <input type="number" id="mahariyehCashAmount" placeholder="مثال: 50000000" class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none">
+                                <input type="number" id="mahariyehCashAmount" oninput="formatNumberInputDisplay(this);" placeholder="مثال: 50000000" class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none font-mono">
+                                <div class="text-[9px] text-amber-500 font-medium text-left" id="mahariyehCashAmount_words"></div>
                             </div>
                             <div class="grid grid-cols-2 gap-2">
                                 <div class="space-y-1">
                                     <label for="marriageYear" class="text-[10px] font-bold text-slate-600 dark:text-slate-400 block text-right">سال وقوع عقد (شمسی):</label>
-                                    <input type="number" id="marriageYear" placeholder="مثال: ۱۳۷۲" class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none text-center">
+                                    <input type="number" id="marriageYear" placeholder="مثال: ۱۳۷۲" class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none text-center font-mono">
                                 </div>
                                 <div class="space-y-1">
                                     <label for="mahariyehClaimYear" class="text-[10px] font-bold text-slate-600 dark:text-slate-400 block text-right">سال مطالبه / فوت زوج:</label>
-                                    <input type="number" id="mahariyehClaimYear" value="1405" class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none text-center">
+                                    <input type="number" id="mahariyehClaimYear" value="1405" class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none text-center font-mono">
                                 </div>
                             </div>
                         </div>
@@ -1203,11 +1232,12 @@
                             <div class="grid grid-cols-2 gap-2">
                                 <div class="space-y-1">
                                     <label for="mahariyehCoins" class="text-[10px] font-bold text-slate-600 dark:text-slate-400 block text-right">تعداد کل مسکوکات:</label>
-                                    <input type="number" id="mahariyehCoins" placeholder="مثال: ۱۱۰" class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none text-center">
+                                    <input type="number" id="mahariyehCoins" placeholder="مثال: ۱۱۰" class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none text-center font-mono">
                                 </div>
                                 <div class="space-y-1">
                                     <label for="currentCoinPrice" class="text-[10px] font-bold text-slate-600 dark:text-slate-400 block text-right">قیمت روز هر سکه (ریال):</label>
-                                    <input type="number" id="currentCoinPrice" placeholder="مثال: 4500000000" class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none text-center">
+                                    <input type="number" id="currentCoinPrice" oninput="formatNumberInputDisplay(this);" placeholder="مثال: 4500000000" class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none text-center font-mono">
+                                    <div class="text-[9px] text-amber-500 font-medium text-left" id="currentCoinPrice_words"></div>
                                 </div>
                             </div>
                         </div>
@@ -1221,7 +1251,8 @@
                             <i class="fa-solid fa-share-nodes ml-1"></i> صدور گواهی استناد اجرای ثبت
                         </button>
                     </div>
-            <!-- بخش ۴: تقسیم ترکه و سهم‌الارث با رعایت حجب نقصان و نمودار درختی (قانون مدنی) -->
+
+                    <!-- بخش ۴: تقسیم ترکه و سهم‌الارث با رعایت حجب نقصان و نمودار درختی (قانون مدنی) -->
                     <div class="ultra-glass p-4 rounded-3xl space-y-3 shadow-md">
                         <div class="flex items-center justify-between pb-2 border-b border-black/10 dark:border-white/10">
                             <span class="font-bold text-xs text-red-600 dark:text-red-500 flex items-center">
@@ -1232,7 +1263,8 @@
 
                         <div class="space-y-1">
                             <label for="estateAmount" class="text-[10px] font-bold text-slate-600 dark:text-slate-400 block text-right">ارزش خالص ترکه پس از کسر دیون و وصیت به ریال:</label>
-                            <input type="number" id="estateAmount" placeholder="مثال: 12000000000" class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none focus:border-red-500 transition">
+                            <input type="number" id="estateAmount" oninput="formatNumberInputDisplay(this);" placeholder="مثال: 12000000000" class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none focus:border-red-500 transition font-mono">
+                            <div class="text-[9px] text-amber-500 font-medium text-left" id="estateAmount_words"></div>
                         </div>
 
                         <div class="space-y-1">
@@ -1291,7 +1323,7 @@
 
                         <div id="customArshBox" class="hidden space-y-1">
                             <label for="customArshInput" class="text-[10px] font-bold text-slate-600 dark:text-slate-400 block text-right">درصد ارش تعیین‌شده توسط پزشکی قانونی:</label>
-                            <input type="number" id="customArshInput" placeholder="مثال: 3.5" step="0.1" class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none">
+                            <input type="number" id="customArshInput" placeholder="مثال: 3.5" step="0.1" class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none font-mono">
                         </div>
 
                         <button onclick="addDiyehInjuryItem(); triggerHaptic('light');" class="w-full bg-black/5 dark:bg-white/10 hover:bg-black/10 text-amber-500 font-bold py-2 rounded-xl text-xs border border-amber-500/20 cursor-pointer transition">
@@ -1323,7 +1355,8 @@
 
                         <div class="space-y-1">
                             <label for="lawyerClaimAmount" class="text-[10px] font-bold text-slate-600 dark:text-slate-400 block text-right">مبلغ بهای خواسته به ریال:</label>
-                            <input type="number" id="lawyerClaimAmount" placeholder="مثال: 8000000000" class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none focus:border-red-500 transition">
+                            <input type="number" id="lawyerClaimAmount" oninput="formatNumberInputDisplay(this);" placeholder="مثال: 8000000000" class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none focus:border-red-500 transition font-mono">
+                            <div class="text-[9px] text-amber-500 font-medium text-left" id="lawyerClaimAmount_words"></div>
                         </div>
 
                         <div class="space-y-1">
@@ -1341,7 +1374,8 @@
 
                         <div id="lawyerFeeResult" class="selectable-text"></div>
                     </div>
-       <!-- بخش ۷: محاسبه دستمزد کارشناسان رسمی دادگستری (تعرفه مصوب قوه قضائیه) -->
+
+                    <!-- بخش ۷: محاسبه دستمزد کارشناسان رسمی دادگستری (تعرفه مصوب قوه قضائیه) -->
                     <div class="ultra-glass p-4 rounded-3xl space-y-3 shadow-md">
                         <div class="flex items-center justify-between pb-2 border-b border-black/10 dark:border-white/10">
                             <span class="font-bold text-xs text-red-600 dark:text-red-500 flex items-center">
@@ -1361,7 +1395,8 @@
 
                         <div class="space-y-1">
                             <label for="expertValueInput" class="text-[10px] font-bold text-slate-600 dark:text-slate-400 block text-right">ارزش موضوع مورد ارزیابی به ریال:</label>
-                            <input type="number" id="expertValueInput" placeholder="مثال: 50000000000" class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none focus:border-red-500 transition">
+                            <input type="number" id="expertValueInput" oninput="formatNumberInputDisplay(this);" placeholder="مثال: 50000000000" class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none focus:border-red-500 transition font-mono">
+                            <div class="text-[9px] text-amber-500 font-medium text-left" id="expertValueInput_words"></div>
                         </div>
 
                         <button onclick="calculateExpertFee(); triggerHaptic('medium');" class="w-full bg-gradient-to-r from-red-600 to-amber-500 text-white font-bold py-2 rounded-xl text-xs border-none cursor-pointer shadow transition hover:opacity-90">
@@ -1382,7 +1417,8 @@
 
                         <div class="space-y-1">
                             <label for="carValueBefore" class="text-[10px] font-bold text-slate-600 dark:text-slate-400 block text-right">ارزش روز خودرو قبل از تصادف به ریال:</label>
-                            <input type="number" id="carValueBefore" placeholder="مثال: 12000000000" class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none focus:border-red-500 transition">
+                            <input type="number" id="carValueBefore" oninput="formatNumberInputDisplay(this);" placeholder="مثال: 12000000000" class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none focus:border-red-500 transition font-mono">
+                            <div class="text-[9px] text-amber-500 font-medium text-left" id="carValueBefore_words"></div>
                         </div>
 
                         <div class="grid grid-cols-2 gap-2">
@@ -1461,11 +1497,12 @@
                         <div class="grid grid-cols-2 gap-2">
                             <div class="space-y-1">
                                 <label for="mahariyehTotalCoins" class="text-[10px] font-bold text-slate-600 dark:text-slate-400 block text-right">تعداد کل سکه محکومبه:</label>
-                                <input type="number" id="mahariyehTotalCoins" placeholder="مثال: ۱۱۰" class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-2 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none text-center">
+                                <input type="number" id="mahariyehTotalCoins" placeholder="مثال: ۱۱۰" class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-2 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none text-center font-mono">
                             </div>
                             <div class="space-y-1">
                                 <label for="debtorMonthlyIncome" class="text-[10px] font-bold text-slate-600 dark:text-slate-400 block text-right">خالص درآمد ماهانه زوج (ریال):</label>
-                                <input type="number" id="debtorMonthlyIncome" placeholder="مثال: 180000000" class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-2 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none text-center">
+                                <input type="number" id="debtorMonthlyIncome" oninput="formatNumberInputDisplay(this);" placeholder="مثال: 180000000" class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-2 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none text-center font-mono">
+                                <div class="text-[9px] text-amber-500 font-medium text-left" id="debtorMonthlyIncome_words"></div>
                             </div>
                         </div>
 
@@ -1480,7 +1517,7 @@
                             </div>
                             <div class="space-y-1">
                                 <label for="debtorDependentsCount" class="text-[10px] font-bold text-slate-600 dark:text-slate-400 block text-right">تعداد افراد تحت تکفل زوج:</label>
-                                <input type="number" id="debtorDependentsCount" value="0" min="0" max="10" class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-2 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none text-center">
+                                <input type="number" id="debtorDependentsCount" value="0" min="0" max="10" class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-2 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none text-center font-mono">
                             </div>
                         </div>
 
@@ -1490,6 +1527,7 @@
 
                         <div id="dowryInsolvencyResult" class="selectable-text"></div>
                     </div>
+
                     <!-- بخش ۱۱: آماده‌ساز و تفکیک‌کننده هوشمند دادخواست برای درگاه خودکاربری عدل‌ایران -->
                     <div class="ultra-glass p-4 rounded-3xl space-y-3 shadow-md">
                         <div class="flex items-center justify-between pb-2 border-b border-black/10 dark:border-white/10">
@@ -1563,12 +1601,14 @@
 
                         <div class="grid grid-cols-2 gap-2">
                             <div class="space-y-1">
-                                <label for="contractAmount" class="text-[10px] font-bold text-slate-600 dark:text-slate-400 block text-right">مبلغ ثمن / قرض‌الحسنه / مال‌الصلح (ریال):</label>
-                                <input type="number" id="contractAmount" placeholder="مبلغ به ریال" class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-2 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none">
+                                <label for="contractAmount" class="text-[10px] font-bold text-slate-600 dark:text-slate-400 block text-right">مبلغ ثمن / قرض‌الحسنه / مال‌‌الصلح (ریال):</label>
+                                <input type="number" id="contractAmount" oninput="formatNumberInputDisplay(this);" placeholder="مبلغ به ریال" class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-2 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none font-mono">
+                                <div class="text-[9px] text-amber-500 font-medium text-left" id="contractAmount_words"></div>
                             </div>
                             <div class="space-y-1">
                                 <label for="dailyPenaltyAmount" class="text-[10px] font-bold text-slate-600 dark:text-slate-400 block text-right">وجه التزام روزشمار تأخیر اجرای تعهد (ریال):</label>
-                                <input type="number" id="dailyPenaltyAmount" placeholder="مبلغ خسارت روزانه" class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-2 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none">
+                                <input type="number" id="dailyPenaltyAmount" oninput="formatNumberInputDisplay(this);" placeholder="مبلغ خسارت روزانه" class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-2 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none font-mono">
+                                <div class="text-[9px] text-amber-500 font-medium text-left" id="dailyPenaltyAmount_words"></div>
                             </div>
                         </div>
 
@@ -1743,6 +1783,7 @@
                     <!-- ناظر اسکرول نامحدود اخبار -->
                     <div id="newsLoadingObserver" class="h-6 w-full flex items-center justify-center text-[10px] text-slate-500"></div>
                 </section>
+
                 <!-- ==========================================================================
                      تب ۱۰: بانک جامع سوالات متداول حقوقی، کیفری و ثبتی
                      ========================================================================== -->
@@ -1850,7 +1891,8 @@
                     <!-- ناظر اسکرول نامحدود فایل‌ها -->
                     <div id="filesLoadingObserver" class="h-6 w-full flex items-center justify-center text-[10px] text-slate-500"></div>
                 </section>
-            <!-- ==========================================================================
+
+                <!-- ==========================================================================
                      تب ۱۴: پخش زنده چندمسیره شبکه‌ها، جلسات علنی دادگاه و رادیو عدالت (Hls.js)
                      ========================================================================== -->
                 <section id="multimedia-tab" class="page-section hidden space-y-3.5">
@@ -1931,7 +1973,8 @@
             </main>
         </div>
     </div>
-    <!-- پخش‌کننده صوتی شناور با هماهنگی ابعاد دسکتاپ و موبایل -->
+
+    <!-- پخش‌کننده صوتی شناور با هماهنگی کامل دسکتاپ و موبایل -->
     <div id="floatingAudioPlayer">
         <audio id="mainAudioObj" class="hidden" ontimeupdate="handleAudioProgressUpdate();" onloadedmetadata="handleAudioMetadataLoaded();" onended="handleAudioPlaybackEnded();" onerror="handleAudioPlaybackError();"></audio>
         
@@ -1949,7 +1992,7 @@
             </div>
         </div>
 
-        <!-- کنترل‌های پخش -->
+        <!-- کنترل‌های پخش صوت -->
         <div class="flex items-center space-x-2 space-x-reverse">
             <button id="playerSpeedBtn" onclick="cycleAudioPlaybackRate();" class="text-[9px] font-bold px-1.5 py-0.5 rounded-lg bg-black/5 dark:bg-white/10 text-slate-700 dark:text-slate-300 border-none cursor-pointer">
                 1.0x
@@ -1971,7 +2014,7 @@
         <input type="range" id="playerProgressBar" value="0" min="0" max="100" step="0.1" oninput="handleAudioSeekInput(this.value);" class="absolute -top-1.5 left-3 right-3 h-1 accent-red-600 bg-slate-200 dark:bg-slate-700 rounded-full cursor-pointer appearance-none">
     </div>
 
-    <!-- دکمه شناور پرش به بالا (به همراه لیسنر خودکار) -->
+    <!-- دکمه شناور پرش به بالا -->
     <button id="backToTopBtn" onclick="window.scrollTo({ top: 0, behavior: 'smooth' }); triggerHaptic('light');" aria-label="پرش به بالا" class="hidden ultra-glass text-amber-500 hover:text-amber-400 shadow-xl border border-amber-500/30">
         <i class="fa-solid fa-arrow-up text-sm"></i>
     </button>
@@ -1986,7 +2029,7 @@
         </div>
     </div>
 
-    <!-- مودال چندرسانه‌ای مدیا -->
+    <!-- مودال چندرسانه‌ای مدیا و سینمایی -->
     <div id="mediaModal" class="hidden fixed inset-0 z-[120] flex items-center justify-center bg-black/85 backdrop-blur-md p-4">
         <div id="mediaModalBox" class="relative w-full max-w-2xl ultra-glass p-3 sm:p-4 rounded-3xl space-y-3 transition-transform duration-300">
             <div class="flex items-center justify-between pb-2 border-b border-black/10 dark:border-white/10">
@@ -2041,7 +2084,7 @@
         </button>
     </div>
 
-    <!-- باتم‌شیت توضیحات کامل ماده و اصطلاح (اصلاح‌شده به حالت پیش‌فرض بسته) -->
+    <!-- باتم‌شیت توضیحات کامل ماده و اصطلاح -->
     <div id="lawBottomSheet" class="bottom-drawer ultra-glass max-h-[75vh]">
         <div class="w-12 h-1.5 bg-slate-400/40 rounded-full mx-auto mb-2 cursor-grab flex-shrink-0"></div>
         <div class="flex items-center justify-between pb-2 mb-2 border-b border-black/10 dark:border-white/10 flex-shrink-0">
@@ -2090,14 +2133,11 @@
         </div>
     </div>
 
-    <!-- کانتینر رندر مخفی کارت گرافیکی -->
-    <div id="shareRenderBox" style="position:fixed; left:-9999px; top:-9999px; width:450px; opacity:0; pointer-events:none;"></div>
-    <!-- ==========================================================================
-         آغاز منطق اجرایی، ماژول‌ها و هوش محاسباتی سامانه قضایی SIJT
-         ========================================================================== -->
+    <!-- کانتینر رندر مخفی کارت گرافیکی رسمی دادگاه -->
+    <div id="shareRenderBox" style="position:fixed; left:-9999px; top:-9999px; width:480px; opacity:0; pointer-events:none;"></div>
     <script>
         /* ==========================================================================
-           ۱. متغیرهای سراسری، تنظیمات تلگرام و پیکربندی سرور Google Apps Script
+           ۱. متغیرهای سراسری، تنظیمات وب‌اپلیکیشن تلگرام و پیکربندی سرور Google Apps Script
            ========================================================================== */
         const tg = window.Telegram?.WebApp || null;
         if (tg) {
@@ -2105,7 +2145,9 @@
                 tg.ready();
                 tg.expand();
                 tg.enableClosingConfirmation();
-            } catch (e) {}
+            } catch (e) {
+                console.warn('Telegram WebApp context init bypassed:', e);
+            }
         }
 
         const API_URL = "https://script.google.com/macros/s/AKfycbyrMOSKpL5rwv5C9okpDQvbKE07-1JFP2ZE5xt7Xt4Y9sSvIUwbXZWU6ssTbBgQRgSZ/exec";
@@ -2122,7 +2164,7 @@
         let selectedLawsCat = 'all';
         let personalNotes = [];
 
-        // مدیریت صفحه‌بندی اسکرول نامحدود با قابلیت ریست
+        // کنترل بهینه اسکرول نامحدود با فلگ جلوگیری از هم‌روندی بارگذاری
         const initialPageLimits = {
             dict: 10,
             laws: 8,
@@ -2133,9 +2175,18 @@
             files: 6
         };
         let pageLimits = { ...initialPageLimits };
+        const loadingFlags = {
+            dict: false,
+            laws: false,
+            news: false,
+            faq: false,
+            cards: false,
+            podcasts: false,
+            files: false
+        };
 
         const tabScrollPositions = {};
-        let deferredPrompt = null; // برای رویداد PWA
+        let deferredPrompt = null; // نگهدارنده رویداد استاندارد PWA Install
 
         /* ==========================================================================
            ۲. سیستم پیام‌های شناور توست (Toast)، هپتیک تلگرام و پشته بازگشت
@@ -2178,6 +2229,7 @@
             backNavigationStack.push(handler);
             if (tg?.BackButton) {
                 tg.BackButton.show();
+                tg.BackButton.offClick(window.handleTelegramBackClick);
                 tg.BackButton.onClick(window.handleTelegramBackClick);
             }
         };
@@ -2191,6 +2243,7 @@
             }
             if (backNavigationStack.length === 0 && tg?.BackButton) {
                 tg.BackButton.hide();
+                tg.BackButton.offClick(window.handleTelegramBackClick);
             }
         };
 
@@ -2201,11 +2254,102 @@
             }
             if (backNavigationStack.length === 0 && tg?.BackButton) {
                 tg.BackButton.hide();
+                tg.BackButton.offClick(window.handleTelegramBackClick);
             }
         };
 
         /* ==========================================================================
-           ۳. پایگاه داده آفلاین IndexedDB و صف همگام‌سازی (حل باگ پاکسازی ناقص)
+           ۳. توابع امنیتی پیشرفته XSS، تولید شناسه یکتا و موتور تبدیل عدد به حروف
+           ========================================================================== */
+        function escapeHTML(str) {
+            if (str === null || str === undefined) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        function generateUniqueId(prefix = 'item') {
+            if (window.crypto && window.crypto.randomUUID) {
+                return prefix + '_' + window.crypto.randomUUID();
+            }
+            return prefix + '_' + Date.now() + '_' + Math.floor(Math.random() * 1000000);
+        }
+
+        function formatRial(val) {
+            if (isNaN(val) || val === null || val === undefined) return '۰ ریال';
+            return Math.round(val).toLocaleString('fa-IR') + ' ریال';
+        }
+
+        function formatToman(valRial) {
+            if (isNaN(valRial) || valRial === null || valRial === undefined) return '۰ تومان';
+            return Math.round(valRial / 10).toLocaleString('fa-IR') + ' تومان';
+        }
+
+        // تبدیل عدد به حروف فارسی جهت خوانایی و اعتبار اسناد رسمی
+        function numberToPersianWords(num) {
+            if (isNaN(num) || num === 0) return 'صفر';
+            const units = ['', 'یک', 'دو', 'سه', 'چهار', 'پنج', 'شش', 'هفت', 'هشت', 'نه'];
+            const teens = ['ده', 'یازده', 'دوازده', 'سیزده', 'چهارده', 'پانزده', 'شانزده', 'هفده', 'هجده', 'نوزده'];
+            const tens = ['', '', 'بیست', 'سی', 'چهل', 'پنجاه', 'شصت', 'هفتاد', 'هشتاد', 'نود'];
+            const hundreds = ['', 'یکصد', 'دویست', 'سیصد', 'چهارصد', 'پانصد', 'ششصد', 'هفتصد', 'هشتصد', 'نهصد'];
+            const scales = ['', 'هزار', 'میلیون', 'میلیارد', 'تریلیون'];
+
+            function convertTriad(n) {
+                let s = '';
+                const h = Math.floor(n / 100);
+                const remainder = n % 100;
+                const t = Math.floor(remainder / 10);
+                const u = remainder % 10;
+
+                if (h > 0) s += hundreds[h];
+                if (remainder > 0) {
+                    if (s) s += ' و ';
+                    if (remainder < 10) s += units[remainder];
+                    else if (remainder < 20) s += teens[remainder - 10];
+                    else {
+                        s += tens[t];
+                        if (u > 0) s += ' و ' + units[u];
+                    }
+                }
+                return s;
+            }
+
+            let numStr = Math.floor(Math.abs(num)).toString();
+            let triads = [];
+            while (numStr.length > 0) {
+                triads.unshift(parseInt(numStr.slice(-3), 10));
+                numStr = numStr.slice(0, -3);
+            }
+
+            let words = [];
+            for (let i = 0; i < triads.length; i++) {
+                const tr = triads[i];
+                if (tr > 0) {
+                    const scaleIdx = triads.length - 1 - i;
+                    const triadWord = convertTriad(tr);
+                    words.push(triadWord + (scales[scaleIdx] ? ' ' + scales[scaleIdx] : ''));
+                }
+            }
+            return words.join(' و ');
+        }
+
+        window.formatNumberInputDisplay = function(inputEl) {
+            const rawVal = parseFloat(inputEl.value);
+            const wordsEl = document.getElementById(inputEl.id + '_words');
+            if (!wordsEl) return;
+            if (!rawVal || isNaN(rawVal) || rawVal <= 0) {
+                wordsEl.innerText = '';
+                return;
+            }
+            const tomanVal = Math.round(rawVal / 10);
+            wordsEl.innerText = `معادل: ${tomanVal.toLocaleString('fa-IR')} تومان (${numberToPersianWords(tomanVal)} تومان)`;
+        };
+
+        /* ==========================================================================
+           ۴. پایگاه داده آفلاین IndexedDB و صف همگام‌سازی امن (Offline Sync)
            ========================================================================== */
         let dbInstance = null;
 
@@ -2322,8 +2466,9 @@
                 } catch (e) {}
             }
         };
-       /* ==========================================================================
-           ۴. حل قطعی خطای سال‌های کبیسه تقویم با استفاده از Intl.DateTimeFormat
+
+        /* ==========================================================================
+           ۵. تقویم رسمی و آب‌‌وهوا با Intl.DateTimeFormat (حل قطعی سال‌های کبیسه)
            ========================================================================== */
         window.updateDateTime = function() {
             const now = new Date();
@@ -2367,7 +2512,7 @@
                     const temp = Math.round(data.current_weather.temperature);
                     if (wBox) wBox.innerText = `تهران ${temp}°C`;
                 } else {
-                    throw new Error('Weather API failed');
+                    throw new Error('Weather API unreachable');
                 }
             } catch (e) {
                 if (wBox) wBox.innerText = `تهران ۲۴°C`;
@@ -2375,25 +2520,38 @@
         };
 
         /* ==========================================================================
-           ۵. جداول شاخص بهای کالاها و خدمات مصرفی بانک مرکزی و حل باگ سال‌های ناموجود
+           ۶. جدول کامل شاخص‌های رسمی سالانه و ماهانه بانک مرکزی از سال ۱۳۱۵ تا ۱۴۰۵
            ========================================================================== */
         const cpiYearlyTable = {
-            1370: 1.5, 1371: 1.8, 1372: 2.3, 1373: 3.1, 1374: 4.6, 1375: 5.7, 1376: 6.7, 1377: 8.0,
-            1378: 9.6, 1379: 10.8, 1380: 12.1, 1381: 14.0, 1382: 16.2, 1383: 18.7, 1384: 20.6, 1385: 23.1,
-            1386: 27.3, 1387: 34.2, 1388: 37.9, 1389: 42.6, 1390: 51.7, 1391: 67.5, 1392: 90.9, 1393: 105.1,
-            1394: 117.6, 1395: 125.7, 1396: 137.8, 1397: 180.8, 1398: 242.5, 1399: 330.1, 1400: 462.4,
-            1401: 677.4, 1402: 994.5, 1403: 1382.3, 1404: 1890.0, 1405: 2550.0
+            1315: 0.0001, 1316: 0.0001, 1317: 0.0001, 1318: 0.0001, 1319: 0.0001,
+            1320: 0.0002, 1321: 0.0004, 1322: 0.0009, 1323: 0.0011, 1324: 0.0010,
+            1325: 0.0009, 1326: 0.0010, 1327: 0.0011, 1328: 0.0012, 1329: 0.0011,
+            1330: 0.0012, 1331: 0.0013, 1332: 0.0015, 1333: 0.0017, 1334: 0.0017,
+            1335: 0.0019, 1336: 0.0020, 1337: 0.0020, 1338: 0.0023, 1339: 0.0025,
+            1340: 0.0025, 1341: 0.0026, 1342: 0.0026, 1343: 0.0027, 1344: 0.0028,
+            1345: 0.0028, 1346: 0.0028, 1347: 0.0029, 1348: 0.0030, 1349: 0.0031,
+            1350: 0.0033, 1351: 0.0035, 1352: 0.0039, 1353: 0.0045, 1354: 0.0049,
+            1355: 0.0057, 1356: 0.0071, 1357: 0.0078, 1358: 0.0087, 1359: 0.0107,
+            1360: 0.0132, 1361: 0.0157, 1362: 0.0188, 1363: 0.0211, 1364: 0.0220,
+            1365: 0.0272, 1366: 0.0347, 1367: 0.0448, 1368: 0.0526, 1369: 0.0573,
+            1370: 0.0700, 1371: 0.0870, 1372: 0.1069, 1373: 0.1445, 1374: 0.2159,
+            1375: 0.2660, 1376: 0.3120, 1377: 0.3685, 1378: 0.4425, 1379: 0.4984,
+            1380: 0.5552, 1381: 0.6430, 1382: 0.7435, 1383: 0.8568, 1384: 0.9460,
+            1385: 1.0588, 1386: 1.2534, 1387: 1.5714, 1388: 1.7408, 1389: 1.9568,
+            1390: 2.3768, 1391: 3.1026, 1392: 4.1804, 1393: 4.8326, 1394: 5.4082,
+            1395: 5.7820, 1396: 6.3380, 1397: 8.3140, 1398: 11.152, 1399: 15.184,
+            1400: 21.285, 1401: 31.180, 1402: 45.720, 1403: 63.580, 1404: 87.200, 1405: 117.70
         };
 
         function getYearlyCpiSafe(year) {
             if (cpiYearlyTable[year]) return cpiYearlyTable[year];
             if (year > 1405) {
-                return +(2550.0 * Math.pow(1.35, year - 1405)).toFixed(1);
+                return +(117.70 * Math.pow(1.35, year - 1405)).toFixed(2);
             }
-            if (year < 1370) {
-                return +(1.5 * Math.pow(0.85, 1370 - year)).toFixed(2);
+            if (year < 1315) {
+                return 0.0001;
             }
-            return 100.0;
+            return 1.0;
         }
 
         const cpiMonthlyBase = {
@@ -2402,54 +2560,24 @@
         };
 
         function getMonthlyCpi(year, month) {
-            const base = cpiMonthlyBase[year] || (year > 1405 ? 2040.0 * Math.pow(1.35, year - 1405) : 80.0);
+            const base = cpiMonthlyBase[year] || (year > 1405 ? 2040.0 * Math.pow(1.35, year - 1405) : (year < 1395 ? (getYearlyCpiSafe(year) * 17.3) : 80.0));
             const mFactor = 1 + ((month - 1) * (0.35 / 12));
             return +(base * mFactor).toFixed(2);
         }
 
         /* ==========================================================================
-           ۶. توابع کمکی امنیتی، فیلترسازی XSS و قالب‌بندی اعداد
-           ========================================================================== */
-        function escapeHTML(str) {
-            if (str === null || str === undefined) return '';
-            return String(str)
-                .replace(/&/g, '&amp;')
-                .replace(/</g, '&lt;')
-                .replace(/>/g, '&gt;')
-                .replace(/"/g, '&quot;')
-                .replace(/'/g, '&#039;');
-        }
-
-        function generateUniqueId(prefix = 'item') {
-            if (window.crypto && window.crypto.randomUUID) {
-                return prefix + '_' + window.crypto.randomUUID();
-            }
-            return prefix + '_' + Date.now() + '_' + Math.floor(Math.random() * 1000000);
-        }
-
-        function formatRial(val) {
-            if (isNaN(val) || val === null || val === undefined) return '۰ ریال';
-            return Math.round(val).toLocaleString('fa-IR') + ' ریال';
-        }
-
-        function formatToman(valRial) {
-            if (isNaN(valRial) || valRial === null || valRial === undefined) return '۰ تومان';
-            return Math.round(valRial / 10).toLocaleString('fa-IR') + ' تومان';
-        }
-
-        /* ==========================================================================
-           ۷. دیتاست پایدار آفلاین جامع (Fallback Data)
+           ۷. دیتاست کامل و غنی پایدار آفلاین (Fallback Dataset)
            ========================================================================== */
         window.fallbackData = {
             dictionary: [
-                { id: 'd1', term: 'اعسار', category: 'مدنی', definition: 'وضعیت فردی که به واسطه عدم کفایت دارایی یا عدم دسترسی به اموال خود، موقتاً توانایی تأدیه دیون، مهریه یا هزینه دادرسی را ندارد.' },
-                { id: 'd2', term: 'خیار غبن افحش', category: 'مدنی', definition: 'اختیار فسخ معامله در شرایطی که عدم تعادل ارزش مورد معامله و ثمن بیش از حد متعارف و فاحش باشد؛ این خیار فوری است.' },
-                { id: 'd3', term: 'دستور تخلیه فوری', category: 'مدنی', definition: 'دستور مراجع قضایی بر مبنای قانون روابط موجر و مستاجر ۱۳۷۶ در صورت انقضای مدت اجاره‌نامه عادی دارای امضای ۲ شاهد معتمد.' },
-                { id: 'd4', term: 'اجراییه مستقیم چک', category: 'تجاری', definition: 'تقاضای صدور مستقیم برگ اجراییه از دادگاه بدون نیاز به طرح دادخواست بدوی، بر مبنای ماده ۲۳ قانون اصلاح صدور چک.' },
-                { id: 'd5', term: 'تأمین خواسته', category: 'مدنی', definition: 'توقیف احتیاطی اموال خوانده پیش از صدور حکم قطعی به منظور جلوگیری از تضییع یا انتقال اموال به قصد فرار از دین.' },
-                { id: 'd6', term: 'ارش', category: 'کیفری', definition: 'خسارت مالی صدمات بدنی که در شرع و قانون مجازات اسلامی میزان مقطوعی برای دیه آن معین نشده و توسط پزشکی قانونی تعیین می‌گردد.' },
-                { id: 'd7', term: 'حجب نقصان', category: 'خانواده', definition: 'کاهش فرض ارث یک وارث به علت وجود وارث دیگر؛ نظیر تقلیل سهم مادر از یک‌سوم به یک‌ششم با وجود اخوه متوفی (ماده ۸۹۲).' },
-                { id: 'd8', term: 'دادگاه صلح', category: 'صلح', definition: 'دادگاه‌های تخصصی جدید صلاحیت‌‌دار در دعاوی مالی تا ۱۰۰ میلیون تومان، حصر وراثت، تخلیه و جنبه مالی تصادفات رانندگی.' }
+                { id: 'd1', term: 'اعسار', category: 'مدنی', definition: 'وضعیت فردی که به واسطه عدم کفایت دارایی یا عدم دسترسی موقت به اموال خود، توانایی پرداخت دفعی دیون، مهریه یا هزینه دادرسی را ندارد.' },
+                { id: 'd2', term: 'خیار غبن افحش', category: 'مدنی', definition: 'اختیار قانونی فسخ معامله در شرایطی که عدم تعادل فاحش و بسیار نابرابر میان ارزش واقعی مبیع و ثمن معامله احراز گردد.' },
+                { id: 'd3', term: 'دستور تخلیه فوری', category: 'مدنی', definition: 'دستور مراجع صالح قضایی بر مبنای قانون روابط موجر و مستاجر ۱۳۷۶ در صورت انقضای مدت اجاره‌نامه عادی دارای امضای ۲ شاهد معتمد.' },
+                { id: 'd4', term: 'اجراییه مستقیم چک', category: 'تجاری', definition: 'تقاضای صدور مستقیم برگ اجراییه از دادگاه بدون نیاز به ورود در ماهیت و دادرسی بدوی، وفق ماده ۲۳ قانون اصلاح صدور چک.' },
+                { id: 'd5', term: 'تأمین خواسته', category: 'مدنی', definition: 'توقیف احتیاطی اموال خوانده پیش از صدور حکم قطعی، جهت جلوگیری از تضییع یا انتقال صوری مال به قصد فرار از ادای دین.' },
+                { id: 'd6', term: 'ارش', category: 'کیفری', definition: 'خسارت مالی صدمات بدنی که در شرع و قانون مجازات اسلامی مقدار معینی برای دیه آن تعیین نشده و برآورد آن منحصراً با پزشکی قانونی است.' },
+                { id: 'd7', term: 'حجب نقصان', category: 'خانواده', definition: 'کاهش سهم فرض قانونی یک وارث به واسطه وجود وارث دیگر؛ نظیر تقلیل سهم ارث مادر از یک‌سوم به یک‌ششم در صورت وجود برادران و خواهران متوفی.' },
+                { id: 'd8', term: 'دادگاه صلح', category: 'صلح', definition: 'مرجع قضایی تخصصی رسیدگی‌کننده به دعاوی مالی تا سقف یکصد میلیون تومان، تصادفات، جنبه مالی حوادث، حصر وراثت و تخلیه عین مستاجره.' }
             ],
             legalSystems: [
                 { id: 'ls1', title: 'درگاه خودکاربری عدل‌ایران', description: 'ثبت الکترونیکی دادخواست، شکواییه و لوایح قضایی بدون مراجعه به دفاتر', url: 'https://adliran.ir', icon: 'fa-laptop-file' },
@@ -2502,7 +2630,7 @@
             ]
         };
         /* ==========================================================================
-           ۸. حل مشکل بسته نشدن PiP و کنترل پخش رسانه‌ها
+           ۸. توابع محاسباتی ۱۲‌گانه قضایی، احوال شخصیه و امور دادرسی
            ========================================================================== */
         window.closePiP = function() {
             const pip = document.getElementById('floatingPipContainer');
@@ -2511,9 +2639,6 @@
             if (holder) holder.innerHTML = '';
         };
 
-        /* ==========================================================================
-           ۹. توابع محاسباتی ۱۲‌گانه قضایی و احوال شخصیه
-           ========================================================================== */
         window.calculateDelayCompensationMonthly = function() {
             const principal = parseFloat(document.getElementById('principalAmount')?.value);
             const startYear = parseInt(document.getElementById('delayStartYear')?.value);
@@ -2721,7 +2846,7 @@
                     <div class="font-bold text-amber-500 pb-1 border-b border-black/10 dark:border-white/10">تقسیم با اعمال حجب نقصان مادر (ماده ۸۹۲ ق.م):</div>
                     <div class="flex justify-between"><span>مادر متوفی (یک‌ششم به دلیل وجود اخوه):</span><span class="font-bold">${formatToman(motherShare)}</span></div>
                     <div class="flex justify-between text-emerald-400"><span>پدر متوفی (باقیمانده ترکه):</span><span class="font-bold">${formatToman(fatherShare)}</span></div>
-                    <div class="text-[9px] text-slate-400 pt-1">برادران و خواهران حاجب خود ارث نمی‌‌برند اما سهم مادر را از ۱/۳ به ۱/۶ تقلیل دادند.</div>
+                    <div class="text-[9px] text-slate-400 pt-1">برادران و خواهران حاجب خود ارث نمی‌برند اما سهم مادر را از ۱/۳ به ۱/۶ تقلیل دادند.</div>
                 `;
             } else if (type === 'only_parents_no_hajib') {
                 const motherShare = amount * (1 / 3);
@@ -2831,7 +2956,7 @@
                     <div class="sub-box space-y-1.5 text-xs border-amber-500/30">
                         <div class="flex justify-between text-slate-700 dark:text-slate-200">
                             <span>مجموع درصدهای دیه و ارش:</span>
-                            <span class="font-bold text-amber-500">${totalPercent.toFixed(2)}٪</span>
+                            <span class="font-bold text-amber-500 font-mono">${totalPercent.toFixed(2)}٪</span>
                         </div>
                         ${taghlizAdded > 0 ? `
                             <div class="flex justify-between text-red-500 font-bold">
@@ -2969,6 +3094,7 @@
             }
         };
 
+        // محاسبه دقیق مواعد دادرسی با احتساب طول واقعی ماه‌های خورشیدی (۳۱، ۳۰ و ۲۹ روزه)
         window.calculateExactLegalDeadline = function() {
             const dateStr = document.getElementById('noticeDateInput')?.value?.trim();
             const action = document.getElementById('deadlineActionType')?.value;
@@ -2986,12 +3112,21 @@
             else if (action === 'court_correction' || action === 'judgment_exec') { days = 10; title = 'رفع نقص / اجرای حکم'; }
 
             const parts = dateStr.split('/').map(Number);
-            let day = parts[2] + days + 1;
-            let month = parts[1];
             let year = parts[0];
+            let month = parts[1];
+            let day = parts[2] + days + 1; // روز ابلاغ و اقدام طبق مواد ۴۴۴ و ۴۴۵ ق.آ.د.م جزء مدت محسوب نمی‌شود
 
-            while (day > 30) {
-                day -= 30;
+            function getPersianMonthDays(y, m) {
+                if (m <= 6) return 31;
+                if (m <= 11) return 30;
+                // بررسی کبیسه شمسی بر مبنای جدول حسابی
+                const rem = y % 33;
+                const isLeap = [1, 5, 9, 13, 17, 22, 26, 30].includes(rem);
+                return isLeap ? 30 : 29;
+            }
+
+            while (day > getPersianMonthDays(year, month)) {
+                day -= getPersianMonthDays(year, month);
                 month += 1;
                 if (month > 12) {
                     month = 1;
@@ -3002,8 +3137,8 @@
             if (resBox) {
                 resBox.innerHTML = `
                     <div class="sub-box space-y-1.5 text-xs border-amber-500/30">
-                        <div class="font-bold text-amber-500">${title} (${days} روز قانونی)</div>
-                        <div class="text-[10px] text-slate-400">به موجب مواد ۴۴۴ و ۴۴۵ آیین دادرسی مدنی، روز ابلاغ و روز اقدام جزء مدت محسوب نمی‌شود.</div>
+                        <div class="font-bold text-amber-500">${title} (${days} روز مهلت مصرح)</div>
+                        <div class="text-[10px] text-slate-400">به موجب مواد ۴۴۴ و ۴۴۵ آیین دادرسی مدنی، روز ابلاغ و روز اقدام محاسبه نگردیده است.</div>
                         <div class="pt-1 border-t border-black/10 dark:border-white/10 flex justify-between text-emerald-500 font-bold">
                             <span>آخرین روز مجاز ثبت لایحه:</span>
                             <span class="font-mono text-sm">${year}/${String(month).padStart(2,'0')}/${String(day).padStart(2,'0')}</span>
@@ -3121,7 +3256,7 @@ ${title}
 در صورت استنکاف از اجرای هریک از تعهدات، طرف متخلف مکلف است روزانه مبلغ ${formatToman(penalty)} به عنوان خسارت روزشمار تأخیر در وجه طرف دیگر تأدیه نماید و این امر مانع از اجرای اصل تعهد نخواهد بود.
 
 ${waive ? 'ماده ۴ - اسقاط خیارات:\nطرفین با علم و آگاهی کامل، کافه خیارات قانونی ولو خیار غبن فاحش یا افحش را از خود اسقاط نمودند، مگر خیار تدلیس که غیرقابل اسقاط است.\n' : ''}
-${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی از تفسیر یا اجرای این قرارداد بدواً از طریق داور مرضی‌الطرفین حل‌وفصل خواهد شد و رأی داور قطعی و لازم‌‌الاجراست.\n' : ''}
+${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی از تفسیر یا اجرای این قرارداد بدواً از طریق داور مرضی‌الطرفین حل‌وفصل خواهد شد و رأی داور قطعی و لازم‌الاجراست.\n' : ''}
 این سند در ۲ نسخه متحدالشکل با اعتبار واحد در تاریخ مندرج تنظیم گردید.
 امضای طرف اول                    امضای طرف دوم                    امضای شهود معتمد
             `.trim();
@@ -3133,7 +3268,7 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
         };
 
         /* ==========================================================================
-           ۱۰. صدور PDF فارسی ۱۰۰٪ استاندارد و بدون به‌هم‌ریختگی حروف با Canvas
+           ۹. صدور PDF فارسی رسمی با شکست استاندارد صفحات A4 بدون بریدگی حروف
            ========================================================================== */
         window.exportContractPDF = async function() {
             const text = document.getElementById('contractOutputBox')?.innerText;
@@ -3194,7 +3329,7 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
         };
 
         /* ==========================================================================
-           ۱۱. مدیریت ورکر اشتراکی Singleton در OCR جهت جلوگیری از Memory Leak
+           ۱۰. موتور بهینه‌شده اسکنر نوری اسناد OCR (Tesseract.js) و پیش‌پردازش تصویر
            ========================================================================== */
         let sharedOcrWorker = null;
         let selectedOcrFile = null;
@@ -3305,7 +3440,7 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
                     <div style="font-weight:800; font-size:13px; color:#dc2626; margin-bottom:10px;">${escapeHTML(title)}</div>
                     <div style="font-size:11px; line-height:2; color:#e2e8f0; white-space:pre-wrap;">${escapeHTML(bodyText)}</div>
                     <div style="margin-top:16px; padding-top:8px; border-top:1px dashed rgba(255,255,255,0.2); font-size:9px; color:#64748b; text-align:center;">
-                        تأییدیه استناد و محاسبه خودکار بر مبنای قوانین و آیین‌‌نامه‌های رسمی
+                        تأییدیه استناد و محاسبه خودکار بر مبنای قوانین و آیین‌نامه‌های رسمی
                     </div>
                 </div>
             `;
@@ -3323,8 +3458,9 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
                 window.showToast('خطا در تبدیل کارت گرافیکی', 'error');
             }
         };
+
         /* ==========================================================================
-           ۱۲. دستیار هوشمند، ارتباط POST با سرور و مشاوره وکیل
+           ۱۱. چت‌بات هوش مصنوعی، پرسش از وکیل و مکانیزم امن POST/GET
            ========================================================================== */
         window.runAiAssistant = async function() {
             const input = document.getElementById('aiPromptInput');
@@ -3490,7 +3626,7 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
         };
 
         /* ==========================================================================
-           ۱۳. مدیریت ناوبری تب‌ها، نشانک‌ها و حل باگ ابعاد کپسول متحرک
+           ۱۲. مدیریت ناوبری تب‌ها، نشانک‌ها و به‌روزرسانی نشانگر کپسولی
            ========================================================================== */
         window.switchTab = function(tabId) {
             const currentActive = document.querySelector('.page-section:not(.hidden)');
@@ -3591,7 +3727,7 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
 
         window.filterDictionaryCategory = function(cat, btn) {
             selectedDictCat = cat;
-            pageLimits.dict = initialPageLimits.dict; // ریست اسکرول بی‌نهایت
+            pageLimits.dict = initialPageLimits.dict;
             document.querySelectorAll('#dictFilterPills .dict-pill').forEach(p => {
                 p.classList.remove('active', 'bg-red-600', 'text-white');
                 p.classList.add('bg-black/5', 'dark:bg-white/10', 'text-slate-700', 'dark:text-slate-300');
@@ -3689,7 +3825,7 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
 
         window.filterLawsCategory = function(cat, btn) {
             selectedLawsCat = cat;
-            pageLimits.laws = initialPageLimits.laws; // ریست اسکرول بی‌نهایت
+            pageLimits.laws = initialPageLimits.laws;
             document.querySelectorAll('#lawsFilterPills .law-pill').forEach(p => {
                 p.classList.remove('active', 'bg-red-600', 'text-white');
                 p.classList.add('bg-black/5', 'dark:bg-white/10', 'text-slate-700', 'dark:text-slate-300');
@@ -3950,7 +4086,7 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
         };
 
         /* ==========================================================================
-           ۱۴. کارتابل پرونده‌ها و یادداشت‌های شخصی با شناسه استاندارد
+           ۱۳. کارتابل پرونده‌ها و یادداشت‌های شخصی
            ========================================================================== */
         window.savePersonalNote = async function() {
             const title = document.getElementById('caseTitleInput')?.value?.trim();
@@ -4099,7 +4235,7 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
         };
 
         /* ==========================================================================
-           ۱۵. استریم زنده، پلیر صوتی شناور با ابعاد استاندارد دسکتاپ و موبایل
+           ۱۴. استریم زنده، پلیر صوتی شناور و مودال‌های چندرسانه‌ای
            ========================================================================== */
         let activeHlsInstance = null;
 
@@ -4169,6 +4305,7 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
                                     if (!isFallback && fallbackUrl) {
                                         window.showToast('تلاش مجدد با خط پشتیبان...', 'info');
                                         activeHlsInstance.destroy();
+                                        activeHlsInstance = null;
                                         tryLoad(fallbackUrl, true);
                                     } else {
                                         activeHlsInstance.startLoad();
@@ -4179,6 +4316,7 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
                                     break;
                                 default:
                                     activeHlsInstance.destroy();
+                                    activeHlsInstance = null;
                                     window.showToast('خطای عدم دسترسی سرور پخش یا قطع فیلترشکن', 'error');
                                     break;
                             }
@@ -4416,7 +4554,7 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
         };
 
         /* ==========================================================================
-           ۱۶. حل باگ باز ماندن کادر خالی در پایین صفحه و بستن قطعی تمام دراورها
+           ۱۵. دراورها، باتم‌شیت‌ها، استوری و مودال‌های کمکی
            ========================================================================== */
         window.closeAllActiveDrawers = function() {
             document.querySelectorAll('.bottom-drawer').forEach(d => {
@@ -4753,9 +4891,6 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
             }
         };
 
-        /* ==========================================================================
-           ۱۷. پیاده‌سازی استاندارد PWA Install Prompt
-           ========================================================================== */
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
@@ -4776,9 +4911,6 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
             }
         };
 
-        /* ==========================================================================
-           ۱۸. پاکسازی کامل دیتابیس، کش محلی و ریست نرم‌افزار
-           ========================================================================== */
         window.clearIndexedDBCache = async function() {
             await AppStorage.clearAll();
             window.location.reload();
@@ -4829,9 +4961,14 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
             const dictObs = document.getElementById('dictLoadingObserver');
             if (dictObs) {
                 new IntersectionObserver((entries) => {
-                    if (entries[0].isIntersecting) {
-                        pageLimits.dict += 8;
-                        renderDictionary();
+                    if (entries[0].isIntersecting && !loadingFlags.dict) {
+                        const total = (appData.dictionary || fallbackData.dictionary || []).length;
+                        if (pageLimits.dict < total) {
+                            loadingFlags.dict = true;
+                            pageLimits.dict += 8;
+                            renderDictionary();
+                            setTimeout(() => { loadingFlags.dict = false; }, 150);
+                        }
                     }
                 }).observe(dictObs);
             }
@@ -4839,17 +4976,19 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
             const lawsObs = document.getElementById('lawsLoadingObserver');
             if (lawsObs) {
                 new IntersectionObserver((entries) => {
-                    if (entries[0].isIntersecting) {
-                        pageLimits.laws += 6;
-                        renderLaws();
+                    if (entries[0].isIntersecting && !loadingFlags.laws) {
+                        const total = (appData.laws || fallbackData.laws || []).length;
+                        if (pageLimits.laws < total) {
+                            loadingFlags.laws = true;
+                            pageLimits.laws += 6;
+                            renderLaws();
+                            setTimeout(() => { loadingFlags.laws = false; }, 150);
+                        }
                     }
                 }).observe(lawsObs);
             }
         };
 
-        /* ==========================================================================
-           ۱۹. شنود اسکرول برای دکمه Back to Top
-           ========================================================================== */
         window.addEventListener('scroll', () => {
             const b = document.getElementById('backToTopBtn');
             if (!b) return;
@@ -4861,7 +5000,7 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
         });
 
         /* ==========================================================================
-           ۲۰. همگام‌‌سازی سه‌مرحله‌ای با سرور گوگل و اجرای نهایی اپلیکیشن
+           ۱۶. شبکه پایدار سه‌مرحله‌ای ارتباط با گوگل‌شیت (POST -> GET -> JSONP)
            ========================================================================== */
         window.fetchDataJsonp = function(url) {
             return new Promise((resolve, reject) => {
@@ -5059,6 +5198,12 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
                 })
                 .catch(() => {});
         };
+
+        // گوش به زنگ وضعیت آنلاین شدن برای ارسال صف آفلاین
+        window.addEventListener('online', () => {
+            window.OfflineSync.syncAll();
+            window.showToast('اتصال اینترنت برقرار شد؛ همگام‌سازی اطلاعات معلق...', 'success');
+        });
 
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', window.initApp);
