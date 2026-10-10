@@ -65,16 +65,7 @@
             }
         };
     </script>
-// خواندن مقدار کلید از تب app_constants یا استفاده از عدد پیش‌فرض
-function getAppConstant(key, defaultValue) {
-    if (appData.app_constants && Array.isArray(appData.app_constants)) {
-        const row = appData.app_constants.find(item => item.key === key);
-        if (row && row.value) {
-            return isNaN(row.value) ? row.value : parseFloat(row.value);
-        }
-    }
-    return defaultValue;
-}
+
     <style>
         :root {
             --selected-font: 'Vazirmatn', -apple-system, BlinkMacSystemFont, Tahoma, sans-serif;
@@ -2013,6 +2004,19 @@ function getAppConstant(key, defaultValue) {
                 .replace(/"/g, '&quot;')
                 .replace(/'/g, '&#039;');
         }
+
+        // خواندن مقدار کلید از تب app_constants گوگل شیت یا استفاده از عدد پیش‌فرض
+        function getAppConstant(key, defaultValue) {
+            if (appData && appData.app_constants && Array.isArray(appData.app_constants)) {
+                const row = appData.app_constants.find(item => String(item.key).trim() === key);
+                if (row && row.value !== undefined && String(row.value).trim() !== '') {
+                    return isNaN(row.value) ? row.value : parseFloat(row.value);
+                }
+            }
+            return defaultValue;
+        }
+
+        // تبدیل خودکار اعداد فارسی و عربی به انگلیسی...
 
         // تبدیل خودکار اعداد فارسی و عربی به انگلیسی جهت جلوگیری قطعی از خطای NaN
         window.toEnglishDigits = function(str) {
