@@ -65,7 +65,16 @@
             }
         };
     </script>
-
+// خواندن مقدار کلید از تب app_constants یا استفاده از عدد پیش‌فرض
+function getAppConstant(key, defaultValue) {
+    if (appData.app_constants && Array.isArray(appData.app_constants)) {
+        const row = appData.app_constants.find(item => item.key === key);
+        if (row && row.value) {
+            return isNaN(row.value) ? row.value : parseFloat(row.value);
+        }
+    }
+    return defaultValue;
+}
     <style>
         :root {
             --selected-font: 'Vazirmatn', -apple-system, BlinkMacSystemFont, Tahoma, sans-serif;
@@ -2531,7 +2540,7 @@
 
             let fee = 0;
             let formulaDesc = '';
-            const threshold = 2000000000;
+            const threshold = getAppConstant('peace_court_limit', 1000000000);
 
             if (stage === 'peace_badvi') {
                 if (amount <= threshold) {
@@ -2760,7 +2769,7 @@
             }
 
             const monthType = document.getElementById('diyehMonthType')?.value;
-            const fullDiyehRial = 16000000000; // نرخ دیه کامل نفس
+            const fullDiyehRial = getAppConstant('diyeh_base', 16000000000);
             let totalPercent = cumulativeInjuries.reduce((sum, item) => sum + item.percent, 0);
 
             let totalDiyeh = (fullDiyehRial * totalPercent) / 100;
