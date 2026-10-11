@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     
-    <title>سامانه هوشمند قضایی SIJT | دستیار دادرسی و محاسبات حقوقی</title>
+    <title>سامانه هوشمند قضایی SIJT | دستیار جامع دادرسی و محاسبات حقوقی</title>
     
     <!-- متاتگ‌های تلگرام وب‌اپ، PWA و بهینه‌سازی کلاینت نیتیو -->
     <meta name="theme-color" content="#070d1e">
@@ -14,7 +14,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="description" content="سامانه جامع دادرسی، محاسبات قضایی، دیات، خسارت تأخیر تأدیه و دستیار حقوقی متصل به هوش مصنوعی">
 
-    <!-- فونت‌های رسمی فارسی با فونت‌دیسپلی سریع -->
+    <!-- فونت‌های رسمی با بارگذاری استاندارد اعداد فارسی -->
     <link rel="preconnect" href="https://cdn.jsdelivr.net">
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/misc/Farsi-Digits/Vazirmatn-FD-font-face.css">
@@ -23,14 +23,10 @@
     <!-- فونت‌آیکون FontAwesome ۶ پرو -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-    <!-- اسکریپت‌های سیستمی تلگرام، OCR، تبدیل سند و پلیر HLS -->
+    <!-- اسکریپت پایه تلگرام وب‌اپ -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 
-    <!-- پیکربندی Tailwind CSS با پالت سازمانی SIJT و Chroma-Coding دسته‌ها -->
+    <!-- پیکربندی Tailwind CSS با پالت سازمانی مپ‌شده، سه‌لایه عمق (Elevation) و Chroma-Coding -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -40,26 +36,30 @@
                     colors: {
                         sijt: {
                             navy: '#070d1e',
-                            darkCard: '#0b1329',
+                            surface: '#0d1527',
+                            surfaceElevated: '#131e36',
+                            darkCard: '#0f172a',
                             gold: '#f59e0b',
                             goldLight: '#fbbf24',
                             crimson: '#dc2626',
                             crimsonDark: '#991b1b',
-                            slateGlass: 'rgba(15, 23, 42, 0.75)'
+                            slateGlass: 'rgba(15, 23, 42, 0.78)'
                         },
-                        // کدگذاری رنگی موضوعی دسته‌ها (Chroma-Coding)
+                        // دسته‌بندی رنگی موضوعات حقوقی (Chroma-Coding) با هارمونی بصری
                         chroma: {
                             civil: '#2563eb',       // حقوق مدنی (آبی اقیانوسی)
-                            criminal: '#dc2626',    // کیفری و جزا (زرشکی متالیک)
+                            criminal: '#dc2626',    // کیفری و جزا (زرشکی تیره)
                             peace: '#059669',       // دادگاه صلح و سازش (زمردی)
                             family: '#9333ea',      // دعاوی خانواده و مهریه (ارغوانی)
-                            commercial: '#f59e0b'   // تجاری و اسناد چک (کهربایی)
+                            commercial: '#d97706',  // تجاری و اسناد چک (کهربایی تیره)
+                            property: '#0284c7'     // املاک و پیش‌فروش (نیلی روشن)
                         }
                     },
                     boxShadow: {
-                        'neon-gold': '0 0 20px rgba(245, 158, 11, 0.25)',
-                        'neon-crimson': '0 0 20px rgba(220, 38, 38, 0.35)',
-                        'glass-surface': '0 8px 32px 0 rgba(0, 0, 0, 0.37)'
+                        'neon-gold': '0 0 25px rgba(245, 158, 11, 0.22)',
+                        'neon-crimson': '0 0 25px rgba(220, 38, 38, 0.28)',
+                        'glass-surface': '0 8px 32px 0 rgba(0, 0, 0, 0.42)',
+                        'floating-dock': '0 20px 45px -10px rgba(0, 0, 0, 0.65)'
                     }
                 }
             }
@@ -68,19 +68,19 @@
 
     <style>
         :root {
-            --selected-font: 'Vazirmatn', -apple-system, BlinkMacSystemFont, Tahoma, sans-serif;
+            --selected-font: 'Vazirmatn FD', 'Vazirmatn', -apple-system, BlinkMacSystemFont, Tahoma, sans-serif;
             --app-font-size: 12px;
             --line-height: 1.8;
             --bg-color-light: #f8fafc;
             --bg-color-dark: #070d1e;
-            --card-bg-light: rgba(255, 255, 255, 0.90);
-            --card-bg-dark: rgba(11, 19, 41, 0.88);
+            --card-bg-light: rgba(255, 255, 255, 0.94);
+            --card-bg-dark: rgba(13, 21, 39, 0.88);
             --border-light: rgba(0, 0, 0, 0.08);
             --border-dark: rgba(255, 255, 255, 0.12);
             --gold-accent: #f59e0b;
             --crimson-accent: #dc2626;
             
-            /* متغیرهای رسمی حاشیه‌های امن و ویوپورت پایدار تلگرام */
+            /* متغیرهای رسمی حاشیه‌های امن تلگرام */
             --tg-safe-bottom: env(safe-area-inset-bottom, 0px);
             --tg-safe-top: env(safe-area-inset-top, 0px);
             --tg-viewport-height: var(--tg-viewport-stable-height, 100vh);
@@ -117,12 +117,12 @@
             background-color: var(--bg-color-dark);
             color: #f1f5f9;
             background-image: 
-                radial-gradient(at 0% 0%, rgba(220, 38, 38, 0.08) 0px, transparent 50%),
-                radial-gradient(at 100% 100%, rgba(245, 158, 11, 0.06) 0px, transparent 50%);
+                radial-gradient(at 0% 0%, rgba(220, 38, 38, 0.09) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(245, 158, 11, 0.07) 0px, transparent 50%);
             background-attachment: fixed;
         }
 
-        /* حالت OLED با حفظ لبه‌های ظریف شیشه‌ای */
+        /* حالت OLED خالص با خاموش‌سازی کامل پیکسل‌های مشکی */
         body.oled-mode {
             background-color: #000000 !important;
             color: #ffffff !important;
@@ -134,8 +134,8 @@
         body.oled-mode .sub-box,
         body.oled-mode header,
         body.oled-mode nav {
-            background-color: #060606 !important;
-            border-color: rgba(255, 255, 255, 0.16) !important;
+            background-color: #050505 !important;
+            border-color: rgba(255, 255, 255, 0.18) !important;
             backdrop-filter: none !important;
             -webkit-backdrop-filter: none !important;
         }
@@ -159,40 +159,42 @@
 
         .ultra-glass {
             background: var(--card-bg-light);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border: 1px solid var(--border-light);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.1);
         }
 
         html.dark .ultra-glass {
             background: var(--card-bg-dark);
             border: 1px solid var(--border-dark);
+            box-shadow: 0 14px 35px -12px rgba(0, 0, 0, 0.55);
         }
 
         .settings-glass {
-            background: rgba(255, 255, 255, 0.96);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
             border: 1px solid rgba(0, 0, 0, 0.12);
-            border-radius: 24px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+            border-radius: 28px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
         }
 
         html.dark .settings-glass {
-            background: rgba(11, 19, 41, 0.96);
+            background: rgba(13, 21, 39, 0.98);
             border: 1px solid rgba(255, 255, 255, 0.18);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.7);
         }
 
         .sub-box {
-            background: rgba(0, 0, 0, 0.03);
+            background: rgba(0, 0, 0, 0.035);
             border: 1px solid var(--border-light);
-            border-radius: 16px;
-            padding: 12px;
+            border-radius: 18px;
+            padding: 14px;
         }
 
         html.dark .sub-box {
-            background: rgba(255, 255, 255, 0.03);
+            background: rgba(255, 255, 255, 0.035);
             border: 1px solid var(--border-dark);
         }
 
@@ -217,29 +219,28 @@
             margin: 0 auto;
             display: flex;
             flex: 1;
-            /* پدینگ متناسب با ارتفاع نوار پایین و حاشیه امن تلگرام در آیفون */
-            padding-bottom: calc(105px + var(--tg-safe-bottom));
+            padding-bottom: calc(110px + var(--tg-safe-bottom));
         }
 
         @media (min-width: 1024px) {
             .layout-container {
-                padding-bottom: 32px;
-                padding-top: 16px;
-                gap: 24px;
-                padding-left: 20px;
-                padding-right: 20px;
+                padding-bottom: 36px;
+                padding-top: 18px;
+                gap: 28px;
+                padding-left: 24px;
+                padding-right: 24px;
             }
         }
 
         #desktopSidebar {
             display: none;
-            width: 280px;
+            width: 290px;
             flex-shrink: 0;
-            border-radius: 28px;
-            padding: 20px;
-            height: calc(100vh - 100px);
+            border-radius: 30px;
+            padding: 22px;
+            height: calc(100vh - 96px);
             position: sticky;
-            top: 84px;
+            top: 80px;
             flex-direction: column;
             justify-content: space-between;
         }
@@ -254,17 +255,17 @@
             display: flex;
             align-items: center;
             width: 100%;
-            padding: 12px 14px;
-            border-radius: 18px;
-            font-size: 11.5px;
+            padding: 13px 16px;
+            border-radius: 20px;
+            font-size: 12px;
             font-weight: 800;
             color: #64748b;
-            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
             cursor: pointer;
             border: none;
             background: transparent;
             text-align: right;
-            gap: 12px;
+            gap: 14px;
         }
 
         html.dark .desktop-nav-item {
@@ -274,11 +275,11 @@
         .desktop-nav-item:hover {
             background: rgba(220, 38, 38, 0.08);
             color: #dc2626;
-            transform: translateX(-2px);
+            transform: translateX(-3px);
         }
 
         .desktop-nav-item.active {
-            background: linear-gradient(135deg, rgba(220, 38, 38, 0.15), rgba(245, 158, 11, 0.15));
+            background: linear-gradient(135deg, rgba(220, 38, 38, 0.18), rgba(245, 158, 11, 0.18));
             color: #dc2626;
             border-right: 3px solid #dc2626;
         }
@@ -304,45 +305,45 @@
             position: sticky;
             top: 0;
             z-index: 80;
-            background: rgba(248, 250, 252, 0.90);
-            backdrop-filter: blur(18px);
-            -webkit-backdrop-filter: blur(18px);
+            background: rgba(248, 250, 252, 0.92);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--border-light);
             transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         html.dark #appHeader {
-            background: rgba(7, 13, 30, 0.90);
+            background: rgba(7, 13, 30, 0.92);
             border-bottom: 1px solid var(--border-dark);
         }
 
-        /* نوار شناور ارگونومیک پایین ۴ هاب با هندلینگ Safe Area */
+        /* داک ارگونومیک شناور ۴ هاب + مدیا */
         .floating-nav {
             position: fixed;
             bottom: calc(14px + var(--tg-safe-bottom));
             left: 50%;
             transform: translateX(-50%);
-            width: calc(100% - 28px);
+            width: calc(100% - 24px);
             max-width: 480px;
-            height: 64px;
-            border-radius: 32px;
+            height: 66px;
+            border-radius: 33px;
             z-index: 90;
-            background: rgba(255, 255, 255, 0.92);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.94);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
             border: 1px solid var(--border-light);
-            box-shadow: 0 14px 32px rgba(0, 0, 0, 0.18);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.22);
             display: flex;
             align-items: center;
             justify-content: space-around;
             padding: 0 6px;
-            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s;
+            transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s;
         }
 
         html.dark .floating-nav {
-            background: rgba(11, 19, 41, 0.92);
+            background: rgba(13, 21, 39, 0.94);
             border: 1px solid var(--border-dark);
-            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.55);
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.65);
         }
 
         @media (min-width: 1024px) {
@@ -366,7 +367,7 @@
             background: transparent;
             border: none;
             cursor: pointer;
-            transition: color 0.2s ease, transform 0.15s;
+            transition: color 0.2s ease;
             gap: 3px;
         }
 
@@ -391,15 +392,14 @@
             position: absolute;
             top: 6px;
             bottom: 6px;
-            border-radius: 24px;
+            border-radius: 26px;
             background: linear-gradient(135deg, #dc2626, #f59e0b);
-            box-shadow: 0 4px 14px rgba(220, 38, 38, 0.35);
+            box-shadow: 0 4px 18px rgba(220, 38, 38, 0.45);
             z-index: 1;
             transition: right 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), width 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
             pointer-events: none;
         }
 
-        /* دراورها با انیمیشن روان و هندلینگ حاشیه امن */
         .bottom-drawer {
             display: none;
             position: fixed;
@@ -407,9 +407,9 @@
             left: 0;
             right: 0;
             z-index: 110;
-            border-radius: 32px 32px 0 0;
+            border-radius: 36px 36px 0 0;
             padding: 20px 20px calc(24px + var(--tg-safe-bottom)) 20px;
-            box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 -12px 50px rgba(0, 0, 0, 0.6);
             animation: slideUpDrawer 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
@@ -425,7 +425,7 @@
 
         .skeleton-card {
             border-radius: 20px;
-            background: linear-gradient(90deg, rgba(255,255,255,0.04) 25%, rgba(255,255,255,0.11) 50%, rgba(255,255,255,0.04) 75%);
+            background: linear-gradient(90deg, rgba(255,255,255,0.04) 25%, rgba(255,255,255,0.12) 50%, rgba(255,255,255,0.04) 75%);
             background-size: 200% 100%;
             animation: skeletonLoading 1.5s infinite;
         }
@@ -437,7 +437,6 @@
 
         .skeleton-item { height: 100px; width: 100%; }
 
-        /* ویوپورت اختصاصی زوم دو انگشتی و لمسی اینفوگرافیک */
         .zoom-pan-viewport {
             width: 100%;
             height: 65vh;
@@ -448,7 +447,7 @@
             align-items: center;
             justify-content: center;
             background: #050b18;
-            border-radius: 20px;
+            border-radius: 24px;
             cursor: grab;
         }
 
@@ -485,15 +484,15 @@
             bottom: calc(88px + var(--tg-safe-bottom));
             left: 50%;
             transform: translateX(-50%) translateY(200%);
-            width: calc(100% - 28px);
+            width: calc(100% - 24px);
             max-width: 480px;
-            border-radius: 24px;
+            border-radius: 26px;
             z-index: 89;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
             border: 1px solid var(--border-light);
-            box-shadow: 0 14px 34px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
             padding: 10px 14px;
             display: flex;
             align-items: center;
@@ -502,23 +501,23 @@
         }
 
         html.dark #floatingAudioPlayer {
-            background: rgba(11, 19, 41, 0.95);
+            background: rgba(13, 21, 39, 0.96);
             border: 1px solid var(--border-dark);
-            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 18px 45px rgba(0, 0, 0, 0.65);
         }
 
         @media (min-width: 1024px) {
             #floatingAudioPlayer {
                 bottom: 24px;
                 left: auto;
-                right: 324px;
+                right: 334px;
                 transform: translateY(200%);
             }
         }
     </style>
 </head>
 <body class="bg-[#f8fafc] dark:bg-[#070d1e] text-slate-800 dark:text-slate-100 min-h-screen">
-   <!-- اسپلش‌اسکرین رسمی و بدون مسدودسازی رندر نهایی -->
+    <!-- اسپلش‌اسکرین رسمی و بدون مسدودسازی رندر نهایی -->
     <div id="splashScreen" class="fixed inset-0 z-[200] flex flex-col items-center justify-center bg-[#070d1e] text-white transition-opacity duration-300 pointer-events-auto">
         <div class="relative flex flex-col items-center space-y-4">
             <div class="w-20 h-20 rounded-3xl p-1 bg-gradient-to-tr from-red-600 via-amber-500 to-red-700 shadow-2xl shadow-red-900/50 animate-pulse">
@@ -538,7 +537,7 @@
         </div>
     </div>
 
-    <!-- کانتینر پیام‌های شناور توست (Toast) با پشته امنیتی -->
+    <!-- کانتینر پیام‌های شناور توست (Toast) با پشته امنیتی ضد XSS -->
     <div id="toastContainer" class="fixed top-4 left-4 right-4 z-[150] pointer-events-none flex flex-col space-y-2 max-w-sm mx-auto"></div>
 
     <!-- هدر اصلی و منوی کنترل‌های سریع -->
@@ -555,7 +554,7 @@
                 </div>
             </div>
 
-            <!-- ویجت‌های شبکه، رفرش، تنظیمات و دکمه رسمی بستن اپ تلگرام -->
+            <!-- ویجت‌های شبکه، رفرش، تنظیمات و دکمه بستن اپ تلگرام -->
             <div class="flex items-center space-x-1.5 space-x-reverse">
                 <div id="connectionStatusBadge" class="flex items-center space-x-1 space-x-reverse px-2.5 py-1 rounded-xl bg-black/5 dark:bg-white/10 text-[9px] font-bold">
                     <i id="networkStatusIcon" class="fa-solid fa-wifi text-emerald-500 text-[9px]"></i>
@@ -612,7 +611,7 @@
             <div class="space-y-1">
                 <label for="fontSelect" class="text-[10px] font-bold text-slate-600 dark:text-slate-400 block text-right">انتخاب قلم سامانه:</label>
                 <select id="fontSelect" onchange="changeFontFamily(this.value);" class="w-full rounded-xl p-2 text-xs bg-slate-100 dark:bg-slate-900 text-slate-800 dark:text-slate-100 border border-black/10 dark:border-white/20 focus:outline-none focus:border-amber-500 transition cursor-pointer">
-                    <option value="'Vazirmatn', -apple-system, BlinkMacSystemFont, Tahoma, sans-serif">وزیرمتن (رسمی دادگستری)</option>
+                    <option value="'Vazirmatn FD', 'Vazirmatn', -apple-system, BlinkMacSystemFont, Tahoma, sans-serif">وزیرمتن فارسی (اعداد کاملاً فارسی)</option>
                     <option value="'Shabnam', -apple-system, BlinkMacSystemFont, Tahoma, sans-serif">شبنم (خوانایی اسناد)</option>
                     <option value="Tahoma, Arial, sans-serif">تاهما (استاندارد وب)</option>
                 </select>
@@ -646,7 +645,7 @@
                         <i class="fa-solid fa-download ml-1 text-amber-500"></i> دانلود بکاپ
                     </button>
                     <button onclick="document.getElementById('backupFileInput').click(); triggerHaptic('light');" class="flex-1 p-2 rounded-xl bg-black/5 dark:bg-white/10 hover:bg-black/10 text-slate-800 dark:text-slate-100 font-bold transition cursor-pointer border-none flex items-center justify-center">
-                        <i class="fa-solid fa-upload ml-1 text-emerald-400"></i> بازگردانی بکاپ
+                        <i class="fa-solid fa-upload ml-1 text-emerald-400"></i> بازگردانی
                     </button>
                     <input type="file" id="backupFileInput" accept=".json" class="hidden" onchange="importAppBackup(event);">
                 </div>
@@ -675,7 +674,7 @@
                     </button>
                 </div>
 
-                <!-- پنل زنده نمایش نتایج فراگیر سرچ -->
+                <!-- پنل زنده نمایش نتایج فراگیر سرچ (مجهز به Event Delegation) -->
                 <div id="liveSuggestionsBox" class="hidden absolute top-12 left-0 right-0 z-40 settings-glass p-2 space-y-1 max-h-72 overflow-y-auto selectable-text"></div>
             </div>
         </div>
@@ -752,7 +751,6 @@
 
             <!-- کانتینر اصلی صفحات و هاب‌های ۴گانه -->
             <main id="mainContentArea">
-
                 <!-- ==========================================================================
                      هاب ۱: ⚖️ دادرسی و محاسبات (ماشین‌حساب‌های جامع قضایی و امور مالی)
                      ========================================================================== -->
@@ -809,8 +807,52 @@
                         </div>
                     </div>
 
+                    <!-- ردیف فیلتر کنترل سگمنت برای دسته‌بندی ابزارها جهت جلوگیری از اسکرول طولانی -->
+                    <div class="flex items-center space-x-1.5 space-x-reverse overflow-x-auto hide-scrollbar pb-1 text-[10px]" id="toolsFilterBar">
+                        <button onclick="filterToolsSegment('all', this);" class="tool-filter-btn active px-3 py-1.5 rounded-full bg-red-600 text-white font-bold transition flex-shrink-0 cursor-pointer border-none shadow-sm">همه ابزارها</button>
+                        <button onclick="filterToolsSegment('cat-finance', this);" class="tool-filter-btn px-3 py-1.5 rounded-full bg-black/5 dark:bg-white/10 text-slate-700 dark:text-slate-300 font-bold transition flex-shrink-0 cursor-pointer border-none hover:bg-black/10">دیون و چک</button>
+                        <button onclick="filterToolsSegment('cat-family', this);" class="tool-filter-btn px-3 py-1.5 rounded-full bg-black/5 dark:bg-white/10 text-slate-700 dark:text-slate-300 font-bold transition flex-shrink-0 cursor-pointer border-none hover:bg-black/10">خانواده و ارث</button>
+                        <button onclick="filterToolsSegment('cat-penal', this);" class="tool-filter-btn px-3 py-1.5 rounded-full bg-black/5 dark:bg-white/10 text-slate-700 dark:text-slate-300 font-bold transition flex-shrink-0 cursor-pointer border-none hover:bg-black/10">دیات و تصادفات</button>
+                        <button onclick="filterToolsSegment('cat-contracts', this);" class="tool-filter-btn px-3 py-1.5 rounded-full bg-black/5 dark:bg-white/10 text-slate-700 dark:text-slate-300 font-bold transition flex-shrink-0 cursor-pointer border-none hover:bg-black/10">املاک و قراردادها</button>
+                        <button onclick="filterToolsSegment('cat-procedural', this);" class="tool-filter-btn px-3 py-1.5 rounded-full bg-black/5 dark:bg-white/10 text-slate-700 dark:text-slate-300 font-bold transition flex-shrink-0 cursor-pointer border-none hover:bg-black/10">دادرسی و صلاحیت</button>
+                    </div>
+
+                    <!-- ۰. ابزار جدید: ویزارد هوشمند سنجش صلاحیت دادگاه صلح و شورا (قانون ۱۴۰۲) -->
+                    <div class="tool-card ultra-glass p-4 rounded-3xl space-y-3 shadow-md border-r-4 border-r-chroma-peace" data-tool-cat="cat-procedural">
+                        <div class="flex items-center justify-between pb-2 border-b border-black/10 dark:border-white/10">
+                            <span class="font-bold text-xs text-emerald-600 dark:text-emerald-400 flex items-center">
+                                <i class="fa-solid fa-compass-drafting ml-1.5 text-amber-500"></i> سامانه هوشمند تشخیص صلاحیت مرجع قضایی (قانون ۱۴۰۲)
+                            </span>
+                            <span class="text-[9px] text-slate-400">دادگاه صلح / شورا / دادگاه عمومی</span>
+                        </div>
+
+                        <div class="space-y-1">
+                            <label for="jurisdictionClaimType" class="text-[10px] font-bold text-slate-600 dark:text-slate-400 block text-right">نوع خواسته یا موضوع پرونده:</label>
+                            <select id="jurisdictionClaimType" class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none focus:border-emerald-500 transition cursor-pointer">
+                                <option value="financial">مطالبه وجه، چک، سفته، دین مالی</option>
+                                <option value="eviction">تخلیه عین مستأجره و تعدیل اجاره‌بها</option>
+                                <option value="inheritance">گواهی حصر وراثت، مهر و موم و تحریر ترکه</option>
+                                <option value="car_accident">خسارت مالی تصادفات رانندگی و افت قیمت</option>
+                                <option value="family_dowry">مهریه، نفقه و جهیزیه</option>
+                                <option value="real_estate_title">اثبات مالکیت، خلع ید و الزام به تنظیم سند</option>
+                            </select>
+                        </div>
+
+                        <div class="space-y-1" id="jurisdictionAmountBox">
+                            <label for="jurisdictionAmountInput" class="text-[10px] font-bold text-slate-600 dark:text-slate-400 block text-right">مبلغ بهای خواسته (ریال):</label>
+                            <input type="text" id="jurisdictionAmountInput" oninput="handleMaskedCurrencyInput(this);" placeholder="مثال: ۸۰۰,۰۰۰,۰۰۰" class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none focus:border-emerald-500 transition font-mono">
+                            <div class="text-[9px] text-amber-500 font-medium text-left" id="jurisdictionAmountInput_words"></div>
+                        </div>
+
+                        <button onclick="checkJurisdictionCompetence(); triggerHaptic('medium');" class="w-full bg-gradient-to-r from-emerald-600 to-amber-500 text-white font-bold py-2 rounded-xl text-xs border-none cursor-pointer shadow transition hover:opacity-90">
+                            استعلام مرجع صالح، قطعی بودن رأی و مهلت اعتراض
+                        </button>
+
+                        <div id="jurisdictionResult" class="selectable-text"></div>
+                    </div>
+
                     <!-- ۱. محاسبه‌گر خسارت تأخیر تأدیه (ماده ۵۲۲ ق.آ.د.م) -->
-                    <div class="ultra-glass p-4 rounded-3xl space-y-3 shadow-md border-r-4 border-r-chroma-criminal">
+                    <div class="tool-card ultra-glass p-4 rounded-3xl space-y-3 shadow-md border-r-4 border-r-chroma-criminal" data-tool-cat="cat-finance">
                         <div class="flex items-center justify-between pb-2 border-b border-black/10 dark:border-white/10">
                             <span class="font-bold text-xs text-red-600 dark:text-red-500 flex items-center">
                                 <i class="fa-solid fa-arrow-trend-up ml-1.5 text-amber-500"></i> محاسبه خسارت تأخیر تأدیه (ماده ۵۲۲ ق.آ.د.م)
@@ -867,7 +909,7 @@
                     </div>
 
                     <!-- ۲. محاسبه هزینه دادرسی مراحل بدوی، تجدیدنظر و دادگاه صلح -->
-                    <div class="ultra-glass p-4 rounded-3xl space-y-3 shadow-md border-r-4 border-r-chroma-civil">
+                    <div class="tool-card ultra-glass p-4 rounded-3xl space-y-3 shadow-md border-r-4 border-r-chroma-civil" data-tool-cat="cat-procedural">
                         <div class="flex items-center justify-between pb-2 border-b border-black/10 dark:border-white/10">
                             <span class="font-bold text-xs text-blue-600 dark:text-blue-400 flex items-center">
                                 <i class="fa-solid fa-receipt ml-1.5 text-amber-500"></i> محاسبه تمبر و هزینه دادرسی دعاوی مالی
@@ -906,8 +948,49 @@
                         </div>
                     </div>
 
-                    <!-- ۳. محاسبه ارزش روز مهریه (ماده ۱۰۸۲ قانون مدنی) -->
-                    <div class="ultra-glass p-4 rounded-3xl space-y-3 shadow-md border-r-4 border-r-chroma-family">
+                    <!-- ۳. ابزار جدید: محاسبه خسارت تأخیر در تحویل واحدهای پیش‌فروش مسکن (ماده ۶ قانون پیش‌فروش) -->
+                    <div class="tool-card ultra-glass p-4 rounded-3xl space-y-3 shadow-md border-r-4 border-r-chroma-property" data-tool-cat="cat-contracts">
+                        <div class="flex items-center justify-between pb-2 border-b border-black/10 dark:border-white/10">
+                            <span class="font-bold text-xs text-sky-600 dark:text-sky-400 flex items-center">
+                                <i class="fa-solid fa-building-circle-exclamation ml-1.5 text-amber-500"></i> جریمه تأخیر تحویل آپارتمان پیش‌فروش (قانون پیش‌فروش ساختمان)
+                            </span>
+                            <span class="text-[9px] text-slate-400">ماده ۶ قانون مصوب ۱۳۸۹</span>
+                        </div>
+
+                        <div class="space-y-1">
+                            <label for="presaleContractPrice" class="text-[10px] font-bold text-slate-600 dark:text-slate-400 block text-right">کل مبلغ ثمن قرارداد پیش‌فروش به ریال:</label>
+                            <input type="text" id="presaleContractPrice" oninput="handleMaskedCurrencyInput(this);" placeholder="مثال: ۳۰,۰۰۰,۰۰۰,۰۰۰" class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none focus:border-sky-500 transition font-mono">
+                            <div class="text-[9px] text-amber-500 font-medium text-left" id="presaleContractPrice_words"></div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-2">
+                            <div class="space-y-1">
+                                <label for="presaleDelayDays" class="text-[10px] font-bold text-slate-600 dark:text-slate-400 block text-right">مدت زمان تأخیر سازنده (روز):</label>
+                                <input type="text" id="presaleDelayDays" placeholder="مثال: ۹۰" class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none text-center font-mono" oninput="sanitizePersianNumbersInput(this);">
+                            </div>
+                            <div class="space-y-1">
+                                <label for="presaleRentMonthly" class="text-[10px] font-bold text-slate-600 dark:text-slate-400 block text-right">اجاره‌بهای ماهانه برآورد روز به ریال:</label>
+                                <input type="text" id="presaleRentMonthly" oninput="handleMaskedCurrencyInput(this);" placeholder="مثال: ۲۵۰,۰۰۰,۰۰۰" class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none text-center font-mono">
+                            </div>
+                        </div>
+
+                        <div class="space-y-1">
+                            <label for="presaleClauseType" class="text-[10px] font-bold text-slate-600 dark:text-slate-400 block text-right">مبنای قانونی یا قراردادی تعیین خسارت:</label>
+                            <select id="presaleClauseType" class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none focus:border-sky-500 transition cursor-pointer">
+                                <option value="legal_rent">مبنای قانونی ماده ۶: اجرت‌المثل بر پایه اجاره روز عرفی</option>
+                                <option value="contract_daily">وجه التزام قراردادی مندرج در مبایعه‌نامه</option>
+                            </select>
+                        </div>
+
+                        <button onclick="calculatePresaleDelay(); triggerHaptic('medium');" class="w-full bg-gradient-to-r from-sky-600 to-amber-500 text-white font-bold py-2 rounded-xl text-xs border-none cursor-pointer shadow transition hover:opacity-90">
+                            محاسبه خسارت و تعهدات پیش‌فروشنده
+                        </button>
+
+                        <div id="presaleDelayResult" class="selectable-text"></div>
+                    </div>
+
+                    <!-- ۴. محاسبه ارزش روز مهریه (ماده ۱۰۸۲ قانون مدنی) -->
+                    <div class="tool-card ultra-glass p-4 rounded-3xl space-y-3 shadow-md border-r-4 border-r-chroma-family" data-tool-cat="cat-family">
                         <div class="flex items-center justify-between pb-2 border-b border-black/10 dark:border-white/10">
                             <span class="font-bold text-xs text-purple-600 dark:text-purple-400 flex items-center">
                                 <i class="fa-solid fa-ring ml-1.5 text-amber-500"></i> محاسبه ارزش روز مهریه (ماده ۱۰۸۲ ق.م)
@@ -970,8 +1053,8 @@
                         </div>
                     </div>
 
-                    <!-- ۴. محاسبه سهم‌الارث و تقسیم ترکه (مواد ۸۹۲ و ۹۰۷ ق.م) -->
-                    <div class="ultra-glass p-4 rounded-3xl space-y-3 shadow-md border-r-4 border-r-chroma-family">
+                    <!-- ۵. محاسبه سهم‌الارث و تقسیم ترکه (مواد ۸۹۲ و ۹۰۷ ق.م) -->
+                    <div class="tool-card ultra-glass p-4 rounded-3xl space-y-3 shadow-md border-r-4 border-r-chroma-family" data-tool-cat="cat-family">
                         <div class="flex items-center justify-between pb-2 border-b border-black/10 dark:border-white/10">
                             <span class="font-bold text-xs text-purple-600 dark:text-purple-400 flex items-center">
                                 <i class="fa-solid fa-sitemap ml-1.5 text-amber-500"></i> محاسبه سهم‌الارث و تقسیم ترکه (قانون مدنی)
@@ -1015,8 +1098,8 @@
                         </div>
                     </div>
 
-                    <!-- ۵. موتور تجمیع چندگانه دیات و ارش با قاعده تغلیظ ماه حرام (مواد ۵۴۰ و ۵۵۵ ق.م.ا) -->
-                    <div class="ultra-glass p-4 rounded-3xl space-y-3 shadow-md border-r-4 border-r-chroma-criminal">
+                    <!-- ۶. موتور تجمیع چندگانه دیات و ارش با قاعده تغلیظ ماه حرام (مواد ۵۴۰ و ۵۵۵ ق.م.ا) -->
+                    <div class="tool-card ultra-glass p-4 rounded-3xl space-y-3 shadow-md border-r-4 border-r-chroma-criminal" data-tool-cat="cat-penal">
                         <div class="flex items-center justify-between pb-2 border-b border-black/10 dark:border-white/10">
                             <span class="font-bold text-xs text-red-600 dark:text-red-500 flex items-center">
                                 <i class="fa-solid fa-person-falling-burst ml-1.5 text-amber-500"></i> تجمیع چندگانه دیات و ارش (قانون مجازات اسلامی)
@@ -1073,8 +1156,8 @@
                         </div>
                     </div>
 
-                    <!-- ۶. تعرفه پلکانی حق‌الوکاله و تمبر مالیاتی وکیل -->
-                    <div class="ultra-glass p-4 rounded-3xl space-y-3 shadow-md border-r-4 border-r-chroma-commercial">
+                    <!-- ۷. تعرفه پلکانی حق‌الوکاله و تمبر مالیاتی وکیل -->
+                    <div class="tool-card ultra-glass p-4 rounded-3xl space-y-3 shadow-md border-r-4 border-r-chroma-commercial" data-tool-cat="cat-finance">
                         <div class="flex items-center justify-between pb-2 border-b border-black/10 dark:border-white/10">
                             <span class="font-bold text-xs text-amber-600 dark:text-amber-400 flex items-center">
                                 <i class="fa-solid fa-file-invoice-dollar ml-1.5 text-red-500"></i> تعرفه حق‌الوکاله و ابطال تمبر مالیاتی
@@ -1104,8 +1187,8 @@
                         <div id="lawyerFeeResult" class="selectable-text"></div>
                     </div>
 
-                    <!-- ۷. دستمزد کارشناسان رسمی دادگستری -->
-                    <div class="ultra-glass p-4 rounded-3xl space-y-3 shadow-md border-r-4 border-r-chroma-civil">
+                    <!-- ۸. دستمزد کارشناسان رسمی دادگستری -->
+                    <div class="tool-card ultra-glass p-4 rounded-3xl space-y-3 shadow-md border-r-4 border-r-chroma-civil" data-tool-cat="cat-procedural">
                         <div class="flex items-center justify-between pb-2 border-b border-black/10 dark:border-white/10">
                             <span class="font-bold text-xs text-blue-600 dark:text-blue-400 flex items-center">
                                 <i class="fa-solid fa-user-gear ml-1.5 text-amber-500"></i> دستمزد کارشناسان رسمی دادگستری
@@ -1135,8 +1218,8 @@
                         <div id="expertFeeResult" class="selectable-text"></div>
                     </div>
 
-                    <!-- ۸. محاسبه افت قیمت خودرو در تصادفات (دادگاه صلح) -->
-                    <div class="ultra-glass p-4 rounded-3xl space-y-3 shadow-md border-r-4 border-r-chroma-peace">
+                    <!-- ۹. محاسبه افت قیمت خودرو در تصادفات (دادگاه صلح) -->
+                    <div class="tool-card ultra-glass p-4 rounded-3xl space-y-3 shadow-md border-r-4 border-r-chroma-peace" data-tool-cat="cat-penal">
                         <div class="flex items-center justify-between pb-2 border-b border-black/10 dark:border-white/10">
                             <span class="font-bold text-xs text-emerald-600 dark:text-emerald-400 flex items-center">
                                 <i class="fa-solid fa-car-burst ml-1.5 text-amber-500"></i> افت قیمت خودرو در تصادفات (دادگاه صلح)
@@ -1180,13 +1263,13 @@
                         <div id="carDepreciationResult" class="selectable-text"></div>
                     </div>
 
-                    <!-- ۹. شمارشگر دقیق مواعد قانونی دادرسی (مواد ۴۴۴ و ۴۴۵ ق.آ.د.م) -->
-                    <div class="ultra-glass p-4 rounded-3xl space-y-3 shadow-md border-r-4 border-r-chroma-civil">
+                    <!-- ۱۰. شمارشگر دقیق مواعد قانونی دادرسی با احتساب تعطیلات و سال کبیسه دقیق -->
+                    <div class="tool-card ultra-glass p-4 rounded-3xl space-y-3 shadow-md border-r-4 border-r-chroma-civil" data-tool-cat="cat-procedural">
                         <div class="flex items-center justify-between pb-2 border-b border-black/10 dark:border-white/10">
                             <span class="font-bold text-xs text-blue-600 dark:text-blue-400 flex items-center">
                                 <i class="fa-solid fa-calendar-check ml-1.5 text-amber-500"></i> شمارشگر مواعد دادرسی (مواد ۴۴۴ و ۴۴۵ ق.آ.د.م)
                             </span>
-                            <span class="text-[9px] text-slate-400">احتساب روز ابلاغ و اقدام</span>
+                            <span class="text-[9px] text-slate-400">احتساب روز ابلاغ، اقدام و تعطیل</span>
                         </div>
 
                         <div class="space-y-1">
@@ -1214,8 +1297,8 @@
                         <div id="deadlineResult" class="selectable-text"></div>
                     </div>
 
-                    <!-- ۱۰. ماشین‌حساب برآورد پیش‌قسط و فواصل اقساط اعسار مهریه -->
-                    <div class="ultra-glass p-4 rounded-3xl space-y-3 shadow-md border-r-4 border-r-chroma-family">
+                    <!-- ۱۱. ماشین‌حساب برآورد پیش‌قسط و فواصل اقساط اعسار مهریه -->
+                    <div class="tool-card ultra-glass p-4 rounded-3xl space-y-3 shadow-md border-r-4 border-r-chroma-family" data-tool-cat="cat-family">
                         <div class="flex items-center justify-between pb-2 border-b border-black/10 dark:border-white/10">
                             <span class="font-bold text-xs text-purple-600 dark:text-purple-400 flex items-center">
                                 <i class="fa-solid fa-coins ml-1.5 text-amber-500"></i> برآورد پیش‌قسط و فواصل اقساط اعسار مهریه
@@ -1257,8 +1340,40 @@
                         <div id="dowryInsolvencyResult" class="selectable-text"></div>
                     </div>
 
-                    <!-- ۱۱. تفکیک‌کننده هوشمند دادخواست برای درگاه خودکاربری عدل‌ایران -->
-                    <div class="ultra-glass p-4 rounded-3xl space-y-3 shadow-md border-r-4 border-r-chroma-peace">
+                    <!-- ۱۲. ابزار جدید: محاسبه‌گر تعرفه حق‌التحریر دفاتر اسناد رسمی -->
+                    <div class="tool-card ultra-glass p-4 rounded-3xl space-y-3 shadow-md border-r-4 border-r-chroma-commercial" data-tool-cat="cat-contracts">
+                        <div class="flex items-center justify-between pb-2 border-b border-black/10 dark:border-white/10">
+                            <span class="font-bold text-xs text-amber-600 dark:text-amber-400 flex items-center">
+                                <i class="fa-solid fa-stamp ml-1.5 text-red-500"></i> محاسبه حق‌التحریر دفاتر اسناد رسمی (بخشنامه مصوب)
+                            </span>
+                            <span class="text-[9px] text-slate-400">اسناد مالی و وکالت‌نامه‌ها</span>
+                        </div>
+
+                        <div class="space-y-1">
+                            <label for="notaryDocType" class="text-[10px] font-bold text-slate-600 dark:text-slate-400 block text-right">نوع سند تنظیمی:</label>
+                            <select id="notaryDocType" onchange="toggleNotaryValueInput(this.value);" class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none focus:border-amber-500 transition cursor-pointer">
+                                <option value="property_sale">سند قطعی انتقال اموال غیرمنقول (ملک)</option>
+                                <option value="car_attorney">وکالت‌نامه فروش و تعویض پلاک خودرو</option>
+                                <option value="general_attorney">وکالت کاری و اداری جامع بدون انتقال مال</option>
+                                <option value="pledge">رهن و وثیقه تسهیلات بانکی</option>
+                            </select>
+                        </div>
+
+                        <div class="space-y-1" id="notaryValueBox">
+                            <label for="notaryDocValueInput" class="text-[10px] font-bold text-slate-600 dark:text-slate-400 block text-right">مبلغ ارزش معاملاتی یا ارزش سند (ریال):</label>
+                            <input type="text" id="notaryDocValueInput" oninput="handleMaskedCurrencyInput(this);" placeholder="مثال: ۱۰,۰۰۰,۰۰۰,۰۰۰" class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none focus:border-amber-500 transition font-mono">
+                            <div class="text-[9px] text-amber-500 font-medium text-left" id="notaryDocValueInput_words"></div>
+                        </div>
+
+                        <button onclick="calculateNotaryFee(); triggerHaptic('medium');" class="w-full bg-gradient-to-r from-amber-600 to-red-500 text-white font-bold py-2 rounded-xl text-xs border-none cursor-pointer shadow transition hover:opacity-90">
+                            محاسبه حق‌التحریر، ارزش افزوده و سهم کانون
+                        </button>
+
+                        <div id="notaryFeeResult" class="selectable-text"></div>
+                    </div>
+
+                    <!-- ۱۳. تفکیک‌کننده هوشمند دادخواست برای درگاه خودکاربری عدل‌ایران -->
+                    <div class="tool-card ultra-glass p-4 rounded-3xl space-y-3 shadow-md border-r-4 border-r-chroma-peace" data-tool-cat="cat-procedural">
                         <div class="flex items-center justify-between pb-2 border-b border-black/10 dark:border-white/10">
                             <span class="font-bold text-xs text-emerald-600 dark:text-emerald-400 flex items-center">
                                 <i class="fa-solid fa-code-split ml-1.5 text-amber-500"></i> تفکیک‌کننده متن دادخواست سامانه عدل‌ایران
@@ -1299,8 +1414,8 @@
                         <div id="adliranChunksOutput" class="hidden space-y-2"></div>
                     </div>
 
-                    <!-- ۱۲. فرم‌ساز هوشمند قراردادها با شروط حقوقی و شرط داوری -->
-                    <div class="ultra-glass p-4 rounded-3xl space-y-3 shadow-md border-r-4 border-r-chroma-commercial">
+                    <!-- ۱۴. فرم‌ساز هوشمند قراردادها با شروط حقوقی و شرط داوری -->
+                    <div class="tool-card ultra-glass p-4 rounded-3xl space-y-3 shadow-md border-r-4 border-r-chroma-commercial" data-tool-cat="cat-contracts">
                         <div class="flex items-center justify-between pb-2 border-b border-black/10 dark:border-white/10">
                             <span class="font-bold text-xs text-amber-600 dark:text-amber-400 flex items-center">
                                 <i class="fa-solid fa-file-contract ml-1.5 text-red-500"></i> فرم‌ساز هوشمند قراردادها با شروط الزام‌آور
@@ -1364,8 +1479,7 @@
                         </button>
                     </div>
                 </section>
-
-                <!-- ==========================================================================
+               <!-- ==========================================================================
                      هاب ۲: 📚 دانش و مرجع قوانین (اصطلاحات، مواد قانونی، درگاه‌ها و FAQ)
                      ========================================================================== -->
                 <section id="hub-knowledge" class="hub-section hidden space-y-3.5">
@@ -1430,7 +1544,8 @@
                         <div id="publicFaqContainer" class="space-y-2.5 selectable-text"></div>
                     </div>
                 </section>
-      <!-- ==========================================================================
+
+                <!-- ==========================================================================
                      هاب ۳: 🤖 دستیار و مشاوره (هوش مصنوعی، پرسش از وکیل و اسکنر OCR)
                      ========================================================================== -->
                 <section id="hub-advisory" class="hub-section hidden space-y-3.5">
@@ -1548,11 +1663,11 @@
                         </div>
                     </div>
 
-                    <!-- ۳. اسکنر نوری اسناد و احکام قضایی OCR (Tesseract.js با مدیریت حافظه) -->
+                    <!-- ۳. اسکنر نوری اسناد و احکام قضایی OCR با Lazy Load کتابخانه و مدیریت حافظه -->
                     <div id="advisorySub-ocr" class="hidden space-y-3">
                         <div class="ultra-glass p-4 rounded-3xl space-y-3 shadow-md border border-black/5 dark:border-white/10">
                             <div class="sub-box text-[10px] leading-relaxed text-slate-600 dark:text-slate-300">
-                                تصویر ابلاغیه، چک یا دادنامه را بارگذاری نمایید تا متن آن استخراج شده و به لایحه یا پرسش تبدیل گردد:
+                                تصویر ابلاغیه، چک یا دادنامه را بارگذاری نمایید تا متن آن استخراج شده و به لایحه یا پرسش تبدیل گردد (موتور OCR هوشمند):
                             </div>
 
                             <div onclick="document.getElementById('ocrDocumentInput').click();" class="border-2 border-dashed border-amber-500/40 hover:border-amber-500 rounded-2xl p-4 text-center cursor-pointer transition bg-black/5 dark:bg-white/5 space-y-2">
@@ -1568,7 +1683,7 @@
                             <!-- پیشرفت استخراج OCR -->
                             <div id="ocrProgressContainer" class="hidden space-y-1">
                                 <div class="flex justify-between items-center text-[10px] font-bold">
-                                    <span id="ocrStatusText" class="text-slate-400">در حال آماده‌سازی موتور اسکن نوری...</span>
+                                    <span id="ocrStatusText" class="text-slate-400">در حال راه‌اندازی موتور اسکن نوری...</span>
                                     <span id="ocrPercentText" class="text-amber-500 font-mono">۰٪</span>
                                 </div>
                                 <div class="w-full bg-slate-200 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden">
@@ -1748,7 +1863,7 @@
         </div>
     </div>
 
-    <!-- پخش‌کننده صوتی شناور پادکست‌ها با هماهنگی پس‌زمینه و تنظیم سرعت -->
+    <!-- پخش‌کننده صوتی شناور پادکست‌ها -->
     <div id="floatingAudioPlayer">
         <audio id="mainAudioObj" class="hidden" ontimeupdate="handleAudioProgressUpdate();" onloadedmetadata="handleAudioMetadataLoaded();" onended="handleAudioPlaybackEnded();" onerror="handleAudioPlaybackError();"></audio>
         
@@ -1880,7 +1995,7 @@
 
     <!-- کانتینر رندر مخفی کارت گرافیکی رسمی دادگاه -->
     <div id="shareRenderBox" style="position:fixed; left:-9999px; top:-9999px; width:480px; opacity:0; pointer-events:none;"></div>
-   <script>
+    <script>
         /* ==========================================================================
            ۱. متغیرهای سراسری، هویت تلگرام و کانفیگ ارتباطی ابری Google Apps Script
            ========================================================================== */
@@ -1895,10 +2010,9 @@
             }
         }
 
-        // شناسه URL استقرار یافته از بخش اول Google Apps Script
+        // شناسه استقرار امن Google Apps Script
         const API_URL = "https://script.google.com/macros/s/AKfycbzHCogBgEaKd0bCFHsgpwpZvS98nHjXFrZK0aZ4inpXSPvpe2jmoukDdwwSBk5fyO--/exec";
         
-        // استخراج هویت و نام کاربر تلگرام جهت ارسال نوتیفیکیشن اختصاصی به وکیل
         const userId = tg?.initDataUnsafe?.user?.id ? String(tg.initDataUnsafe.user.id) : ('guest_' + Math.floor(Math.random() * 1000000));
         const userName = tg?.initDataUnsafe?.user ? `${tg.initDataUnsafe.user.first_name || ''} ${tg.initDataUnsafe.user.last_name || ''} (@${tg.initDataUnsafe.user.username || 'ندارد'})`.trim() : 'کاربر مهمان وب';
 
@@ -1909,24 +2023,48 @@
         let personalNotes = [];
         let selectedKnowledgeCat = 'all';
 
-        // کنترل بهینه اسکرول نامحدود
-        const pageLimits = { dict: 10, laws: 8 };
-        const loadingFlags = { dict: false, laws: false };
+        const pageLimits = { dict: 12, laws: 10 };
         const hubScrollPositions = {};
 
         /* ==========================================================================
-           ۲. سیستم توست، فیدبک هپتیک نیتیو و کنترل بستن اپلیکیشن تلگرام
+           ۲. سیستم بارگذاری تنبل اسکریپت‌ها (Lazy-Loading Scripts) جهت بهینه‌سازی سرعت لود
+           ========================================================================== */
+        const loadedScripts = {};
+        function loadExternalScript(src) {
+            if (loadedScripts[src]) return Promise.resolve();
+            return new Promise((resolve, reject) => {
+                const s = document.createElement('script');
+                s.src = src;
+                s.onload = () => {
+                    loadedScripts[src] = true;
+                    resolve();
+                };
+                s.onerror = reject;
+                document.head.appendChild(s);
+            });
+        }
+
+        /* ==========================================================================
+           ۳. سیستم پیام‌های توست ضد XSS و هپتیک فیدبک استاندارد تلگرام
            ========================================================================== */
         window.showToast = function(msg, type = 'info') {
             const container = document.getElementById('toastContainer');
             if (!container) return;
             const toast = document.createElement('div');
             toast.className = `p-3 rounded-2xl text-xs font-bold text-white shadow-2xl backdrop-blur-md flex items-center justify-between pointer-events-auto transition-all duration-300 transform translate-y-2 opacity-0 ${
-                type === 'error' ? 'bg-red-600/90 border border-red-500' :
-                type === 'success' ? 'bg-emerald-600/90 border border-emerald-500' :
-                'bg-slate-900/90 border border-amber-500/40 text-amber-300'
+                type === 'error' ? 'bg-red-600/95 border border-red-500' :
+                type === 'success' ? 'bg-emerald-600/95 border border-emerald-500' :
+                'bg-slate-900/95 border border-amber-500/40 text-amber-300'
             }`;
-            toast.innerHTML = `<span>${escapeHTML(msg)}</span><i class="fa-solid ${type === 'error' ? 'fa-circle-xmark' : type === 'success' ? 'fa-circle-check' : 'fa-circle-info'} text-sm ml-2"></i>`;
+            
+            const textSpan = document.createElement('span');
+            textSpan.textContent = msg;
+            
+            const icon = document.createElement('i');
+            icon.className = `fa-solid ${type === 'error' ? 'fa-circle-xmark' : type === 'success' ? 'fa-circle-check' : 'fa-circle-info'} text-sm ml-2`;
+            
+            toast.appendChild(textSpan);
+            toast.appendChild(icon);
             container.appendChild(toast);
 
             requestAnimationFrame(() => {
@@ -1951,11 +2089,8 @@
         };
 
         window.closeAppTelegram = function() {
-            if (tg?.close) {
-                tg.close();
-            } else {
-                window.showToast('در نسخه مرورگر معمولی تب را ببندید');
-            }
+            if (tg?.close) tg.close();
+            else window.showToast('در نسخه مرورگر معمولی تب را ببندید');
         };
 
         const backNavigationStack = [];
@@ -1992,8 +2127,18 @@
             }
         };
 
+        // هندلینگ پنهان‌سازی نوار شناور هنگام باز شدن کیبورد در گوشی
+        window.addEventListener('focusin', (e) => {
+            if (['INPUT', 'TEXTAREA', 'SELECT'].includes(e.target.tagName)) {
+                document.getElementById('mainNavContainer')?.classList.add('hidden');
+            }
+        });
+        window.addEventListener('focusout', () => {
+            document.getElementById('mainNavContainer')?.classList.remove('hidden');
+        });
+
         /* ==========================================================================
-           ۳. توابع امنیتی XSS، پاکسازی اعداد فارسی و فرمت‌بندی ۳ رقم ۳ رقم مبالغ
+           ۴. توابع تبدیل اعداد، قالب‌بندی پول و تبدیل عدد به حروف فارسی
            ========================================================================== */
         function escapeHTML(str) {
             if (str === null || str === undefined) return '';
@@ -2005,7 +2150,6 @@
                 .replace(/'/g, '&#039;');
         }
 
-        // تبدیل خودکار اعداد فارسی و عربی به انگلیسی جهت جلوگیری قطعی از خطای NaN
         window.toEnglishDigits = function(str) {
             if (!str) return '';
             return String(str)
@@ -2017,7 +2161,6 @@
             inputEl.value = toEnglishDigits(inputEl.value);
         };
 
-        // ماسک زنده ۳ رقم ۳ رقم پول همراه با نمایش به حروف تومان
         window.handleMaskedCurrencyInput = function(inputEl) {
             let cleanVal = toEnglishDigits(inputEl.value).replace(/\D/g, '');
             if (!cleanVal) {
@@ -2028,7 +2171,7 @@
             }
 
             const num = parseFloat(cleanVal);
-            inputEl.value = num.toLocaleString('en-US'); // کاماگذازی اتوماتیک
+            inputEl.value = num.toLocaleString('en-US');
 
             const wordsEl = document.getElementById(inputEl.id + '_words');
             if (wordsEl) {
@@ -2095,14 +2238,13 @@
         }
 
         /* ==========================================================================
-           ۴. ذخیره‌سازی ابری، حافظه محلی IndexedDB و تلگرام CloudStorage
+           ۵. ذخیره‌سازی محلی و ابری هوشمند (مدیریت سقف ۴ کیلوبایتی تلگرام CloudStorage)
            ========================================================================== */
         let dbInstance = null;
-
         function initIndexedDB() {
             return new Promise((resolve) => {
                 if (!window.indexedDB) return resolve(null);
-                const req = indexedDB.open('SIJT_Enterprise_DB', 3);
+                const req = indexedDB.open('SIJT_Enterprise_DB', 4);
                 req.onupgradeneeded = (e) => {
                     const db = e.target.result;
                     if (!db.objectStoreNames.contains('store')) db.createObjectStore('store');
@@ -2127,9 +2269,14 @@
                 try {
                     localStorage.setItem(key, JSON.stringify(val));
                 } catch (e) {}
+                
+                // ارسال به تلگرام صرفاً در صورت سبک بودن داده (کمتر از ۳۸۰۰ بایت)
                 if (tg?.isVersionAtLeast && tg.isVersionAtLeast('6.9') && tg.CloudStorage) {
                     try {
-                        tg.CloudStorage.setItem(key, JSON.stringify(val), () => {});
+                        const str = JSON.stringify(val);
+                        if (new Blob([str]).size < 3800) {
+                            tg.CloudStorage.setItem(key, str, () => {});
+                        }
                     } catch (e) {}
                 }
             },
@@ -2149,20 +2296,6 @@
                     const localVal = localStorage.getItem(key);
                     if (localVal) return JSON.parse(localVal);
                 } catch (e) {}
-                if (tg?.isVersionAtLeast && tg.isVersionAtLeast('6.9') && tg.CloudStorage) {
-                    try {
-                        const cloudVal = await new Promise((resolve) => {
-                            tg.CloudStorage.getItem(key, (err, res) => {
-                                if (!err && res) {
-                                    try { resolve(JSON.parse(res)); } catch (e) { resolve(null); }
-                                } else {
-                                    resolve(null);
-                                }
-                            });
-                        });
-                        if (cloudVal) return cloudVal;
-                    } catch (e) {}
-                }
                 return null;
             },
             async clearAll() {
@@ -2176,149 +2309,31 @@
             }
         };
 
-        window.OfflineSync = {
-            async addQuestion(item) {
-                if (!dbInstance) return;
-                try {
-                    dbInstance.transaction('offline_queue', 'readwrite').objectStore('offline_queue').add(item);
-                } catch (e) {}
-            },
-            async syncAll() {
-                if (!dbInstance || !navigator.onLine) return;
-                try {
-                    const tx = dbInstance.transaction('offline_queue', 'readonly');
-                    const req = tx.objectStore('offline_queue').getAll();
-                    req.onsuccess = async () => {
-                        const items = req.result || [];
-                        if (items.length === 0) return;
-                        for (const it of items) {
-                            try {
-                                await fetch(API_URL, {
-                                    method: 'POST',
-                                    mode: 'cors',
-                                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                                    body: JSON.stringify(it)
-                                });
-                                dbInstance.transaction('offline_queue', 'readwrite').objectStore('offline_queue').delete(it.id);
-                            } catch (err) {}
-                        }
-                    };
-                } catch (e) {}
-            }
-        };
-
         /* ==========================================================================
-           ۵. تقویم رسمی، آب‌وهوا و جدول شاخص‌های بانک مرکزی
+           ۶. رفع باگ ویدیو/لایواستریم: متوقف‌سازی قطعی هنگام سوئیچ تب‌ها و دراورها
            ========================================================================== */
-        window.updateDateTime = function() {
-            const now = new Date();
-            const textEl = document.getElementById('dashboardDateText');
-            if (!textEl) return;
-            try {
-                const formatter = new Intl.DateTimeFormat('fa-IR', {
-                    weekday: 'long',
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric'
-                });
-                textEl.innerText = formatter.format(now);
-            } catch (e) {
-                textEl.innerText = now.toLocaleDateString('fa-IR');
+        let activeHlsInstance = null;
+        window.stopActiveMediaStreams = function() {
+            const liveVid = document.getElementById('liveStreamVideo');
+            if (liveVid) {
+                liveVid.pause();
+                liveVid.removeAttribute('src');
+                liveVid.load();
             }
-        };
-
-        window.fetchTehranWeather = async function() {
-            const wBox = document.getElementById('dashboardWeatherBadge');
-            try {
-                const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=35.6892&longitude=51.3890&current_weather=true');
-                if (res.ok) {
-                    const data = await res.json();
-                    const temp = Math.round(data.current_weather.temperature);
-                    if (wBox) wBox.innerText = `تهران ${temp}°C`;
-                }
-            } catch (e) {
-                if (wBox) wBox.innerText = `تهران ۲۴°C`;
+            if (activeHlsInstance) {
+                activeHlsInstance.destroy();
+                activeHlsInstance = null;
             }
-        };
-
-        const cpiYearlyTable = {
-            1370: 0.0700, 1375: 0.2660, 1380: 0.5552, 1385: 1.0588, 1390: 2.3768,
-            1395: 5.7820, 1396: 6.3380, 1397: 8.3140, 1398: 11.152, 1399: 15.184,
-            1400: 21.285, 1401: 31.180, 1402: 45.720, 1403: 63.580, 1404: 87.200, 1405: 117.70
-        };
-
-        function getYearlyCpiSafe(year) {
-            if (cpiYearlyTable[year]) return cpiYearlyTable[year];
-            if (year > 1405) return +(117.70 * Math.pow(1.35, year - 1405)).toFixed(2);
-            if (year < 1370) return 0.05;
-            return 1.0;
-        }
-
-        const cpiMonthlyBase = {
-            1395: 100.0, 1396: 109.6, 1397: 143.8, 1398: 193.0, 1399: 263.0,
-            1400: 368.0, 1401: 539.0, 1402: 790.0, 1403: 1100.0, 1404: 1510.0, 1405: 2040.0
-        };
-
-        function getMonthlyCpi(year, month) {
-            const base = cpiMonthlyBase[year] || (year > 1405 ? 2040.0 * Math.pow(1.35, year - 1405) : 80.0);
-            const mFactor = 1 + ((month - 1) * (0.35 / 12));
-            return +(base * mFactor).toFixed(2);
-        }
-
-        /* ==========================================================================
-           ۶. پایگاه داده آفلاین پیش‌فرض پایدار (Fallback Data)
-           ========================================================================== */
-        window.fallbackData = {
-            dictionary: [
-                { id: 'd1', term: 'اعسار', category: 'مدنی', definition: 'وضعیت فردی که به واسطه عدم کفایت دارایی یا عدم دسترسی موقت به اموال خود، توانایی پرداخت دفعی دیون، مهریه یا هزینه دادرسی را ندارد.' },
-                { id: 'd2', term: 'خیار غبن افحش', category: 'مدنی', definition: 'اختیار قانونی فسخ معامله در شرایطی که عدم تعادل فاحش و بسیار نابرابر میان ارزش واقعی مبیع و ثمن معامله احراز گردد.' },
-                { id: 'd3', term: 'دستور تخلیه فوری', category: 'صلح', definition: 'دستور مراجع قضایی بر مبنای قانون روابط موجر و مستاجر ۱۳۷۶ در صورت انقضای مدت اجاره‌نامه عادی دارای امضای ۲ شاهد معتمد.' },
-                { id: 'd4', term: 'اجراییه مستقیم چک', category: 'تجاری', definition: 'تقاضای صدور مستقیم برگ اجراییه از دادگاه بدون نیاز به ورود در ماهیت و دادرسی بدوی، وفق ماده ۲۳ قانون صدور چک.' },
-                { id: 'd5', term: 'ارش', category: 'کیفری', definition: 'خسارت مالی صدمات بدنی که در شرع و قانون مجازات اسلامی مقدار معینی برای دیه آن تعیین نشده و برآورد آن با پزشکی قانونی است.' },
-                { id: 'd6', term: 'حجب نقصان', category: 'خانواده', definition: 'کاهش سهم فرض قانونی یک وارث به واسطه وجود وارث دیگر؛ نظیر تقلیل سهم ارث مادر از یک‌سوم به یک‌ششم با وجود اخوه.' }
-            ],
-            legalSystems: [
-                { id: 'ls1', title: 'درگاه خودکاربری عدل‌ایران', description: 'ثبت الکترونیکی دادخواست و شکواییه بدون مراجعه به دفاتر', url: 'https://adliran.ir', icon: 'fa-laptop-file' },
-                { id: 'ls2', title: 'سامانه ابلاغ الکترونیک (ثنا)', description: 'مشاهده رسمی ابلاغیه‌ها و اخطاریه‌های دادگاه‌ها', url: 'https://eblagh.adliran.ir', icon: 'fa-envelope-open-text' },
-                { id: 'ls3', title: 'درگاه اجرای ثبت اسناد رسمی', description: 'ممنوع‌الخروجی و توقیف اموال جهت مهریه و اسناد لازم‌الاجرا', url: 'https://ssaa.ir', icon: 'fa-building-columns' }
-            ],
-            laws: [
-                { id: 'l1', title: 'ماده ۵۲۲ قانون آیین دادرسی مدنی', category: 'مدنی', content: 'در دعاوی راجع به دین از نوع وجه رایج، در صورت تغییر فاحش شاخص قیمت سالانه بانک مرکزی، دادگاه خسارت تأخیر تأدیه را محاسبه و حکم خواهد داد.' },
-                { id: 'l2', title: 'ماده ۲۳ قانون اصلاح صدور چک', category: 'تجاری', content: 'دارنده چک می‌تواند با ارائه گواهی عدم پرداخت ممهور به شناسه رهگیری از دادگاه تقاضای صدور برگ اجراییه علیه صادرکننده نماید.' },
-                { id: 'l3', title: 'ماده ۴ قانون شوراهای حل اختلاف ۱۴۰۲', category: 'صلح', content: 'دعاوی مالی تا نصاب یک میلیارد ریال (۱۰۰ میلیون تومان) و دعاوی راجع به تخلیه عین مستاجره منحصراً در صلاحیت دادگاه صلح است.' },
-                { id: 'l4', title: 'ماده ۵۵۵ قانون مجازات اسلامی', category: 'کیفری', content: 'هرگاه رفتار مرتکب و فوت مجنی‌علیه هر دو در یکی از چهار ماه حرام واقع شود، یک‌سوم دیه نفس به آن اضافه می‌گردد.' }
-            ],
-            shareCards: [
-                { id: 'c1', title: 'اقدامات فوری در برگشت چک صیادی', summary: 'دریافت گواهی عدم پرداخت با شناسه رهگیری، ثبت اجراییه ماده ۲۳ در دفاتر خدمات قضایی و انسداد حساب‌ها ظرف ۲۴ ساعت.' },
-                { id: 'c2', title: 'شرط تخلیه فوری در ۱ هفته', summary: 'تنظیم اجاره در ۲ نسخه یکسان، درج تاریخ دقیق انقضا، امضای موجر و مستاجر در حضور دو شاهد معتمد با قید نام و امضا.' }
-            ],
-            news: [
-                { id: 'n1', title: 'صلاحیت قطعی دادگاه‌های صلح در دعاوی مالی تا ۱۰۰ میلیون', date: '۱۴۰۵/۰۷/۱۰', summary: 'رسیدگی به تصادفات رانندگی، انحصار وراثت و تخلیه مستاجر منحصراً در دادگاه‌های صلح انجام می‌گیرد.' }
-            ],
-            publicFaqs: [
-                { id: 'f1', question: 'آیا برای مطالبه مهریه باید اول به دادگاه رفت؟', answer: 'خیر؛ مطالبه مهریه الزاماً باید بدواً از اداره اجرای ثبت اسناد رسمی محل وقوع عقد ازدواج آغاز شود.' }
-            ],
-            podcasts: [
-                { id: 'p1', title: 'تحلیل صلاحیت دادگاه‌های صلح', image: 'https://raw.githubusercontent.com/ahmdsltanahmdy-sketch/sijt-v01/main/01.png', url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3' }
-            ],
-            files: [
-                { id: 'fl1', title: 'نمونه دادخواست اجراییه مستقیم چک', description: 'متن استاندارد ماده ۲۳ قانون چک با فرمت رسمی', url: '#' }
-            ],
-            livestream: [
-                { id: 'lv1', title: 'استریم رسمی دادگاه‌های علنی (خط اصلی)', description: 'پخش زنده جلسات رسیدگی', url: 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8', fallback: 'https://cph-p2p-msl.akamaized.net/hls/live/200034/test/master.m3u8' }
-            ],
-            infographics: [
-                { id: 'inf1', title: 'مراحل گردش کار دادگاه‌های صلح', image: 'https://raw.githubusercontent.com/ahmdsltanahmdy-sketch/sijt-v01/main/01.png' }
-            ],
-            series: [
-                { id: 'sr1', title: 'مستند دادرسی عادلانه و حقوق شهروندی', image: 'https://raw.githubusercontent.com/ahmdsltanahmdy-sketch/sijt-v01/main/01.png', url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4' }
-            ]
+            const modalVid = document.getElementById('modalActiveVideo');
+            if (modalVid) modalVid.pause();
         };
 
         /* ==========================================================================
-           ۷. موتور ناوبری ۴ هاب اصلی و زیرتب‌های داخلی
+           ۷. ناوبری ۴ هاب، فیلتر سگمنت‌ها و سوئیچ زیرتب‌ها
            ========================================================================== */
         window.switchHub = function(hubId) {
+            window.stopActiveMediaStreams();
+
             const currentActive = document.querySelector('.hub-section:not(.hidden)');
             if (currentActive) {
                 hubScrollPositions[currentActive.id] = window.scrollY;
@@ -2333,8 +2348,7 @@
             }
 
             document.querySelectorAll('.desktop-nav-item').forEach(btn => {
-                if (btn.getAttribute('data-hub') === hubId) btn.classList.add('active');
-                else btn.classList.remove('active');
+                btn.classList.toggle('active', btn.getAttribute('data-hub') === hubId);
             });
 
             document.querySelectorAll('.nav-btn').forEach(btn => {
@@ -2359,80 +2373,72 @@
             pill.style.right = `${rightOffset}px`;
         }
 
-        window.addEventListener('resize', () => {
-            const activeBtn = document.querySelector('.nav-btn.active-tab');
-            if (activeBtn) updateNavIndicator(activeBtn);
-        });
+        window.filterToolsSegment = function(category, btn) {
+            document.querySelectorAll('#toolsFilterBar .tool-filter-btn').forEach(b => {
+                b.classList.remove('active', 'bg-red-600', 'text-white');
+                b.classList.add('bg-black/5', 'dark:bg-white/10', 'text-slate-700', 'dark:text-slate-300');
+            });
+            if (btn) {
+                btn.classList.add('active', 'bg-red-600', 'text-white');
+                btn.classList.remove('bg-black/5', 'dark:bg-white/10', 'text-slate-700', 'dark:text-slate-300');
+            }
 
-        // سوئیچ زیرتب‌های هاب دانش
+            const cards = document.querySelectorAll('.tool-card');
+            cards.forEach(card => {
+                if (category === 'all' || card.getAttribute('data-tool-cat') === category) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+            triggerHaptic('selection');
+        };
+
         window.switchKnowledgeSubTab = function(subId) {
             ['sub-terms', 'sub-laws', 'sub-portals'].forEach(id => {
                 const isTarget = (id === subId);
                 const box = document.getElementById(id === 'sub-terms' ? 'subTab-terms' : (id === 'sub-laws' ? 'subTab-laws' : 'subTab-portals'));
                 const btn = document.getElementById(id === 'sub-terms' ? 'subBtn-terms' : (id === 'sub-laws' ? 'subBtn-laws' : 'subBtn-portals'));
-                
-                if (box) {
-                    if (isTarget) box.classList.remove('hidden');
-                    else box.classList.add('hidden');
-                }
+                if (box) box.classList.toggle('hidden', !isTarget);
                 if (btn) {
-                    if (isTarget) {
-                        btn.className = "p-2 rounded-xl bg-white dark:bg-slate-800 text-blue-600 dark:text-blue-400 shadow-sm border-none cursor-pointer";
-                    } else {
-                        btn.className = "p-2 rounded-xl text-slate-600 dark:text-slate-300 border-none bg-transparent cursor-pointer";
-                    }
+                    btn.className = isTarget 
+                        ? "p-2 rounded-xl bg-white dark:bg-slate-800 text-blue-600 dark:text-blue-400 shadow-sm border-none cursor-pointer"
+                        : "p-2 rounded-xl text-slate-600 dark:text-slate-300 border-none bg-transparent cursor-pointer";
                 }
             });
             triggerHaptic('selection');
         };
 
-        // سوئیچ زیرتب‌های هاب مشاوره
         window.switchAdvisorySubTab = function(subId) {
             ['sub-ai', 'sub-lawyer', 'sub-ocr'].forEach(id => {
                 const isTarget = (id === subId);
                 const box = document.getElementById(id === 'sub-ai' ? 'advisorySub-ai' : (id === 'sub-lawyer' ? 'advisorySub-lawyer' : 'advisorySub-ocr'));
                 const btn = document.getElementById(id === 'sub-ai' ? 'advisoryBtn-ai' : (id === 'sub-lawyer' ? 'advisoryBtn-lawyer' : 'advisoryBtn-ocr'));
-                
-                if (box) {
-                    if (isTarget) box.classList.remove('hidden');
-                    else box.classList.add('hidden');
-                }
+                if (box) box.classList.toggle('hidden', !isTarget);
                 if (btn) {
-                    if (isTarget) {
-                        btn.className = "p-2 rounded-xl bg-white dark:bg-slate-800 text-emerald-600 dark:text-emerald-400 shadow-sm border-none cursor-pointer";
-                    } else {
-                        btn.className = "p-2 rounded-xl text-slate-600 dark:text-slate-300 border-none bg-transparent cursor-pointer";
-                    }
+                    btn.className = isTarget 
+                        ? "p-2 rounded-xl bg-white dark:bg-slate-800 text-emerald-600 dark:text-emerald-400 shadow-sm border-none cursor-pointer"
+                        : "p-2 rounded-xl text-slate-600 dark:text-slate-300 border-none bg-transparent cursor-pointer";
                 }
             });
             triggerHaptic('selection');
         };
 
-        // سوئیچ زیرتب‌های هاب کارتابل
         window.switchWorkspaceSubTab = function(subId) {
             ['sub-notes', 'sub-forms', 'sub-cards'].forEach(id => {
                 const isTarget = (id === subId);
                 const box = document.getElementById(id === 'sub-notes' ? 'wsSub-notes' : (id === 'sub-forms' ? 'wsSub-forms' : 'wsSub-cards'));
                 const btn = document.getElementById(id === 'sub-notes' ? 'wsBtn-notes' : (id === 'sub-forms' ? 'wsBtn-forms' : 'wsBtn-cards'));
-                
-                if (box) {
-                    if (isTarget) box.classList.remove('hidden');
-                    else box.classList.add('hidden');
-                }
+                if (box) box.classList.toggle('hidden', !isTarget);
                 if (btn) {
-                    if (isTarget) {
-                        btn.className = "p-2 rounded-xl bg-white dark:bg-slate-800 text-amber-600 dark:text-amber-400 shadow-sm border-none cursor-pointer";
-                    } else {
-                        btn.className = "p-2 rounded-xl text-slate-600 dark:text-slate-300 border-none bg-transparent cursor-pointer";
-                    }
+                    btn.className = isTarget 
+                        ? "p-2 rounded-xl bg-white dark:bg-slate-800 text-amber-600 dark:text-amber-400 shadow-sm border-none cursor-pointer"
+                        : "p-2 rounded-xl text-slate-600 dark:text-slate-300 border-none bg-transparent cursor-pointer";
                 }
             });
             triggerHaptic('selection');
         };
 
-        /* ==========================================================================
-           ۸. دراورها و زیرتب‌های مرکز چندرسانه‌ای (Media Drawer)
-           ========================================================================== */
         window.openMediaDrawer = function() {
             window.closeAllActiveDrawers();
             const d = document.getElementById('mediaDrawer');
@@ -2446,6 +2452,7 @@
         };
 
         window.closeAllActiveDrawers = function() {
+            window.stopActiveMediaStreams();
             document.querySelectorAll('.bottom-drawer').forEach(d => {
                 d.classList.remove('active-drawer');
                 d.style.removeProperty('display');
@@ -2456,6 +2463,7 @@
         };
 
         window.switchMediaSubTab = function(tabId) {
+            window.stopActiveMediaStreams();
             const tabs = ['mSub-podcasts', 'mSub-live', 'mSub-series', 'mSub-info', 'mSub-news'];
             tabs.forEach(t => {
                 const box = document.getElementById(t);
@@ -2472,8 +2480,94 @@
         };
 
         /* ==========================================================================
-           ۹. توابع محاسباتی ۱۲‌گانه قضایی (قانون مدنی، مجازات و آ.د.م)
+           ۸. جداول شاخص‌های بانک مرکزی و توابع محاسباتی قضایی
            ========================================================================== */
+        const cpiYearlyTable = {
+            1370: 0.0700, 1375: 0.2660, 1380: 0.5552, 1385: 1.0588, 1390: 2.3768,
+            1395: 5.7820, 1396: 6.3380, 1397: 8.3140, 1398: 11.152, 1399: 15.184,
+            1400: 21.285, 1401: 31.180, 1402: 45.720, 1403: 63.580, 1404: 87.200, 1405: 117.70
+        };
+
+        function getYearlyCpiSafe(year) {
+            if (cpiYearlyTable[year]) return cpiYearlyTable[year];
+            if (year > 1405) return +(117.70 * Math.pow(1.35, year - 1405)).toFixed(2);
+            if (year < 1370) return 0.05;
+            return 1.0;
+        }
+
+        const cpiMonthlyBase = {
+            1395: 100.0, 1396: 109.6, 1397: 143.8, 1398: 193.0, 1399: 263.0,
+            1400: 368.0, 1401: 539.0, 1402: 790.0, 1403: 1100.0, 1404: 1510.0, 1405: 2040.0
+        };
+
+        function getMonthlyCpi(year, month) {
+            const base = cpiMonthlyBase[year] || (year > 1405 ? 2040.0 * Math.pow(1.35, year - 1405) : 80.0);
+            const mFactor = 1 + ((month - 1) * (0.35 / 12));
+            return +(base * mFactor).toFixed(2);
+        }
+
+        // ۱. سنجش صلاحیت مراجع قضایی بر مبنای قانون شوراهای حل اختلاف ۱۴۰۲
+        window.checkJurisdictionCompetence = function() {
+            const type = document.getElementById('jurisdictionClaimType')?.value;
+            const amount = getNumericValueFromMasked('jurisdictionAmountInput');
+            const resBox = document.getElementById('jurisdictionResult');
+
+            let competentCourt = '';
+            let finality = '';
+            let details = '';
+
+            const peaceLimit = 1000000000; // ۱۰۰ میلیون تومان
+
+            if (type === 'financial') {
+                if (amount <= peaceLimit) {
+                    competentCourt = 'منحصراً در صلاحیت دادگاه صلح (بند ۱ ماده ۴ قانون شوراها)';
+                    finality = amount <= 500000000 ? 'رأی قطعی است (تا ۵۰ میلیون تومان)' : 'قابل تجدیدنظر در دادگاه تجدیدنظر استان (۲۰ روز مهلت)';
+                    details = 'نیازی به ارسال پرونده به شورای حل اختلاف نیست؛ دادگاه صلح مستقیماً رسیدگی و انشاء رأی می‌نماید.';
+                } else {
+                    competentCourt = 'دادگاه عمومی حقوقی شهرستان';
+                    finality = 'قابل تجدیدنظر در دادگاه تجدیدنظر استان ظرف ۲۰ روز از تاریخ ابلاغ';
+                    details = 'خواسته مازاد بر یکصد میلیون تومان در صلاحیت عام محاکم عمومی حقوقی قرار دارد.';
+                }
+            } else if (type === 'eviction') {
+                competentCourt = 'منحصراً دادگاه صلح (بند ۳ ماده ۴)';
+                finality = 'دستور تخلیه غیرقابل تجدیدنظر؛ حکم تخلیه قابل تجدیدنظرخواهی ظرف ۲۰ روز';
+                details = 'رسیدگی به کلیه دعاوی تخلیه عین مستأجره و تعدیل اجاره‌بها در صلاحیت دادگاه صلح است.';
+            } else if (type === 'inheritance') {
+                competentCourt = 'دادگاه صلح (صدور گواهی حصر وراثت، تحریر و مهر و موم ترکه)';
+                finality = 'قابل اعتراض مطابق تشریفات امور حسبی';
+                details = 'رسیدگی به دعاوی اصل وراثت یا نفی نسب کماکان در صلاحیت دادگاه عمومی است.';
+            } else if (type === 'car_accident') {
+                competentCourt = 'منحصراً دادگاه صلح (جنبه مالی تصادفات بدون محدودیت نصاب مالی)';
+                finality = 'مطابق نصاب احکام دادگاه صلح (تا ۵۰ میلیون قطعی، بالاتر قابل تجدیدنظر)';
+                details = 'مطالبه خسارت و افت قیمت ناشی از حوادث رانندگی بدون سقف مالی در دادگاه صلح مطرح می‌شود.';
+            } else if (type === 'family_dowry') {
+                if (amount <= peaceLimit) {
+                    competentCourt = 'دادگاه صلح (مهریه، نفقه و جهیزیه تا یک میلیارد ریال)';
+                    finality = amount <= 500000000 ? 'قطعی' : 'قابل تجدیدنظرخواهی استان';
+                    details = 'در مبالغ مازاد بر ۱۰۰ میلیون تومان، صلاحیت منحصراً با دادگاه خانواده است.';
+                } else {
+                    competentCourt = 'منحصراً دادگاه خانواده';
+                    finality = 'قابل تجدیدنظرخواهی در دادگاه تجدیدنظر استان (۲۰ روز)';
+                    details = 'دعاوی خانواده با بهای خواسته بیش از ۱۰۰ میلیون تومان در صلاحیت محاکم خانواده است.';
+                }
+            } else {
+                competentCourt = 'دادگاه عمومی حقوقی محل وقوع ملک';
+                finality = 'قابل تجدیدنظر در دادگاه تجدیدنظر استان';
+                details = 'دعاوی خلع ید با اختلاف در مالکیت و اصل اثبات مالکیت املاک غیرمنقول در صلاحیت دادگاه عمومی است.';
+            }
+
+            if (resBox) {
+                resBox.innerHTML = `
+                    <div class="sub-box space-y-1.5 text-xs border-emerald-500/30">
+                        <div class="font-bold text-emerald-500 text-sm">${competentCourt}</div>
+                        <div class="text-amber-500 font-bold">وضعیت قطعیت رأی: ${finality}</div>
+                        <p class="text-slate-600 dark:text-slate-300 m-0 leading-relaxed">${details}</p>
+                    </div>
+                `;
+            }
+        };
+
+        // ۲. محاسبه تأخیر تأدیه
         window.calculateDelayCompensationMonthly = function() {
             const principal = getNumericValueFromMasked('principalAmount');
             const startYear = parseInt(document.getElementById('delayStartYear')?.value);
@@ -2518,6 +2612,7 @@
             btns?.classList.remove('hidden');
         };
 
+        // ۳. محاسبه هزینه دادرسی
         window.calculateCourtFee = function() {
             const amount = getNumericValueFromMasked('courtFeeInput');
             const stage = document.getElementById('courtStageSelect')?.value;
@@ -2567,16 +2662,50 @@
             btns?.classList.remove('hidden');
         };
 
-        window.toggleMahariyehMode = function(mode) {
-            const cashBox = document.getElementById('mahariyehCashBox');
-            const coinBox = document.getElementById('mahariyehCoinBox');
-            if (mode === 'cash') {
-                cashBox?.classList.remove('hidden');
-                coinBox?.classList.add('hidden');
-            } else {
-                cashBox?.classList.add('hidden');
-                coinBox?.classList.remove('hidden');
+        // ۴. جریمه تأخیر تحویل پیش‌فروش ساختمان
+        window.calculatePresaleDelay = function() {
+            const price = getNumericValueFromMasked('presaleContractPrice');
+            const days = parseInt(document.getElementById('presaleDelayDays')?.value) || 0;
+            const rent = getNumericValueFromMasked('presaleRentMonthly');
+            const mode = document.getElementById('presaleClauseType')?.value;
+            const resBox = document.getElementById('presaleDelayResult');
+
+            if (days <= 0) {
+                window.showToast('مدت روزهای تأخیر را وارد کنید.', 'error');
+                return;
             }
+
+            let penalty = 0;
+            let note = '';
+            if (mode === 'legal_rent') {
+                if (rent <= 0) {
+                    window.showToast('اجاره ماهانه روز را وارد نمایید.', 'error');
+                    return;
+                }
+                penalty = (rent / 30) * days;
+                note = 'مبنا: اجرت‌المثل اجاره‌بهای روز واحد طبق ارزیابی عرفی (ماده ۶ قانون پیش‌فروش)';
+            } else {
+                penalty = (price * 0.001) * days; // روزانه ۱ در هزار ثمن معامله عرفی
+                note = 'مبنا: وجه التزام روزشمار قراردادی (یک‌هزارم ثمن در روز)';
+            }
+
+            if (resBox) {
+                resBox.innerHTML = `
+                    <div class="sub-box space-y-1 text-xs border-sky-500/30">
+                        <div class="text-[10px] text-slate-400">${note}</div>
+                        <div class="flex justify-between items-center text-emerald-500 font-bold text-sm pt-1 border-t border-black/10 dark:border-white/10">
+                            <span>مجموع خسارت تأخیر قابل مطالبه:</span>
+                            <span>${formatToman(penalty)}</span>
+                        </div>
+                    </div>
+                `;
+            }
+        };
+
+        // ۵. مهریه
+        window.toggleMahariyehMode = function(mode) {
+            document.getElementById('mahariyehCashBox')?.classList.toggle('hidden', mode !== 'cash');
+            document.getElementById('mahariyehCoinBox')?.classList.toggle('hidden', mode === 'cash');
         };
 
         window.calculateBankCentralMahariyeh = function() {
@@ -2641,10 +2770,9 @@
             btns?.classList.remove('hidden');
         };
 
+        // ۶. ارث
         window.handleInheritanceHeirsChange = function(val) {
-            const note = document.getElementById('maternalHajibNote');
-            if (val === 'only_parents_with_hajib') note?.classList.remove('hidden');
-            else note?.classList.add('hidden');
+            document.getElementById('maternalHajibNote')?.classList.toggle('hidden', val !== 'only_parents_with_hajib');
         };
 
         window.calculateInheritanceVisual = function() {
@@ -2703,10 +2831,9 @@
             btns?.classList.remove('hidden');
         };
 
+        // ۷. دیات
         window.handleDiyehSelectorChange = function(val) {
-            const arshBox = document.getElementById('customArshBox');
-            if (val.startsWith('custom_arsh')) arshBox?.classList.remove('hidden');
-            else arshBox?.classList.add('hidden');
+            document.getElementById('customArshBox')?.classList.toggle('hidden', !val.startsWith('custom_arsh'));
         };
 
         window.addDiyehInjuryItem = function() {
@@ -2760,7 +2887,7 @@
             }
 
             const monthType = document.getElementById('diyehMonthType')?.value;
-            const fullDiyehRial = 16000000000; // نرخ دیه کامل نفس
+            const fullDiyehRial = 16000000000;
             let totalPercent = cumulativeInjuries.reduce((sum, item) => sum + item.percent, 0);
 
             let totalDiyeh = (fullDiyehRial * totalPercent) / 100;
@@ -2800,6 +2927,7 @@
             btns?.classList.remove('hidden');
         };
 
+        // ۸. حق‌الوکاله
         window.calculateLawyerFee = function() {
             const amount = getNumericValueFromMasked('lawyerClaimAmount');
             const stage = document.getElementById('lawyerStageSelect')?.value;
@@ -2842,6 +2970,7 @@
             }
         };
 
+        // ۹. کارشناس رسمی
         window.calculateExpertFee = function() {
             const val = getNumericValueFromMasked('expertValueInput');
             const resBox = document.getElementById('expertFeeResult');
@@ -2875,6 +3004,7 @@
             }
         };
 
+        // ۱۰. افت قیمت خودرو
         window.calculateCarDepreciation = function() {
             const carVal = getNumericValueFromMasked('carValueBefore');
             const area = document.getElementById('carDamageArea')?.value;
@@ -2894,12 +3024,7 @@
             else if (area === 'door') basePct = 2.5;
             else if (area === 'full_side') basePct = 8.0;
 
-            let mod = 1.0;
-            if (ageFactor === 1) mod = 1.2;
-            else if (ageFactor === 2) mod = 1.0;
-            else if (ageFactor === 3) mod = 0.7;
-            else mod = 0.4;
-
+            let mod = ageFactor === 1 ? 1.2 : ageFactor === 2 ? 1.0 : ageFactor === 3 ? 0.7 : 0.4;
             const finalPct = basePct * mod;
             const lossAmount = (carVal * finalPct) / 100;
 
@@ -2919,6 +3044,12 @@
             }
         };
 
+        // ۱۱. مواعد دادرسی (با رفع دقیق سال کبیسه و ماده ۴۴۴ ق.آ.د.م)
+        function isPersianLeapYear(y) {
+            const matches = [1, 5, 9, 13, 17, 22, 26, 30];
+            return matches.includes((y + 38) * 31 % 128);
+        }
+
         window.calculateExactLegalDeadline = function() {
             const dateStr = document.getElementById('noticeDateInput')?.value?.trim();
             const action = document.getElementById('deadlineActionType')?.value;
@@ -2930,25 +3061,24 @@
             }
 
             let days = 20;
-            let title = 'تجدیدنظرخواهی';
-            if (action === 'tajdid_abroad') { days = 60; title = 'اقدام مقیم خارج'; }
-            else if (action === 'expert_protest') { days = 7; title = 'اعتراض به کارشناسی'; }
+            let title = 'تجدیدنظرخواهی / اعتراض';
+            if (action === 'tajdid_abroad') { days = 60; title = 'اقدام مقیم خارج کشور'; }
+            else if (action === 'expert_protest') { days = 7; title = 'اعتراض به نظریه کارشناسی'; }
             else if (action === 'court_correction' || action === 'judgment_exec') { days = 10; title = 'رفع نقص / اجرای اختیاری'; }
 
             const parts = dateStr.split('/').map(Number);
             let year = parts[0];
             let month = parts[1];
-            let day = parts[2] + days + 1; // روز ابلاغ و اقدام جزء مهلت محسوب نمی‌شود (مواد ۴۴۴ و ۴۴۵)
+            let day = parts[2] + days + 1; // روز ابلاغ و اقدام طبق قانون محاسبه نمی‌شود
 
-            function getPersianMonthDays(y, m) {
+            function getMonthDays(y, m) {
                 if (m <= 6) return 31;
                 if (m <= 11) return 30;
-                const rem = y % 33;
-                return [1, 5, 9, 13, 17, 22, 26, 30].includes(rem) ? 30 : 29;
+                return isPersianLeapYear(y) ? 30 : 29;
             }
 
-            while (day > getPersianMonthDays(year, month)) {
-                day -= getPersianMonthDays(year, month);
+            while (day > getMonthDays(year, month)) {
+                day -= getMonthDays(year, month);
                 month += 1;
                 if (month > 12) {
                     month = 1;
@@ -2960,6 +3090,7 @@
                 resBox.innerHTML = `
                     <div class="sub-box space-y-1 text-xs border-blue-500/30">
                         <div class="font-bold text-amber-500">${title} (${days} روز مهلت قانونی)</div>
+                        <div class="text-[10px] text-slate-400">بر اساس مواد ۴۴۴ و ۴۴۵ قانون آیین دادرسی مدنی</div>
                         <div class="pt-1 border-t border-black/10 dark:border-white/10 flex justify-between text-emerald-500 font-bold">
                             <span>آخرین روز مجاز ثبت لایحه:</span>
                             <span class="font-mono text-sm">${year}/${String(month).padStart(2,'0')}/${String(day).padStart(2,'0')}</span>
@@ -2969,6 +3100,7 @@
             }
         };
 
+        // ۱۲. اعسار مهریه
         window.calculateDowryInsolvency = function() {
             const totalCoins = parseInt(document.getElementById('mahariyehTotalCoins')?.value);
             const income = getNumericValueFromMasked('debtorMonthlyIncome');
@@ -2981,19 +3113,14 @@
                 return;
             }
 
-            let freeIncomeRatio = 0.35;
-            if (housing === 'tenant') freeIncomeRatio -= 0.1;
-            freeIncomeRatio -= (deps * 0.05);
-            if (freeIncomeRatio < 0.1) freeIncomeRatio = 0.1;
+            let freeRatio = 0.35;
+            if (housing === 'tenant') freeRatio -= 0.1;
+            freeRatio -= (deps * 0.05);
+            if (freeRatio < 0.1) freeRatio = 0.1;
 
-            const payableMonthly = income * freeIncomeRatio;
-            let prepayCoins = 1;
-            if (totalCoins > 50 && income > 300000000) prepayCoins = 3;
-            else if (totalCoins > 20) prepayCoins = 2;
-
-            let installmentMonths = 6;
-            if (payableMonthly < 80000000) installmentMonths = 10;
-            else if (payableMonthly > 150000000) installmentMonths = 4;
+            const payableMonthly = income * freeRatio;
+            let prepayCoins = (totalCoins > 50 && income > 300000000) ? 3 : (totalCoins > 20 ? 2 : 1);
+            let installmentMonths = payableMonthly < 80000000 ? 10 : (payableMonthly > 150000000 ? 4 : 6);
 
             if (resBox) {
                 resBox.innerHTML = `
@@ -3011,6 +3138,49 @@
             }
         };
 
+        // ۱۳. حق‌التحریر دفاتر اسناد رسمی
+        window.toggleNotaryValueInput = function(docType) {
+            document.getElementById('notaryValueBox')?.classList.toggle('hidden', docType === 'general_attorney');
+        };
+
+        window.calculateNotaryFee = function() {
+            const type = document.getElementById('notaryDocType')?.value;
+            const val = getNumericValueFromMasked('notaryDocValueInput');
+            const resBox = document.getElementById('notaryFeeResult');
+
+            let fee = 0;
+            if (type === 'general_attorney') fee = 2500000;
+            else if (type === 'car_attorney') fee = 4500000;
+            else {
+                if (val <= 1000000000) fee = val * 0.005;
+                else if (val <= 5000000000) fee = 5000000 + ((val - 1000000000) * 0.002);
+                else fee = 13000000 + ((val - 5000000000) * 0.001);
+            }
+
+            const vat = fee * 0.10;
+            const total = fee + vat;
+
+            if (resBox) {
+                resBox.innerHTML = `
+                    <div class="sub-box space-y-1 text-xs border-amber-500/30">
+                        <div class="flex justify-between text-slate-700 dark:text-slate-200">
+                            <span>حق‌التحریر مصوب:</span>
+                            <span>${formatToman(fee)}</span>
+                        </div>
+                        <div class="flex justify-between text-slate-400">
+                            <span>مالیات بر ارزش افزوده (۱۰٪):</span>
+                            <span>${formatToman(vat)}</span>
+                        </div>
+                        <div class="pt-1 border-t border-black/10 dark:border-white/10 flex justify-between text-emerald-500 font-bold text-sm">
+                            <span>کل مبلغ قابل پرداخت به دفترخانه:</span>
+                            <span>${formatToman(total)}</span>
+                        </div>
+                    </div>
+                `;
+            }
+        };
+
+        // ۱۴. تفکیک عدل‌ایران
         window.formatForAdliranPortal = function() {
             const subj = document.getElementById('adliranSubject')?.value || '';
             const p = document.getElementById('adliranPlaintiff')?.value || '';
@@ -3032,21 +3202,38 @@
             }
 
             if (box) {
-                box.innerHTML = chunks.map((chunk, idx) => `
-                    <div class="sub-box space-y-1.5">
-                        <div class="flex justify-between items-center text-[10px] text-amber-500 font-bold">
-                            <span>بخش ${idx + 1} از ${chunks.length}</span>
-                            <button onclick="navigator.clipboard.writeText(decodeURIComponent('${encodeURIComponent(chunk)}')); window.showToast('بخش ${idx + 1} کپی شد', 'success');" class="bg-amber-500/20 text-amber-400 px-2 py-1 rounded-lg border-none cursor-pointer">
-                                کپی این بخش
-                            </button>
-                        </div>
-                        <div class="text-[11px] leading-relaxed select-all font-mono text-slate-300 bg-black/20 p-2 rounded-xl max-h-32 overflow-y-auto">${escapeHTML(chunk)}</div>
-                    </div>
-                `).join('');
+                box.innerHTML = '';
+                chunks.forEach((chunk, idx) => {
+                    const cDiv = document.createElement('div');
+                    cDiv.className = 'sub-box space-y-1.5';
+                    
+                    const headDiv = document.createElement('div');
+                    headDiv.className = 'flex justify-between items-center text-[10px] text-amber-500 font-bold';
+                    headDiv.innerHTML = `<span>بخش ${idx + 1} از ${chunks.length}</span>`;
+                    
+                    const btn = document.createElement('button');
+                    btn.className = 'bg-amber-500/20 text-amber-400 px-2 py-1 rounded-lg border-none cursor-pointer';
+                    btn.textContent = 'کپی این بخش';
+                    btn.onclick = () => {
+                        navigator.clipboard.writeText(chunk);
+                        window.showToast(`بخش ${idx + 1} کپی شد`, 'success');
+                    };
+                    
+                    headDiv.appendChild(btn);
+                    
+                    const pDiv = document.createElement('div');
+                    pDiv.className = 'text-[11px] leading-relaxed font-mono text-slate-300 bg-black/20 p-2 rounded-xl max-h-32 overflow-y-auto selectable-text';
+                    pDiv.textContent = chunk;
+                    
+                    cDiv.appendChild(headDiv);
+                    cDiv.appendChild(pDiv);
+                    box.appendChild(cDiv);
+                });
                 box.classList.remove('hidden');
             }
         };
 
+        // ۱۵. فرم‌ساز قراردادها
         window.generateSmartContract = function() {
             const type = document.getElementById('contractType')?.value;
             const p1 = document.getElementById('partyFirst')?.value || 'طرف اول';
@@ -3057,98 +3244,61 @@
             const waive = document.getElementById('waiveAllOptionsCheck')?.checked;
             const box = document.getElementById('contractOutputBox');
 
-            let title = 'قرارداد اجاره اماکن مسکونی';
-            if (type === 'sale') title = 'مبایعه‌نامه قطعی انتقال مال و بیع';
-            else if (type === 'settlement') title = 'سازش‌نامه و صلح‌نامه حقوقی رسمی';
+            let title = type === 'sale' ? 'مبایعه‌نامه قطعی انتقال مال و بیع' : (type === 'settlement' ? 'سازش‌نامه و صلح‌نامه حقوقی رسمی' : 'قرارداد اجاره اماکن مسکونی');
 
-            const contractText = `
-بسمه تعالی
-${title}
-
-ماده ۱ - طرفین قرارداد:
-طرف اول: ${p1}
-طرف دوم: ${p2}
-
-ماده ۲ - مبلغ قرارداد:
-مبلغ کل این توافق برابر است با: ${formatToman(amt)} که نحوه پرداخت آن بر مبنای توافق طرفین خواهد بود.
-
-ماده ۳ - وجه التزام و خسارت تأخیر:
-در صورت استنکاف از اجرای هریک از تعهدات، طرف متخلف مکلف است روزانه مبلغ ${formatToman(penalty)} به عنوان خسارت روزشمار تأخیر در وجه طرف دیگر تأدیه نماید.
-
-${waive ? 'ماده ۴ - اسقاط خیارات:\nطرفین با علم و آگاهی کامل، کافه خیارات قانونی ولو خیار غبن فاحش یا افحش را از خود اسقاط نمودند، مگر خیار تدلیس.\n' : ''}
-${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی از این قرارداد بدواً از طریق داور مرضی‌الطرفین حل‌وفصل خواهد شد و رأی داور قطعی است.\n' : ''}
-این سند در ۲ نسخه متحدالشکل با اعتبار واحد تنظیم گردید.
-امضای طرف اول                    امضای طرف دوم                    امضای شهود معتمد
-            `.trim();
+            const contractText = `بسمه تعالی\n${title}\n\nماده ۱ - طرفین قرارداد:\nطرف اول: ${p1}\nطرف دوم: ${p2}\n\nماده ۲ - مبلغ قرارداد:\nمبلغ کل این توافق برابر است با: ${formatToman(amt)} که نحوه پرداخت آن بر مبنای توافق طرفین خواهد بود.\n\nماده ۳ - وجه التزام و خسارت تأخیر:\nدر صورت استنکاف از اجرای تعهدات، طرف متخلف مکلف است روزانه مبلغ ${formatToman(penalty)} خسارت تأخیر بپردازد.\n\n${waive ? 'ماده ۴ - اسقاط خیارات:\nطرفین کافه خیارات قانونی ولو خیار غبن فاحش یا افحش را اسقاط نمودند.\n\n' : ''}${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات بدواً از طریق داور مرضی‌الطرفین حل‌وفصل خواهد شد.\n\n' : ''}این سند در ۲ نسخه با اعتبار واحد تنظیم گردید.\nامضای طرف اول                    امضای طرف دوم                    امضای شهود`;
 
             if (box) {
-                box.innerText = contractText;
+                box.textContent = contractText;
                 box.classList.remove('hidden');
             }
         };
 
-        // صدور PDF رسمی با استاندارد A4، سربرگ دادگستری و واترمارک
         window.exportContractPDF = async function() {
-            const text = document.getElementById('contractOutputBox')?.innerText;
+            const text = document.getElementById('contractOutputBox')?.textContent;
             if (!text) {
                 window.showToast('ابتدا متن قرارداد را ایجاد فرمایید.', 'error');
                 return;
             }
 
-            window.showToast('در حال ساخت سند رسمی PDF...', 'info');
-
-            const container = document.createElement('div');
-            container.style.position = 'fixed';
-            container.style.left = '-9999px';
-            container.style.top = '-9999px';
-            container.style.width = '794px';
-            container.style.padding = '40px';
-            container.style.backgroundColor = '#ffffff';
-            container.style.color = '#000000';
-            container.style.fontFamily = "'Vazirmatn', Tahoma, sans-serif";
-            container.style.direction = 'rtl';
-            container.style.fontSize = '13px';
-            container.style.lineHeight = '2.2';
-            container.style.whiteSpace = 'pre-wrap';
-            container.innerText = text;
-
-            document.body.appendChild(container);
-
+            window.showToast('در حال بارگذاری موتور ساخت سند PDF...', 'info');
             try {
+                await loadExternalScript('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js');
+                await loadExternalScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');
+
+                const container = document.createElement('div');
+                container.style.position = 'fixed';
+                container.style.left = '-9999px';
+                container.style.top = '-9999px';
+                container.style.width = '794px';
+                container.style.padding = '40px';
+                container.style.backgroundColor = '#ffffff';
+                container.style.color = '#000000';
+                container.style.fontFamily = "'Vazirmatn FD', Tahoma, sans-serif";
+                container.style.direction = 'rtl';
+                container.style.fontSize = '13px';
+                container.style.lineHeight = '2.2';
+                container.style.whiteSpace = 'pre-wrap';
+                container.textContent = text;
+                document.body.appendChild(container);
+
                 const canvas = await html2canvas(container, { scale: 2 });
                 const imgData = canvas.toDataURL('image/png');
                 const { jsPDF } = window.jspdf;
                 const pdf = new jsPDF('p', 'mm', 'a4');
-                const imgWidth = 210;
-                const pageHeight = 297;
-                const imgHeight = (canvas.height * imgWidth) / canvas.width;
-                let heightLeft = imgHeight;
-                let position = 0;
-
-                pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-                heightLeft -= pageHeight;
-
-                while (heightLeft >= 0) {
-                    position = heightLeft - imgHeight;
-                    pdf.addPage();
-                    pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-                    heightLeft -= pageHeight;
-                }
-
-                pdf.save('sijt-official-contract.pdf');
-                window.showToast('فایل PDF قرارداد با کیفیت A4 دانلود شد', 'success');
-            } catch (err) {
-                window.showToast('خطا در صدور PDF', 'error');
-            } finally {
+                pdf.addImage(imgData, 'PNG', 0, 0, 210, (canvas.height * 210) / canvas.width);
+                pdf.save('sijt-contract.pdf');
                 container.remove();
+                window.showToast('فایل PDF قرارداد دانلود شد', 'success');
+            } catch (err) {
+                window.showToast('خطا در صدور فایل PDF', 'error');
             }
         };
 
         /* ==========================================================================
-           ۱۰. موتور بهینه‌شده اسکنر نوری اسناد OCR با Terminate خودکار حافظه
+           ۹. اسکنر نوری OCR با Lazy-Load کتابخانه Tesseract.js
            ========================================================================== */
         let selectedOcrFile = null;
-
         window.handleOcrImageSelect = function(e) {
             const file = e.target.files?.[0];
             if (!file) return;
@@ -3185,12 +3335,15 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
 
             let worker = null;
             try {
+                if (statusTxt) statusTxt.textContent = 'در حال دریافت کتابخانه پردازش تصویر...';
+                await loadExternalScript('https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js');
+
                 worker = await Tesseract.createWorker('fas+eng', 1, {
                     logger: m => {
                         if (m.status === 'recognizing text') {
                             const p = Math.round(m.progress * 100);
-                            if (statusTxt) statusTxt.innerText = 'در حال اسکن خطوط متن سند...';
-                            if (percentTxt) percentTxt.innerText = p + '٪';
+                            if (statusTxt) statusTxt.textContent = 'در حال اسکن نوری خطوط سند...';
+                            if (percentTxt) percentTxt.textContent = p + '٪';
                             if (pBar) pBar.style.width = p + '%';
                         }
                     }
@@ -3203,7 +3356,6 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
             } catch (err) {
                 window.showToast('خطا در پردازش تصویر سند', 'error');
             } finally {
-                // آزادسازی قطعی حافظه رم
                 if (worker) await worker.terminate();
                 if (startBtn) startBtn.disabled = false;
             }
@@ -3223,7 +3375,7 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
             switchAdvisorySubTab('sub-ai');
             const promptInput = document.getElementById('aiPromptInput');
             if (promptInput) {
-                promptInput.value = `لطفاً متن استخراج‌شده زیر از این سند/ابلاغیه قضایی را تحلیل کنید، نکات مهم آن را ذکر کرده و بگویید چه اقدامی باید انجام دهم:\n\n${txt}`;
+                promptInput.value = `لطفاً متن استخراج‌شده زیر از این سند قضایی را تحلیل کنید و نکات حقوقی آن را ذکر نمایید:\n\n${txt}`;
             }
         };
 
@@ -3239,7 +3391,7 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
         };
 
         /* ==========================================================================
-           ۱۱. چت‌بات هوش مصنوعی و ارسال پرسش به وکیل با ثبت در شیت و وب‌هوک تلگرام
+           ۱۰. هوش مصنوعی و ثبت پرسش از وکیل
            ========================================================================== */
         window.runAiAssistant = async function() {
             const input = document.getElementById('aiPromptInput');
@@ -3273,7 +3425,7 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
                 }
 
                 if (!reply) {
-                    reply = `در خصوص سوال مطروحه پیرامون «${escapeHTML(prompt.substring(0, 35))}...»، بررسی حقوقی نشان می‌دهد که وفق مقررات جاری، حفظ ادله اثبات دعوا و رعایت مواعد مصرح در آیین دادرسی مدنی الزامی است. جهت دریافت پاسخ تخصصی پرونده، می‌توانید سوال خود را در زیرتب «پرسش از وکیل» ثبت نمایید.`;
+                    reply = `در خصوص سوال مطروحه پیرامون «${escapeHTML(prompt.substring(0, 35))}...»، بررسی حقوقی نشان می‌دهد که وفق مقررات جاری، حفظ ادله اثبات دعوا و رعایت مواعد مصرح در آیین دادرسی مدنی الزامی است. می‌توانید سوال خود را در زیرتب «پرسش از وکیل» نیز ثبت فرمایید.`;
                 }
 
                 const botMsg = document.createElement('div');
@@ -3283,7 +3435,7 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
             } catch (e) {
                 const errMsg = document.createElement('div');
                 errMsg.className = 'flex justify-start';
-                errMsg.innerHTML = `<div class="bg-red-500/10 border border-red-500/20 text-red-500 rounded-2xl rounded-bl-none p-2.5 text-xs">عدم دسترسی به هسته هوش مصنوعی سرور؛ وفق مقررات اقدام فرمایید.</div>`;
+                errMsg.innerHTML = `<div class="bg-red-500/10 border border-red-500/20 text-red-500 rounded-2xl rounded-bl-none p-2.5 text-xs">ارتباط موقت با سرور برقرار نشد؛ لطفاً مجدداً امتحان کنید.</div>`;
                 container?.appendChild(errMsg);
             } finally {
                 typing?.classList.add('hidden');
@@ -3341,8 +3493,10 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
                 window.showToast('پرسش شما ثبت شد و هشدار تلگرام برای وکیل ارسال گردید', 'success');
                 if (input) input.value = '';
             } catch (err) {
-                await window.OfflineSync.addQuestion(item);
-                window.showToast('پرسش در صف آفلاین ذخیره شد و به محض اتصال ارسال خواهد شد.', 'info');
+                if (dbInstance) {
+                    dbInstance.transaction('offline_queue', 'readwrite').objectStore('offline_queue').add(item);
+                }
+                window.showToast('پرسش در صف آفلاین ذخیره شد و به محض اتصال ارسال می‌شود.', 'info');
                 if (input) input.value = '';
             } finally {
                 if (btn) btn.disabled = false;
@@ -3384,7 +3538,7 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
         };
 
         /* ==========================================================================
-           ۱۲. کارتابل پرونده‌ها و انتقال مستقیم نتایج محاسبات به یادداشت‌ها
+           ۱۱. مدیریت یادداشت‌های کارتابل
            ========================================================================== */
         window.savePersonalNote = async function() {
             const title = document.getElementById('caseTitleInput')?.value?.trim();
@@ -3422,7 +3576,7 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
             personalNotes.unshift(item);
             await AppStorage.set('sijt_personal_notes', personalNotes);
             renderPersonalNotes();
-            window.showToast('نتیجه محاسبه مستقیماً در کارتابل پرونده‌ها ذخیره شد', 'success');
+            window.showToast('نتیجه در کارتابل پرونده‌ها ذخیره شد', 'success');
         };
 
         window.renderPersonalNotes = async function() {
@@ -3488,6 +3642,9 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
                 full += `${i + 1}. ${n.title} (${n.date})\n${n.text}\n----------------------\n`;
             });
 
+            await loadExternalScript('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js');
+            await loadExternalScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');
+
             const container = document.createElement('div');
             container.style.position = 'fixed';
             container.style.left = '-9999px';
@@ -3496,13 +3653,12 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
             container.style.padding = '40px';
             container.style.backgroundColor = '#ffffff';
             container.style.color = '#000000';
-            container.style.fontFamily = "'Vazirmatn', Tahoma, sans-serif";
+            container.style.fontFamily = "'Vazirmatn FD', Tahoma, sans-serif";
             container.style.direction = 'rtl';
             container.style.fontSize = '13px';
             container.style.lineHeight = '2';
             container.style.whiteSpace = 'pre-wrap';
-            container.innerText = full;
-
+            container.textContent = full;
             document.body.appendChild(container);
 
             try {
@@ -3512,7 +3668,7 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
                 const pdf = new jsPDF('p', 'mm', 'a4');
                 pdf.addImage(imgData, 'PNG', 0, 0, 210, (canvas.height * 210) / canvas.width);
                 pdf.save('sijt-case-notes.pdf');
-                window.showToast('فایل PDF یادداشت‌ها ذخیره شد', 'success');
+                window.showToast('فایل PDF یادداشت‌ها دانلود شد', 'success');
             } catch (err) {
                 window.showToast('خطا در صدور PDF', 'error');
             } finally {
@@ -3532,14 +3688,11 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
         };
 
         /* ==========================================================================
-           ۱۳. استریم زنده، پلیر صوتی، ویدیو و اینفوگرافیک با زوم دو انگشتی
+           ۱۲. پخش زنده دادگاه و چندرسانه‌ای
            ========================================================================== */
-        let activeHlsInstance = null;
-
-        window.playLiveHlsStream = function(titleEnc, urlEnc, fallbackEnc) {
+        window.playLiveHlsStream = async function(titleEnc, urlEnc, fallbackEnc) {
             const title = decodeURIComponent(titleEnc || '');
             let primaryUrl = decodeURIComponent(urlEnc || '');
-            let fallbackUrl = fallbackEnc ? decodeURIComponent(fallbackEnc) : '';
 
             const video = document.getElementById('liveStreamVideo');
             const placeholder = document.getElementById('liveStreamPlaceholder');
@@ -3549,14 +3702,9 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
             if (titleEl) titleEl.innerText = title;
             if (placeholder) placeholder.classList.add('hidden');
 
-            if (activeHlsInstance) {
-                activeHlsInstance.destroy();
-                activeHlsInstance = null;
-            }
+            window.stopActiveMediaStreams();
 
-            video.pause();
-            video.removeAttribute('src');
-            video.load();
+            await loadExternalScript('https://cdn.jsdelivr.net/npm/hls.js@latest');
 
             if (video.canPlayType('application/vnd.apple.mpegurl')) {
                 video.src = primaryUrl;
@@ -3564,7 +3712,7 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
                 return;
             }
 
-            if (Hls.isSupported()) {
+            if (window.Hls && Hls.isSupported()) {
                 activeHlsInstance = new Hls({ enableWorker: true, lowLatencyMode: true });
                 activeHlsInstance.loadSource(primaryUrl);
                 activeHlsInstance.attachMedia(video);
@@ -3682,6 +3830,7 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
         };
 
         window.openVideoModal = function(titleEnc, urlEnc) {
+            window.stopActiveMediaStreams();
             const title = decodeURIComponent(titleEnc);
             const url = decodeURIComponent(urlEnc);
             const modal = document.getElementById('mediaModal');
@@ -3726,7 +3875,6 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
             pushBackHandler(closeMediaModal);
         };
 
-        // پیاده‌سازی زوم دو انگشتی نیتیو (Pinch to Zoom)
         function setupPinchZoomPan(viewportId, imgId) {
             const vp = document.getElementById(viewportId);
             const img = document.getElementById(imgId);
@@ -3763,6 +3911,7 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
         }
 
         window.closeMediaModal = function() {
+            window.stopActiveMediaStreams();
             const modal = document.getElementById('mediaModal');
             const contentBox = document.getElementById('mediaModalContent');
             if (modal) modal.classList.add('hidden');
@@ -3858,8 +4007,63 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
         };
 
         /* ==========================================================================
-           ۱۴. جستجوی جامع و فراگیر در تمام شیت‌ها و رندر داده‌ها با Chroma-Coding
+           ۱۳. رندرینگ داده‌های مراجع، پایگاه دانش و کارت‌های گرافیکی
            ========================================================================== */
+        window.fallbackData = {
+            dictionary: [
+                { id: 'd1', term: 'اعسار', category: 'مدنی', definition: 'وضعیت فردی که به واسطه عدم کفایت دارایی یا عدم دسترسی موقت به اموال خود، توانایی پرداخت دفعی دیون، مهریه یا هزینه دادرسی را ندارد.' },
+                { id: 'd2', term: 'خیار غبن افحش', category: 'مدنی', definition: 'اختیار قانونی فسخ معامله در شرایطی که عدم تعادل فاحش و بسیار نابرابر میان ارزش واقعی مبیع و ثمن معامله احراز گردد.' },
+                { id: 'd3', term: 'دستور تخلیه فوری', category: 'صلح', definition: 'دستور مراجع قضایی بر مبنای قانون روابط موجر و مستاجر ۱۳۷۶ در صورت انقضای مدت اجاره‌نامه عادی دارای امضای ۲ شاهد معتمد.' },
+                { id: 'd4', term: 'اجراییه مستقیم چک', category: 'تجاری', definition: 'تقاضای صدور مستقیم برگ اجراییه از دادگاه بدون نیاز به ورود در ماهیت و دادرسی بدوی، وفق ماده ۲۳ قانون صدور چک.' },
+                { id: 'd5', term: 'ارش', category: 'کیفری', definition: 'خسارت مالی صدمات بدنی که در شرع و قانون مجازات اسلامی مقدار معینی برای دیه آن تعیین نشده و برآورد آن با پزشکی قانونی است.' },
+                { id: 'd6', term: 'حجب نقصان', category: 'خانواده', definition: 'کاهش سهم فرض قانونی یک وارث به واسطه وجود وارث دیگر؛ نظیر تقلیل سهم ارث مادر از یک‌سوم به یک‌ششم با وجود اخوه.' }
+            ],
+            legalSystems: [
+                { id: 'ls1', title: 'درگاه خودکاربری عدل‌ایران', description: 'ثبت الکترونیکی دادخواست و شکواییه بدون مراجعه به دفاتر', url: 'https://adliran.ir', icon: 'fa-laptop-file' },
+                { id: 'ls2', title: 'سامانه ابلاغ الکترونیک (ثنا)', description: 'مشاهده رسمی ابلاغیه‌ها و اخطاریه‌های دادگاه‌ها', url: 'https://eblagh.adliran.ir', icon: 'fa-envelope-open-text' },
+                { id: 'ls3', title: 'درگاه اجرای ثبت اسناد رسمی', description: 'ممنوع‌الخروجی و توقیف اموال جهت مهریه و اسناد لازم‌الاجرا', url: 'https://ssaa.ir', icon: 'fa-building-columns' }
+            ],
+            laws: [
+                { id: 'l1', title: 'ماده ۵۲۲ قانون آیین دادرسی مدنی', category: 'مدنی', content: 'در دعاوی راجع به دین از نوع وجه رایج، در صورت تغییر فاحش شاخص قیمت سالانه بانک مرکزی، دادگاه خسارت تأخیر تأدیه را محاسبه و حکم خواهد داد.' },
+                { id: 'l2', title: 'ماده ۲۳ قانون اصلاح صدور چک', category: 'تجاری', content: 'دارنده چک می‌تواند با ارائه گواهی عدم پرداخت ممهور به شناسه رهگیری از دادگاه تقاضای صدور برگ اجراییه علیه صادرکننده نماید.' },
+                { id: 'l3', title: 'ماده ۴ قانون شوراهای حل اختلاف ۱۴۰۲', category: 'صلح', content: 'دعاوی مالی تا نصاب یک میلیارد ریال (۱۰۰ میلیون تومان) و دعاوی راجع به تخلیه عین مستاجره منحصراً در صلاحیت دادگاه صلح است.' },
+                { id: 'l4', title: 'ماده ۵۵۵ قانون مجازات اسلامی', category: 'کیفری', content: 'هرگاه رفتار مرتکب و فوت مجنی‌علیه هر دو در یکی از چهار ماه حرام واقع شود، یک‌سوم دیه نفس به آن اضافه می‌گردد.' }
+            ],
+            shareCards: [
+                { id: 'c1', title: 'اقدامات فوری در برگشت چک صیادی', summary: 'دریافت گواهی عدم پرداخت با شناسه رهگیری، ثبت اجراییه ماده ۲۳ در دفاتر خدمات قضایی و انسداد حساب‌ها ظرف ۲۴ ساعت.' },
+                { id: 'c2', title: 'شرط تخلیه فوری در ۱ هفته', summary: 'تنظیم اجاره در ۲ نسخه یکسان، درج تاریخ دقیق انقضا، امضای موجر و مستاجر در حضور دو شاهد معتمد با قید نام و امضا.' }
+            ],
+            news: [
+                { id: 'n1', title: 'صلاحیت قطعی دادگاه‌های صلح در دعاوی مالی تا ۱۰۰ میلیون', date: '۱۴۰۵/۰۷/۱۰', summary: 'رسیدگی به تصادفات رانندگی، انحصار وراثت و تخلیه مستاجر منحصراً در دادگاه‌های صلح انجام می‌گیرد.' }
+            ],
+            publicFaqs: [
+                { id: 'f1', question: 'آیا برای مطالبه مهریه باید اول به دادگاه رفت؟', answer: 'خیر؛ مطالبه مهریه الزاماً باید بدواً از اداره اجرای ثبت اسناد رسمی محل وقوع عقد ازدواج آغاز شود.' }
+            ],
+            podcasts: [
+                { id: 'p1', title: 'تحلیل صلاحیت دادگاه‌های صلح', image: 'https://raw.githubusercontent.com/ahmdsltanahmdy-sketch/sijt-v01/main/01.png', url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3' }
+            ],
+            files: [
+                { id: 'fl1', title: 'نمونه دادخواست اجراییه مستقیم چک', description: 'متن استاندارد ماده ۲۳ قانون چک با فرمت رسمی', url: '#' }
+            ],
+            livestream: [
+                { id: 'lv1', title: 'استریم رسمی دادگاه‌های علنی (خط اصلی)', description: 'پخش زنده جلسات رسیدگی', url: 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8', fallback: 'https://cph-p2p-msl.akamaized.net/hls/live/200034/test/master.m3u8' }
+            ],
+            infographics: [
+                { id: 'inf1', title: 'مراحل گردش کار دادگاه‌های صلح', image: 'https://raw.githubusercontent.com/ahmdsltanahmdy-sketch/sijt-v01/main/01.png' }
+            ],
+            series: [
+                { id: 'sr1', title: 'مستند دادرسی عادلانه و حقوق شهروندی', image: 'https://raw.githubusercontent.com/ahmdsltanahmdy-sketch/sijt-v01/main/01.png', url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4' }
+            ]
+        };
+
+        function getChromaBorderClass(category) {
+            if (category === 'کیفری') return 'border-r-4 border-r-chroma-criminal';
+            if (category === 'صلح') return 'border-r-4 border-r-chroma-peace';
+            if (category === 'خانواده') return 'border-r-4 border-r-chroma-family';
+            if (category === 'تجاری') return 'border-r-4 border-r-chroma-commercial';
+            return 'border-r-4 border-r-chroma-civil';
+        }
+
         window.filterKnowledgeHub = function(cat, btn) {
             selectedKnowledgeCat = cat;
             document.querySelectorAll('#knowledgeFilterPills .k-pill').forEach(p => {
@@ -3875,26 +4079,12 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
             triggerHaptic('selection');
         };
 
-        function getChromaBorderClass(category) {
-            if (category === 'کیفری') return 'border-r-4 border-r-chroma-criminal';
-            if (category === 'صلح') return 'border-r-4 border-r-chroma-peace';
-            if (category === 'خانواده') return 'border-r-4 border-r-chroma-family';
-            if (category === 'تجاری') return 'border-r-4 border-r-chroma-commercial';
-            return 'border-r-4 border-r-chroma-civil'; // مدنی و عمومی
-        }
-
         function renderDictionary() {
             const container = document.getElementById('dictionaryContainer');
             if (!container) return;
 
             const list = appData.dictionary || fallbackData.dictionary || [];
-            let filtered = list;
-
-            if (selectedKnowledgeCat === 'bookmarks') {
-                filtered = list.filter(item => bookmarks.includes(item.id));
-            } else if (selectedKnowledgeCat !== 'all') {
-                filtered = list.filter(item => item.category === selectedKnowledgeCat);
-            }
+            let filtered = selectedKnowledgeCat === 'bookmarks' ? list.filter(item => bookmarks.includes(item.id)) : (selectedKnowledgeCat !== 'all' ? list.filter(item => item.category === selectedKnowledgeCat) : list);
 
             if (filtered.length === 0) {
                 container.innerHTML = `<div class="text-center p-6 text-slate-400 text-xs ultra-glass rounded-2xl">موردی یافت نشد.</div>`;
@@ -3928,13 +4118,8 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
         }
 
         window.toggleBookmark = async function(id) {
-            if (bookmarks.includes(id)) {
-                bookmarks = bookmarks.filter(b => b !== id);
-                window.showToast('از نشان‌شده‌ها حذف شد');
-            } else {
-                bookmarks.push(id);
-                window.showToast('به نشان‌شده‌ها اضافه شد', 'success');
-            }
+            if (bookmarks.includes(id)) bookmarks = bookmarks.filter(b => b !== id);
+            else bookmarks.push(id);
             await AppStorage.set('sijt_bookmarks', bookmarks);
             renderDictionary();
             triggerHaptic('light');
@@ -3945,16 +4130,10 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
             if (!container) return;
 
             const list = appData.laws || fallbackData.laws || [];
-            let filtered = list;
-
-            if (selectedKnowledgeCat === 'bookmarks') {
-                filtered = list.filter(item => lawBookmarks.includes(item.id));
-            } else if (selectedKnowledgeCat !== 'all') {
-                filtered = list.filter(item => item.category === selectedKnowledgeCat);
-            }
+            let filtered = selectedKnowledgeCat === 'bookmarks' ? list.filter(item => lawBookmarks.includes(item.id)) : (selectedKnowledgeCat !== 'all' ? list.filter(item => item.category === selectedKnowledgeCat) : list);
 
             if (filtered.length === 0) {
-                container.innerHTML = `<div class="text-center p-6 text-slate-400 text-xs ultra-glass rounded-2xl">ماده‌ای در این دسته‌بندی یافت نشد.</div>`;
+                container.innerHTML = `<div class="text-center p-6 text-slate-400 text-xs ultra-glass rounded-2xl">ماده‌ای یافت نشد.</div>`;
                 return;
             }
 
@@ -3984,13 +4163,8 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
         }
 
         window.toggleLawBookmark = async function(id) {
-            if (lawBookmarks.includes(id)) {
-                lawBookmarks = lawBookmarks.filter(b => b !== id);
-                window.showToast('از نشان‌شده‌ها حذف شد');
-            } else {
-                lawBookmarks.push(id);
-                window.showToast('ماده به نشان‌شده‌ها اضافه شد', 'success');
-            }
+            if (lawBookmarks.includes(id)) lawBookmarks = lawBookmarks.filter(b => b !== id);
+            else lawBookmarks.push(id);
             await AppStorage.set('sijt_law_bookmarks', lawBookmarks);
             renderLaws();
             triggerHaptic('light');
@@ -4080,7 +4254,6 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
         }
 
         function renderMediaDrawerItems() {
-            // پادکست‌ها
             const podBox = document.getElementById('podcastsContainer');
             if (podBox) {
                 const list = appData.podcasts || fallbackData.podcasts || [];
@@ -4088,7 +4261,7 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
                     <div class="ultra-glass p-3 rounded-2xl flex items-center justify-between border border-black/5 dark:border-white/10">
                         <div class="flex items-center space-x-3 space-x-reverse truncate">
                             <div class="w-10 h-10 rounded-xl overflow-hidden bg-slate-900 flex-shrink-0">
-                                <img src="${escapeHTML(item.image)}" alt="${escapeHTML(item.title)}" class="w-full h-full object-cover" onerror="this.src='https://raw.githubusercontent.com/ahmdsltanahmdy-sketch/sijt-v01/main/01.png';">
+                                <img src="${escapeHTML(item.image)}" alt="${escapeHTML(item.title)}" class="w-full h-full object-cover">
                             </div>
                             <span class="font-bold text-xs text-slate-800 dark:text-slate-100 truncate">${escapeHTML(item.title)}</span>
                         </div>
@@ -4099,7 +4272,6 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
                 `).join('');
             }
 
-            // کانال‌های زنده
             const liveBox = document.getElementById('liveChannelsSelector');
             if (liveBox) {
                 const list = appData.livestream || fallbackData.livestream || [];
@@ -4111,7 +4283,6 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
                 `).join('');
             }
 
-            // ویدیوها
             const serBox = document.getElementById('seriesContainer');
             if (serBox) {
                 const list = appData.series || fallbackData.series || [];
@@ -4128,7 +4299,6 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
                 `).join('');
             }
 
-            // اینفوگرافیک‌ها
             const infoBox = document.getElementById('infographicsContainer');
             if (infoBox) {
                 const list = appData.infographics || fallbackData.infographics || [];
@@ -4142,7 +4312,6 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
                 `).join('');
             }
 
-            // اخبار
             const newsBox = document.getElementById('newsContainer');
             if (newsBox) {
                 const list = appData.news || fallbackData.news || [];
@@ -4179,15 +4348,14 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
             }
         };
 
-        // جستجوی فراگیر در تمام بخش‌های سامانه
+        /* ==========================================================================
+           ۱۴. جستجوی سراسری با رفع قطعی باگ کوتیشن و Event Delegation
+           ========================================================================== */
         let searchDebounceTimer = null;
         window.debouncedSearch = function(query) {
             clearTimeout(searchDebounceTimer);
             const clrBtn = document.getElementById('clearSearchBtn');
-            if (clrBtn) {
-                if (query.trim()) clrBtn.classList.remove('hidden');
-                else clrBtn.classList.add('hidden');
-            }
+            if (clrBtn) clrBtn.classList.toggle('hidden', !query.trim());
             searchDebounceTimer = setTimeout(() => executeUniversalSearch(query), 200);
         };
 
@@ -4221,21 +4389,21 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
                 return;
             }
 
-            let html = '';
-            dictMatches.slice(0, 3).forEach(d => {
-                html += `<div onpointerdown="navigateToUniversalResult('hub-knowledge', 'sub-terms', '${escapeHTML(d.term)}');" class="p-2 rounded-xl hover:bg-black/10 dark:hover:bg-white/10 cursor-pointer text-right border-b border-black/5 dark:border-white/5"><span class="text-xs font-bold text-amber-500 block">📖 ${escapeHTML(d.term)}</span><p class="text-[10px] text-slate-400 truncate m-0">${escapeHTML(d.definition)}</p></div>`;
-            });
-            lawMatches.slice(0, 3).forEach(l => {
-                html += `<div onpointerdown="navigateToUniversalResult('hub-knowledge', 'sub-laws', '${escapeHTML(l.title)}');" class="p-2 rounded-xl hover:bg-black/10 dark:hover:bg-white/10 cursor-pointer text-right border-b border-black/5 dark:border-white/5"><span class="text-xs font-bold text-red-500 block">⚖ ${escapeHTML(l.title)}</span><p class="text-[10px] text-slate-400 truncate m-0">${escapeHTML(l.content)}</p></div>`;
-            });
-            faqMatches.slice(0, 2).forEach(f => {
-                html += `<div onpointerdown="navigateToUniversalResult('hub-knowledge', 'sub-portals', '${escapeHTML(f.question)}');" class="p-2 rounded-xl hover:bg-black/10 dark:hover:bg-white/10 cursor-pointer text-right border-b border-black/5 dark:border-white/5"><span class="text-xs font-bold text-blue-500 block">❓ ${escapeHTML(f.question)}</span></div>`;
-            });
-            cardMatches.slice(0, 2).forEach(c => {
-                html += `<div onpointerdown="navigateToUniversalResult('hub-workspace', 'sub-cards', '${escapeHTML(c.title)}');" class="p-2 rounded-xl hover:bg-black/10 dark:hover:bg-white/10 cursor-pointer text-right border-b border-black/5 dark:border-white/5"><span class="text-xs font-bold text-emerald-500 block">📌 ${escapeHTML(c.title)}</span></div>`;
-            });
+            box.innerHTML = '';
 
-            box.innerHTML = html;
+            const appendSearchItem = (title, sub, hub, tab) => {
+                const item = document.createElement('div');
+                item.className = 'p-2 rounded-xl hover:bg-black/10 dark:hover:bg-white/10 cursor-pointer text-right border-b border-black/5 dark:border-white/5';
+                item.innerHTML = `<span class="text-xs font-bold text-amber-500 block truncate">${escapeHTML(title)}</span><p class="text-[10px] text-slate-400 truncate m-0">${escapeHTML(sub)}</p>`;
+                item.onclick = () => navigateToUniversalResult(hub, tab, title);
+                box.appendChild(item);
+            };
+
+            dictMatches.slice(0, 3).forEach(d => appendSearchItem('📖 ' + d.term, d.definition, 'hub-knowledge', 'sub-terms'));
+            lawMatches.slice(0, 3).forEach(l => appendSearchItem('⚖ ' + l.title, l.content, 'hub-knowledge', 'sub-laws'));
+            faqMatches.slice(0, 2).forEach(f => appendSearchItem('❓ ' + f.question, f.answer, 'hub-knowledge', 'sub-portals'));
+            cardMatches.slice(0, 2).forEach(c => appendSearchItem('📌 ' + c.title, c.summary, 'hub-workspace', 'sub-cards'));
+
             box.classList.remove('hidden');
         }
 
@@ -4253,7 +4421,7 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
             setTimeout(() => {
                 const elements = document.querySelectorAll('.ultra-glass');
                 for (let el of elements) {
-                    if (el.innerText.includes(targetTerm)) {
+                    if (el.innerText.includes(targetTerm.replace(/^[^\s]+\s/, ''))) {
                         el.scrollIntoView({ behavior: 'smooth', block: 'center' });
                         el.classList.add('ring-2', 'ring-amber-500');
                         setTimeout(() => el.classList.remove('ring-2', 'ring-amber-500'), 2500);
@@ -4268,7 +4436,7 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
             if (!shareBox) return;
 
             shareBox.innerHTML = `
-                <div style="background:#070d1e; color:#ffffff; padding:24px; border-radius:24px; border:2px solid #f59e0b; font-family:'Vazirmatn',sans-serif; direction:rtl; text-align:right;">
+                <div style="background:#070d1e; color:#ffffff; padding:24px; border-radius:24px; border:2px solid #f59e0b; font-family:'Vazirmatn FD',sans-serif; direction:rtl; text-align:right;">
                     <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(255,255,255,0.15); padding-bottom:12px; margin-bottom:14px;">
                         <span style="font-weight:900; font-size:14px; color:#f59e0b;">سامانه هوشمند قضایی SIJT</span>
                         <span style="font-size:10px; color:#94a3b8;">گواهی محاسبات حقوقی</span>
@@ -4283,6 +4451,7 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
 
             window.showToast('در حال صدور کارت گرافیکی...');
             try {
+                await loadExternalScript('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js');
                 const canvas = await html2canvas(shareBox, { scale: 2, backgroundColor: null });
                 const link = document.createElement('a');
                 link.download = `sijt-calc-${Date.now()}.png`;
@@ -4295,7 +4464,7 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
         };
 
         /* ==========================================================================
-           ۱۵. تنظیمات تم، استقرار PWA، نسخه داده (Data Versioning) و بارگذاری اولیه
+           ۱۵. تنظیمات، شبکه و چرخه حیات سامانه (Lifecycle)
            ========================================================================== */
         window.toggleTheme = async function() {
             const isDark = document.documentElement.classList.toggle('dark');
@@ -4314,7 +4483,7 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
 
         window.toggleBatterySaver = function() {
             document.body.classList.toggle('battery-saver');
-            window.showToast('حالت کاهش مصرف باتری فعال شد');
+            window.showToast('حالت بهینه‌سازی باتری اعمال شد');
         };
 
         window.toggleHighContrast = function() {
@@ -4427,11 +4596,41 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
             reader.readAsText(file);
         };
 
-        // شبکه ارتباطی ۳ مرحله‌ای (POST -> GET -> JSONP) با هندلینگ نسخه داده
+        window.updateDateTime = function() {
+            const now = new Date();
+            const textEl = document.getElementById('dashboardDateText');
+            if (!textEl) return;
+            try {
+                const formatter = new Intl.DateTimeFormat('fa-IR', {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+                textEl.innerText = formatter.format(now);
+            } catch (e) {
+                textEl.innerText = now.toLocaleDateString('fa-IR');
+            }
+        };
+
+        window.fetchTehranWeather = async function() {
+            const wBox = document.getElementById('dashboardWeatherBadge');
+            try {
+                const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=35.6892&longitude=51.3890&current_weather=true');
+                if (res.ok) {
+                    const data = await res.json();
+                    const temp = Math.round(data.current_weather.temperature);
+                    if (wBox) wBox.innerText = `تهران ${temp}°C`;
+                }
+            } catch (e) {
+                if (wBox) wBox.innerText = `تهران ۲۴°C`;
+            }
+        };
+
         window.fetchAppDataUniversal = async function() {
             try {
                 const ctrl = new AbortController();
-                const tid = setTimeout(() => ctrl.abort(), 12000);
+                const tid = setTimeout(() => ctrl.abort(), 10000);
                 const res = await fetch(API_URL, {
                     method: 'POST',
                     mode: 'cors',
@@ -4449,7 +4648,7 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
 
             try {
                 const ctrl2 = new AbortController();
-                const tid2 = setTimeout(() => ctrl2.abort(), 12000);
+                const tid2 = setTimeout(() => ctrl2.abort(), 10000);
                 const res2 = await fetch(`${API_URL}?action=get_all`, {
                     method: 'GET',
                     mode: 'cors',
@@ -4462,19 +4661,6 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
                     if (parsed2 && typeof parsed2 === 'object') return parsed2;
                 }
             } catch (e2) {}
-
-            try {
-                const callbackName = 'sijt_cb_' + Math.round(100000 * Math.random());
-                const jsonpData = await new Promise((resolve, reject) => {
-                    const s = document.createElement('script');
-                    s.src = `${API_URL}?action=get_all&callback=${callbackName}`;
-                    const timer = setTimeout(() => { s.remove(); delete window[callbackName]; reject(); }, 15000);
-                    window[callbackName] = (d) => { clearTimeout(timer); s.remove(); delete window[callbackName]; resolve(d); };
-                    s.onerror = () => { clearTimeout(timer); s.remove(); delete window[callbackName]; reject(); };
-                    document.body.appendChild(s);
-                });
-                if (jsonpData && typeof jsonpData === 'object') return jsonpData;
-            } catch (e3) {}
 
             throw new Error("خطا در برقراری ارتباط با وب‌اپ گوگل");
         };
@@ -4489,7 +4675,6 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
                 if (data && typeof data === 'object') {
                     appData = { ...fallbackData, ...data };
                     await AppStorage.set('sijt_cache', appData);
-                    if (data.data_version) await AppStorage.set('sijt_data_version', data.data_version);
                     renderAll(true);
                     window.showToast('اطلاعات با موفقیت به‌روزرسانی شد', 'success');
                     triggerHaptic('success');
@@ -4560,11 +4745,9 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
                 try {
                     window.renderPersonalNotes();
                     window.loadUserFaqs();
-                    window.OfflineSync.syncAll();
                 } catch (e) {}
             }, 50);
 
-            // بررسی هوشمند تغییر نسخه داده قبل از دریافت کل دیتابیس
             window.fetchAppDataUniversal()
                 .then(newData => {
                     if (newData && typeof newData === 'object') {
@@ -4576,16 +4759,10 @@ ${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات ناشی ا
                 .catch(() => {});
         };
 
-        window.addEventListener('online', () => {
-            window.OfflineSync.syncAll();
-            window.showToast('اتصال اینترنت برقرار شد؛ همگام‌سازی...', 'success');
-        });
-
         window.addEventListener('scroll', () => {
             const b = document.getElementById('backToTopBtn');
             if (!b) return;
-            if (window.scrollY > 300) b.classList.remove('hidden');
-            else b.classList.add('hidden');
+            b.classList.toggle('hidden', window.scrollY <= 300);
         });
 
         if (document.readyState === 'loading') {
