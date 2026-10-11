@@ -4872,55 +4872,65 @@
         };
 
         window.initApp = async function() {
-            window.closeAllActiveDrawers();
-
-            try { await initIndexedDB(); } catch (e) {}
-
-            try {
-                const savedTheme = await AppStorage.get('sijt_theme');
-                window.applyTheme(savedTheme || 'dark');
-            } catch (e) {
-                window.applyTheme('dark');
-            }
+            // تضمین بسته شدن قطعی اسپلش‌اسکرین پس از ۱.۵ ثانیه حتی در صورت فریز شدن لود
+            const fallbackDismissTimer = setTimeout(() => {
+                window.dismissSplashScreen();
+            }, 1500);
 
             try {
-                const isOled = await AppStorage.get('oled_mode');
-                if (isOled) document.body.classList.add('oled-mode');
-            } catch (e) {}
+                window.closeAllActiveDrawers();
 
-            try {
-                const savedBmk = await AppStorage.get('sijt_bookmarks');
-                if (Array.isArray(savedBmk)) bookmarks = savedBmk;
-            } catch (e) {}
+                try { await initIndexedDB(); } catch (e) { console.warn('IndexedDB failed', e); }
 
-            try {
-                const savedLawBmk = await AppStorage.get('sijt_law_bookmarks');
-                if (Array.isArray(savedLawBmk)) lawBookmarks = savedLawBmk;
-            } catch (e) {}
+                try {
+                    const savedTheme = await AppStorage.get('sijt_theme');
+                    window.applyTheme(savedTheme || 'dark');
+                } catch (e) {
+                    window.applyTheme('dark');
+                }
 
-            try {
-                const cached = await AppStorage.get('sijt_cache');
-                appData = (cached && Object.keys(cached).length > 0) ? { ...fallbackData, ...cached } : { ...fallbackData };
-            } catch (e) {
-                appData = fallbackData;
-            }
+                try {
+                    const isOled = await AppStorage.get('oled_mode');
+                    if (isOled) document.body.classList.add('oled-mode');
+                } catch (e) {}
 
-            try {
+                try {
+                    const savedBmk = await AppStorage.get('sijt_bookmarks');
+                    if (Array.isArray(savedBmk)) bookmarks = savedBmk;
+                } catch (e) {}
+
+                try {
+                    const savedLawBmk = await AppStorage.get('sijt_law_bookmarks');
+                    if (Array.isArray(savedLawBmk)) lawBookmarks = savedLawBmk;
+                } catch (e) {}
+
+                try {
+                    const cached = await AppStorage.get('sijt_cache');
+                    appData = (cached && Object.keys(cached).length > 0) ? { ...fallbackData, ...cached } : { ...fallbackData };
+                } catch (e) {
+                    appData = fallbackData;
+                }
+
                 renderAll(false);
                 window.updateDateTime();
                 setInterval(window.updateDateTime, 30000);
                 window.fetchTehranWeather();
-            } catch (e) {}
 
-            window.dismissSplashScreen();
+                setTimeout(() => {
+                    try {
+                        window.renderPersonalNotes();
+                        window.loadUserFaqs();
+                    } catch (e) {}
+                }, 50);
 
-            setTimeout(() => {
-                try {
-                    window.renderPersonalNotes();
-                    window.loadUserFaqs();
-                } catch (e) {}
-            }, 50);
+            } catch (err) {
+                console.error('Critical initialization error:', err);
+            } finally {
+                clearTimeout(fallbackDismissTimer);
+                window.dismissSplashScreen();
+            }
 
+            // درخواست غیرهمزمان به بک‌اند بدون مسدودسازی رندر
             window.fetchAppDataUniversal()
                 .then(newData => {
                     if (newData && typeof newData === 'object') {
@@ -4929,7 +4939,7 @@
                         renderAll(true);
                     }
                 })
-                .catch(() => {});
+                .catch(e => console.warn('Background sync failed:', e));
         };
 
         window.addEventListener('scroll', () => {
