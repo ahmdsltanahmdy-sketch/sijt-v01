@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     
-    <title>سامانه هوشمند قضایی SIJT | دستیار جامع دادرسی، قوانین و محاسبات ابری</title>
+    <title>سامانه هوشمند قضایی ISF | دستیار جامع دادرسی، قوانین و محاسبات ابری</title>
     
     <!-- متاتگ‌های تلگرام مینی‌اپ، PWA و بهینه‌سازی کلاینت نیتیو -->
     <meta name="theme-color" content="#070b16">
@@ -612,7 +612,7 @@
             </div>
             <div class="text-center space-y-1">
                 <h1 class="text-lg font-black tracking-wide bg-gradient-to-r from-rose-500 via-amber-400 to-rose-500 bg-clip-text text-transparent m-0">
-                    سامانه هوشمند قضایی SIJT
+                    سامانه هوشمند قضایی ISF
                 </h1>
                 <span class="text-[10px] text-slate-400 font-medium block">دستیار فوق‌تخصصی دادرسی، قوانین و محاسبات ابری</span>
             </div>
@@ -634,7 +634,7 @@
                     <i class="fa-solid fa-scale-balanced text-sm"></i>
                 </div>
                 <div class="flex flex-col text-right">
-                    <span class="text-xs font-black text-slate-900 dark:text-white leading-tight">سامانه قضایی SIJT</span>
+                    <span class="text-xs font-black text-slate-900 dark:text-white leading-tight">سامانه قضایی ISF</span>
                     <span class="text-[9px] text-amber-600 dark:text-amber-400 font-bold">دستیار فوق‌تخصصی حقوقی</span>
                 </div>
             </div>
@@ -775,7 +775,7 @@
                         <i class="fa-solid fa-scale-balanced text-lg"></i>
                     </div>
                     <div>
-                        <h2 class="text-sm font-black text-slate-800 dark:text-white m-0">سامانه قضایی SIJT</h2>
+                        <h2 class="text-sm font-black text-slate-800 dark:text-white m-0">سامانه قضایی ISF</h2>
                         <span class="text-[10px] text-amber-500 font-bold block">دستیار فوق‌تخصصی حقوقی</span>
                     </div>
                 </div>
@@ -1699,7 +1699,7 @@
                         <div id="chatMessagesContainer" class="ultra-glass rounded-3xl p-3 h-80 overflow-y-auto space-y-2.5 selectable-text text-xs leading-relaxed border border-black/5 dark:border-white/10">
                             <div class="flex justify-start">
                                 <div class="bg-white dark:bg-slate-800 border border-black/5 dark:border-white/10 text-slate-800 dark:text-slate-100 rounded-2xl rounded-bl-none p-3 max-w-[90%] shadow-sm">
-                                    سلام! من دستیار هوشمند حقوقی سامانه قضایی SIJT هستم. شرح موضوع، ماده قانونی مدنظر، یا سوال پیرامون صلاحیت مراجع دادرسی را مطرح فرمایید.
+                                    سلام! من دستیار هوشمند حقوقی سامانه قضایی ISF هستم. شرح موضوع، ماده قانونی مدنظر، یا سوال پیرامون صلاحیت مراجع دادرسی را مطرح فرمایید.
                                 </div>
                             </div>
                         </div>
@@ -2380,7 +2380,7 @@
         function initIndexedDB() {
             return new Promise((resolve) => {
                 if (!window.indexedDB) return resolve(null);
-                const req = indexedDB.open('SIJT_Enterprise_DB', 5);
+                const req = indexedDB.open('ISF_Enterprise_DB', 5);
                 req.onupgradeneeded = (e) => {
                     const db = e.target.result;
                     if (!db.objectStoreNames.contains('store')) db.createObjectStore('store');
@@ -3876,7 +3876,7 @@
                 return;
             }
 
-            let full = "کارتابل یادداشت‌های پرونده سامانه قضایی SIJT\n\n";
+            let full = "کارتابل یادداشت‌های پرونده سامانه قضایی ISF\n\n";
             personalNotes.forEach((n, i) => {
                 full += `${i + 1}. ${n.title} (${n.date})\n${n.text}\n----------------------\n`;
             });
@@ -3917,7 +3917,7 @@
 
         window.shareNotesTelegram = function() {
             if (personalNotes.length === 0) return;
-            let full = "گزارش یادداشت‌های پرونده SIJT:\n\n";
+            let full = "گزارش یادداشت‌های پرونده ISF:\n\n";
             personalNotes.forEach(n => {
                 full += `📌 ${n.title}\n${n.text.substring(0, 150)}...\n\n`;
             });
@@ -4699,7 +4699,7 @@
             shareBox.innerHTML = `
                 <div style="background:#070b16; color:#ffffff; padding:24px; border-radius:24px; border:2px solid #eab308; font-family:'Vazirmatn FD',sans-serif; direction:rtl; text-align:right;">
                     <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(255,255,255,0.15); padding-bottom:12px; margin-bottom:14px;">
-                        <span style="font-weight:900; font-size:14px; color:#eab308;">سامانه هوشمند قضایی SIJT</span>
+                        <span style="font-weight:900; font-size:14px; color:#eab308;">سامانه هوشمند قضایی ISF</span>
                         <span style="font-size:10px; color:#94a3b8;">گواهی رسمی محاسبات حقوقی</span>
                     </div>
                     <div style="font-weight:800; font-size:13px; color:#f43f5e; margin-bottom:10px;">${escapeHTML(title)}</div>
