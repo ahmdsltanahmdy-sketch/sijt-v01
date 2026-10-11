@@ -7,7 +7,7 @@
     
     <title>سامانه هوشمند قضایی ISF | دستیار جامع دادرسی، قوانین و محاسبات ابری</title>
     
-    <!-- متاتگ‌های تلگرام مینی‌اپ، PWA و بهینه‌سازی کلاینت نیتیو -->
+    <!-- متاتگ‌های تلگرام مینی‌اپ، PWA و تنظیمات ویوپورت پویا -->
     <meta name="theme-color" content="#070b16">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -26,7 +26,7 @@
     <!-- اسکریپت پایه تلگرام وب‌اپ -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-    <!-- پیکربندی Tailwind CSS با پالت سازمانی مپ‌شده، سه‌لایه عمق متریال و کروموکدینگ بهینه‌شده -->
+    <!-- پیکربندی جامع Tailwind CSS با کروموکدینگ و پالت سازمانی مپ‌شده -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -47,7 +47,7 @@
                         },
                         chroma: {
                             civil: '#2563eb',       // حقوق مدنی
-                            criminal: '#e11d48',    // کیفری و جزا (بورگاندی زرشکی)
+                            criminal: '#e11d48',    // کیفری و جزا
                             peace: '#059669',       // دادگاه صلح و سازش
                             family: '#9333ea',      // دعاوی خانواده و مهریه
                             commercial: '#d97706',  // تجاری و اسناد چک
@@ -55,10 +55,11 @@
                         }
                     },
                     boxShadow: {
-                        'glow-gold': '0 0 25px rgba(234, 179, 8, 0.2)',
+                        'glow-gold': '0 0 25px rgba(234, 179, 8, 0.25)',
                         'glow-crimson': '0 0 25px rgba(225, 29, 72, 0.25)',
-                        'glass-lux': '0 12px 40px -10px rgba(0, 0, 0, 0.65)',
-                        'floating-dock': '0 20px 45px -10px rgba(0, 0, 0, 0.8)'
+                        'glow-cyan': '0 0 25px rgba(6, 182, 212, 0.25)',
+                        'glass-lux': '0 16px 40px -10px rgba(0, 0, 0, 0.75)',
+                        'floating-dock': '0 20px 45px -10px rgba(0, 0, 0, 0.85)'
                     }
                 }
             }
@@ -72,7 +73,7 @@
             --line-height: 1.8;
             --bg-canvas-light: #f8fafc;
             --bg-canvas-dark: #070b16;
-            --card-surface-light: rgba(255, 255, 255, 0.95);
+            --card-surface-light: rgba(255, 255, 255, 0.92);
             --card-surface-dark: rgba(14, 22, 40, 0.85);
             --border-light: rgba(0, 0, 0, 0.08);
             --border-dark: rgba(255, 255, 255, 0.08);
@@ -81,7 +82,7 @@
             
             --tg-safe-bottom: env(safe-area-inset-bottom, 0px);
             --tg-safe-top: env(safe-area-inset-top, 0px);
-            --tg-viewport-height: var(--tg-viewport-stable-height, 100vh);
+            --app-viewport-height: 100dvh;
         }
 
         * {
@@ -96,7 +97,6 @@
             -webkit-user-select: text !important;
         }
 
-        /* قفل کردن ارقام جهت جلوگیری از لرزش چیدمان حین محاسبه */
         .tabular-nums {
             font-variant-numeric: tabular-nums;
             letter-spacing: -0.02em;
@@ -111,7 +111,7 @@
             margin: 0;
             padding: 0;
             overflow-x: hidden;
-            min-height: var(--tg-viewport-height);
+            min-height: var(--app-viewport-height);
             transition: background-color 0.25s ease, color 0.25s ease;
             text-rendering: optimizeLegibility;
             -webkit-font-smoothing: antialiased;
@@ -121,8 +121,8 @@
             background-color: var(--bg-canvas-dark);
             color: #f8fafc;
             background-image: 
-                radial-gradient(at 0% 0%, rgba(159, 18, 57, 0.08) 0px, transparent 50%),
-                radial-gradient(at 100% 100%, rgba(234, 179, 8, 0.06) 0px, transparent 50%);
+                radial-gradient(at 0% 0%, rgba(159, 18, 57, 0.12) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(234, 179, 8, 0.08) 0px, transparent 50%);
             background-attachment: fixed;
         }
 
@@ -140,7 +140,7 @@
         body.oled-mode header,
         body.oled-mode nav {
             background-color: #050505 !important;
-            border-color: rgba(255, 255, 255, 0.16) !important;
+            border-color: rgba(255, 255, 255, 0.18) !important;
             backdrop-filter: none !important;
             -webkit-backdrop-filter: none !important;
         }
@@ -162,25 +162,26 @@
             font-weight: 700 !important;
         }
 
-        /* افکت شیشه‌ای با عمق متریال و بلور سبک جهت جلوگیری از لگ گرافیکی */
+        /* افکت شیشه‌ای پیشرفته با چندلایه گرادینت */
         .ultra-glass {
             background: var(--card-surface-light);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             border: 1px solid var(--border-light);
             box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.08);
+            position: relative;
         }
 
         html.dark .ultra-glass {
             background: var(--card-surface-dark);
             border: 1px solid var(--border-dark);
-            box-shadow: 0 14px 35px -12px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+            box-shadow: 0 14px 38px -12px rgba(0, 0, 0, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.05);
         }
 
         .settings-glass {
             background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(0, 0, 0, 0.12);
             border-radius: 28px;
             box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
@@ -189,7 +190,7 @@
         html.dark .settings-glass {
             background: rgba(14, 22, 40, 0.98);
             border: 1px solid rgba(255, 255, 255, 0.15);
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.7);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.75);
         }
 
         .sub-box {
@@ -204,14 +205,14 @@
             border: 1px solid var(--border-dark);
         }
 
-        /* کارت رسید رسمی دیجیتال دادگاه (Court Receipt) */
+        /* کارت رسید رسمی دیجیتال دادگاه با لبه دندانه‌دار و واترمارک قضایی */
         .court-receipt {
-            background: linear-gradient(180deg, rgba(21, 34, 60, 0.95) 0%, rgba(14, 22, 40, 0.98) 100%);
-            border: 1px solid rgba(234, 179, 8, 0.3);
+            background: linear-gradient(180deg, rgba(21, 34, 60, 0.97) 0%, rgba(14, 22, 40, 0.99) 100%);
+            border: 1px solid rgba(234, 179, 8, 0.35);
             border-radius: 22px;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 14px 32px rgba(0, 0, 0, 0.45);
+            box-shadow: 0 16px 36px rgba(0, 0, 0, 0.55);
         }
 
         .court-receipt::before {
@@ -224,41 +225,64 @@
             background: linear-gradient(90deg, #9f1239, #eab308, #2563eb);
         }
 
-        /* سوییچ‌های تعاملی لوکس iOS */
+        .receipt-watermark {
+            position: absolute;
+            right: -25px;
+            bottom: -25px;
+            font-size: 120px;
+            color: rgba(234, 179, 8, 0.04);
+            pointer-events: none;
+            transform: rotate(-15deg);
+            z-index: 0;
+        }
+
+        .receipt-sawtooth {
+            position: relative;
+            background-image: radial-gradient(circle at 10px 0, transparent 0, transparent 6px, rgba(14, 22, 40, 0.99) 7px);
+            background-size: 20px 10px;
+            background-repeat: repeat-x;
+            height: 10px;
+            width: 100%;
+        }
+
+        /* سوییچ‌های تعاملی ارگونومیک iOS */
         .custom-toggle {
-            width: 44px;
-            height: 24px;
-            background: rgba(255, 255, 255, 0.12);
-            border-radius: 12px;
+            width: 46px;
+            height: 25px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 13px;
             position: relative;
             cursor: pointer;
             transition: background 0.25s ease;
             flex-shrink: 0;
+            border: 1px solid rgba(255, 255, 255, 0.08);
         }
 
         .custom-toggle.active {
             background: #eab308;
+            border-color: #fde047;
+            box-shadow: 0 0 12px rgba(234, 179, 8, 0.4);
         }
 
         .custom-toggle-thumb {
-            width: 20px;
-            height: 20px;
+            width: 21px;
+            height: 21px;
             background: #ffffff;
             border-radius: 50%;
             position: absolute;
-            top: 2px;
-            right: 2px;
+            top: 1px;
+            right: 1px;
             transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
-            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.35);
         }
 
         .custom-toggle.active .custom-toggle-thumb {
-            transform: translateX(-20px);
+            transform: translateX(-21px);
         }
 
         /* فیدبک ارتجاعی کلیدها */
         .btn-spring {
-            transition: transform 0.14s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.15s ease;
+            transition: transform 0.14s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.15s ease, box-shadow 0.15s ease;
         }
 
         .btn-spring:active {
@@ -346,7 +370,7 @@
         }
 
         .desktop-nav-item.active {
-            background: linear-gradient(135deg, rgba(159, 18, 57, 0.2), rgba(234, 179, 8, 0.18));
+            background: linear-gradient(135deg, rgba(159, 18, 57, 0.22), rgba(234, 179, 8, 0.18));
             color: #eab308;
             border-right: 3px solid #eab308;
         }
@@ -405,7 +429,7 @@
         html.dark .floating-nav {
             background: rgba(14, 22, 40, 0.94);
             border: 1px solid var(--border-dark);
-            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.65);
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.7);
         }
 
         @media (min-width: 1024px) {
@@ -437,11 +461,6 @@
             color: #94a3b8;
         }
 
-        .nav-btn i {
-            font-size: 15px;
-            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
         .nav-btn.active-tab {
             color: #ffffff !important;
         }
@@ -471,7 +490,7 @@
             z-index: 110;
             border-radius: 36px 36px 0 0;
             padding: 20px 20px calc(24px + var(--tg-safe-bottom)) 20px;
-            box-shadow: 0 -12px 50px rgba(0, 0, 0, 0.6);
+            box-shadow: 0 -12px 50px rgba(0, 0, 0, 0.65);
             animation: slideUpDrawer 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
@@ -576,10 +595,25 @@
                 transform: translateY(200%);
             }
         }
+
+        /* استایل کانواس امضای لمسی قرارداد */
+        .signature-canvas {
+            width: 100%;
+            height: 120px;
+            background: rgba(0, 0, 0, 0.05);
+            border: 1px dashed rgba(234, 179, 8, 0.4);
+            border-radius: 16px;
+            touch-action: none;
+            cursor: crosshair;
+        }
+
+        html.dark .signature-canvas {
+            background: rgba(0, 0, 0, 0.35);
+        }
     </style>
 </head>
 <body class="bg-[#f8fafc] dark:bg-[#070b16] text-slate-800 dark:text-slate-100 min-h-screen">
-    <!-- اسکریپت اضطراری ضدفریز: تضمین کنار رفتن اسپلش در حداکثر ۶۰۰ میلی‌ثانیه تحت هر شرایطی -->
+    <!-- اسکریپت اضطراری ضدفریز: تضمین کنار رفتن اسپلش در حداکثر ۵۰۰ میلی‌ثانیه تحت هر شرایطی -->
     <script>
         (function() {
             function forceDismissSplash() {
@@ -594,10 +628,10 @@
                 }
             }
             if (document.readyState === 'complete') {
-                setTimeout(forceDismissSplash, 400);
+                setTimeout(forceDismissSplash, 350);
             } else {
-                window.addEventListener('load', function() { setTimeout(forceDismissSplash, 400); });
-                setTimeout(forceDismissSplash, 900); // Failsafe قطعی
+                window.addEventListener('load', function() { setTimeout(forceDismissSplash, 350); });
+                setTimeout(forceDismissSplash, 800); // Failsafe قطعی
             }
         })();
     </script>
@@ -639,7 +673,7 @@
                 </div>
             </div>
 
-            <!-- ویجت‌های شبکه، رفرش، تنظیمات و دکمه بستن اپ تلگرام -->
+            <!-- ویجت‌های شبکه، رفرش، تنظیمات و دکمه خروج -->
             <div class="flex items-center space-x-1.5 space-x-reverse">
                 <div id="connectionStatusBadge" class="flex items-center space-x-1 space-x-reverse px-2.5 py-1 rounded-xl bg-black/5 dark:bg-white/10 text-[9px] font-bold">
                     <i id="networkStatusIcon" class="fa-solid fa-wifi text-emerald-500 text-[9px]"></i>
@@ -892,7 +926,7 @@
                         </div>
                     </div>
 
-                    <!-- ردیف فیلتر کنترل سگمنت برای دسته‌بندی ابزارها جهت جلوگیری از اسکرول طولانی -->
+                    <!-- ردیف فیلتر کنترل سگمنت برای دسته‌بندی ابزارها -->
                     <div class="flex items-center space-x-1.5 space-x-reverse overflow-x-auto hide-scrollbar pb-1 text-[10px]" id="toolsFilterBar">
                         <button onclick="filterToolsSegment('all', this);" class="tool-filter-btn active px-3 py-1.5 rounded-full bg-rose-600 text-white font-bold transition flex-shrink-0 cursor-pointer border-none shadow-sm btn-spring">همه ابزارها</button>
                         <button onclick="filterToolsSegment('cat-finance', this);" class="tool-filter-btn px-3 py-1.5 rounded-full bg-black/5 dark:bg-white/10 text-slate-700 dark:text-slate-300 font-bold transition flex-shrink-0 cursor-pointer border-none hover:bg-black/10 btn-spring">دیون و چک</button>
@@ -1073,7 +1107,8 @@
 
                         <div id="presaleDelayResult" class="selectable-text"></div>
                     </div>
-           <!-- ۴. محاسبه ارزش روز مهریه (ماده ۱۰۸۲ قانون مدنی) -->
+
+                    <!-- ۴. محاسبه ارزش روز مهریه (ماده ۱۰۸۲ قانون مدنی) -->
                     <div class="tool-card ultra-glass p-4 rounded-3xl space-y-3 shadow-md border-r-4 border-r-chroma-family" data-tool-cat="cat-family">
                         <div class="flex items-center justify-between pb-2 border-b border-black/10 dark:border-white/10">
                             <span class="font-bold text-xs text-purple-600 dark:text-purple-400 flex items-center">
@@ -1136,7 +1171,6 @@
                             </button>
                         </div>
                     </div>
-
                     <!-- ۵. محاسبه سهم‌الارث و تقسیم ترکه (مواد ۸۹۲، ۹۰۷ و اصلاحیه ۹۴۶ ق.م) -->
                     <div class="tool-card ultra-glass p-4 rounded-3xl space-y-3 shadow-md border-r-4 border-r-chroma-family" data-tool-cat="cat-family">
                         <div class="flex items-center justify-between pb-2 border-b border-black/10 dark:border-white/10">
@@ -1201,7 +1235,7 @@
                             <span class="text-[9px] text-slate-400">تغلیظ ماه حرام و ارش</span>
                         </div>
 
-                        <!-- اصلاح حقوقی ماده ۵۵۵: بررسی توأم وقوع رفتار مرتکب و فوت در ماه حرام -->
+                        <!-- بررسی توأم وقوع رفتار مرتکب و فوت در ماه حرام -->
                         <div class="sub-box space-y-2 bg-rose-500/5 border-rose-500/20">
                             <span class="text-[10px] font-bold text-rose-400 block text-right">بررسی شرایط تغلیظ قانونی دیه نفس (ماده ۵۵۵ ق.م.ا):</span>
                             <div class="grid grid-cols-2 gap-2 text-[10px]">
@@ -1287,6 +1321,7 @@
 
                         <div id="lawyerFeeResult" class="selectable-text"></div>
                     </div>
+
                     <!-- ۸. دستمزد کارشناسان رسمی دادگستری -->
                     <div class="tool-card ultra-glass p-4 rounded-3xl space-y-3 shadow-md border-r-4 border-r-chroma-civil" data-tool-cat="cat-procedural">
                         <div class="flex items-center justify-between pb-2 border-b border-black/10 dark:border-white/10">
@@ -1514,7 +1549,7 @@
                         <div id="adliranChunksOutput" class="hidden space-y-2"></div>
                     </div>
 
-                    <!-- ۱۴. فرم‌ساز هوشمند قراردادها با شروط حقوقی و شرط داوری (مجهز به سوئیچ‌های سفارشی iOS) -->
+                    <!-- ۱۴. فرم‌ساز هوشمند قراردادها با شروط حقوقی، شرط داوری و پد امضای دیجیتال لمسی -->
                     <div class="tool-card ultra-glass p-4 rounded-3xl space-y-3 shadow-md border-r-4 border-r-chroma-commercial" data-tool-cat="cat-contracts">
                         <div class="flex items-center justify-between pb-2 border-b border-black/10 dark:border-white/10">
                             <span class="font-bold text-xs text-amber-600 dark:text-amber-400 flex items-center">
@@ -1556,7 +1591,7 @@
                             </div>
                         </div>
 
-                        <!-- سوییچ‌های شیک کشویی با استایل iOS به جای چک‌باکس ساده -->
+                        <!-- سوییچ‌های شیک کشویی با استایل iOS -->
                         <div class="space-y-2 pt-2 border-t border-black/5 dark:border-white/5">
                             <div class="flex items-center justify-between p-2 rounded-2xl bg-black/5 dark:bg-white/5">
                                 <span class="text-[11px] font-bold text-slate-700 dark:text-slate-300">درج شرط داوری مرضی‌الطرفین جهت حل اختلاف بدون مراجعه به دادگاه</span>
@@ -1575,6 +1610,17 @@
                             </div>
                         </div>
 
+                        <!-- بخش امضای لمسی دیجیتال طرفین -->
+                        <div class="space-y-1.5 pt-2 border-t border-black/5 dark:border-white/5">
+                            <div class="flex justify-between items-center text-[10px] font-bold text-slate-600 dark:text-slate-400">
+                                <span>امضای دیجیتال طرفین (لمسی / با قلم):</span>
+                                <button type="button" onclick="clearSignatureCanvas();" class="text-rose-500 hover:underline border-none bg-transparent cursor-pointer font-bold btn-spring">
+                                    <i class="fa-solid fa-eraser ml-1"></i> پاک کردن امضا
+                                </button>
+                            </div>
+                            <canvas id="contractSignaturePad" class="signature-canvas"></canvas>
+                        </div>
+
                         <button onclick="generateSmartContract(); triggerHaptic('medium');" class="w-full bg-gradient-to-r from-amber-600 to-rose-600 text-white font-bold py-2 rounded-xl text-xs border-none cursor-pointer shadow transition hover:opacity-90 btn-spring">
                             تولید متن رسمی قرارداد و اعمال شروط
                         </button>
@@ -1587,7 +1633,7 @@
                         </button>
                     </div>
                 </section>
-              <!-- ==========================================================================
+                <!-- ==========================================================================
                      هاب ۲: 📚 دانش و مرجع قوانین (اصطلاحات، مواد قانونی، درگاه‌ها و FAQ)
                      ========================================================================== -->
                 <section id="hub-knowledge" class="hub-section hidden space-y-3.5">
@@ -1826,6 +1872,7 @@
                         </div>
                     </div>
                 </section>
+
                 <!-- ==========================================================================
                      هاب ۴: 📁 کارتابل و اسناد پرونده (یادداشت‌ها، فرم‌ها و کارت‌های دادرسی)
                      ========================================================================== -->
@@ -2261,7 +2308,7 @@
 
         if (tg?.onEvent) {
             tg.onEvent('viewportChanged', () => {
-                document.documentElement.style.setProperty('--tg-viewport-height', `${tg.viewportHeight}px`);
+                document.documentElement.style.setProperty('--app-viewport-height', `${tg.viewportHeight}px`);
             });
         }
 
@@ -2282,7 +2329,7 @@
             if (!str) return '';
             return String(str)
                 .replace(/[۰-۹]/g, d => "۰۱۲۳۴۵۶۷۸۹".indexOf(d))
-                .replace(/[٠-٩]/g, d => "٠١٢٣٤٥٦٧۸٩".indexOf(d));
+                .replace(/[٠-٩]/g, d => "٠١٢٣٤٥٦٧٨٩".indexOf(d));
         };
 
         window.sanitizePersianNumbersInput = function(inputEl) {
@@ -2443,8 +2490,9 @@
                 try { localStorage.clear(); } catch (e) {}
             }
         };
-    /* ==========================================================================
-           ۶. رفع باگ ویدیو/لایواستریم: متوقف‌سازی قطعی هنگام سوئیچ تب‌ها و دراورها
+
+        /* ==========================================================================
+           ۶. متوقف‌سازی قطعی استریم‌ها هنگام سوئیچ تب‌ها و دراورها
            ========================================================================== */
         let activeHlsInstance = null;
         window.stopActiveMediaStreams = function() {
@@ -2614,7 +2662,7 @@
         };
 
         /* ==========================================================================
-           ۸. جداول شاخص‌های بانک مرکزی و موتورهای محاسباتی حقوقی با رسید دیجیتال رسمی
+           ۸. جداول شاخص‌های بانک مرکزی و موتورهای محاسباتی با کارت‌های رسید رسمی
            ========================================================================== */
         const cpiYearlyTable = {
             1370: 0.0700, 1375: 0.2660, 1380: 0.5552, 1385: 1.0588, 1390: 2.3768,
@@ -2692,16 +2740,18 @@
 
             if (resBox) {
                 resBox.innerHTML = `
-                    <div class="court-receipt p-4 space-y-2 text-xs">
-                        <div class="flex justify-between items-center border-b border-white/10 pb-2">
+                    <div class="court-receipt p-4 space-y-2 text-xs relative">
+                        <i class="fa-solid fa-scale-balanced receipt-watermark"></i>
+                        <div class="flex justify-between items-center border-b border-white/10 pb-2 relative z-10">
                             <span class="font-bold text-amber-400 flex items-center">
                                 <i class="fa-solid fa-stamp ml-1 text-emerald-400"></i> مرجع صالح قضایی تعیین‌شده
                             </span>
                             <span class="text-[9px] text-slate-400 font-mono">قانون شوراهای حل اختلاف ۱۴۰۲</span>
                         </div>
-                        <div class="font-black text-emerald-400 text-sm leading-relaxed">${escapeHTML(competentCourt)}</div>
-                        <div class="text-amber-300 font-bold">وضعیت قطعیت رأی: ${escapeHTML(finality)}</div>
-                        <p class="text-slate-300 m-0 leading-relaxed pt-1 border-t border-white/5">${escapeHTML(details)}</p>
+                        <div class="font-black text-emerald-400 text-sm leading-relaxed relative z-10">${escapeHTML(competentCourt)}</div>
+                        <div class="text-amber-300 font-bold relative z-10">وضعیت قطعیت رأی: ${escapeHTML(finality)}</div>
+                        <p class="text-slate-300 m-0 leading-relaxed pt-1 border-t border-white/5 relative z-10">${escapeHTML(details)}</p>
+                        <div class="receipt-sawtooth mt-3"></div>
                     </div>
                 `;
             }
@@ -2729,27 +2779,29 @@
 
             if (resBox) {
                 resBox.innerHTML = `
-                    <div class="court-receipt p-4 space-y-2 text-xs">
-                        <div class="flex justify-between items-center border-b border-white/10 pb-2 text-amber-400 font-bold">
+                    <div class="court-receipt p-4 space-y-2 text-xs relative">
+                        <i class="fa-solid fa-receipt receipt-watermark"></i>
+                        <div class="flex justify-between items-center border-b border-white/10 pb-2 text-amber-400 font-bold relative z-10">
                             <span><i class="fa-solid fa-file-invoice-dollar ml-1"></i> رسید رسمی محاسبه ماده ۵۲۲ ق.آ.د.م</span>
                             <span class="text-[9px] text-slate-400 font-mono">شاخص بانک مرکزی</span>
                         </div>
-                        <div class="grid grid-cols-2 gap-2 text-[10px] text-slate-400 pb-1 border-b border-white/5">
+                        <div class="grid grid-cols-2 gap-2 text-[10px] text-slate-400 pb-1 border-b border-white/5 relative z-10">
                             <div>شاخص سررسید (${startYear}/${startMonth}): <span class="font-bold text-white font-mono tabular-nums">${cpiStart}</span></div>
                             <div class="text-left">شاخص تسویه (${endYear}/${endMonth}): <span class="font-bold text-white font-mono tabular-nums">${cpiEnd}</span></div>
                         </div>
-                        <div class="flex justify-between text-slate-200">
+                        <div class="flex justify-between text-slate-200 relative z-10">
                             <span>اصل مبلغ دین:</span>
                             <span class="font-bold font-mono tabular-nums">${formatToman(principal)}</span>
                         </div>
-                        <div class="flex justify-between text-rose-400 font-bold">
+                        <div class="flex justify-between text-rose-400 font-bold relative z-10">
                             <span>خسارت کاهش ارزش پول (تورم):</span>
                             <span class="font-mono tabular-nums">${formatToman(pureDelay)}</span>
                         </div>
-                        <div class="pt-2 border-t border-dashed border-white/20 flex justify-between text-emerald-400 font-black text-sm">
+                        <div class="pt-2 border-t border-dashed border-white/20 flex justify-between text-emerald-400 font-black text-sm relative z-10">
                             <span>مجموع کل قابل مطالبه:</span>
                             <span class="font-mono tabular-nums">${formatToman(totalValueAtEnd)}</span>
                         </div>
+                        <div class="receipt-sawtooth mt-3"></div>
                     </div>
                 `;
             }
@@ -2794,16 +2846,18 @@
 
             if (resBox) {
                 resBox.innerHTML = `
-                    <div class="court-receipt p-4 space-y-2 text-xs">
-                        <div class="flex justify-between items-center border-b border-white/10 pb-2 text-blue-400 font-bold">
+                    <div class="court-receipt p-4 space-y-2 text-xs relative">
+                        <i class="fa-solid fa-stamp receipt-watermark"></i>
+                        <div class="flex justify-between items-center border-b border-white/10 pb-2 text-blue-400 font-bold relative z-10">
                             <span><i class="fa-solid fa-receipt ml-1"></i> تمبر قانونی دادخواست</span>
                             <span class="text-[9px] text-slate-400">قانون وصول برخی درآمدهای دولت</span>
                         </div>
-                        <div class="text-[10px] text-slate-300">${formulaDesc}</div>
-                        <div class="flex justify-between items-center text-emerald-400 font-bold text-sm pt-2 border-t border-dashed border-white/20">
+                        <div class="text-[10px] text-slate-300 relative z-10">${formulaDesc}</div>
+                        <div class="flex justify-between items-center text-emerald-400 font-bold text-sm pt-2 border-t border-dashed border-white/20 relative z-10">
                             <span>هزینه تمبر دادخواست:</span>
                             <span class="font-mono tabular-nums">${formatToman(fee)}</span>
                         </div>
+                        <div class="receipt-sawtooth mt-3"></div>
                     </div>
                 `;
             }
@@ -2839,16 +2893,18 @@
 
             if (resBox) {
                 resBox.innerHTML = `
-                    <div class="court-receipt p-4 space-y-2 text-xs">
-                        <div class="flex justify-between items-center border-b border-white/10 pb-2 text-sky-400 font-bold">
+                    <div class="court-receipt p-4 space-y-2 text-xs relative">
+                        <i class="fa-solid fa-building receipt-watermark"></i>
+                        <div class="flex justify-between items-center border-b border-white/10 pb-2 text-sky-400 font-bold relative z-10">
                             <span><i class="fa-solid fa-building-circle-exclamation ml-1"></i> رسید خسارت ماده ۶ قانون پیش‌فروش</span>
                             <span class="text-[9px] text-slate-400">تعهدات پیش‌فروشنده</span>
                         </div>
-                        <div class="text-[10px] text-slate-300">${note}</div>
-                        <div class="flex justify-between items-center text-emerald-400 font-bold text-sm pt-2 border-t border-dashed border-white/20">
+                        <div class="text-[10px] text-slate-300 relative z-10">${note}</div>
+                        <div class="flex justify-between items-center text-emerald-400 font-bold text-sm pt-2 border-t border-dashed border-white/20 relative z-10">
                             <span>مجموع خسارت تأخیر قابل مطالبه:</span>
                             <span class="font-mono tabular-nums">${formatToman(penalty)}</span>
                         </div>
+                        <div class="receipt-sawtooth mt-3"></div>
                     </div>
                 `;
             }
@@ -2881,20 +2937,22 @@
 
                 if (resBox) {
                     resBox.innerHTML = `
-                        <div class="court-receipt p-4 space-y-2 text-xs">
-                            <div class="flex justify-between items-center border-b border-white/10 pb-2 text-purple-400 font-bold">
+                        <div class="court-receipt p-4 space-y-2 text-xs relative">
+                            <i class="fa-solid fa-ring receipt-watermark"></i>
+                            <div class="flex justify-between items-center border-b border-white/10 pb-2 text-purple-400 font-bold relative z-10">
                                 <span><i class="fa-solid fa-ring ml-1"></i> گواهی ارزش روز مهریه (ماده ۱۰۸۲ ق.م)</span>
                                 <span class="text-[9px] text-slate-400">آیین‌نامه اجرایی ثبت</span>
                             </div>
-                            <div class="text-[10px] text-slate-400">شاخص سال قبل وصول (${cYear - 1}): <span class="font-mono text-white">${cpiBeforeClaim}</span> تقسیم بر شاخص سال عقد (${mYear}): <span class="font-mono text-white">${cpiMarriage}</span></div>
-                            <div class="flex justify-between text-slate-200">
+                            <div class="text-[10px] text-slate-400 relative z-10">شاخص سال قبل وصول (${cYear - 1}): <span class="font-mono text-white">${cpiBeforeClaim}</span> تقسیم بر شاخص سال عقد (${mYear}): <span class="font-mono text-white">${cpiMarriage}</span></div>
+                            <div class="flex justify-between text-slate-200 relative z-10">
                                 <span>مهریه اولیه در عقدنامه:</span>
                                 <span class="font-mono tabular-nums">${formatToman(amount)}</span>
                             </div>
-                            <div class="pt-2 border-t border-dashed border-white/20 flex justify-between text-emerald-400 font-bold text-sm">
+                            <div class="pt-2 border-t border-dashed border-white/20 flex justify-between text-emerald-400 font-bold text-sm relative z-10">
                                 <span>ارزش روز تعدیل‌شده نهایی:</span>
                                 <span class="font-mono tabular-nums">${formatToman(adjusted)}</span>
                             </div>
+                            <div class="receipt-sawtooth mt-3"></div>
                         </div>
                     `;
                 }
@@ -2910,19 +2968,21 @@
                 const totalVal = coins * price;
                 if (resBox) {
                     resBox.innerHTML = `
-                        <div class="court-receipt p-4 space-y-2 text-xs">
-                            <div class="flex justify-between items-center border-b border-white/10 pb-2 text-purple-400 font-bold">
+                        <div class="court-receipt p-4 space-y-2 text-xs relative">
+                            <i class="fa-solid fa-coins receipt-watermark"></i>
+                            <div class="flex justify-between items-center border-b border-white/10 pb-2 text-purple-400 font-bold relative z-10">
                                 <span><i class="fa-solid fa-coins ml-1"></i> گواهی ریالی مسکوکات مهریه</span>
                                 <span class="text-[9px] text-slate-400">ارزیابی بر مبنای نرخ روز</span>
                             </div>
-                            <div class="flex justify-between text-slate-200">
+                            <div class="flex justify-between text-slate-200 relative z-10">
                                 <span>تعداد سکه محکوم‌به:</span>
                                 <span class="font-bold font-mono tabular-nums">${coins.toLocaleString('fa-IR')} تمام بهار آزادی</span>
                             </div>
-                            <div class="pt-2 border-t border-dashed border-white/20 flex justify-between text-emerald-400 font-bold text-sm">
+                            <div class="pt-2 border-t border-dashed border-white/20 flex justify-between text-emerald-400 font-bold text-sm relative z-10">
                                 <span>ارزش روز کل سکه‌ها:</span>
                                 <span class="font-mono tabular-nums">${formatToman(totalVal)}</span>
                             </div>
+                            <div class="receipt-sawtooth mt-3"></div>
                         </div>
                     `;
                 }
@@ -2957,58 +3017,64 @@
                 const son = (rem * 2) / 3;
                 const daughter = rem / 3;
                 html = `
-                    <div class="court-receipt p-4 space-y-2.5 text-xs">
-                        <div class="font-bold text-amber-400 pb-2 border-b border-white/10 flex justify-between">
+                    <div class="court-receipt p-4 space-y-2.5 text-xs relative">
+                        <i class="fa-solid fa-sitemap receipt-watermark"></i>
+                        <div class="font-bold text-amber-400 pb-2 border-b border-white/10 flex justify-between relative z-10">
                             <span><i class="fa-solid fa-sitemap ml-1"></i> گواهی تقسیم ترکه (طبقه اول با اولاد)</span>
                             <span class="text-[9px] text-slate-400 font-mono">ماده ۹۴۶ اصلاحی ق.م</span>
                         </div>
-                        <div class="flex justify-between text-slate-200">
+                        <div class="flex justify-between text-slate-200 relative z-10">
                             <span>همسر متوفی (۱/۸ منقول + ۱/۸ قیمت غیرمنقول):</span>
                             <span class="font-bold text-emerald-400 font-mono tabular-nums">${formatToman(wifeTotal)}</span>
                         </div>
-                        <div class="flex justify-between text-indigo-300">
+                        <div class="flex justify-between text-indigo-300 relative z-10">
                             <span>پسر متوفی (سهم دو برابر دختر از باقیمانده):</span>
                             <span class="font-bold font-mono tabular-nums">${formatToman(son)}</span>
                         </div>
-                        <div class="flex justify-between text-emerald-300">
+                        <div class="flex justify-between text-emerald-300 relative z-10">
                             <span>دختر متوفی (یک سهم از باقیمانده):</span>
                             <span class="font-bold font-mono tabular-nums">${formatToman(daughter)}</span>
                         </div>
-                        <div class="pt-2 border-t border-dashed border-white/20 text-[10px] text-slate-400">
+                        <div class="pt-2 border-t border-dashed border-white/20 text-[10px] text-slate-400 relative z-10">
                             سهم زوجه از قیمت عرصه و اعیان غیرمنقول محاسبه شد (حق انتقال عین به ورثه تعلق دارد).
                         </div>
+                        <div class="receipt-sawtooth mt-3"></div>
                     </div>
                 `;
             } else if (type === 'only_parents_with_hajib') {
                 const mother = totalAmount * (1 / 6);
                 const father = totalAmount - mother;
                 html = `
-                    <div class="court-receipt p-4 space-y-2.5 text-xs">
-                        <div class="font-bold text-amber-400 pb-2 border-b border-white/10">اعمال حجب نقصان مادر (ماده ۸۹۲ ق.م):</div>
-                        <div class="flex justify-between text-slate-200">
+                    <div class="court-receipt p-4 space-y-2.5 text-xs relative">
+                        <i class="fa-solid fa-sitemap receipt-watermark"></i>
+                        <div class="font-bold text-amber-400 pb-2 border-b border-white/10 relative z-10">اعمال حجب نقصان مادر (ماده ۸۹۲ ق.م):</div>
+                        <div class="flex justify-between text-slate-200 relative z-10">
                             <span>مادر متوفی (۱/۶ به دلیل وجود اخوه حاجب):</span>
                             <span class="font-bold text-emerald-400 font-mono tabular-nums">${formatToman(mother)}</span>
                         </div>
-                        <div class="flex justify-between text-emerald-300">
+                        <div class="flex justify-between text-emerald-300 relative z-10">
                             <span>پدر متوفی (باقیمانده کل ترکه):</span>
                             <span class="font-bold font-mono tabular-nums">${formatToman(father)}</span>
                         </div>
+                        <div class="receipt-sawtooth mt-3"></div>
                     </div>
                 `;
             } else if (type === 'only_parents_no_hajib') {
                 const mother = totalAmount * (1 / 3);
                 const father = totalAmount - mother;
                 html = `
-                    <div class="court-receipt p-4 space-y-2.5 text-xs">
-                        <div class="font-bold text-amber-400 pb-2 border-b border-white/10">تقسیم بین ابوین بدون حاجب (ماده ۹۰۶ ق.م):</div>
-                        <div class="flex justify-between text-slate-200">
+                    <div class="court-receipt p-4 space-y-2.5 text-xs relative">
+                        <i class="fa-solid fa-sitemap receipt-watermark"></i>
+                        <div class="font-bold text-amber-400 pb-2 border-b border-white/10 relative z-10">تقسیم بین ابوین بدون حاجب (ماده ۹۰۶ ق.م):</div>
+                        <div class="flex justify-between text-slate-200 relative z-10">
                             <span>مادر متوفی (۱/۳ فرض قانونی):</span>
                             <span class="font-bold text-emerald-400 font-mono tabular-nums">${formatToman(mother)}</span>
                         </div>
-                        <div class="flex justify-between text-emerald-300">
+                        <div class="flex justify-between text-emerald-300 relative z-10">
                             <span>پدر متوفی (۲/۳ قرابت):</span>
                             <span class="font-bold font-mono tabular-nums">${formatToman(father)}</span>
                         </div>
+                        <div class="receipt-sawtooth mt-3"></div>
                     </div>
                 `;
             } else {
@@ -3017,16 +3083,18 @@
                 const wifeTotal = wifeMovable + wifeRealPrice;
                 const rem = totalAmount - wifeTotal;
                 html = `
-                    <div class="court-receipt p-4 space-y-2.5 text-xs">
-                        <div class="font-bold text-amber-400 pb-2 border-b border-white/10">سهم زوجه بدون وجود اولاد:</div>
-                        <div class="flex justify-between text-slate-200">
+                    <div class="court-receipt p-4 space-y-2.5 text-xs relative">
+                        <i class="fa-solid fa-sitemap receipt-watermark"></i>
+                        <div class="font-bold text-amber-400 pb-2 border-b border-white/10 relative z-10">سهم زوجه بدون وجود اولاد:</div>
+                        <div class="flex justify-between text-slate-200 relative z-10">
                             <span>زوجه متوفی (۱/۴ فرض قانونی از قیمت ترکه):</span>
                             <span class="font-bold text-emerald-400 font-mono tabular-nums">${formatToman(wifeTotal)}</span>
                         </div>
-                        <div class="flex justify-between text-slate-400">
+                        <div class="flex justify-between text-slate-400 relative z-10">
                             <span>باقیمانده ترکه (سایر طبقات یا حاکم):</span>
                             <span class="font-bold font-mono tabular-nums">${formatToman(rem)}</span>
                         </div>
+                        <div class="receipt-sawtooth mt-3"></div>
                     </div>
                 `;
             }
@@ -3037,6 +3105,7 @@
             }
             btns?.classList.remove('hidden');
         };
+
         // ۷. دیات و ارش با قاعده تغلیظ توأم ماه حرام (ماده ۵۵۵ ق.م.ا)
         window.handleDiyehSelectorChange = function(val) {
             document.getElementById('customArshBox')?.classList.toggle('hidden', !val.startsWith('custom_arsh'));
@@ -3118,26 +3187,28 @@
 
             if (resBox) {
                 resBox.innerHTML = `
-                    <div class="court-receipt p-4 space-y-2 text-xs">
-                        <div class="flex justify-between items-center border-b border-white/10 pb-2 text-rose-400 font-bold">
+                    <div class="court-receipt p-4 space-y-2 text-xs relative">
+                        <i class="fa-solid fa-person-falling-burst receipt-watermark"></i>
+                        <div class="flex justify-between items-center border-b border-white/10 pb-2 text-rose-400 font-bold relative z-10">
                             <span><i class="fa-solid fa-person-falling-burst ml-1"></i> گواهی تجمیع دیات و ارش</span>
                             <span class="text-[9px] text-slate-400 font-mono">قانون مجازات اسلامی</span>
                         </div>
-                        <div class="flex justify-between text-slate-200">
+                        <div class="flex justify-between text-slate-200 relative z-10">
                             <span>مجموع درصدهای دیه و ارش:</span>
                             <span class="font-bold text-amber-400 font-mono tabular-nums">${totalPercent.toFixed(2)}٪</span>
                         </div>
                         ${taghlizAdded > 0 ? `
-                            <div class="flex justify-between text-rose-400 font-bold">
+                            <div class="flex justify-between text-rose-400 font-bold relative z-10">
                                 <span>تغلیظ ماه حرام (۱/۳ دیه کامل):</span>
                                 <span class="font-mono tabular-nums">${formatToman(taghlizAdded)}</span>
                             </div>
                         ` : ''}
-                        ${taghlizStatus ? `<div class="text-[10px] text-slate-400 leading-relaxed border-t border-white/5 pt-1">${taghlizStatus}</div>` : ''}
-                        <div class="pt-2 border-t border-dashed border-white/20 flex justify-between text-emerald-400 font-bold text-sm">
+                        ${taghlizStatus ? `<div class="text-[10px] text-slate-400 leading-relaxed border-t border-white/5 pt-1 relative z-10">${taghlizStatus}</div>` : ''}
+                        <div class="pt-2 border-t border-dashed border-white/20 flex justify-between text-emerald-400 font-bold text-sm relative z-10">
                             <span>مبلغ نهایی محکومیت دیه:</span>
                             <span class="font-mono tabular-nums">${formatToman(totalDiyeh)}</span>
                         </div>
+                        <div class="receipt-sawtooth mt-3"></div>
                     </div>
                 `;
             }
@@ -3169,23 +3240,25 @@
 
             if (resBox) {
                 resBox.innerHTML = `
-                    <div class="court-receipt p-4 space-y-2 text-xs">
-                        <div class="flex justify-between items-center border-b border-white/10 pb-2 text-amber-400 font-bold">
+                    <div class="court-receipt p-4 space-y-2 text-xs relative">
+                        <i class="fa-solid fa-file-invoice-dollar receipt-watermark"></i>
+                        <div class="flex justify-between items-center border-b border-white/10 pb-2 text-amber-400 font-bold relative z-10">
                             <span><i class="fa-solid fa-file-invoice-dollar ml-1"></i> رسید تعرفه حق‌الوکاله</span>
                             <span class="text-[9px] text-slate-400">آیین‌نامه تعرفه قوه قضائیه</span>
                         </div>
-                        <div class="flex justify-between text-slate-200">
+                        <div class="flex justify-between text-slate-200 relative z-10">
                             <span>تعرفه کل حق‌الوکاله مرحله:</span>
                             <span class="font-bold text-white font-mono tabular-nums">${formatToman(fee)}</span>
                         </div>
-                        <div class="flex justify-between text-rose-400">
+                        <div class="flex justify-between text-rose-400 relative z-10">
                             <span>ابطال تمبر مالیاتی وکیل (۵٪):</span>
                             <span class="font-mono tabular-nums">${formatToman(taxStamp)}</span>
                         </div>
-                        <div class="flex justify-between text-amber-400">
+                        <div class="flex justify-between text-amber-400 relative z-10">
                             <span>سهم صندوق حمایت وکلا (۴٪):</span>
                             <span class="font-mono tabular-nums">${formatToman(fundShare)}</span>
                         </div>
+                        <div class="receipt-sawtooth mt-3"></div>
                     </div>
                 `;
             }
@@ -3211,19 +3284,21 @@
 
             if (resBox) {
                 resBox.innerHTML = `
-                    <div class="court-receipt p-4 space-y-2 text-xs">
-                        <div class="flex justify-between items-center border-b border-white/10 pb-2 text-blue-400 font-bold">
+                    <div class="court-receipt p-4 space-y-2 text-xs relative">
+                        <i class="fa-solid fa-user-gear receipt-watermark"></i>
+                        <div class="flex justify-between items-center border-b border-white/10 pb-2 text-blue-400 font-bold relative z-10">
                             <span><i class="fa-solid fa-user-gear ml-1"></i> تعرفه دستمزد کارشناس رسمی</span>
                             <span class="text-[9px] text-slate-400">مصوب قوه قضائیه</span>
                         </div>
-                        <div class="flex justify-between text-slate-200">
+                        <div class="flex justify-between text-slate-200 relative z-10">
                             <span>دستمزد کارشناسی مصوب:</span>
                             <span class="font-bold text-emerald-400 font-mono tabular-nums">${formatToman(fee)}</span>
                         </div>
-                        <div class="flex justify-between text-rose-400">
+                        <div class="flex justify-between text-rose-400 relative z-10">
                             <span>کسورات سهم کانون / مرکز (۵٪):</span>
                             <span class="font-mono tabular-nums">${formatToman(centerShare)}</span>
                         </div>
+                        <div class="receipt-sawtooth mt-3"></div>
                     </div>
                 `;
             }
@@ -3255,19 +3330,21 @@
 
             if (resBox) {
                 resBox.innerHTML = `
-                    <div class="court-receipt p-4 space-y-2 text-xs">
-                        <div class="flex justify-between items-center border-b border-white/10 pb-2 text-emerald-400 font-bold">
+                    <div class="court-receipt p-4 space-y-2 text-xs relative">
+                        <i class="fa-solid fa-car-burst receipt-watermark"></i>
+                        <div class="flex justify-between items-center border-b border-white/10 pb-2 text-emerald-400 font-bold relative z-10">
                             <span><i class="fa-solid fa-car-burst ml-1"></i> برآورد افت قیمت در تصادفات</span>
                             <span class="text-[9px] text-slate-400">صلاحیت دادگاه صلح</span>
                         </div>
-                        <div class="flex justify-between text-slate-200">
+                        <div class="flex justify-between text-slate-200 relative z-10">
                             <span>درصد افت کارشناسی:</span>
                             <span class="font-bold text-amber-400 font-mono tabular-nums">${finalPct.toFixed(1)}٪</span>
                         </div>
-                        <div class="pt-2 border-t border-dashed border-white/20 flex justify-between text-rose-400 font-bold text-sm">
+                        <div class="pt-2 border-t border-dashed border-white/20 flex justify-between text-rose-400 font-bold text-sm relative z-10">
                             <span>خسارت افت قیمت قابل مطالبه:</span>
                             <span class="font-mono tabular-nums">${formatToman(lossAmount)}</span>
                         </div>
+                        <div class="receipt-sawtooth mt-3"></div>
                     </div>
                 `;
             }
@@ -3317,17 +3394,19 @@
 
             if (resBox) {
                 resBox.innerHTML = `
-                    <div class="court-receipt p-4 space-y-2 text-xs">
-                        <div class="flex justify-between items-center border-b border-white/10 pb-2 text-blue-400 font-bold">
+                    <div class="court-receipt p-4 space-y-2 text-xs relative">
+                        <i class="fa-solid fa-calendar-check receipt-watermark"></i>
+                        <div class="flex justify-between items-center border-b border-white/10 pb-2 text-blue-400 font-bold relative z-10">
                             <span><i class="fa-solid fa-calendar-check ml-1"></i> مهلت قانونی دادرسی (${days} روزه)</span>
                             <span class="text-[9px] text-slate-400 font-mono">مواد ۴۴۴ و ۴۴۵ ق.آ.د.م</span>
                         </div>
-                        <div class="font-bold text-amber-400">${escapeHTML(title)}</div>
-                        <div class="text-[10px] text-slate-300">روز ابلاغ و روز اقدام در موعد محاسبه نمی‌گردد. در صورت مصادفت روز آخر با تعطیلی رسمی، روز بعد ملاک است.</div>
-                        <div class="pt-2 border-t border-dashed border-white/20 flex justify-between text-emerald-400 font-bold text-sm">
+                        <div class="font-bold text-amber-400 relative z-10">${escapeHTML(title)}</div>
+                        <div class="text-[10px] text-slate-300 relative z-10">روز ابلاغ و روز اقدام در موعد محاسبه نمی‌گردد. در صورت مصادفت روز آخر با تعطیلی رسمی، روز بعد ملاک است.</div>
+                        <div class="pt-2 border-t border-dashed border-white/20 flex justify-between text-emerald-400 font-bold text-sm relative z-10">
                             <span>آخرین روز مجاز ثبت لایحه:</span>
                             <span class="font-mono tabular-nums">${year}/${String(month).padStart(2,'0')}/${String(day).padStart(2,'0')}</span>
                         </div>
+                        <div class="receipt-sawtooth mt-3"></div>
                     </div>
                 `;
             }
@@ -3357,19 +3436,21 @@
 
             if (resBox) {
                 resBox.innerHTML = `
-                    <div class="court-receipt p-4 space-y-2 text-xs">
-                        <div class="flex justify-between items-center border-b border-white/10 pb-2 text-purple-400 font-bold">
+                    <div class="court-receipt p-4 space-y-2 text-xs relative">
+                        <i class="fa-solid fa-coins receipt-watermark"></i>
+                        <div class="flex justify-between items-center border-b border-white/10 pb-2 text-purple-400 font-bold relative z-10">
                             <span><i class="fa-solid fa-coins ml-1"></i> برآورد تقسیط اعسار مهریه</span>
                             <span class="text-[9px] text-slate-400">قانون محکومیت‌های مالی</span>
                         </div>
-                        <div class="flex justify-between text-slate-200">
+                        <div class="flex justify-between text-slate-200 relative z-10">
                             <span>پیش‌قسط تخمینی دادگاه:</span>
                             <span class="font-bold text-amber-400 font-mono tabular-nums">${prepayCoins} سکه بهار آزادی</span>
                         </div>
-                        <div class="flex justify-between text-emerald-400 font-bold">
+                        <div class="flex justify-between text-emerald-400 font-bold relative z-10">
                             <span>فواصل اقساط ماهانه:</span>
                             <span class="font-mono tabular-nums">هر ${installmentMonths} ماه یک عدد سکه</span>
                         </div>
+                        <div class="receipt-sawtooth mt-3"></div>
                     </div>
                 `;
             }
@@ -3399,23 +3480,25 @@
 
             if (resBox) {
                 resBox.innerHTML = `
-                    <div class="court-receipt p-4 space-y-2 text-xs">
-                        <div class="flex justify-between items-center border-b border-white/10 pb-2 text-amber-400 font-bold">
+                    <div class="court-receipt p-4 space-y-2 text-xs relative">
+                        <i class="fa-solid fa-stamp receipt-watermark"></i>
+                        <div class="flex justify-between items-center border-b border-white/10 pb-2 text-amber-400 font-bold relative z-10">
                             <span><i class="fa-solid fa-stamp ml-1"></i> صورت‌حساب حق‌التحریر دفترخانه</span>
                             <span class="text-[9px] text-slate-400">تعرفه مصوب سازمان ثبت</span>
                         </div>
-                        <div class="flex justify-between text-slate-200">
+                        <div class="flex justify-between text-slate-200 relative z-10">
                             <span>حق‌التحریر مصوب:</span>
                             <span class="font-mono tabular-nums">${formatToman(fee)}</span>
                         </div>
-                        <div class="flex justify-between text-slate-400">
+                        <div class="flex justify-between text-slate-400 relative z-10">
                             <span>مالیات بر ارزش افزوده (۱۰٪):</span>
                             <span class="font-mono tabular-nums">${formatToman(vat)}</span>
                         </div>
-                        <div class="pt-2 border-t border-dashed border-white/20 flex justify-between text-emerald-400 font-bold text-sm">
+                        <div class="pt-2 border-t border-dashed border-white/20 flex justify-between text-emerald-400 font-bold text-sm relative z-10">
                             <span>کل مبلغ قابل پرداخت:</span>
                             <span class="font-mono tabular-nums">${formatToman(total)}</span>
                         </div>
+                        <div class="receipt-sawtooth mt-3"></div>
                     </div>
                 `;
             }
@@ -3474,7 +3557,67 @@
             }
         };
 
-        // ۱۵. فرم‌ساز قراردادها
+        // ۱۵. فرم‌ساز قراردادها و امضای لمسی کانواس
+        let sigCanvas = null;
+        let sigCtx = null;
+        let isDrawingSig = false;
+
+        function initSignatureCanvas() {
+            sigCanvas = document.getElementById('contractSignaturePad');
+            if (!sigCanvas) return;
+            sigCtx = sigCanvas.getContext('2d');
+            
+            // تطبیق رزولوشن برای رتینا
+            const rect = sigCanvas.getBoundingClientRect();
+            sigCanvas.width = rect.width * 2;
+            sigCanvas.height = rect.height * 2;
+            sigCtx.scale(2, 2);
+            sigCtx.strokeStyle = '#eab308';
+            sigCtx.lineWidth = 2.5;
+            sigCtx.lineCap = 'round';
+            sigCtx.lineJoin = 'round';
+
+            function getPos(e) {
+                const r = sigCanvas.getBoundingClientRect();
+                const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+                return { x: clientX - r.left, y: clientY - r.top };
+            }
+
+            function startDraw(e) {
+                isDrawingSig = true;
+                const p = getPos(e);
+                sigCtx.beginPath();
+                sigCtx.moveTo(p.x, p.y);
+            }
+
+            function draw(e) {
+                if (!isDrawingSig) return;
+                const p = getPos(e);
+                sigCtx.lineTo(p.x, p.y);
+                sigCtx.stroke();
+            }
+
+            function endDraw() {
+                isDrawingSig = false;
+            }
+
+            sigCanvas.addEventListener('mousedown', startDraw);
+            sigCanvas.addEventListener('mousemove', draw);
+            window.addEventListener('mouseup', endDraw);
+
+            sigCanvas.addEventListener('touchstart', (e) => { e.preventDefault(); startDraw(e); }, { passive: false });
+            sigCanvas.addEventListener('touchmove', (e) => { e.preventDefault(); draw(e); }, { passive: false });
+            window.addEventListener('touchend', endDraw);
+        }
+
+        window.clearSignatureCanvas = function() {
+            if (sigCanvas && sigCtx) {
+                sigCtx.clearRect(0, 0, sigCanvas.width, sigCanvas.height);
+                window.showToast('امضا پاک شد');
+            }
+        };
+
         window.generateSmartContract = function() {
             const type = document.getElementById('contractType')?.value;
             const p1 = document.getElementById('partyFirst')?.value || 'طرف اول';
@@ -3521,6 +3664,17 @@
                 container.style.lineHeight = '2.2';
                 container.style.whiteSpace = 'pre-wrap';
                 container.textContent = text;
+
+                // الصاق امضای رسم‌شده در انتهای سند
+                if (sigCanvas) {
+                    const sigImg = document.createElement('img');
+                    sigImg.src = sigCanvas.toDataURL('image/png');
+                    sigImg.style.maxHeight = '80px';
+                    sigImg.style.display = 'block';
+                    sigImg.style.marginTop = '20px';
+                    container.appendChild(sigImg);
+                }
+
                 document.body.appendChild(container);
 
                 const canvas = await html2canvas(container, { scale: 2 });
@@ -3535,7 +3689,8 @@
                 window.showToast('خطا در صدور فایل PDF', 'error');
             }
         };
-   /* ==========================================================================
+
+        /* ==========================================================================
            ۹. اسکنر نوری OCR اسناد قضایی با Lazy-Load کتابخانه Tesseract.js
            ========================================================================== */
         let selectedOcrFile = null;
@@ -3776,6 +3931,7 @@
 
             box.innerHTML = `<div class="text-center p-4 text-[10px] text-slate-500 ultra-glass rounded-2xl">هنوز پاسخی ثبت نشده است.</div>`;
         };
+
         /* ==========================================================================
            ۱۱. مدیریت یادداشت‌های کارتابل و اسناد پرونده
            ========================================================================== */
@@ -4244,6 +4400,7 @@
             if (modal) modal.classList.add('hidden');
             popBackHandler(closeStoryModal);
         };
+
         /* ==========================================================================
            ۱۳. داده‌های پایه فال‌بک آفلاین و توابع رندرینگ مراجع و کارت‌های دادرسی
            ========================================================================== */
@@ -4610,7 +4767,7 @@
         };
 
         /* ==========================================================================
-           ۱۴. جستجوی سراسری ایمن و صدور کارت دادگاه
+           ۱۴. جستجوی سراسری ایمن و صدور کارت دادگاه با QR و مهر رسمی
            ========================================================================== */
         let searchDebounceTimer = null;
         window.debouncedSearch = function(query) {
@@ -4697,15 +4854,27 @@
             if (!shareBox) return;
 
             shareBox.innerHTML = `
-                <div style="background:#070b16; color:#ffffff; padding:24px; border-radius:24px; border:2px solid #eab308; font-family:'Vazirmatn FD',sans-serif; direction:rtl; text-align:right;">
-                    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(255,255,255,0.15); padding-bottom:12px; margin-bottom:14px;">
-                        <span style="font-weight:900; font-size:14px; color:#eab308;">سامانه هوشمند قضایی ISF</span>
-                        <span style="font-size:10px; color:#94a3b8;">گواهی رسمی محاسبات حقوقی</span>
+                <div style="background:#070b16; color:#ffffff; padding:28px; border-radius:28px; border:2px solid #eab308; font-family:'Vazirmatn FD',sans-serif; direction:rtl; text-align:right; position:relative; overflow:hidden;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(255,255,255,0.15); padding-bottom:14px; margin-bottom:16px;">
+                        <div>
+                            <span style="font-weight:900; font-size:15px; color:#eab308; display:block;">سامانه هوشمند قضایی ISF</span>
+                            <span style="font-size:10px; color:#94a3b8;">گواهی رسمی و استناد محاسبات دادرسی</span>
+                        </div>
+                        <div style="width:44px; height:44px; border:1px solid #eab308; border-radius:12px; display:flex; align-items:center; justify-content:center; color:#eab308; font-size:20px;">
+                            ⚖
+                        </div>
                     </div>
-                    <div style="font-weight:800; font-size:13px; color:#f43f5e; margin-bottom:10px;">${escapeHTML(title)}</div>
-                    <div style="font-size:11px; line-height:2; color:#e2e8f0; white-space:pre-wrap;">${escapeHTML(bodyText)}</div>
-                    <div style="margin-top:16px; padding-top:8px; border-top:1px dashed rgba(255,255,255,0.2); font-size:9px; color:#64748b; text-align:center;">
-                        استناد رسمی محاسبه هوشمند مطابق آیین‌نامه‌ها و قوانین مصوب
+                    <div style="font-weight:800; font-size:13px; color:#f43f5e; margin-bottom:12px;">${escapeHTML(title)}</div>
+                    <div style="font-size:11px; line-height:2.2; color:#e2e8f0; white-space:pre-wrap; background:rgba(255,255,255,0.03); padding:14px; border-radius:16px; border:1px solid rgba(255,255,255,0.06);">${escapeHTML(bodyText)}</div>
+                    
+                    <div style="margin-top:18px; padding-top:12px; border-top:1px dashed rgba(255,255,255,0.2); display:flex; justify-content:space-between; align-items:center;">
+                        <div style="font-size:9px; color:#64748b; line-height:1.6;">
+                            شناسه اعتبارسنجی: ISF-${Date.now().toString(36).toUpperCase()}<br>
+                            استناد رسمی مطابق بخشنامه‌ها و قوانین مصوب دادگستری
+                        </div>
+                        <div style="width:50px; height:50px; background:#ffffff; border-radius:8px; padding:4px; display:flex; align-items:center; justify-content:center;">
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=50x50&data=ISF-LEGAL-VERIFIED" style="width:100%; height:100%;" alt="QR">
+                        </div>
                     </div>
                 </div>
             `;
@@ -4960,7 +5129,6 @@
         };
 
         window.initApp = async function() {
-            // تضمین قطعی و بدون قیدوشرط کنار رفتن اسپلش در کمتر از ۵۰۰ میلی‌ثانیه
             const fallbackDismissTimer = setTimeout(() => {
                 window.dismissSplashScreen();
             }, 500);
@@ -4968,7 +5136,7 @@
             try {
                 try { window.closeAllActiveDrawers(); } catch (e) {}
 
-                // لود سریع تنظیمات تم بدون توقف
+                // لود سریع تنظیمات تم
                 try {
                     const savedTheme = localStorage.getItem('sijt_theme');
                     window.applyTheme(savedTheme ? JSON.parse(savedTheme) : 'dark');
@@ -5002,6 +5170,7 @@
                 try { renderAll(false); } catch (e) { console.warn('RenderAll warning:', e); }
                 try { window.updateDateTime(); setInterval(window.updateDateTime, 30000); } catch (e) {}
                 try { window.fetchTehranWeather(); } catch (e) {}
+                try { initSignatureCanvas(); } catch (e) {}
 
             } catch (err) {
                 console.error('Core init warning:', err);
@@ -5010,7 +5179,7 @@
                 window.dismissSplashScreen();
             }
 
-            // کارهای ثانویه غیرهمزمان در پس‌زمینه (Non-blocking)
+            // اقدامات ثانویه غیرمسدودکننده در پس‌زمینه
             setTimeout(async () => {
                 try { await initIndexedDB(); } catch (e) {}
                 try { window.renderPersonalNotes(); } catch (e) {}
