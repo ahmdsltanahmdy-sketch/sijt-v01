@@ -623,6 +623,30 @@
                 right: 36px;
             }
         }
+        @media (min-width: 1024px) {
+            #backToTopBtn {
+                bottom: 32px;
+                right: 36px;
+            }
+        }
+
+        /* 👇 این بخش را دقیقاً اینجا اضافه کنید 👇 */
+        /* رفع قطعی اولویت لایه‌بندی هدر و منوی تنظیمات */
+        header#appHeader {
+            position: sticky;
+            top: 0;
+            z-index: 100 !important;
+        }
+
+        #settingsDropdown {
+            z-index: 110 !important;
+            max-height: calc(100vh - 85px);
+            overflow-y: auto;
+        }
+
+        #liveSuggestionsBox {
+            z-index: 105 !important;
+        }
     </style>
 </head>
 <body class="bg-[#f8fafc] dark:bg-[#050811] text-slate-800 dark:text-slate-100 min-h-screen">
@@ -683,151 +707,22 @@
     <div id="toastContainer" class="fixed top-5 left-4 right-4 z-[150] pointer-events-none flex flex-col space-y-3 max-w-md mx-auto"></div>
 
     <!-- ۲. هدر هوشمند جمع‌شونده با رعایت حداقل مساحت لمس ۴۴ پیکسل -->
-    <header id="appHeader" class="w-full sticky top-0 z-80 transition-all duration-300 backdrop-blur-2xl bg-slate-50/95 dark:bg-[#050811]/95 border-b border-black/10 dark:border-white/10">
-        <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-            <!-- هویت بصری، لوگو و کلید پرش سریع -->
-            <div class="flex items-center space-x-3 space-x-reverse cursor-pointer btn-spring touch-target" onclick="switchHub('hub-knowledge'); triggerHaptic('light');">
-                <div class="relative w-11 h-11 rounded-16 bg-gradient-to-tr from-rose-700 to-amber-500 flex items-center justify-center text-white shadow-md shadow-rose-900/40 prismatic-border">
-                    <i class="fa-solid fa-scale-balanced text-base"></i>
-                </div>
-                <div class="flex flex-col text-right">
-                    <span class="text-sm font-black text-slate-900 dark:text-white leading-tight flex items-center">
-                        سامانه قضایی ISF
-                        <span class="mr-1.5 text-[10px] px-1.5 py-0.5 rounded-8 bg-amber-500/20 text-amber-400 font-mono border border-amber-500/30">PRO</span>
-                    </span>
-                    <span class="text-[11px] text-amber-600 dark:text-amber-400 font-bold mt-0.5">دستیار هوشمند دادرسی</span>
-                </div>
-            </div>
+    /* رفع قطعی اولویت لایه‌بندی هدر و منوی تنظیمات */
+        header#appHeader {
+            position: sticky;
+            top: 0;
+            z-index: 100 !important;
+        }
 
-            <!-- بج راداری، تازه‌سازی، تنظیمات و کلید خروج با تارگت‌های لمسی ۴۴ پیکسلی -->
-            <div class="flex items-center space-x-2 space-x-reverse">
-                <!-- وضعیت اتصال با رادار ضربان‌دار -->
-                <div id="connectionStatusBadge" class="relative hidden sm:flex items-center space-x-2 space-x-reverse px-3 py-2 rounded-16 bg-black/5 dark:bg-white/10 text-xs font-bold border border-white/10 min-h-[44px]">
-                    <div class="relative w-2.5 h-2.5 flex items-center justify-center">
-                        <span class="radar-pulse-ring"></span>
-                        <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-                    </div>
-                    <span id="networkStatusText" class="text-slate-600 dark:text-slate-300">برخط</span>
-                </div>
+        #settingsDropdown {
+            z-index: 110 !important;
+            max-height: calc(100vh - 85px);
+            overflow-y: auto;
+        }
 
-                <button id="refreshBtn" onclick="manualRefresh(); triggerHaptic('medium');" title="به‌روزرسانی ابری" aria-label="تازه‌سازی" class="w-11 h-11 rounded-16 bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/15 flex items-center justify-center text-slate-700 dark:text-slate-200 transition cursor-pointer border-none btn-spring touch-target">
-                    <i id="refreshIcon" class="fa-solid fa-arrows-rotate text-sm text-amber-500"></i>
-                </button>
-
-                <button id="settingsBtn" onclick="toggleSettingsMenu(event); triggerHaptic('light');" title="تنظیمات سامانه" aria-label="تنظیمات" class="w-11 h-11 rounded-16 bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/15 flex items-center justify-center text-slate-700 dark:text-slate-200 transition cursor-pointer border-none btn-spring touch-target">
-                    <i class="fa-solid fa-sliders text-sm text-amber-500"></i>
-                </button>
-
-                <button onclick="closeAppTelegram(); triggerHaptic('light');" title="بستن سامانه" aria-label="خروج" class="w-11 h-11 rounded-16 bg-rose-600/15 hover:bg-rose-600/25 flex items-center justify-center text-rose-500 transition cursor-pointer border-none btn-spring touch-target">
-                    <i class="fa-solid fa-xmark text-sm font-black"></i>
-                </button>
-            </div>
-        </div>
-
-        <!-- منوی کشویی شیشه‌ای تنظیمات شخصی‌سازی مطابق WCAG AAA -->
-        <div id="settingsDropdown" class="hidden absolute left-4 top-16 z-50 w-80 settings-glass p-4 space-y-4 border border-white/15 shadow-2xl">
-            <div class="flex justify-between items-center pb-2.5 border-b border-black/10 dark:border-white/10">
-                <span class="font-bold text-sm text-amber-500 flex items-center">
-                    <i class="fa-solid fa-sliders ml-2"></i> شخصی‌سازی و ارگونومی
-                </span>
-                <span class="text-[10px] text-slate-400 font-mono bg-white/5 px-2 py-0.5 rounded-8">v3.6 Flagship</span>
-            </div>
-
-            <!-- شب، روز، OLED و بهینه‌سازی باتری با دکمه‌های ۴۴ پیکسلی -->
-            <div class="grid grid-cols-2 gap-2.5">
-                <button onclick="toggleTheme(); triggerHaptic('light');" class="min-h-[44px] p-2.5 rounded-16 bg-black/5 dark:bg-white/10 hover:bg-black/10 flex items-center justify-center font-bold text-xs text-slate-800 dark:text-slate-100 transition cursor-pointer border-none btn-spring touch-target">
-                    <i class="fa-solid fa-circle-half-stroke text-amber-500 ml-2"></i>
-                    <span>حالت شب/روز</span>
-                </button>
-                <button onclick="toggleOledMode(); triggerHaptic('light');" class="min-h-[44px] p-2.5 rounded-16 bg-black/5 dark:bg-white/10 hover:bg-black/10 flex items-center justify-center font-bold text-xs text-slate-800 dark:text-slate-100 transition cursor-pointer border-none btn-spring touch-target">
-                    <i class="fa-solid fa-moon text-indigo-400 ml-2"></i>
-                    <span>مشکی OLED</span>
-                </button>
-            </div>
-
-            <div class="grid grid-cols-2 gap-2.5">
-                <button onclick="toggleBatterySaver();" class="min-h-[44px] p-2.5 rounded-16 bg-black/5 dark:bg-white/10 hover:bg-black/10 flex items-center justify-center font-bold text-xs text-slate-800 dark:text-slate-100 transition cursor-pointer border-none btn-spring touch-target">
-                    <i class="fa-solid fa-bolt text-emerald-500 ml-2"></i>
-                    <span>کاهش مصرف</span>
-                </button>
-                <button onclick="toggleHighContrast();" class="min-h-[44px] p-2.5 rounded-16 bg-black/5 dark:bg-white/10 hover:bg-black/10 flex items-center justify-center font-bold text-xs text-slate-800 dark:text-slate-100 transition cursor-pointer border-none btn-spring touch-target">
-                    <i class="fa-solid fa-eye text-amber-400 ml-2"></i>
-                    <span>کنتراست بالا</span>
-                </button>
-            </div>
-
-            <!-- انتخاب قلم رسمی سامانه -->
-            <div class="space-y-1.5">
-                <label for="fontSelect" class="text-xs font-bold text-slate-600 dark:text-slate-300 block text-right">قلم رسمی سامانه:</label>
-                <select id="fontSelect" onchange="changeFontFamily(this.value);" class="w-full min-h-[44px] rounded-16 px-3 py-2 text-xs bg-slate-100 dark:bg-slate-900 text-slate-800 dark:text-slate-100 border border-black/10 dark:border-white/20 focus:outline-none focus:border-amber-500 transition cursor-pointer">
-                    <option value="'Vazirmatn FD', 'Vazirmatn', -apple-system, BlinkMacSystemFont, Tahoma, sans-serif">وزیرمتن فارسی (ارقام صددرصد فارسی)</option>
-                    <option value="'Shabnam', -apple-system, BlinkMacSystemFont, Tahoma, sans-serif">شبنم (خوانایی اسناد رسمی دادگستری)</option>
-                    <option value="Tahoma, Arial, sans-serif">تاهما (وب استاندارد)</option>
-                </select>
-            </div>
-
-            <!-- اندازه متن و ارتفاع خطوط -->
-            <div class="grid grid-cols-2 gap-2.5">
-                <div class="space-y-1.5">
-                    <label for="fontSizeSelect" class="text-xs font-bold text-slate-600 dark:text-slate-300 block text-right">اندازه قلم:</label>
-                    <select id="fontSizeSelect" onchange="changeAppFontSize(this.value);" class="w-full min-h-[44px] rounded-16 px-2.5 py-2 text-xs bg-slate-100 dark:bg-slate-900 text-slate-800 dark:text-slate-100 border border-black/10 dark:border-white/20 focus:outline-none focus:border-amber-500 transition cursor-pointer">
-                        <option value="13px">ریز (۱۳)</option>
-                        <option value="14.5px" selected>استاندارد (۱۴.۵)</option>
-                        <option value="16px">بزرگ (۱۶)</option>
-                        <option value="18px">خوانا ویژه (۱۸)</option>
-                    </select>
-                </div>
-                <div class="space-y-1.5">
-                    <label for="lineHeightSelect" class="text-xs font-bold text-slate-600 dark:text-slate-300 block text-right">فاصله خطوط:</label>
-                    <select id="lineHeightSelect" onchange="changeLineHeight(this.value);" class="w-full min-h-[44px] rounded-16 px-2.5 py-2 text-xs bg-slate-100 dark:bg-slate-900 text-slate-800 dark:text-slate-100 border border-black/10 dark:border-white/20 focus:outline-none focus:border-amber-500 transition cursor-pointer">
-                        <option value="1.65">فشرده</option>
-                        <option value="1.85" selected>متعادل و روان</option>
-                        <option value="2.15">باز و اسنادی</option>
-                    </select>
-                </div>
-            </div>
-
-            <!-- خروجی، بازگردانی و پاکسازی کش -->
-            <div class="pt-2.5 border-t border-black/10 dark:border-white/10 space-y-2.5">
-                <div class="flex space-x-2 space-x-reverse">
-                    <button onclick="exportAppBackup(); triggerHaptic('light');" class="flex-1 min-h-[44px] p-2.5 rounded-16 bg-black/5 dark:bg-white/10 hover:bg-black/10 text-slate-800 dark:text-slate-100 text-xs font-bold transition cursor-pointer border-none flex items-center justify-center btn-spring touch-target">
-                        <i class="fa-solid fa-download ml-1.5 text-amber-500"></i> خروجی بکاپ
-                    </button>
-                    <button onclick="document.getElementById('backupFileInput').click(); triggerHaptic('light');" class="flex-1 min-h-[44px] p-2.5 rounded-16 bg-black/5 dark:bg-white/10 hover:bg-black/10 text-slate-800 dark:text-slate-100 text-xs font-bold transition cursor-pointer border-none flex items-center justify-center btn-spring touch-target">
-                        <i class="fa-solid fa-upload ml-1.5 text-emerald-400"></i> بازگردانی
-                    </button>
-                    <input type="file" id="backupFileInput" accept=".json" class="hidden" onchange="importAppBackup(event);">
-                </div>
-
-                <button onclick="clearIndexedDBCache();" class="w-full min-h-[44px] p-2.5 rounded-16 bg-rose-600/15 hover:bg-rose-600/25 text-rose-600 dark:text-rose-400 text-xs font-bold transition cursor-pointer border-none flex items-center justify-center btn-spring touch-target">
-                    <i class="fa-solid fa-trash-can ml-2"></i> پاکسازی کامل کش و ریست سامانه
-                </button>
-            </div>
-        </div>
-
-        <!-- نوار جستجوی فراگیر جمع‌شونده -->
-        <div id="collapsingSearchRow" class="max-w-7xl mx-auto px-4 pb-3 pt-1 transition-all duration-300">
-            <div class="relative w-full">
-                <input type="text" id="searchInput" oninput="debouncedSearch(this.value);" placeholder="جستجوی جامع در مواد قانونی، اصطلاحات، محاسبات، کارتابل و سوالات..." class="w-full min-h-[48px] bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-slate-100 placeholder-slate-400 rounded-24 px-4 py-3 pr-12 pl-24 text-sm border border-black/10 dark:border-white/15 focus:outline-none focus:border-amber-500 transition shadow-inner">
-                <i class="fa-solid fa-magnifying-glass absolute right-4 top-4 text-slate-400 text-sm pointer-events-none"></i>
-
-                <div class="absolute left-3 top-1.5 flex items-center space-x-1 space-x-reverse">
-                    <button id="clearSearchBtn" onclick="clearSearchInput();" class="hidden text-slate-400 hover:text-slate-200 p-2 cursor-pointer transition border-none bg-transparent btn-spring touch-target" title="پاک کردن جستجو">
-                        <i class="fa-solid fa-xmark text-sm"></i>
-                    </button>
-                    <button onclick="startVoiceDictation('searchInput'); triggerHaptic('light');" aria-label="جستجوی صوتی" title="تایپ صوتی" class="text-amber-500 hover:text-amber-400 p-2 cursor-pointer transition border-none bg-transparent btn-spring touch-target">
-                        <i class="fa-solid fa-microphone text-sm"></i>
-                    </button>
-                    <button onclick="openAdvancedSearchModal(); triggerHaptic('light');" aria-label="جستجوی آنلاین مراجع" title="پایگاه ملی قوانین" class="text-slate-400 hover:text-rose-500 p-2 cursor-pointer transition border-none bg-transparent btn-spring touch-target">
-                        <i class="fa-solid fa-globe text-sm"></i>
-                    </button>
-                </div>
-
-                <!-- پنل زنده نمایش نتایج فراگیر سرچ -->
-                <div id="liveSuggestionsBox" class="hidden absolute top-14 left-0 right-0 z-40 settings-glass p-3 space-y-1.5 max-h-80 overflow-y-auto selectable-text border border-white/15 shadow-2xl"></div>
-            </div>
-        </div>
-    </header>
+        #liveSuggestionsBox {
+            z-index: 105 !important;
+        }
 
     <!-- کانتینر اصلی اپلیکیشن با معماری ۴ هاب اصلی -->
     <div id="appRoot">
