@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 
-    <title>سامانه هوشمند قضایی ISF | نسخه پرچم‌دار</title>
+    <title>سامانه فوق‌هوشمند قضایی ISF | نسخه پرچم‌دار سازمانی</title>
 
     <!-- متاتگ‌های تلگرام مینی‌اپ، PWA و بهینه‌سازی ویوپورت -->
     <meta name="theme-color" content="#060913">
@@ -14,19 +14,19 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="description" content="سامانه جامع قضایی ISF، محاسبات تخصصی دادرسی، دیات، خسارت و هوش مصنوعی حقوقی">
 
-    <!-- فونت‌های استاندارد با ارقام فارسی -->
+    <!-- پیش‌بارگذاری فونت‌های استاندارد فارسی با ارقام رسمی -->
     <link rel="preconnect" href="https://cdn.jsdelivr.net">
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/misc/Farsi-Digits/Vazirmatn-FD-font-face.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/rastikerdar/shabnam-font@v5.0.1/dist/font-face.css">
 
-    <!-- آیکون‌های FontAwesome -->
+    <!-- آیکون‌های FontAwesome نسخه ۶ -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-    <!-- اسکریپت رسمی تلگرام وب‌اپ -->
+    <!-- اسکریپت رسمی تلگرام مینی‌اپ -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-    <!-- پیکربندی Tailwind CSS با پالت کروموکدینگ و لوکس قضایی -->
+    <!-- پیکربندی Tailwind CSS با پالت کروموکدینگ و گرادینت‌های لوکس قضایی -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -68,7 +68,7 @@
         };
     </script>
 
-    <!-- استایل‌های بنیادین متریال، بافت نویز شنی، خطوط منشوری و ترنزیشن‌ها -->
+    <!-- استایل‌های بنیادین متریال، گلس‌مورفیزم چندلایه‌ای و موشن دیزاین -->
     <style>
         :root {
             --selected-font: 'Vazirmatn FD', 'Vazirmatn', -apple-system, BlinkMacSystemFont, Tahoma, sans-serif;
@@ -76,8 +76,8 @@
             --line-height: 1.8;
             --bg-canvas-light: #f8fafc;
             --bg-canvas-dark: #060913;
-            --card-surface-light: rgba(255, 255, 255, 0.88);
-            --card-surface-dark: rgba(12, 19, 34, 0.82);
+            --card-surface-light: rgba(255, 255, 255, 0.90);
+            --card-surface-dark: rgba(12, 19, 34, 0.85);
             --border-light: rgba(0, 0, 0, 0.08);
             --border-dark: rgba(255, 255, 255, 0.08);
             --gold-accent: #eab308;
@@ -119,19 +119,19 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* بافت نویز شنی نامحسوس SVG روی کل صفحه در حالت شب */
+        /* بافت زنده گرادینت مش (Dynamic Mesh Background) و نویز شنی نامحسوس */
         html.dark body {
             background-color: var(--bg-canvas-dark);
             color: #f8fafc;
             background-image: 
-                radial-gradient(at 0% 0%, rgba(159, 18, 57, 0.15) 0px, transparent 45%),
-                radial-gradient(at 100% 100%, rgba(234, 179, 8, 0.10) 0px, transparent 50%),
-                radial-gradient(at 50% 50%, rgba(6, 182, 212, 0.05) 0px, transparent 65%),
+                radial-gradient(at 0% 0%, rgba(159, 18, 57, 0.18) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(234, 179, 8, 0.14) 0px, transparent 50%),
+                radial-gradient(at 50% 50%, rgba(6, 182, 212, 0.08) 0px, transparent 65%),
+                radial-gradient(at 80% 20%, rgba(147, 51, 234, 0.08) 0px, transparent 40%),
                 url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.035'/%3E%3C/svg%3E");
             background-attachment: fixed;
         }
 
-        /* ساختار چیدمان واکنش‌گرا و دسکتاپ */
         .layout-container {
             width: 100%;
             max-width: 1440px;
@@ -143,7 +143,7 @@
 
         #desktopSidebar {
             display: none;
-            width: 280px;
+            width: 290px;
             flex-shrink: 0;
             padding: 24px 16px;
             height: calc(100vh - 65px);
@@ -155,15 +155,11 @@
         }
 
         @media (min-width: 1024px) {
-            #desktopSidebar {
-                display: flex;
-            }
-            .floating-nav {
-                display: none !important;
-            }
+            #desktopSidebar { display: flex; }
+            .floating-nav { display: none !important; }
             #mainContentArea {
                 flex: 1;
-                max-width: calc(100% - 280px);
+                max-width: calc(100% - 290px);
                 padding: 24px 32px 60px 32px !important;
             }
         }
@@ -179,8 +175,8 @@
             width: 100%;
             display: flex;
             align-items: center;
-            padding: 10px 14px;
-            border-radius: 14px;
+            padding: 11px 14px;
+            border-radius: 16px;
             font-size: 11px;
             font-weight: 700;
             color: #94a3b8;
@@ -188,7 +184,7 @@
             border: 1px solid transparent;
             cursor: pointer;
             transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-            gap: 10px;
+            gap: 12px;
             text-align: right;
         }
 
@@ -202,18 +198,18 @@
             color: #ffffff !important;
             background: linear-gradient(135deg, rgba(159, 18, 57, 0.35), rgba(234, 179, 8, 0.25)) !important;
             border-color: rgba(234, 179, 8, 0.35) !important;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
         }
 
         /* زیرکادرهای متریال و پنل‌های داخلی */
         .sub-box {
-            background: rgba(0, 0, 0, 0.15);
+            background: rgba(0, 0, 0, 0.16);
             border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 16px;
-            padding: 12px;
+            border-radius: 18px;
+            padding: 14px;
             position: relative;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
         }
 
         html:not(.dark) .sub-box {
@@ -221,55 +217,7 @@
             border: 1px solid rgba(0, 0, 0, 0.06);
         }
 
-        /* وضعیت کنتراست بالا */
-        body.high-contrast {
-            filter: contrast(125%);
-        }
-
-        body.high-contrast .ultra-glass {
-            border-color: rgba(255, 255, 255, 0.3) !important;
-        }
-
-        /* تنظیمات اختصاصی استایل‌های شیشه‌ای تنظیمات */
-        .settings-glass {
-            background: rgba(12, 19, 34, 0.95);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-            border-radius: 20px;
-        }
-
-        html:not(.dark) .settings-glass {
-            background: rgba(255, 255, 255, 0.95);
-        }
-
-        /* حالت مشکی مطلق OLED */
-        body.oled-mode {
-            background-color: #000000 !important;
-            color: #ffffff !important;
-            background-image: none !important;
-        }
-
-        body.oled-mode .ultra-glass,
-        body.oled-mode .settings-glass,
-        body.oled-mode .sub-box,
-        body.oled-mode .court-receipt,
-        body.oled-mode header,
-        body.oled-mode nav {
-            background-color: #040404 !important;
-            border-color: rgba(255, 255, 255, 0.18) !important;
-            backdrop-filter: none !important;
-            -webkit-backdrop-filter: none !important;
-        }
-
-        body.battery-saver * {
-            animation: none !important;
-            transition: none !important;
-            box-shadow: none !important;
-            backdrop-filter: none !important;
-            -webkit-backdrop-filter: none !important;
-        }
-
-        /* شیشه فوق‌العاده عمیق با خطوط لبه آیلیتی متالیک */
+        /* شیشه فوق‌العاده عمیق با بازتاب لبه متالیک */
         .ultra-glass {
             background: var(--card-surface-light);
             backdrop-filter: blur(28px);
@@ -278,7 +226,6 @@
             box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.06);
             position: relative;
             transform: translateZ(0);
-            will-change: transform;
         }
 
         html.dark .ultra-glass {
@@ -288,7 +235,6 @@
             box-shadow: 0 16px 42px -12px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.08);
         }
 
-        /* حاشیه منشوری با بازتاب رنگی دوگانه */
         .prismatic-border {
             position: relative;
         }
@@ -317,7 +263,6 @@
             transform: translateZ(0);
         }
 
-        /* بافت منحنی‌های امنیتی گیلوش (Guilloche Waves) */
         .court-receipt::after {
             content: '';
             position: absolute;
@@ -327,19 +272,6 @@
             opacity: 0.8;
         }
 
-        /* مهر برجسته رسمی با افکت جوهر */
-        .legal-stamp-seal {
-            border: 2px dashed rgba(225, 29, 72, 0.8);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transform: rotate(-12deg);
-            box-shadow: 0 0 15px rgba(225, 29, 72, 0.25);
-            mix-blend-mode: screen;
-        }
-
-        /* برچسب هولوگرام چندرنگ متحرک */
         .hologram-badge {
             background: linear-gradient(135deg, #06b6d4, #a855f7, #eab308, #22c55e);
             background-size: 300% 300%;
@@ -353,7 +285,6 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* رادار پالس امنیتی هدر */
         .radar-pulse-ring {
             position: absolute;
             inset: -4px;
@@ -367,27 +298,13 @@
             100% { transform: scale(2.2); opacity: 0; }
         }
 
-        /* موج اسکلتون لودینگ اریب جهت‌دار */
-        .skeleton-card {
-            border-radius: 20px;
-            background: linear-gradient(110deg, rgba(255,255,255,0.03) 30%, rgba(255,255,255,0.12) 50%, rgba(255,255,255,0.03) 70%);
-            background-size: 200% 100%;
-            animation: shimmerWave 1.4s infinite cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        @keyframes shimmerWave {
-            0% { background-position: 200% 0; }
-            100% { background-position: -200% 0; }
-        }
-
-        /* خط پرفراژ جداسازی چک و رسید */
         .perforated-line {
             width: 100%;
             height: 1px;
             background-image: linear-gradient(to right, rgba(255,255,255,0.4) 50%, transparent 50%);
             background-size: 10px 1px;
             background-repeat: repeat-x;
-            margin: 12px 0;
+            margin: 14px 0;
             position: relative;
         }
 
@@ -403,7 +320,7 @@
         .perforated-line::before { right: -20px; }
         .perforated-line::after { left: -20px; }
 
-        /* سوییچ تعاملی ارگونومیک */
+        /* سوییچ ارگونومیک */
         .custom-toggle {
             width: 48px;
             height: 26px;
@@ -438,7 +355,32 @@
             transform: translateX(-22px);
         }
 
-        /* فیدبک ارتجاعی کلیدها و ترنزیشن‌ها */
+        /* سوییچر مدرن واحد پول (تومان / ریال) */
+        .currency-toggle-pill {
+            display: inline-flex;
+            background: rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 20px;
+            padding: 2px;
+            gap: 2px;
+        }
+        .currency-toggle-btn {
+            padding: 2px 8px;
+            border-radius: 16px;
+            font-size: 9px;
+            font-weight: 800;
+            color: #94a3b8;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .currency-toggle-btn.active {
+            background: #eab308;
+            color: #000000;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+        }
+
         .btn-spring {
             transition: transform 0.16s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.15s ease, box-shadow 0.2s ease;
         }
@@ -449,11 +391,10 @@
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-        /* لایه شوک نوری نقطه لمس */
         .touch-shockwave {
             position: absolute;
             border-radius: 50%;
-            background: radial-gradient(circle, rgba(234,179,8,0.4) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(234,179,8,0.45) 0%, transparent 70%);
             transform: scale(0);
             pointer-events: none;
             animation: shockwaveExpand 0.45s ease-out forwards;
@@ -464,7 +405,6 @@
             to { transform: scale(3.5); opacity: 0; }
         }
 
-        /* کپسول شناور ناوبری با فیلتر ژله‌ای */
         .floating-nav {
             position: fixed;
             bottom: calc(14px + var(--tg-safe-bottom));
@@ -521,7 +461,6 @@
         .nav-btn.active-tab { color: #ffffff !important; }
         .nav-btn.active-tab i { transform: translateY(-2px) scale(1.15); transition: transform 0.25s ease; }
 
-        /* باتم‌شیت‌ها */
         .bottom-drawer {
             display: none;
             position: fixed;
@@ -541,88 +480,46 @@
             to { transform: translateY(0); }
         }
 
-        /* کانواس امضای جوهری */
         .signature-canvas {
             width: 100%;
             height: 130px;
-            background: rgba(0, 0, 0, 0.3);
+            background: rgba(0, 0, 0, 0.35);
             border: 1px dashed rgba(234, 179, 8, 0.45);
             border-radius: 18px;
             touch-action: none;
             cursor: crosshair;
         }
 
-        /* زوم و جابه‌جایی اینفوگرافیک */
-        .zoom-pan-viewport {
-            width: 100%;
-            height: 60vh;
-            overflow: hidden;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(0, 0, 0, 0.6);
-            touch-action: none;
+        /* حالت OLED و بهینه‌سازی باتری */
+        body.oled-mode {
+            background-color: #000000 !important;
+            color: #ffffff !important;
+            background-image: none !important;
         }
-
-        .zoom-pan-image {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
-            transition: transform 0.08s linear;
-            transform-origin: center center;
+        body.oled-mode .ultra-glass,
+        body.oled-mode .settings-glass,
+        body.oled-mode .sub-box,
+        body.oled-mode .court-receipt,
+        body.oled-mode header,
+        body.oled-mode nav {
+            background-color: #040404 !important;
+            border-color: rgba(255, 255, 255, 0.18) !important;
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
         }
-
-        /* پلیر شناور صوتی */
-        #floatingAudioPlayer {
-            position: fixed;
-            bottom: calc(88px + var(--tg-safe-bottom));
-            left: 50%;
-            transform: translateX(-50%) translateY(200%);
-            width: calc(100% - 24px);
-            max-width: 480px;
-            background: rgba(12, 19, 34, 0.96);
-            backdrop-filter: blur(28px);
-            -webkit-backdrop-filter: blur(28px);
-            border: 1px solid rgba(234, 179, 8, 0.3);
-            border-radius: 24px;
-            padding: 10px 14px;
-            z-index: 89;
-            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.8);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        body.battery-saver * {
+            animation: none !important;
+            transition: none !important;
+            box-shadow: none !important;
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
         }
-
-        @media (min-width: 1024px) {
-            #floatingAudioPlayer {
-                bottom: 24px;
-                left: calc(280px + 24px);
-                transform: translateY(200%);
-            }
-        }
-
-        #backToTopBtn {
-            position: fixed;
-            bottom: calc(90px + var(--tg-safe-bottom));
-            right: 18px;
-            width: 42px;
-            height: 42px;
-            border-radius: 21px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 85;
-            cursor: pointer;
-            border: 1px solid rgba(234, 179, 8, 0.3);
-        }
-
-        @media (min-width: 1024px) {
-            #backToTopBtn {
-                bottom: 24px;
-                right: 28px;
-            }
+        body.high-contrast { filter: contrast(125%); }
+        .settings-glass {
+            background: rgba(12, 19, 34, 0.95);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-radius: 20px;
         }
     </style>
 </head>
@@ -680,13 +577,13 @@
         </div>
     </div>
 
-    <!-- کانتینر پیام‌های شناور توست (Toast) با پشته امنیتی ضد XSS و لبه متالیک -->
+    <!-- کانتینر پیام‌های شناور توست (Toast) با پشته امنیتی و لبه متالیک -->
     <div id="toastContainer" class="fixed top-4 left-4 right-4 z-[150] pointer-events-none flex flex-col space-y-2 max-w-sm mx-auto"></div>
 
-    <!-- ۲. هدر جمع‌شونده هوشمند (Collapsing Sticky Header) با نوار جستجو و بج رادار زنده -->
+    <!-- ۲. هدر جمع‌شونده هوشمند (Collapsing Sticky Header) با نوار جستجو و وضعیت شبکه -->
     <header id="appHeader" class="w-full sticky top-0 z-80 transition-all duration-300 backdrop-blur-2xl bg-slate-50/90 dark:bg-[#060913]/90 border-b border-black/5 dark:border-white/10">
         <div class="max-w-7xl mx-auto px-4 py-2.5 flex items-center justify-between">
-            <!-- هویت بصری، لوگو و کلید پرش -->
+            <!-- هویت بصری، لوگو و کلید پرش سریع -->
             <div class="flex items-center space-x-2.5 space-x-reverse cursor-pointer btn-spring" onclick="switchHub('hub-knowledge'); triggerHaptic('light');">
                 <div class="relative w-9 h-9 rounded-2xl bg-gradient-to-tr from-rose-700 to-amber-500 flex items-center justify-center text-white shadow-md shadow-rose-900/40 prismatic-border">
                     <i class="fa-solid fa-scale-balanced text-sm"></i>
@@ -700,9 +597,8 @@
                 </div>
             </div>
 
-            <!-- بج راداری زنده، تازه‌سازی، تنظیمات و کلید خروج -->
+            <!-- بج رادار زنده اتصال، تازه‌سازی، تنظیمات و خروج تلگرام -->
             <div class="flex items-center space-x-1.5 space-x-reverse">
-                <!-- وضعیت اتصال با رادار ضربان‌دار -->
                 <div id="connectionStatusBadge" class="relative flex items-center space-x-1.5 space-x-reverse px-2.5 py-1 rounded-xl bg-black/5 dark:bg-white/10 text-[9px] font-bold border border-white/5">
                     <div class="relative w-2 h-2 flex items-center justify-center">
                         <span class="radar-pulse-ring"></span>
@@ -725,7 +621,7 @@
             </div>
         </div>
 
-        <!-- منوی کشویی شیشه‌ای تنظیمات شخصی‌سازی -->
+        <!-- منوی کشویی شیشه‌ای تنظیمات شخصی‌سازی و دیتابیس -->
         <div id="settingsDropdown" class="hidden absolute left-4 top-13 z-50 w-72 settings-glass p-3.5 space-y-3 border border-white/15 shadow-2xl">
             <div class="flex justify-between items-center pb-2 border-b border-black/10 dark:border-white/10">
                 <span class="font-bold text-xs text-amber-500 flex items-center">
@@ -734,7 +630,7 @@
                 <span class="text-[9px] text-slate-400 font-mono">v3.6 Flagship</span>
             </div>
 
-            <!-- شب، روز، OLED و بهینه‌سازی باتری -->
+            <!-- انتخاب‌های نورپردازی: شب، روز، OLED و بهینه‌سازی باتری -->
             <div class="grid grid-cols-2 gap-2 text-[10px]">
                 <button onclick="toggleTheme(); triggerHaptic('light');" class="p-2 rounded-xl bg-black/5 dark:bg-white/10 hover:bg-black/10 flex items-center justify-center font-bold text-slate-800 dark:text-slate-100 transition cursor-pointer border-none btn-spring">
                     <i class="fa-solid fa-circle-half-stroke text-amber-500 ml-1.5"></i>
@@ -757,20 +653,20 @@
                 </button>
             </div>
 
-            <!-- انتخاب قلم سامانه -->
+            <!-- انتخاب فونت رسمی -->
             <div class="space-y-1">
                 <label for="fontSelect" class="text-[10px] font-bold text-slate-600 dark:text-slate-400 block text-right">قلم رسمی سامانه:</label>
                 <select id="fontSelect" onchange="changeFontFamily(this.value);" class="w-full rounded-xl p-2 text-xs bg-slate-100 dark:bg-slate-900 text-slate-800 dark:text-slate-100 border border-black/10 dark:border-white/20 focus:outline-none focus:border-amber-500 transition cursor-pointer">
-                    <option value="'Vazirmatn FD', 'Vazirmatn', -apple-system, BlinkMacSystemFont, Tahoma, sans-serif">وزیرمتن فارسی (اعداد صددرصد فارسی)</option>
+                    <option value="'Vazirmatn FD', 'Vazirmatn', -apple-system, BlinkMacSystemFont, Tahoma, sans-serif">وزیرمتن فارسی (ارقام ۱۰۰٪ فارسی)</option>
                     <option value="'Shabnam', -apple-system, BlinkMacSystemFont, Tahoma, sans-serif">شبنم (خوانایی اسناد رسمی)</option>
                     <option value="Tahoma, Arial, sans-serif">تاهما (وب استاندارد)</option>
                 </select>
             </div>
 
-            <!-- اندازه متن و فاصله خطوط -->
+            <!-- کنترل اندازه قلم و فاصله سطرها -->
             <div class="grid grid-cols-2 gap-2">
                 <div class="space-y-1">
-                    <label for="fontSizeSelect" class="text-[10px] font-bold text-slate-600 dark:text-slate-400 block text-right">اندازه فونت:</label>
+                    <label for="fontSizeSelect" class="text-[10px] font-bold text-slate-600 dark:text-slate-400 block text-right">اندازه متن:</label>
                     <select id="fontSizeSelect" onchange="changeAppFontSize(this.value);" class="w-full rounded-xl p-2 text-xs bg-slate-100 dark:bg-slate-900 text-slate-800 dark:text-slate-100 border border-black/10 dark:border-white/20 focus:outline-none focus:border-amber-500 transition cursor-pointer">
                         <option value="11px">ریز (۱۱)</option>
                         <option value="12px" selected>استاندارد (۱۲)</option>
@@ -788,7 +684,7 @@
                 </div>
             </div>
 
-            <!-- دانلود بکاپ، بازگردانی و تخلیه کش -->
+            <!-- پشتیبان‌گیری، بازیابی و تخلیه کش دیتابیس -->
             <div class="pt-2 border-t border-black/10 dark:border-white/10 space-y-2 text-[10px]">
                 <div class="flex space-x-2 space-x-reverse">
                     <button onclick="exportAppBackup(); triggerHaptic('light');" class="flex-1 p-2 rounded-xl bg-black/5 dark:bg-white/10 hover:bg-black/10 text-slate-800 dark:text-slate-100 font-bold transition cursor-pointer border-none flex items-center justify-center btn-spring">
@@ -806,7 +702,7 @@
             </div>
         </div>
 
-        <!-- نوار جستجوی فراگیر جمع‌شونده -->
+        <!-- نوار جستجوی فراگیر با تشخیص خودکار و تایپ صوتی -->
         <div id="collapsingSearchRow" class="max-w-7xl mx-auto px-4 pb-2.5 pt-1 transition-all duration-300">
             <div class="relative w-full">
                 <input type="text" id="searchInput" oninput="debouncedSearch(this.value);" placeholder="جستجوی جامع در مواد قانونی، اصطلاحات، محاسبات، کارتابل و سوالات..." class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-slate-100 placeholder-slate-400 rounded-2xl px-4 py-2.5 pr-10 pl-20 text-xs border border-black/10 dark:border-white/15 focus:outline-none focus:border-amber-500 transition shadow-inner">
@@ -824,16 +720,16 @@
                     </button>
                 </div>
 
-                <!-- پنل زنده نمایش نتایج فراگیر سرچ -->
+                <!-- پنل زنده نمایش نتایج فراگیر جستجو -->
                 <div id="liveSuggestionsBox" class="hidden absolute top-12 left-0 right-0 z-40 settings-glass p-2 space-y-1 max-h-72 overflow-y-auto selectable-text border border-white/10 shadow-2xl"></div>
             </div>
         </div>
     </header>
 
-    <!-- کانتینر اصلی اپلیکیشن با معماری ۴ هاب اصلی -->
+    <!-- کانتینر اصلی اپلیکیشن با پشتیبانی دسکتاپ و موبایل -->
     <div id="appRoot">
         <div class="layout-container">
-            <!-- ۳. سایدبار دسکتاپ برای نمایشگرهای عریض با بازتاب نور -->
+            <!-- ۳. سایدبار دسکتاپ اختصاصی برای نمایشگرهای عریض -->
             <aside id="desktopSidebar" class="ultra-glass prismatic-border">
                 <div class="flex items-center space-x-2.5 space-x-reverse pb-4 mb-3 border-b border-black/10 dark:border-white/10">
                     <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-rose-700 to-amber-500 flex items-center justify-center text-white shadow-lg shadow-rose-900/40">
@@ -874,7 +770,7 @@
                 </div>
             </aside>
 
-            <!-- ۴. داک شناور کپسولی (Dynamic Floating Island) ۴ هاب + رسانه -->
+            <!-- ۴. داک شناور کپسولی همراه با پیل موشن داینامیک در موبایل -->
             <nav id="mainNavContainer" class="floating-nav">
                 <div id="navIndicatorPill" class="nav-indicator-pill"></div>
                 <button onclick="switchHub('hub-tools'); triggerHaptic('selection');" class="nav-btn active-tab btn-spring" data-hub="hub-tools">
@@ -899,13 +795,13 @@
                 </button>
             </nav>
 
-            <!-- کانتینر اصلی صفحات و هاب‌های ۴گانه -->
+            <!-- شروع محدوده محتوای اصلی صفحات -->
             <main id="mainContentArea">
                 <!-- ==========================================================================
-     هاب ۱: ⚖️ دادرسی و محاسبات (ماشین‌حساب‌های تخصصی با رسیدهای رسمی و فیزیک نوری)
+     هاب ۱: ⚖️ دادرسی و محاسبات (ماشین‌حساب‌های تخصصی، رسیدهای اوراق و سوییچ ارز)
      ========================================================================== -->
 <section id="hub-tools" class="hub-section space-y-4">
-    <!-- کارت خلاصه داشبورد هدر و تقویم رسمی و آب‌وهوا -->
+    <!-- کارت خلاصه داشبورد هدر، تقویم قضایی و وضعیت آب‌وهوا -->
     <div class="ultra-glass prismatic-border p-3.5 rounded-3xl flex items-center justify-between border border-amber-500/30 shadow-md">
         <div class="flex items-center space-x-2.5 space-x-reverse">
             <div class="w-10 h-10 rounded-2xl bg-amber-500/15 flex items-center justify-center text-amber-500 shadow-inner">
@@ -967,7 +863,7 @@
         <button onclick="filterToolsSegment('cat-procedural', this);" class="tool-filter-btn px-3.5 py-1.5 rounded-full bg-black/5 dark:bg-white/10 text-slate-700 dark:text-slate-300 font-bold transition flex-shrink-0 cursor-pointer border-none hover:bg-black/10 btn-spring">دادرسی و صلاحیت</button>
     </div>
 
-    <!-- ۰. ابزار: ویزارد هوشمند سنجش صلاحیت مرجع قضایی (قانون ۱۴۰۲) -->
+    <!-- ۰. ابزار: ویزارد هوشمند سنجش صلاحیت مرجع قضایی (با مقایسه‌گر دوشاخه‌ای صلح / عمومی) -->
     <div class="tool-card ultra-glass p-4 rounded-3xl space-y-3 shadow-lg border-r-4 border-r-chroma-peace" data-tool-cat="cat-procedural">
         <div class="flex items-center justify-between pb-2 border-b border-black/10 dark:border-white/10">
             <span class="font-bold text-xs text-emerald-500 flex items-center">
@@ -989,31 +885,57 @@
         </div>
 
         <div class="space-y-1" id="jurisdictionAmountBox">
-            <label for="jurisdictionAmountInput" class="text-[10px] font-bold text-slate-600 dark:text-slate-400 block text-right">مبلغ بهای خواسته (ریال):</label>
-            <input type="text" inputmode="numeric" id="jurisdictionAmountInput" oninput="handleMaskedCurrencyInput(this);" placeholder="مثال: ۸۰۰,۰۰۰,۰۰۰" class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none focus:border-emerald-500 transition font-mono tabular-nums">
+            <div class="flex justify-between items-center">
+                <label for="jurisdictionAmountInput" class="text-[10px] font-bold text-slate-600 dark:text-slate-400 block text-right">مبلغ بهای خواسته:</label>
+                <div class="currency-toggle-pill" data-target="jurisdictionAmountInput">
+                    <button type="button" class="currency-toggle-btn active" onclick="setCurrencyUnit('jurisdictionAmountInput', 'rial', this);">ریال</button>
+                    <button type="button" class="currency-toggle-btn" onclick="setCurrencyUnit('jurisdictionAmountInput', 'toman', this);">تومان</button>
+                </div>
+            </div>
+            <input type="text" inputmode="numeric" id="jurisdictionAmountInput" data-unit="rial" oninput="handleMaskedCurrencyInput(this);" placeholder="مثال: ۸۰۰,۰۰۰,۰۰۰" class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none focus:border-emerald-500 transition font-mono tabular-nums">
             <div class="text-[9px] text-amber-500 font-medium text-left" id="jurisdictionAmountInput_words"></div>
         </div>
 
         <button onclick="checkJurisdictionCompetence(); triggerHaptic('medium');" class="w-full bg-gradient-to-r from-emerald-600 to-amber-500 text-white font-bold py-2.5 rounded-xl text-xs border-none cursor-pointer shadow-md transition hover:opacity-90 btn-spring">
-            استعلام مرجع صالح، قطعی بودن رأی و مهلت اعتراض
+            استعلام مرجع صالح، مقایسه دوشاخه‌ای و مهلت اعتراض
         </button>
 
         <div id="jurisdictionResult" class="selectable-text"></div>
     </div>
 
-    <!-- ۱. محاسبه‌گر خسارت تأخیر تأدیه (ماده ۵۲۲ ق.آ.د.م) -->
+    <!-- ۱. محاسبه‌گر خسارت تأخیر تأدیه (ماده ۵۲۲ ق.آ.د.م با نرخ تورم ماهانه و سود بانکی) -->
     <div class="tool-card ultra-glass p-4 rounded-3xl space-y-3 shadow-lg border-r-4 border-r-chroma-criminal" data-tool-cat="cat-finance">
         <div class="flex items-center justify-between pb-2 border-b border-black/10 dark:border-white/10">
             <span class="font-bold text-xs text-rose-500 flex items-center">
                 <i class="fa-solid fa-arrow-trend-up ml-1.5 text-amber-500"></i> محاسبه خسارت تأخیر تأدیه (ماده ۵۲۲ ق.آ.د.م)
             </span>
-            <span class="text-[9px] text-slate-400 font-mono">شاخص بانک مرکزی</span>
+            <span class="text-[9px] text-slate-400 font-mono">بانک مرکزی / قراردادی</span>
         </div>
 
         <div class="space-y-1">
-            <label for="principalAmount" class="text-[10px] font-bold text-slate-600 dark:text-slate-400 block text-right">اصل مبلغ طلب به ریال (چک، سفته یا دین):</label>
-            <input type="text" inputmode="numeric" id="principalAmount" oninput="handleMaskedCurrencyInput(this);" placeholder="مثال: ۵۰۰,۰۰۰,۰۰۰" class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none focus:border-rose-500 transition font-mono tabular-nums">
+            <div class="flex justify-between items-center">
+                <label for="principalAmount" class="text-[10px] font-bold text-slate-600 dark:text-slate-400 block text-right">اصل مبلغ طلب (چک، سفته یا دین):</label>
+                <div class="currency-toggle-pill" data-target="principalAmount">
+                    <button type="button" class="currency-toggle-btn active" onclick="setCurrencyUnit('principalAmount', 'rial', this);">ریال</button>
+                    <button type="button" class="currency-toggle-btn" onclick="setCurrencyUnit('principalAmount', 'toman', this);">تومان</button>
+                </div>
+            </div>
+            <input type="text" inputmode="numeric" id="principalAmount" data-unit="rial" oninput="handleMaskedCurrencyInput(this);" placeholder="مثال: ۵۰۰,۰۰۰,۰۰۰" class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none focus:border-rose-500 transition font-mono tabular-nums">
             <div class="text-[9px] text-amber-500 font-medium text-left" id="principalAmount_words"></div>
+        </div>
+
+        <div class="space-y-1">
+            <label for="delayCalculationMethod" class="text-[10px] font-bold text-slate-600 dark:text-slate-400 block text-right">مبنای محاسبه خسارت تأخیر:</label>
+            <select id="delayCalculationMethod" onchange="toggleDelayMethodOptions(this.value);" class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none focus:border-rose-500 transition cursor-pointer">
+                <option value="cpi_monthly">فرمول رسمی تورمی بانک مرکزی (ماده ۵۲۲ ق.آ.د.م)</option>
+                <option value="bank_rate">نرخ سود مصوب شورای پول و اعتبار (۲۳٪ سالانه)</option>
+                <option value="custom_rate">نرخ توافقی قراردادی (وجه التزام درصدی)...</option>
+            </select>
+        </div>
+
+        <div id="customRateBox" class="hidden space-y-1">
+            <label for="customDelayRate" class="text-[10px] font-bold text-slate-600 dark:text-slate-400 block text-right">نرخ سود یا خسارت توافقی سالانه (درصد):</label>
+            <input type="text" inputmode="decimal" id="customDelayRate" placeholder="مثال: ۳۰" class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none font-mono tabular-nums" oninput="sanitizePersianNumbersInput(this);">
         </div>
 
         <div class="grid grid-cols-2 gap-2">
@@ -1048,17 +970,20 @@
         </button>
 
         <div id="delayResult" class="selectable-text"></div>
-        <div id="delayActionButtons" class="hidden grid grid-cols-2 gap-2 pt-1">
+        <div id="delayActionButtons" class="hidden grid grid-cols-3 gap-2 pt-1">
             <button onclick="saveCalculationToNotes('خسارت تأخیر تأدیه', document.getElementById('delayResult').innerText); triggerHaptic('light');" class="bg-black/5 dark:bg-white/10 hover:bg-black/10 text-slate-700 dark:text-slate-200 py-2 rounded-xl text-[10px] font-bold border border-black/10 dark:border-white/10 cursor-pointer btn-spring">
-                <i class="fa-solid fa-floppy-disk ml-1 text-amber-500"></i> ذخیره در کارتابل
+                <i class="fa-solid fa-floppy-disk ml-1 text-amber-500"></i> کارتابل
+            </button>
+            <button onclick="pipeValueToCourtFee('principalAmount'); triggerHaptic('light');" class="bg-black/5 dark:bg-white/10 hover:bg-black/10 text-blue-500 py-2 rounded-xl text-[10px] font-bold border border-blue-500/20 cursor-pointer btn-spring">
+                <i class="fa-solid fa-arrow-down-long ml-1"></i> تمبر دادرسی
             </button>
             <button onclick="exportResultToCard('نتیجه محاسبه خسارت تأخیر تأدیه دین', document.getElementById('delayResult').innerText); triggerHaptic('light');" class="bg-black/5 dark:bg-white/10 hover:bg-black/10 text-amber-500 py-2 rounded-xl text-[10px] font-bold border border-amber-500/20 cursor-pointer btn-spring">
-                <i class="fa-solid fa-share-nodes ml-1"></i> صدور کارت دادگاه
+                <i class="fa-solid fa-share-nodes ml-1"></i> صدور کارت
             </button>
         </div>
     </div>
 
-    <!-- ۲. محاسبه هزینه دادرسی مراحل بدوی، تجدیدنظر و دادگاه صلح -->
+    <!-- ۲. محاسبه هزینه دادرسی و تمبر دادخواست -->
     <div class="tool-card ultra-glass p-4 rounded-3xl space-y-3 shadow-lg border-r-4 border-r-chroma-civil" data-tool-cat="cat-procedural">
         <div class="flex items-center justify-between pb-2 border-b border-black/10 dark:border-white/10">
             <span class="font-bold text-xs text-blue-500 flex items-center">
@@ -1068,8 +993,14 @@
         </div>
 
         <div class="space-y-1">
-            <label for="courtFeeInput" class="text-[10px] font-bold text-slate-600 dark:text-slate-400 block text-right">مبلغ بهای خواسته به ریال:</label>
-            <input type="text" inputmode="numeric" id="courtFeeInput" oninput="handleMaskedCurrencyInput(this);" placeholder="مثال: ۱,۰۰۰,۰۰۰,۰۰۰" class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none focus:border-blue-500 transition font-mono tabular-nums">
+            <div class="flex justify-between items-center">
+                <label for="courtFeeInput" class="text-[10px] font-bold text-slate-600 dark:text-slate-400 block text-right">مبلغ بهای خواسته:</label>
+                <div class="currency-toggle-pill" data-target="courtFeeInput">
+                    <button type="button" class="currency-toggle-btn active" onclick="setCurrencyUnit('courtFeeInput', 'rial', this);">ریال</button>
+                    <button type="button" class="currency-toggle-btn" onclick="setCurrencyUnit('courtFeeInput', 'toman', this);">تومان</button>
+                </div>
+            </div>
+            <input type="text" inputmode="numeric" id="courtFeeInput" data-unit="rial" oninput="handleMaskedCurrencyInput(this);" placeholder="مثال: ۱,۰۰۰,۰۰۰,۰۰۰" class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none focus:border-blue-500 transition font-mono tabular-nums">
             <div class="text-[9px] text-amber-500 font-medium text-left" id="courtFeeInput_words"></div>
         </div>
 
@@ -1102,14 +1033,20 @@
     <div class="tool-card ultra-glass p-4 rounded-3xl space-y-3 shadow-lg border-r-4 border-r-chroma-property" data-tool-cat="cat-contracts">
         <div class="flex items-center justify-between pb-2 border-b border-black/10 dark:border-white/10">
             <span class="font-bold text-xs text-sky-500 flex items-center">
-                <i class="fa-solid fa-building-circle-exclamation ml-1.5 text-amber-500"></i> جریمه تأخیر تحویل آپارتمان پیش‌فروش (قانون پیش‌فروش ساختمان)
+                <i class="fa-solid fa-building-circle-exclamation ml-1.5 text-amber-500"></i> جریمه تأخیر تحویل آپارتمان پیش‌فروش
             </span>
             <span class="text-[9px] text-slate-400">ماده ۶ مصوب ۱۳۸۹</span>
         </div>
 
         <div class="space-y-1">
-            <label for="presaleContractPrice" class="text-[10px] font-bold text-slate-600 dark:text-slate-400 block text-right">کل مبلغ ثمن قرارداد پیش‌فروش به ریال:</label>
-            <input type="text" inputmode="numeric" id="presaleContractPrice" oninput="handleMaskedCurrencyInput(this);" placeholder="مثال: ۳۰,۰۰۰,۰۰۰,۰۰۰" class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none focus:border-sky-500 transition font-mono tabular-nums">
+            <div class="flex justify-between items-center">
+                <label for="presaleContractPrice" class="text-[10px] font-bold text-slate-600 dark:text-slate-400 block text-right">کل مبلغ ثمن قرارداد پیش‌فروش:</label>
+                <div class="currency-toggle-pill" data-target="presaleContractPrice">
+                    <button type="button" class="currency-toggle-btn active" onclick="setCurrencyUnit('presaleContractPrice', 'rial', this);">ریال</button>
+                    <button type="button" class="currency-toggle-btn" onclick="setCurrencyUnit('presaleContractPrice', 'toman', this);">تومان</button>
+                </div>
+            </div>
+            <input type="text" inputmode="numeric" id="presaleContractPrice" data-unit="rial" oninput="handleMaskedCurrencyInput(this);" placeholder="مثال: ۳۰,۰۰۰,۰۰۰,۰۰۰" class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none focus:border-sky-500 transition font-mono tabular-nums">
             <div class="text-[9px] text-amber-500 font-medium text-left" id="presaleContractPrice_words"></div>
         </div>
 
@@ -1119,8 +1056,8 @@
                 <input type="text" inputmode="numeric" id="presaleDelayDays" placeholder="مثال: ۹۰" class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none text-center font-mono tabular-nums" oninput="sanitizePersianNumbersInput(this);">
             </div>
             <div class="space-y-1">
-                <label for="presaleRentMonthly" class="text-[10px] font-bold text-slate-600 dark:text-slate-400 block text-right">اجاره‌بهای ماهانه روز به ریال:</label>
-                <input type="text" inputmode="numeric" id="presaleRentMonthly" oninput="handleMaskedCurrencyInput(this);" placeholder="مثال: ۲۵۰,۰۰۰,۰۰۰" class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none text-center font-mono tabular-nums">
+                <label for="presaleRentMonthly" class="text-[10px] font-bold text-slate-600 dark:text-slate-400 block text-right">اجاره‌بهای ماهانه روز عرفی:</label>
+                <input type="text" inputmode="numeric" id="presaleRentMonthly" data-unit="rial" oninput="handleMaskedCurrencyInput(this);" placeholder="مثال: ۲۵۰,۰۰۰,۰۰۰" class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none text-center font-mono tabular-nums">
             </div>
         </div>
 
@@ -1158,8 +1095,14 @@
 
         <div id="mahariyehCashBox" class="space-y-2">
             <div class="space-y-1">
-                <label for="mahariyehCashAmount" class="text-[10px] font-bold text-slate-600 dark:text-slate-400 block text-right">مبلغ اسمی مهریه در عقدنامه به ریال:</label>
-                <input type="text" inputmode="numeric" id="mahariyehCashAmount" oninput="handleMaskedCurrencyInput(this);" placeholder="مثال: ۵۰,۰۰۰,۰۰۰" class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none font-mono tabular-nums">
+                <div class="flex justify-between items-center">
+                    <label for="mahariyehCashAmount" class="text-[10px] font-bold text-slate-600 dark:text-slate-400 block text-right">مبلغ اسمی مهریه در عقدنامه:</label>
+                    <div class="currency-toggle-pill" data-target="mahariyehCashAmount">
+                        <button type="button" class="currency-toggle-btn active" onclick="setCurrencyUnit('mahariyehCashAmount', 'rial', this);">ریال</button>
+                        <button type="button" class="currency-toggle-btn" onclick="setCurrencyUnit('mahariyehCashAmount', 'toman', this);">تومان</button>
+                    </div>
+                </div>
+                <input type="text" inputmode="numeric" id="mahariyehCashAmount" data-unit="rial" oninput="handleMaskedCurrencyInput(this);" placeholder="مثال: ۵۰,۰۰۰,۰۰۰" class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none font-mono tabular-nums">
                 <div class="text-[9px] text-amber-500 font-medium text-left" id="mahariyehCashAmount_words"></div>
             </div>
             <div class="grid grid-cols-2 gap-2">
@@ -1181,8 +1124,14 @@
                     <input type="text" inputmode="numeric" id="mahariyehCoins" placeholder="مثال: ۱۱۰" class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none text-center font-mono tabular-nums" oninput="sanitizePersianNumbersInput(this);">
                 </div>
                 <div class="space-y-1">
-                    <label for="currentCoinPrice" class="text-[10px] font-bold text-slate-600 dark:text-slate-400 block text-right">قیمت روز سکه (ریال):</label>
-                    <input type="text" inputmode="numeric" id="currentCoinPrice" oninput="handleMaskedCurrencyInput(this);" placeholder="مثال: ۴,۵۰۰,۰۰۰,۰۰۰" class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none text-center font-mono tabular-nums">
+                    <div class="flex justify-between items-center">
+                        <label for="currentCoinPrice" class="text-[10px] font-bold text-slate-600 dark:text-slate-400 block text-right">قیمت روز سکه:</label>
+                        <div class="currency-toggle-pill" data-target="currentCoinPrice">
+                            <button type="button" class="currency-toggle-btn active" onclick="setCurrencyUnit('currentCoinPrice', 'rial', this);">ریال</button>
+                            <button type="button" class="currency-toggle-btn" onclick="setCurrencyUnit('currentCoinPrice', 'toman', this);">تومان</button>
+                        </div>
+                    </div>
+                    <input type="text" inputmode="numeric" id="currentCoinPrice" data-unit="rial" oninput="handleMaskedCurrencyInput(this);" placeholder="مثال: ۴,۵۰۰,۰۰۰,۰۰۰" class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none text-center font-mono tabular-nums">
                     <div class="text-[9px] text-amber-500 font-medium text-left" id="currentCoinPrice_words"></div>
                 </div>
             </div>
@@ -1214,12 +1163,24 @@
 
         <div class="grid grid-cols-2 gap-2">
             <div class="space-y-1">
-                <label for="estateMovableAmount" class="text-[10px] font-bold text-slate-600 dark:text-slate-400 block text-right">اموال منقول و وجه نقد (ریال):</label>
-                <input type="text" inputmode="numeric" id="estateMovableAmount" oninput="handleMaskedCurrencyInput(this);" placeholder="مثال: ۵,۰۰۰,۰۰۰,۰۰۰" class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none focus:border-purple-500 transition font-mono tabular-nums">
+                <div class="flex justify-between items-center">
+                    <label for="estateMovableAmount" class="text-[10px] font-bold text-slate-600 dark:text-slate-400 block text-right">اموال منقول و نقد:</label>
+                    <div class="currency-toggle-pill" data-target="estateMovableAmount">
+                        <button type="button" class="currency-toggle-btn active" onclick="setCurrencyUnit('estateMovableAmount', 'rial', this);">ریال</button>
+                        <button type="button" class="currency-toggle-btn" onclick="setCurrencyUnit('estateMovableAmount', 'toman', this);">تومان</button>
+                    </div>
+                </div>
+                <input type="text" inputmode="numeric" id="estateMovableAmount" data-unit="rial" oninput="handleMaskedCurrencyInput(this);" placeholder="مثال: ۵,۰۰۰,۰۰۰,۰۰۰" class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none focus:border-purple-500 transition font-mono tabular-nums">
             </div>
             <div class="space-y-1">
-                <label for="estateRealAmount" class="text-[10px] font-bold text-slate-600 dark:text-slate-400 block text-right">ارزش بهای غیرمنقول (ریال):</label>
-                <input type="text" inputmode="numeric" id="estateRealAmount" oninput="handleMaskedCurrencyInput(this);" placeholder="مثال: ۱۵,۰۰۰,۰۰۰,۰۰۰" class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none focus:border-purple-500 transition font-mono tabular-nums">
+                <div class="flex justify-between items-center">
+                    <label for="estateRealAmount" class="text-[10px] font-bold text-slate-600 dark:text-slate-400 block text-right">ارزش غیرمنقول (ملک):</label>
+                    <div class="currency-toggle-pill" data-target="estateRealAmount">
+                        <button type="button" class="currency-toggle-btn active" onclick="setCurrencyUnit('estateRealAmount', 'rial', this);">ریال</button>
+                        <button type="button" class="currency-toggle-btn" onclick="setCurrencyUnit('estateRealAmount', 'toman', this);">تومان</button>
+                    </div>
+                </div>
+                <input type="text" inputmode="numeric" id="estateRealAmount" data-unit="rial" oninput="handleMaskedCurrencyInput(this);" placeholder="مثال: ۱۵,۰۰۰,۰۰۰,۰۰۰" class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none focus:border-purple-500 transition font-mono tabular-nums">
             </div>
         </div>
 
@@ -1267,7 +1228,6 @@
             <span class="text-[9px] text-slate-400">تغلیظ و ارش</span>
         </div>
 
-        <!-- شرایط تغلیظ قانونی دیه نفس -->
         <div class="sub-box space-y-2 bg-rose-500/5 border border-rose-500/20">
             <span class="text-[10px] font-bold text-rose-400 block text-right">بررسی شرایط تغلیظ قانونی دیه نفس (ماده ۵۵۵ ق.م.ا):</span>
             <div class="grid grid-cols-2 gap-2 text-[10px]">
@@ -1333,8 +1293,14 @@
         </div>
 
         <div class="space-y-1">
-            <label for="lawyerClaimAmount" class="text-[10px] font-bold text-slate-600 dark:text-slate-400 block text-right">مبلغ بهای خواسته به ریال:</label>
-            <input type="text" inputmode="numeric" id="lawyerClaimAmount" oninput="handleMaskedCurrencyInput(this);" placeholder="مثال: ۸,۰۰۰,۰۰۰,۰۰۰" class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none focus:border-amber-500 transition font-mono tabular-nums">
+            <div class="flex justify-between items-center">
+                <label for="lawyerClaimAmount" class="text-[10px] font-bold text-slate-600 dark:text-slate-400 block text-right">مبلغ بهای خواسته:</label>
+                <div class="currency-toggle-pill" data-target="lawyerClaimAmount">
+                    <button type="button" class="currency-toggle-btn active" onclick="setCurrencyUnit('lawyerClaimAmount', 'rial', this);">ریال</button>
+                    <button type="button" class="currency-toggle-btn" onclick="setCurrencyUnit('lawyerClaimAmount', 'toman', this);">تومان</button>
+                </div>
+            </div>
+            <input type="text" inputmode="numeric" id="lawyerClaimAmount" data-unit="rial" oninput="handleMaskedCurrencyInput(this);" placeholder="مثال: ۸,۰۰۰,۰۰۰,۰۰۰" class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none focus:border-amber-500 transition font-mono tabular-nums">
             <div class="text-[9px] text-amber-500 font-medium text-left" id="lawyerClaimAmount_words"></div>
         </div>
 
@@ -1373,8 +1339,14 @@
         </div>
 
         <div class="space-y-1">
-            <label for="expertValueInput" class="text-[10px] font-bold text-slate-600 dark:text-slate-400 block text-right">ارزش موضوع مورد ارزیابی به ریال:</label>
-            <input type="text" inputmode="numeric" id="expertValueInput" oninput="handleMaskedCurrencyInput(this);" placeholder="مثال: ۵۰,۰۰۰,۰۰۰,۰۰۰" class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none focus:border-blue-500 transition font-mono tabular-nums">
+            <div class="flex justify-between items-center">
+                <label for="expertValueInput" class="text-[10px] font-bold text-slate-600 dark:text-slate-400 block text-right">ارزش موضوع مورد ارزیابی:</label>
+                <div class="currency-toggle-pill" data-target="expertValueInput">
+                    <button type="button" class="currency-toggle-btn active" onclick="setCurrencyUnit('expertValueInput', 'rial', this);">ریال</button>
+                    <button type="button" class="currency-toggle-btn" onclick="setCurrencyUnit('expertValueInput', 'toman', this);">تومان</button>
+                </div>
+            </div>
+            <input type="text" inputmode="numeric" id="expertValueInput" data-unit="rial" oninput="handleMaskedCurrencyInput(this);" placeholder="مثال: ۵۰,۰۰۰,۰۰۰,۰۰۰" class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none focus:border-blue-500 transition font-mono tabular-nums">
             <div class="text-[9px] text-amber-500 font-medium text-left" id="expertValueInput_words"></div>
         </div>
 
@@ -1395,8 +1367,14 @@
         </div>
 
         <div class="space-y-1">
-            <label for="carValueBefore" class="text-[10px] font-bold text-slate-600 dark:text-slate-400 block text-right">ارزش خودرو قبل از تصادف به ریال:</label>
-            <input type="text" inputmode="numeric" id="carValueBefore" oninput="handleMaskedCurrencyInput(this);" placeholder="مثال: ۱۲,۰۰۰,۰۰۰,۰۰۰" class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none focus:border-emerald-500 transition font-mono tabular-nums">
+            <div class="flex justify-between items-center">
+                <label for="carValueBefore" class="text-[10px] font-bold text-slate-600 dark:text-slate-400 block text-right">ارزش خودرو قبل از تصادف:</label>
+                <div class="currency-toggle-pill" data-target="carValueBefore">
+                    <button type="button" class="currency-toggle-btn active" onclick="setCurrencyUnit('carValueBefore', 'rial', this);">ریال</button>
+                    <button type="button" class="currency-toggle-btn" onclick="setCurrencyUnit('carValueBefore', 'toman', this);">تومان</button>
+                </div>
+            </div>
+            <input type="text" inputmode="numeric" id="carValueBefore" data-unit="rial" oninput="handleMaskedCurrencyInput(this);" placeholder="مثال: ۱۲,۰۰۰,۰۰۰,۰۰۰" class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none focus:border-emerald-500 transition font-mono tabular-nums">
             <div class="text-[9px] text-amber-500 font-medium text-left" id="carValueBefore_words"></div>
         </div>
 
@@ -1430,7 +1408,7 @@
         <div id="carDepreciationResult" class="selectable-text"></div>
     </div>
 
-    <!-- ۱۰. شمارشگر دقیق مواعد قانونی دادرسی با احتساب تعطیلات و سال کبیسه -->
+    <!-- ۱۰. شمارشگر دقیق مواعد قانونی دادرسی با روزشمار معکوس و دانلود ICS -->
     <div class="tool-card ultra-glass p-4 rounded-3xl space-y-3 shadow-lg border-r-4 border-r-chroma-civil" data-tool-cat="cat-procedural">
         <div class="flex items-center justify-between pb-2 border-b border-black/10 dark:border-white/10">
             <span class="font-bold text-xs text-blue-500 flex items-center">
@@ -1458,7 +1436,7 @@
         </div>
 
         <button onclick="calculateExactLegalDeadline(); triggerHaptic('medium');" class="w-full bg-gradient-to-r from-blue-600 to-amber-500 text-white font-bold py-2.5 rounded-xl text-xs border-none cursor-pointer shadow-md transition hover:opacity-90 btn-spring">
-            محاسبه آخرین روز مهلت قانونی اقدام
+            محاسبه مهلت، شمارش معکوس و تقویم گوشی
         </button>
 
         <div id="deadlineResult" class="selectable-text"></div>
@@ -1479,8 +1457,14 @@
                 <input type="text" inputmode="numeric" id="mahariyehTotalCoins" placeholder="مثال: ۱۱۰" class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-2 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none text-center font-mono tabular-nums" oninput="sanitizePersianNumbersInput(this);">
             </div>
             <div class="space-y-1">
-                <label for="debtorMonthlyIncome" class="text-[10px] font-bold text-slate-600 dark:text-slate-400 block text-right">خالص درآمد ماهانه زوج (ریال):</label>
-                <input type="text" inputmode="numeric" id="debtorMonthlyIncome" oninput="handleMaskedCurrencyInput(this);" placeholder="مثال: ۱۸۰,۰۰۰,۰۰۰" class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-2 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none text-center font-mono tabular-nums">
+                <div class="flex justify-between items-center">
+                    <label for="debtorMonthlyIncome" class="text-[10px] font-bold text-slate-600 dark:text-slate-400 block text-right">خالص درآمد ماهانه زوج:</label>
+                    <div class="currency-toggle-pill" data-target="debtorMonthlyIncome">
+                        <button type="button" class="currency-toggle-btn active" onclick="setCurrencyUnit('debtorMonthlyIncome', 'rial', this);">ریال</button>
+                        <button type="button" class="currency-toggle-btn" onclick="setCurrencyUnit('debtorMonthlyIncome', 'toman', this);">تومان</button>
+                    </div>
+                </div>
+                <input type="text" inputmode="numeric" id="debtorMonthlyIncome" data-unit="rial" oninput="handleMaskedCurrencyInput(this);" placeholder="مثال: ۱۸۰,۰۰۰,۰۰۰" class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-2 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none text-center font-mono tabular-nums">
                 <div class="text-[9px] text-amber-500 font-medium text-left" id="debtorMonthlyIncome_words"></div>
             </div>
         </div>
@@ -1527,8 +1511,14 @@
         </div>
 
         <div class="space-y-1" id="notaryValueBox">
-            <label for="notaryDocValueInput" class="text-[10px] font-bold text-slate-600 dark:text-slate-400 block text-right">مبلغ ارزش معاملاتی یا ارزش سند (ریال):</label>
-            <input type="text" inputmode="numeric" id="notaryDocValueInput" oninput="handleMaskedCurrencyInput(this);" placeholder="مثال: ۱۰,۰۰۰,۰۰۰,۰۰۰" class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none focus:border-amber-500 transition font-mono tabular-nums">
+            <div class="flex justify-between items-center">
+                <label for="notaryDocValueInput" class="text-[10px] font-bold text-slate-600 dark:text-slate-400 block text-right">مبلغ ارزش معاملاتی یا ارزش سند:</label>
+                <div class="currency-toggle-pill" data-target="notaryDocValueInput">
+                    <button type="button" class="currency-toggle-btn active" onclick="setCurrencyUnit('notaryDocValueInput', 'rial', this);">ریال</button>
+                    <button type="button" class="currency-toggle-btn" onclick="setCurrencyUnit('notaryDocValueInput', 'toman', this);">تومان</button>
+                </div>
+            </div>
+            <input type="text" inputmode="numeric" id="notaryDocValueInput" data-unit="rial" oninput="handleMaskedCurrencyInput(this);" placeholder="مثال: ۱۰,۰۰۰,۰۰۰,۰۰۰" class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-3 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none focus:border-amber-500 transition font-mono tabular-nums">
             <div class="text-[9px] text-amber-500 font-medium text-left" id="notaryDocValueInput_words"></div>
         </div>
 
@@ -1581,11 +1571,11 @@
         <div id="adliranChunksOutput" class="hidden space-y-2"></div>
     </div>
 
-    <!-- ۱۴. فرم‌ساز هوشمند قراردادها با شروط حقوقی، داوری و پد امضای دیجیتال لمسی -->
+    <!-- ۱۴. فرم‌ساز هوشمند قراردادها با تحلیل شروط پرریسک و پد امضای چندطرفه -->
     <div class="tool-card ultra-glass p-4 rounded-3xl space-y-3 shadow-lg border-r-4 border-r-chroma-commercial" data-tool-cat="cat-contracts">
         <div class="flex items-center justify-between pb-2 border-b border-black/10 dark:border-white/10">
             <span class="font-bold text-xs text-amber-500 flex items-center">
-                <i class="fa-solid fa-file-contract ml-1.5 text-rose-500"></i> فرم‌ساز هوشمند قراردادها با شروط الزام‌آور
+                <i class="fa-solid fa-file-contract ml-1.5 text-rose-500"></i> فرم‌ساز قرارداد با تحلیل ریسک و چندامضایی
             </span>
             <span class="text-[9px] text-slate-400">اسقاط خیارات و شرط داوری</span>
         </div>
@@ -1612,18 +1602,29 @@
 
         <div class="grid grid-cols-2 gap-2">
             <div class="space-y-1">
-                <label for="contractAmount" class="text-[10px] font-bold text-slate-600 dark:text-slate-400 block text-right">مبلغ قرارداد / ثمن (ریال):</label>
-                <input type="text" inputmode="numeric" id="contractAmount" oninput="handleMaskedCurrencyInput(this);" placeholder="مبلغ به ریال" class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-2 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none font-mono tabular-nums">
+                <div class="flex justify-between items-center">
+                    <label for="contractAmount" class="text-[10px] font-bold text-slate-600 dark:text-slate-400 block text-right">مبلغ قرارداد / ثمن:</label>
+                    <div class="currency-toggle-pill" data-target="contractAmount">
+                        <button type="button" class="currency-toggle-btn active" onclick="setCurrencyUnit('contractAmount', 'rial', this);">ریال</button>
+                        <button type="button" class="currency-toggle-btn" onclick="setCurrencyUnit('contractAmount', 'toman', this);">تومان</button>
+                    </div>
+                </div>
+                <input type="text" inputmode="numeric" id="contractAmount" data-unit="rial" oninput="handleMaskedCurrencyInput(this);" placeholder="مبلغ ثمن" class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-2 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none font-mono tabular-nums">
                 <div class="text-[9px] text-amber-500 font-medium text-left" id="contractAmount_words"></div>
             </div>
             <div class="space-y-1">
-                <label for="dailyPenaltyAmount" class="text-[10px] font-bold text-slate-600 dark:text-slate-400 block text-right">وجه التزام روزشمار تأخیر (ریال):</label>
-                <input type="text" inputmode="numeric" id="dailyPenaltyAmount" oninput="handleMaskedCurrencyInput(this);" placeholder="خسارت روزانه" class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-2 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none font-mono tabular-nums">
+                <div class="flex justify-between items-center">
+                    <label for="dailyPenaltyAmount" class="text-[10px] font-bold text-slate-600 dark:text-slate-400 block text-right">وجه التزام روزشمار تأخیر:</label>
+                    <div class="currency-toggle-pill" data-target="dailyPenaltyAmount">
+                        <button type="button" class="currency-toggle-btn active" onclick="setCurrencyUnit('dailyPenaltyAmount', 'rial', this);">ریال</button>
+                        <button type="button" class="currency-toggle-btn" onclick="setCurrencyUnit('dailyPenaltyAmount', 'toman', this);">تومان</button>
+                    </div>
+                </div>
+                <input type="text" inputmode="numeric" id="dailyPenaltyAmount" data-unit="rial" oninput="handleMaskedCurrencyInput(this);" placeholder="خسارت روزانه" class="w-full bg-slate-100 dark:bg-slate-900/90 text-slate-800 dark:text-amber-100 rounded-xl px-2 py-2 text-xs border border-black/10 dark:border-white/20 focus:outline-none font-mono tabular-nums">
                 <div class="text-[9px] text-amber-500 font-medium text-left" id="dailyPenaltyAmount_words"></div>
             </div>
         </div>
 
-        <!-- سوییچ‌های شیک کشویی با استایل iOS -->
         <div class="space-y-2 pt-2 border-t border-black/5 dark:border-white/5">
             <div class="flex items-center justify-between p-2 rounded-2xl bg-black/5 dark:bg-white/5">
                 <span class="text-[11px] font-bold text-slate-700 dark:text-slate-300">درج شرط داوری مرضی‌الطرفین جهت حل اختلاف بدون مراجعه به دادگاه</span>
@@ -1634,7 +1635,7 @@
             </div>
 
             <div class="flex items-center justify-between p-2 rounded-2xl bg-black/5 dark:bg-white/5">
-                <span class="text-[11px] font-bold text-slate-700 dark:text-slate-300">اسقاط کافه خیارات قانونی ولو غبن فاحش یا افحش با استثنای تدلیس</span>
+                <span class="text-[11px] font-bold text-slate-700 dark:text-slate-300">اسقاط کافه خیارات قانونی ولو غبن فاحش با استثنای تدلیس</span>
                 <div id="waiveAllOptionsToggle" class="custom-toggle active" onclick="toggleCustomSwitch(this, 'waiveAllOptionsCheck'); triggerHaptic('selection');">
                     <div class="custom-toggle-thumb"></div>
                 </div>
@@ -1642,33 +1643,41 @@
             </div>
         </div>
 
-        <!-- بخش امضای لمسی دیجیتال طرفین با انتخاب رنگ جوهر -->
-        <div class="space-y-1.5 pt-2 border-t border-black/5 dark:border-white/5">
+        <!-- پد امضای چندطرفه با امکان انتخاب سمت (طرف اول / طرف دوم / شاهد) -->
+        <div class="space-y-2 pt-2 border-t border-black/5 dark:border-white/5">
             <div class="flex justify-between items-center text-[10px] font-bold text-slate-600 dark:text-slate-400">
-                <div class="flex items-center space-x-2 space-x-reverse">
-                    <span>امضای دیجیتال (لمسی / با قلم):</span>
-                    <div class="flex items-center space-x-1.5 space-x-reverse mr-2">
-                        <button type="button" onclick="setSignatureInkColor('#eab308');" class="w-4 h-4 rounded-full bg-amber-500 border border-white/40 cursor-pointer p-0" title="طلایی"></button>
-                        <button type="button" onclick="setSignatureInkColor('#2563eb');" class="w-4 h-4 rounded-full bg-blue-600 border border-white/40 cursor-pointer p-0" title="سرمه‌ای"></button>
-                        <button type="button" onclick="setSignatureInkColor('#e11d48');" class="w-4 h-4 rounded-full bg-rose-600 border border-white/40 cursor-pointer p-0" title="قرمز شرابی"></button>
-                    </div>
+                <div class="flex items-center space-x-1.5 space-x-reverse">
+                    <span>امضای دیجیتال:</span>
+                    <select id="signaturePartySelector" class="bg-black/5 dark:bg-white/10 text-amber-500 rounded-lg p-1 border border-white/10 text-[10px]">
+                        <option value="party1">طرف اول (موجر/فروشنده)</option>
+                        <option value="party2">طرف دوم (مستاجر/خریدار)</option>
+                        <option value="witness1">شاهد اول</option>
+                        <option value="witness2">شاهد دوم</option>
+                    </select>
                 </div>
-                <button type="button" onclick="clearSignatureCanvas();" class="text-rose-500 hover:underline border-none bg-transparent cursor-pointer font-bold btn-spring">
-                    <i class="fa-solid fa-eraser ml-1"></i> پاک کردن امضا
-                </button>
+                <div class="flex items-center space-x-1.5 space-x-reverse">
+                    <button type="button" onclick="setSignatureInkColor('#eab308');" class="w-4 h-4 rounded-full bg-amber-500 border border-white/40 cursor-pointer p-0" title="طلایی"></button>
+                    <button type="button" onclick="setSignatureInkColor('#2563eb');" class="w-4 h-4 rounded-full bg-blue-600 border border-white/40 cursor-pointer p-0" title="سرمه‌ای"></button>
+                    <button type="button" onclick="setSignatureInkColor('#e11d48');" class="w-4 h-4 rounded-full bg-rose-600 border border-white/40 cursor-pointer p-0" title="قرمز"></button>
+                    <button type="button" onclick="clearSignatureCanvas();" class="text-rose-500 hover:underline border-none bg-transparent cursor-pointer font-bold btn-spring mr-2">
+                        <i class="fa-solid fa-eraser ml-1"></i> پاکسازی
+                    </button>
+                </div>
             </div>
             <canvas id="contractSignaturePad" class="signature-canvas"></canvas>
+            <div id="savedSignaturesPreview" class="grid grid-cols-4 gap-2 pt-1"></div>
         </div>
 
         <button onclick="generateSmartContract(); triggerHaptic('medium');" class="w-full bg-gradient-to-r from-amber-600 to-rose-600 text-white font-bold py-2.5 rounded-xl text-xs border-none cursor-pointer shadow-md transition hover:opacity-90 btn-spring">
-            تولید متن رسمی قرارداد و اعمال شروط
+            تولید متن رسمی، تحلیل ریسک قرارداد و اعمال شروط
         </button>
 
+        <div id="contractRiskAnalysisBox" class="hidden sub-box border border-amber-500/30 space-y-1.5 text-xs"></div>
         <div id="contractOutputBox" class="hidden sub-box selectable-text text-xs leading-loose font-medium p-3 rounded-2xl max-h-60 overflow-y-auto"></div>
 
         <button onclick="exportContractPDF(); triggerHaptic('light');" class="w-full bg-black/5 dark:bg-white/10 hover:bg-black/10 text-amber-500 py-2.5 rounded-xl text-xs font-bold border border-amber-500/20 cursor-pointer flex items-center justify-center space-x-1 space-x-reverse btn-spring">
             <i class="fa-solid fa-file-pdf ml-1 text-rose-500"></i>
-            <span>صدور مستقیم فایل PDF قرارداد استاندارد با مهر و واترمارک رسمی A4</span>
+            <span>صدور فایل PDF رسمی قرارداد با مهرهای چندطرفه و واتر‌مارک A4</span>
         </button>
     </div>
 </section>
@@ -1685,7 +1694,7 @@
         </span>
     </div>
 
-    <!-- ردیف فیلتر سراسری Chroma-Coding بر مبنای موضوعات حقوقی -->
+    <!-- ردیف فیلتر سراسری کروموکدینگ موضوعات حقوقی -->
     <div class="flex items-center space-x-1.5 space-x-reverse overflow-x-auto hide-scrollbar pb-1 text-[10px]" id="knowledgeFilterPills">
         <button onclick="filterKnowledgeHub('all', this);" class="k-pill active px-3.5 py-1.5 rounded-full bg-blue-600 text-white font-bold transition flex-shrink-0 cursor-pointer border-none shadow-md btn-spring">همه مراجع</button>
         <button onclick="filterKnowledgeHub('مدنی', this);" class="k-pill px-3.5 py-1.5 rounded-full bg-black/5 dark:bg-white/10 text-slate-700 dark:text-slate-300 font-bold transition flex-shrink-0 cursor-pointer border-none hover:bg-black/10 btn-spring">حقوق مدنی</button>
@@ -1699,7 +1708,7 @@
         </button>
     </div>
 
-    <!-- بخش زیرتب‌های تجمیع‌شده هاب دانش -->
+    <!-- زیرتب‌های هاب دانش -->
     <div class="grid grid-cols-3 gap-1.5 p-1 bg-black/5 dark:bg-white/5 rounded-2xl text-[10px] font-bold border border-white/5">
         <button onclick="switchKnowledgeSubTab('sub-terms');" id="subBtn-terms" class="p-2 rounded-xl bg-white dark:bg-slate-800 text-blue-500 shadow-md border-none cursor-pointer btn-spring">اصطلاحات</button>
         <button onclick="switchKnowledgeSubTab('sub-laws');" id="subBtn-laws" class="p-2 rounded-xl text-slate-600 dark:text-slate-300 border-none bg-transparent cursor-pointer btn-spring">قوانین و مواد</button>
@@ -1724,7 +1733,7 @@
         <div id="lawsLoadingObserver" class="h-6 w-full flex items-center justify-center text-[10px] text-slate-500"></div>
     </div>
 
-    <!-- زیرمجموعه ۳: سامانه‌های قضایی و بانک سوالات متداول -->
+    <!-- زیرمجموعه ۳: سامانه‌های قضایی و سوالات متداول -->
     <div id="subTab-portals" class="hidden space-y-3">
         <div class="font-bold text-[11px] text-slate-700 dark:text-slate-300 flex items-center">
             <i class="fa-solid fa-link ml-1.5 text-blue-500"></i> درگاه‌های رسمی خدمات الکترونیک قضایی
@@ -1840,7 +1849,7 @@
             </button>
         </div>
 
-        <!-- پاسخ‌های دریافتی و پیگیری اختصاصی موکل -->
+        <!-- پاسخ‌های دریافتی و پیگیری موکل -->
         <div class="space-y-2">
             <div class="flex items-center justify-between">
                 <span class="text-[11px] font-bold text-slate-700 dark:text-slate-300">پرسش‌ها و پاسخ‌های پیگیری‌شده:</span>
@@ -1856,7 +1865,7 @@
         </div>
     </div>
 
-    <!-- ۳. اسکنر نوری اسناد و احکام قضایی OCR با Lazy Load کتابخانه و مدیریت حافظه -->
+    <!-- ۳. اسکنر نوری اسناد و احکام قضایی OCR با Lazy Load کتابخانه -->
     <div id="advisorySub-ocr" class="hidden space-y-3">
         <div class="ultra-glass p-4 rounded-3xl space-y-3 shadow-md border border-black/5 dark:border-white/10">
             <div class="sub-box text-[10px] leading-relaxed text-slate-600 dark:text-slate-300">
@@ -1994,202 +2003,202 @@
 </main>
 </div>
 </div>
+
 <!-- دراور چندرسانه‌ای مدرن (Media Drawer): پادکست، اخبار، ویدیو، استریم و اینفوگرافیک -->
-    <div id="mediaDrawer" class="bottom-drawer ultra-glass max-h-[85vh]">
-        <div class="w-12 h-1.5 bg-slate-400/40 rounded-full mx-auto mb-3 cursor-grab flex-shrink-0"></div>
-        <div class="flex items-center justify-between pb-2 mb-3 border-b border-black/10 dark:border-white/10 flex-shrink-0">
-            <span class="font-bold text-xs text-amber-500 flex items-center">
-                <i class="fa-solid fa-photo-film ml-1.5 text-purple-500"></i> مرکز چندرسانه‌ای و آموزش‌های بصری
-            </span>
-            <button onclick="closeAllActiveDrawers();" class="text-slate-400 hover:text-white border-none bg-transparent cursor-pointer btn-spring">
-                <i class="fa-solid fa-xmark text-base"></i>
-            </button>
+<div id="mediaDrawer" class="bottom-drawer ultra-glass max-h-[85vh]">
+    <div class="w-12 h-1.5 bg-slate-400/40 rounded-full mx-auto mb-3 cursor-grab flex-shrink-0"></div>
+    <div class="flex items-center justify-between pb-2 mb-3 border-b border-black/10 dark:border-white/10 flex-shrink-0">
+        <span class="font-bold text-xs text-amber-500 flex items-center">
+            <i class="fa-solid fa-photo-film ml-1.5 text-purple-500"></i> مرکز چندرسانه‌ای و آموزش‌های بصری
+        </span>
+        <button onclick="closeAllActiveDrawers();" class="text-slate-400 hover:text-white border-none bg-transparent cursor-pointer btn-spring">
+            <i class="fa-solid fa-xmark text-base"></i>
+        </button>
+    </div>
+
+    <!-- انتخاب‌گر تب‌های داخلی مدیا -->
+    <div class="grid grid-cols-5 gap-1 p-1 bg-black/5 dark:bg-white/5 rounded-2xl text-[9.5px] font-bold mb-3 flex-shrink-0 border border-white/5">
+        <button onclick="switchMediaSubTab('mSub-podcasts');" id="mBtn-podcasts" class="p-1.5 rounded-xl bg-white dark:bg-slate-800 text-amber-500 border-none cursor-pointer btn-spring">پادکست</button>
+        <button onclick="switchMediaSubTab('mSub-live');" id="mBtn-live" class="p-1.5 rounded-xl text-slate-500 border-none bg-transparent cursor-pointer btn-spring">پخش زنده</button>
+        <button onclick="switchMediaSubTab('mSub-series');" id="mBtn-series" class="p-1.5 rounded-xl text-slate-500 border-none bg-transparent cursor-pointer btn-spring">ویدیوها</button>
+        <button onclick="switchMediaSubTab('mSub-info');" id="mBtn-info" class="p-1.5 rounded-xl text-slate-500 border-none bg-transparent cursor-pointer btn-spring">اینفوگرافی</button>
+        <button onclick="switchMediaSubTab('mSub-news');" id="mBtn-news" class="p-1.5 rounded-xl text-slate-500 border-none bg-transparent cursor-pointer btn-spring">اخبار</button>
+    </div>
+
+    <div class="overflow-y-auto flex-1 space-y-3">
+        <!-- زیربخش پادکست‌ها -->
+        <div id="mSub-podcasts" class="space-y-2.5">
+            <div id="podcastsContainer" class="space-y-2.5"></div>
         </div>
 
-        <!-- انتخاب‌گر تب‌های داخلی مدیا -->
-        <div class="grid grid-cols-5 gap-1 p-1 bg-black/5 dark:bg-white/5 rounded-2xl text-[9.5px] font-bold mb-3 flex-shrink-0 border border-white/5">
-            <button onclick="switchMediaSubTab('mSub-podcasts');" id="mBtn-podcasts" class="p-1.5 rounded-xl bg-white dark:bg-slate-800 text-amber-500 border-none cursor-pointer btn-spring">پادکست</button>
-            <button onclick="switchMediaSubTab('mSub-live');" id="mBtn-live" class="p-1.5 rounded-xl text-slate-500 border-none bg-transparent cursor-pointer btn-spring">پخش زنده</button>
-            <button onclick="switchMediaSubTab('mSub-series');" id="mBtn-series" class="p-1.5 rounded-xl text-slate-500 border-none bg-transparent cursor-pointer btn-spring">ویدیوها</button>
-            <button onclick="switchMediaSubTab('mSub-info');" id="mBtn-info" class="p-1.5 rounded-xl text-slate-500 border-none bg-transparent cursor-pointer btn-spring">اینفوگرافی</button>
-            <button onclick="switchMediaSubTab('mSub-news');" id="mBtn-news" class="p-1.5 rounded-xl text-slate-500 border-none bg-transparent cursor-pointer btn-spring">اخبار</button>
+        <!-- زیربخش پخش زنده دادگاه و استریم Hls.js -->
+        <div id="mSub-live" class="hidden space-y-3">
+            <div class="flex items-center justify-between">
+                <span id="currentLiveTitle" class="text-[10px] text-emerald-500 font-bold bg-emerald-500/10 px-2.5 py-0.5 rounded-full border border-emerald-500/20">
+                    آماده انتخاب استریم
+                </span>
+            </div>
+            <div class="w-full aspect-video rounded-3xl overflow-hidden bg-black relative shadow-2xl border border-black/10 dark:border-white/10">
+                <video id="liveStreamVideo" controls playsinline webkit-playsinline class="w-full h-full object-contain"></video>
+                <div id="liveStreamPlaceholder" class="absolute inset-0 flex flex-col items-center justify-center bg-slate-950/90 text-white space-y-2 p-4 text-center">
+                    <i class="fa-solid fa-satellite-dish text-2xl text-rose-500 animate-pulse"></i>
+                    <span class="text-xs font-bold">یکی از کانال‌های زیر را جهت پخش زنده انتخاب فرمایید</span>
+                </div>
+            </div>
+            <div id="liveChannelsSelector" class="grid grid-cols-2 sm:grid-cols-3 gap-2"></div>
         </div>
 
-        <div class="overflow-y-auto flex-1 space-y-3">
-            <!-- زیربخش پادکست‌ها -->
-            <div id="mSub-podcasts" class="space-y-2.5">
-                <div id="podcastsContainer" class="space-y-2.5"></div>
-            </div>
+        <!-- زیربخش ویدیوهای آموزشی و حقوقی -->
+        <div id="mSub-series" class="hidden space-y-2.5">
+            <div id="seriesContainer" class="grid grid-cols-2 gap-2.5"></div>
+        </div>
 
-            <!-- زیربخش پخش زنده دادگاه و استریم Hls.js -->
-            <div id="mSub-live" class="hidden space-y-3">
-                <div class="flex items-center justify-between">
-                    <span id="currentLiveTitle" class="text-[10px] text-emerald-500 font-bold bg-emerald-500/10 px-2.5 py-0.5 rounded-full border border-emerald-500/20">
-                        آماده انتخاب استریم
-                    </span>
-                </div>
-                <div class="w-full aspect-video rounded-3xl overflow-hidden bg-black relative shadow-2xl border border-black/10 dark:border-white/10">
-                    <video id="liveStreamVideo" controls playsinline webkit-playsinline class="w-full h-full object-contain"></video>
-                    <div id="liveStreamPlaceholder" class="absolute inset-0 flex flex-col items-center justify-center bg-slate-950/90 text-white space-y-2 p-4 text-center">
-                        <i class="fa-solid fa-satellite-dish text-2xl text-rose-500 animate-pulse"></i>
-                        <span class="text-xs font-bold">یکی از کانال‌های زیر را جهت پخش زنده انتخاب فرمایید</span>
-                    </div>
-                </div>
-                <div id="liveChannelsSelector" class="grid grid-cols-2 sm:grid-cols-3 gap-2"></div>
-            </div>
+        <!-- زیربخش اینفوگرافیک با زوم لمسی -->
+        <div id="mSub-info" class="hidden space-y-2.5">
+            <div id="infographicsContainer" class="grid grid-cols-2 gap-2.5"></div>
+        </div>
 
-            <!-- زیربخش ویدیوهای آموزشی و حقوقی -->
-            <div id="mSub-series" class="hidden space-y-2.5">
-                <div id="seriesContainer" class="grid grid-cols-2 gap-2.5"></div>
-            </div>
+        <!-- زیربخش اخبار و بخشنامه‌های قضایی -->
+        <div id="mSub-news" class="hidden space-y-2.5">
+            <div id="newsContainer" class="space-y-2.5 selectable-text"></div>
+        </div>
+    </div>
+</div>
 
-            <!-- زیربخش اینفوگرافیک با زوم لمسی -->
-            <div id="mSub-info" class="hidden space-y-2.5">
-                <div id="infographicsContainer" class="grid grid-cols-2 gap-2.5"></div>
-            </div>
+<!-- پخش‌کننده صوتی شناور پادکست‌ها با ترنزیشن‌های نرم -->
+<div id="floatingAudioPlayer">
+    <audio id="mainAudioObj" class="hidden" ontimeupdate="handleAudioProgressUpdate();" onloadedmetadata="handleAudioMetadataLoaded();" onended="handleAudioPlaybackEnded();" onerror="handleAudioPlaybackError();"></audio>
 
-            <!-- زیربخش اخبار و بخشنامه‌های قضایی -->
-            <div id="mSub-news" class="hidden space-y-2.5">
-                <div id="newsContainer" class="space-y-2.5 selectable-text"></div>
+    <div class="flex items-center space-x-2.5 space-x-reverse max-w-[55%]">
+        <div id="playerThumb" class="w-10 h-10 rounded-xl overflow-hidden bg-slate-900 flex-shrink-0 flex items-center justify-center text-amber-500 border border-amber-500/30">
+            <i class="fa-solid fa-podcast text-base"></i>
+        </div>
+        <div class="flex flex-col text-right truncate">
+            <span id="playerTitle" class="text-xs font-bold text-slate-800 dark:text-slate-100 truncate">عنوان فایل صوتی</span>
+            <div class="flex items-center space-x-1.5 space-x-reverse text-[9px] text-slate-400 font-mono tabular-nums">
+                <span id="playerCurrentTime">00:00</span>
+                <span>/</span>
+                <span id="playerTotalTime">00:00</span>
             </div>
         </div>
     </div>
 
-    <!-- پخش‌کننده صوتی شناور پادکست‌ها با ترنزیشن‌های نرم -->
-    <div id="floatingAudioPlayer">
-        <audio id="mainAudioObj" class="hidden" ontimeupdate="handleAudioProgressUpdate();" onloadedmetadata="handleAudioMetadataLoaded();" onended="handleAudioPlaybackEnded();" onerror="handleAudioPlaybackError();"></audio>
-
-        <div class="flex items-center space-x-2.5 space-x-reverse max-w-[55%]">
-            <div id="playerThumb" class="w-10 h-10 rounded-xl overflow-hidden bg-slate-900 flex-shrink-0 flex items-center justify-center text-amber-500 border border-amber-500/30">
-                <i class="fa-solid fa-podcast text-base"></i>
-            </div>
-            <div class="flex flex-col text-right truncate">
-                <span id="playerTitle" class="text-xs font-bold text-slate-800 dark:text-slate-100 truncate">عنوان فایل صوتی</span>
-                <div class="flex items-center space-x-1.5 space-x-reverse text-[9px] text-slate-400 font-mono tabular-nums">
-                    <span id="playerCurrentTime">00:00</span>
-                    <span>/</span>
-                    <span id="playerTotalTime">00:00</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="flex items-center space-x-2 space-x-reverse">
-            <button id="playerSpeedBtn" onclick="cycleAudioPlaybackRate();" class="text-[9px] font-bold px-1.5 py-0.5 rounded-lg bg-black/5 dark:bg-white/10 text-slate-700 dark:text-slate-300 border-none cursor-pointer btn-spring tabular-nums">
-                1.0x
-            </button>
-            <button onclick="seekAudioRelative(-10);" title="۱۰ ثانیه قبل" class="text-slate-500 hover:text-slate-200 border-none bg-transparent cursor-pointer p-1 btn-spring">
-                <i class="fa-solid fa-rotate-left text-xs"></i>
-            </button>
-            <button id="playerPlayBtn" onclick="toggleAudioPlay();" class="text-2xl text-rose-600 hover:scale-105 transition cursor-pointer border-none bg-transparent p-0 flex items-center btn-spring">
-                <i class="fa-solid fa-circle-play"></i>
-            </button>
-            <button onclick="seekAudioRelative(10);" title="۱۰ ثانیه بعد" class="text-slate-500 hover:text-slate-200 border-none bg-transparent cursor-pointer p-1 btn-spring">
-                <i class="fa-solid fa-rotate-right text-xs"></i>
-            </button>
-            <button onclick="closeAudioPlayer();" title="بستن" class="text-slate-400 hover:text-rose-500 border-none bg-transparent cursor-pointer p-1 btn-spring">
-                <i class="fa-solid fa-xmark text-sm"></i>
-            </button>
-        </div>
-
-        <input type="range" id="playerProgressBar" value="0" min="0" max="100" step="0.1" oninput="handleAudioSeekInput(this.value);" class="absolute -top-1.5 left-3 right-3 h-1 accent-rose-600 bg-slate-200 dark:bg-slate-700 rounded-full cursor-pointer appearance-none">
+    <div class="flex items-center space-x-2 space-x-reverse">
+        <button id="playerSpeedBtn" onclick="cycleAudioPlaybackRate();" class="text-[9px] font-bold px-1.5 py-0.5 rounded-lg bg-black/5 dark:bg-white/10 text-slate-700 dark:text-slate-300 border-none cursor-pointer btn-spring tabular-nums">
+            1.0x
+        </button>
+        <button onclick="seekAudioRelative(-10);" title="۱۰ ثانیه قبل" class="text-slate-500 hover:text-slate-200 border-none bg-transparent cursor-pointer p-1 btn-spring">
+            <i class="fa-solid fa-rotate-left text-xs"></i>
+        </button>
+        <button id="playerPlayBtn" onclick="toggleAudioPlay();" class="text-2xl text-rose-600 hover:scale-105 transition cursor-pointer border-none bg-transparent p-0 flex items-center btn-spring">
+            <i class="fa-solid fa-circle-play"></i>
+        </button>
+        <button onclick="seekAudioRelative(10);" title="۱۰ ثانیه بعد" class="text-slate-500 hover:text-slate-200 border-none bg-transparent cursor-pointer p-1 btn-spring">
+            <i class="fa-solid fa-rotate-right text-xs"></i>
+        </button>
+        <button onclick="closeAudioPlayer();" title="بستن" class="text-slate-400 hover:text-rose-500 border-none bg-transparent cursor-pointer p-1 btn-spring">
+            <i class="fa-solid fa-xmark text-sm"></i>
+        </button>
     </div>
 
-    <!-- دکمه شناور پرش به بالا -->
-    <button id="backToTopBtn" onclick="window.scrollTo({ top: 0, behavior: 'smooth' }); triggerHaptic('light');" aria-label="پرش به بالا" class="hidden ultra-glass text-amber-500 hover:text-amber-400 shadow-xl border border-amber-500/30 btn-spring">
-        <i class="fa-solid fa-arrow-up text-sm"></i>
-    </button>
+    <input type="range" id="playerProgressBar" value="0" min="0" max="100" step="0.1" oninput="handleAudioSeekInput(this.value);" class="absolute -top-1.5 left-3 right-3 h-1 accent-rose-600 bg-slate-200 dark:bg-slate-700 rounded-full cursor-pointer appearance-none">
+</div>
 
-    <!-- پنجره شناور مستقل PiP برای ویدیوها -->
-    <div id="floatingPipContainer" style="display:none; position:fixed; bottom:90px; right:20px; width:220px; height:124px; z-index:140; border-radius:18px; overflow:hidden; box-shadow:0 12px 30px rgba(0,0,0,0.7); border:1px solid rgba(255,255,255,0.2);">
-        <div class="relative w-full h-full bg-black">
-            <div id="pipVideoHolder" class="w-full h-full"></div>
-            <button onclick="closePiP();" class="absolute top-1 right-1 w-6 h-6 rounded-full bg-black/70 text-white flex items-center justify-center text-[10px] cursor-pointer border-none z-10 btn-spring">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
-        </div>
+<!-- دکمه شناور پرش به بالا -->
+<button id="backToTopBtn" onclick="window.scrollTo({ top: 0, behavior: 'smooth' }); triggerHaptic('light');" aria-label="پرش به بالا" class="hidden ultra-glass text-amber-500 hover:text-amber-400 shadow-xl border border-amber-500/30 btn-spring">
+    <i class="fa-solid fa-arrow-up text-sm"></i>
+</button>
+
+<!-- پنجره شناور مستقل PiP برای ویدیوها -->
+<div id="floatingPipContainer" style="display:none; position:fixed; bottom:90px; right:20px; width:220px; height:124px; z-index:140; border-radius:18px; overflow:hidden; box-shadow:0 12px 30px rgba(0,0,0,0.7); border:1px solid rgba(255,255,255,0.2);">
+    <div class="relative w-full h-full bg-black">
+        <div id="pipVideoHolder" class="w-full h-full"></div>
+        <button onclick="closePiP();" class="absolute top-1 right-1 w-6 h-6 rounded-full bg-black/70 text-white flex items-center justify-center text-[10px] cursor-pointer border-none z-10 btn-spring">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
     </div>
+</div>
 
-    <!-- مودال نمایش مدیا، سینمایی و زوم اینفوگرافیک -->
-    <div id="mediaModal" class="hidden fixed inset-0 z-[120] flex items-center justify-center bg-black/85 backdrop-blur-md p-4">
-        <div id="mediaModalBox" class="relative w-full max-w-2xl ultra-glass p-3 sm:p-4 rounded-3xl space-y-3 transition-transform duration-300">
-            <div class="flex items-center justify-between pb-2 border-b border-black/10 dark:border-white/10">
-                <h3 id="mediaModalTitle" class="font-bold text-xs text-amber-500 truncate m-0">نمایش رسانه</h3>
-                <div class="flex items-center space-x-2 space-x-reverse">
-                    <button id="pipBtn" onclick="openNativePiP();" title="تصویر در تصویر" class="text-slate-400 hover:text-white p-1 border-none bg-transparent cursor-pointer btn-spring">
-                        <i class="fa-solid fa-up-right-from-square text-xs"></i>
-                    </button>
-                    <button id="cinematicBtn" onclick="toggleCinematicMode();" title="حالت سینمایی" class="text-slate-400 hover:text-white p-1 border-none bg-transparent cursor-pointer btn-spring">
-                        <i class="fa-solid fa-expand text-xs"></i>
-                    </button>
-                    <a id="mediaModalExternalBtn" href="#" target="_blank" rel="noopener noreferrer" title="بازکردن پیوند" class="text-slate-400 hover:text-white p-1 no-underline btn-spring">
-                        <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
-                    </a>
-                    <button onclick="closeMediaModal(); triggerHaptic('light');" class="text-slate-400 hover:text-rose-500 p-1 border-none bg-transparent cursor-pointer btn-spring">
-                        <i class="fa-solid fa-xmark text-base"></i>
-                    </button>
-                </div>
-            </div>
-            <div id="mediaModalContent" class="w-full flex items-center justify-center overflow-hidden rounded-2xl bg-black/40 min-h-[220px]"></div>
-        </div>
-    </div>
-
-    <!-- بک‌دراپ مشترک دراورها -->
-    <div id="globalModalBackdrop" onclick="closeAllActiveDrawers();" class="hidden fixed inset-0 z-[98] bg-black/60 backdrop-blur-sm transition-opacity"></div>
-
-    <!-- باتم‌شیت توضیحات کامل ماده و اصطلاح -->
-    <div id="lawBottomSheet" class="bottom-drawer ultra-glass max-h-[75vh]">
-        <div class="w-12 h-1.5 bg-slate-400/40 rounded-full mx-auto mb-2 cursor-grab flex-shrink-0"></div>
-        <div class="flex items-center justify-between pb-2 mb-2 border-b border-black/10 dark:border-white/10 flex-shrink-0">
-            <h4 id="lawBsTitle" class="font-bold text-xs text-rose-500 truncate m-0">شرح ماده قانونی</h4>
+<!-- مودال نمایش مدیا، سینمایی و زوم اینفوگرافیک -->
+<div id="mediaModal" class="hidden fixed inset-0 z-[120] flex items-center justify-center bg-black/85 backdrop-blur-md p-4">
+    <div id="mediaModalBox" class="relative w-full max-w-2xl ultra-glass p-3 sm:p-4 rounded-3xl space-y-3 transition-transform duration-300">
+        <div class="flex items-center justify-between pb-2 border-b border-black/10 dark:border-white/10">
+            <h3 id="mediaModalTitle" class="font-bold text-xs text-amber-500 truncate m-0">نمایش رسانه</h3>
             <div class="flex items-center space-x-2 space-x-reverse">
-                <button onclick="copyLawSheetContent();" title="کپی متن" class="text-slate-400 hover:text-white border-none bg-transparent cursor-pointer btn-spring">
-                    <i class="fa-solid fa-copy text-xs"></i>
+                <button id="pipBtn" onclick="openNativePiP();" title="تصویر در تصویر" class="text-slate-400 hover:text-white p-1 border-none bg-transparent cursor-pointer btn-spring">
+                    <i class="fa-solid fa-up-right-from-square text-xs"></i>
                 </button>
-                <button onclick="closeLawBottomSheet();" class="text-slate-400 hover:text-white border-none bg-transparent cursor-pointer btn-spring">
-                    <i class="fa-solid fa-xmark text-sm"></i>
+                <button id="cinematicBtn" onclick="toggleCinematicMode();" title="حالت سینمایی" class="text-slate-400 hover:text-white p-1 border-none bg-transparent cursor-pointer btn-spring">
+                    <i class="fa-solid fa-expand text-xs"></i>
                 </button>
-            </div>
-        </div>
-        <div id="lawBsContent" class="overflow-y-auto text-xs leading-loose text-slate-800 dark:text-slate-100 selectable-text flex-1"></div>
-    </div>
-
-    <!-- مودال استوری آموزشی -->
-    <div id="storySheetModal" class="hidden fixed inset-0 z-[130] bg-black/90 flex items-center justify-center p-4">
-        <div class="relative w-full max-w-md h-[78vh] bg-slate-900 rounded-3xl overflow-hidden flex flex-col justify-between p-4 border border-white/10">
-            <div class="flex items-center justify-between z-10">
-                <span id="storyTitle" class="text-xs font-bold text-white">نکته دادرسی روز</span>
-                <button onclick="closeStoryModal();" class="text-white hover:text-rose-500 border-none bg-transparent cursor-pointer btn-spring">
+                <a id="mediaModalExternalBtn" href="#" target="_blank" rel="noopener noreferrer" title="بازکردن پیوند" class="text-slate-400 hover:text-white p-1 no-underline btn-spring">
+                    <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                </a>
+                <button onclick="closeMediaModal(); triggerHaptic('light');" class="text-slate-400 hover:text-rose-500 p-1 border-none bg-transparent cursor-pointer btn-spring">
                     <i class="fa-solid fa-xmark text-base"></i>
                 </button>
             </div>
-            <div id="storyMediaContainer" class="flex-1 flex items-center justify-center text-center p-3 text-white text-xs leading-loose selectable-text"></div>
-            <div class="w-full bg-white/20 h-1.5 rounded-full overflow-hidden">
-                <div id="storyProgressBar" class="h-full bg-amber-500 transition-all duration-100" style="width: 0%;"></div>
-            </div>
         </div>
+        <div id="mediaModalContent" class="w-full flex items-center justify-center overflow-hidden rounded-2xl bg-black/40 min-h-[220px]"></div>
     </div>
+</div>
 
-    <!-- مودال جستجوی آنلاین مراجع ملی -->
-    <div id="advancedSearchModal" class="hidden fixed inset-0 z-[120] flex items-center justify-center bg-black/75 backdrop-blur-sm p-4">
-        <div class="w-full max-w-sm settings-glass p-4 rounded-3xl space-y-3">
-            <div class="flex items-center justify-between pb-2 border-b border-black/10 dark:border-white/10">
-                <span class="font-bold text-xs text-amber-500">جستجوی آنلاین در مراجع ملی</span>
-                <button onclick="closeAdvancedSearchModal();" class="text-slate-400 hover:text-white border-none bg-transparent cursor-pointer btn-spring">
-                    <i class="fa-solid fa-xmark text-sm"></i>
-                </button>
-            </div>
-            <input type="text" id="googleSearchInput" placeholder="عبارت یا ماده مدنظر..." class="w-full rounded-xl p-2.5 text-xs bg-slate-100 dark:bg-slate-900 text-slate-800 dark:text-white border border-black/10 dark:border-white/20 focus:outline-none focus:border-rose-500">
-            <button onclick="executeGoogleSearch();" class="w-full bg-gradient-to-r from-rose-700 to-amber-500 text-white font-bold py-2 rounded-xl text-xs border-none cursor-pointer btn-spring">
-                جستجو در پایگاه ملی قوانین
+<!-- بک‌دراپ مشترک دراورها -->
+<div id="globalModalBackdrop" onclick="closeAllActiveDrawers();" class="hidden fixed inset-0 z-[98] bg-black/60 backdrop-blur-sm transition-opacity"></div>
+
+<!-- باتم‌شیت توضیحات کامل ماده و اصطلاح -->
+<div id="lawBottomSheet" class="bottom-drawer ultra-glass max-h-[75vh]">
+    <div class="w-12 h-1.5 bg-slate-400/40 rounded-full mx-auto mb-2 cursor-grab flex-shrink-0"></div>
+    <div class="flex items-center justify-between pb-2 mb-2 border-b border-black/10 dark:border-white/10 flex-shrink-0">
+        <h4 id="lawBsTitle" class="font-bold text-xs text-rose-500 truncate m-0">شرح ماده قانونی</h4>
+        <div class="flex items-center space-x-2 space-x-reverse">
+            <button onclick="copyLawSheetContent();" title="کپی متن" class="text-slate-400 hover:text-white border-none bg-transparent cursor-pointer btn-spring">
+                <i class="fa-solid fa-copy text-xs"></i>
+            </button>
+            <button onclick="closeLawBottomSheet();" class="text-slate-400 hover:text-white border-none bg-transparent cursor-pointer btn-spring">
+                <i class="fa-solid fa-xmark text-sm"></i>
             </button>
         </div>
     </div>
+    <div id="lawBsContent" class="overflow-y-auto text-xs leading-loose text-slate-800 dark:text-slate-100 selectable-text flex-1"></div>
+</div>
 
-    <!-- کانتینر رندر مخفی کارت گرافیکی رسمی دادگاه -->
-    <div id="shareRenderBox" style="position:fixed; left:-9999px; top:-9999px; width:480px; opacity:0; pointer-events:none;"></div>
+<!-- مودال استوری آموزشی -->
+<div id="storySheetModal" class="hidden fixed inset-0 z-[130] bg-black/90 flex items-center justify-center p-4">
+    <div class="relative w-full max-w-md h-[78vh] bg-slate-900 rounded-3xl overflow-hidden flex flex-col justify-between p-4 border border-white/10">
+        <div class="flex items-center justify-between z-10">
+            <span id="storyTitle" class="text-xs font-bold text-white">نکته دادرسی روز</span>
+            <button onclick="closeStoryModal();" class="text-white hover:text-rose-500 border-none bg-transparent cursor-pointer btn-spring">
+                <i class="fa-solid fa-xmark text-base"></i>
+            </button>
+        </div>
+        <div id="storyMediaContainer" class="flex-1 flex items-center justify-center text-center p-3 text-white text-xs leading-loose selectable-text"></div>
+        <div class="w-full bg-white/20 h-1.5 rounded-full overflow-hidden">
+            <div id="storyProgressBar" class="h-full bg-amber-500 transition-all duration-100" style="width: 0%;"></div>
+        </div>
+    </div>
+</div>
 
-    <!-- ==========================================================================
-         اسکریپت‌های جامع جاوااسکریپت (هوش مصنوعی، موتورهای محاسباتی، گرافیک، موشن)
+<!-- مودال جستجوی آنلاین مراجع ملی -->
+<div id="advancedSearchModal" class="hidden fixed inset-0 z-[120] flex items-center justify-center bg-black/75 backdrop-blur-sm p-4">
+    <div class="w-full max-w-sm settings-glass p-4 rounded-3xl space-y-3">
+        <div class="flex items-center justify-between pb-2 border-b border-black/10 dark:border-white/10">
+            <span class="font-bold text-xs text-amber-500">جستجوی آنلاین در مراجع ملی</span>
+            <button onclick="closeAdvancedSearchModal();" class="text-slate-400 hover:text-white border-none bg-transparent cursor-pointer btn-spring">
+                <i class="fa-solid fa-xmark text-sm"></i>
+            </button>
+        </div>
+        <input type="text" id="googleSearchInput" placeholder="عبارت یا ماده مدنظر..." class="w-full rounded-xl p-2.5 text-xs bg-slate-100 dark:bg-slate-900 text-slate-800 dark:text-white border border-black/10 dark:border-white/20 focus:outline-none focus:border-rose-500">
+        <button onclick="executeGoogleSearch();" class="w-full bg-gradient-to-r from-rose-700 to-amber-500 text-white font-bold py-2 rounded-xl text-xs border-none cursor-pointer btn-spring">
+            جستجو در پایگاه ملی قوانین
+        </button>
+    </div>
+</div>
+
+<!-- کانتینر رندر مخفی کارت گرافیکی رسمی دادگاه -->
+<div id="shareRenderBox" style="position:fixed; left:-9999px; top:-9999px; width:480px; opacity:0; pointer-events:none;"></div>
+<!-- ==========================================================================
+         بخش اول اسکریپت‌ها: متغیرهای سیستمی، فرمت‌دهی مالی و ذخیره‌سازی داده
          ========================================================================== -->
     <script>
         /* ۱. متغیرهای سراسری، هویت تلگرام و پیکربندی */
@@ -2222,6 +2231,7 @@
         let lawBookmarks = [];
         let cumulativeInjuries = [];
         let personalNotes = [];
+        let savedContractSignatures = {};
         let selectedKnowledgeCat = 'all';
 
         const pageLimits = { dict: 12, laws: 10 };
@@ -2282,7 +2292,6 @@
             } catch (e) {}
         };
 
-        // افکت شوک نوری نقطه لمس
         document.addEventListener('pointerdown', (e) => {
             const circle = document.createElement('div');
             circle.className = 'touch-shockwave';
@@ -2334,7 +2343,6 @@
             }
         };
 
-        // مدیریت تغییر ارتفاع و کیبورد در موبایل
         window.addEventListener('focusin', (e) => {
             if (['INPUT', 'TEXTAREA', 'SELECT'].includes(e.target.tagName)) {
                 document.getElementById('mainNavContainer')?.classList.add('hidden');
@@ -2350,7 +2358,7 @@
             });
         }
 
-        /* ۴. توابع امنیتی ضد XSS و محاسبات ارقام و حروف فارسی */
+        /* ۴. توابع امنیتی، تبدیل ارقام و سوییچر تومان/ریال */
         function escapeHTML(str) {
             if (str === null || str === undefined) return '';
             return String(str)
@@ -2372,11 +2380,42 @@
             inputEl.value = toEnglishDigits(inputEl.value);
         };
 
+        window.setCurrencyUnit = function(inputId, targetUnit, btnEl) {
+            const input = document.getElementById(inputId);
+            if (!input) return;
+            const currentUnit = input.getAttribute('data-unit') || 'rial';
+            if (currentUnit === targetUnit) return;
+
+            let cleanVal = toEnglishDigits(input.value).replace(/\D/g, '');
+            if (cleanVal) {
+                let num = parseFloat(cleanVal);
+                if (currentUnit === 'rial' && targetUnit === 'toman') {
+                    num = Math.round(num / 10);
+                } else if (currentUnit === 'toman' && targetUnit === 'rial') {
+                    num = num * 10;
+                }
+                input.value = num.toLocaleString('en-US');
+            }
+
+            input.setAttribute('data-unit', targetUnit);
+
+            const pill = btnEl.closest('.currency-toggle-pill');
+            if (pill) {
+                pill.querySelectorAll('.currency-toggle-btn').forEach(b => b.classList.remove('active'));
+                btnEl.classList.add('active');
+            }
+
+            handleMaskedCurrencyInput(input);
+            triggerHaptic('selection');
+        };
+
         window.handleMaskedCurrencyInput = function(inputEl) {
             let cleanVal = toEnglishDigits(inputEl.value).replace(/\D/g, '');
+            const unit = inputEl.getAttribute('data-unit') || 'rial';
+            const wordsEl = document.getElementById(inputEl.id + '_words');
+
             if (!cleanVal) {
                 inputEl.value = '';
-                const wordsEl = document.getElementById(inputEl.id + '_words');
                 if (wordsEl) wordsEl.innerText = '';
                 return;
             }
@@ -2384,25 +2423,42 @@
             const num = parseFloat(cleanVal);
             inputEl.value = num.toLocaleString('en-US');
 
-            const wordsEl = document.getElementById(inputEl.id + '_words');
             if (wordsEl) {
-                const tomanVal = Math.round(num / 10);
+                let rialVal = unit === 'toman' ? num * 10 : num;
+                let tomanVal = Math.round(rialVal / 10);
                 wordsEl.innerText = `معادل: ${tomanVal.toLocaleString('fa-IR')} تومان (${numberToPersianWords(tomanVal)} تومان)`;
             }
         };
 
         function getNumericValueFromMasked(elementId) {
-            const raw = document.getElementById(elementId)?.value || '';
+            const el = document.getElementById(elementId);
+            if (!el) return 0;
+            const raw = el.value || '';
+            const unit = el.getAttribute('data-unit') || 'rial';
             const cleaned = toEnglishDigits(raw).replace(/,/g, '').trim();
-            return parseFloat(cleaned) || 0;
+            const val = parseFloat(cleaned) || 0;
+            return unit === 'toman' ? val * 10 : val;
         }
+
+        window.pipeValueToCourtFee = function(sourceId) {
+            const valRial = getNumericValueFromMasked(sourceId);
+            const target = document.getElementById('courtFeeInput');
+            if (!target) return;
+            const targetUnit = target.getAttribute('data-unit') || 'rial';
+            const finalVal = targetUnit === 'toman' ? Math.round(valRial / 10) : valRial;
+            target.value = finalVal.toLocaleString('en-US');
+            handleMaskedCurrencyInput(target);
+            target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            target.classList.add('ring-2', 'ring-blue-500');
+            setTimeout(() => target.classList.remove('ring-2', 'ring-blue-500'), 1500);
+            window.showToast('مبلغ با موفقیت به بخش تمبر دادرسی انتقال یافت', 'success');
+        };
 
         function formatToman(valRial) {
             if (isNaN(valRial) || valRial === null || valRial === undefined) return '۰ تومان';
             return Math.round(valRial / 10).toLocaleString('fa-IR') + ' تومان';
         }
 
-        // انیمیشن کنتور رولری ارقام (Rolling Ticker Animation)
         function animateNumberCount(targetElementId, finalVal, duration = 1000) {
             const el = document.getElementById(targetElementId);
             if (!el) return;
@@ -2476,12 +2532,12 @@
             switchEl.classList.toggle('active', chk.checked);
         };
 
-        /* ۵. پایگاه داده آفلاین IndexedDB */
+        /* ۵. پایگاه داده آفلاین IndexedDB و حافظه ابری تلگرام */
         let dbInstance = null;
         function initIndexedDB() {
             return new Promise((resolve) => {
                 if (!window.indexedDB) return resolve(null);
-                const req = indexedDB.open('ISF_Enterprise_DB', 5);
+                const req = indexedDB.open('ISF_Enterprise_DB', 6);
                 req.onupgradeneeded = (e) => {
                     const db = e.target.result;
                     if (!db.objectStoreNames.contains('store')) db.createObjectStore('store');
@@ -2702,8 +2758,7 @@
             });
             triggerHaptic('selection');
         };
-
-        /* ۸. جداول شاخص‌های بانک مرکزی و موتورهای محاسباتی با رسیدهای اوراق بهادار */
+        /* ۸. جداول شاخص‌های بانک مرکزی و موتورهای محاسباتی با رسیدهای رسمی */
         const cpiYearlyTable = {
             1370: 0.0700, 1375: 0.2660, 1380: 0.5552, 1385: 1.0588, 1390: 2.3768,
             1395: 5.7820, 1396: 6.3380, 1397: 8.3140, 1398: 11.152, 1399: 15.184,
@@ -2728,7 +2783,7 @@
             return +(base * mFactor).toFixed(2);
         }
 
-        // ۱. صلاحیت مراجع قضایی (قانون ۱۴۰۲)
+        // ۱. صلاحیت مراجع قضایی با مقایسه‌گر دوشاخه‌ای
         window.checkJurisdictionCompetence = function() {
             const type = document.getElementById('jurisdictionClaimType')?.value;
             const amount = getNumericValueFromMasked('jurisdictionAmountInput');
@@ -2737,6 +2792,8 @@
             let competentCourt = '';
             let finality = '';
             let details = '';
+            let peaceEligible = false;
+            let generalEligible = false;
 
             const peaceLimit = 1000000000;
 
@@ -2745,51 +2802,78 @@
                     competentCourt = 'منحصراً در صلاحیت دادگاه صلح (بند ۱ ماده ۴ قانون شوراها)';
                     finality = amount <= 500000000 ? 'رأی قطعی است (تا ۵۰ میلیون تومان)' : 'قابل تجدیدنظر در دادگاه تجدیدنظر استان (۲۰ روز مهلت)';
                     details = 'نیازی به ارجاع بدوی به شورای حل اختلاف نیست؛ دادگاه صلح مستقیماً رسیدگی و انشاء رأی می‌نماید.';
+                    peaceEligible = true;
                 } else {
                     competentCourt = 'دادگاه عمومی حقوقی شهرستان';
                     finality = 'قابل تجدیدنظر در دادگاه تجدیدنظر استان ظرف ۲۰ روز از تاریخ ابلاغ';
                     details = 'خواسته مازاد بر یکصد میلیون تومان در صلاحیت عام محاکم عمومی حقوقی قرار دارد.';
+                    generalEligible = true;
                 }
             } else if (type === 'eviction') {
                 competentCourt = 'منحصراً دادگاه صلح (بند ۳ ماده ۴)';
                 finality = 'دستور تخلیه فوری غیرقابل تجدیدنظر؛ حکم تخلیه قابل تجدیدنظرخواهی ظرف ۲۰ روز';
                 details = 'رسیدگی به کلیه دعاوی تخلیه عین مستأجره و تعدیل اجاره‌بها در صلاحیت دادگاه صلح است.';
+                peaceEligible = true;
             } else if (type === 'inheritance') {
                 competentCourt = 'دادگاه صلح (صدور گواهی حصر وراثت، تحریر و مهر و موم ترکه)';
                 finality = 'قابل اعتراض مطابق تشریفات امور حسبی';
                 details = 'رسیدگی به دعاوی اصل وراثت یا نفی نسب کماکان در صلاحیت دادگاه عمومی است.';
+                peaceEligible = true;
             } else if (type === 'car_accident') {
                 competentCourt = 'منحصراً دادگاه صلح (جنبه مالی تصادفات بدون محدودیت نصاب مالی)';
                 finality = 'مطابق نصاب احکام دادگاه صلح (تا ۵۰ میلیون قطعی، بالاتر قابل تجدیدنظر)';
                 details = 'مطالبه خسارت و افت قیمت ناشی از حوادث رانندگی بدون سقف مالی در دادگاه صلح مطرح می‌شود.';
+                peaceEligible = true;
             } else if (type === 'family_dowry') {
                 if (amount <= peaceLimit) {
                     competentCourt = 'دادگاه صلح (مهریه، نفقه و جهیزیه تا یک میلیارد ریال)';
                     finality = amount <= 500000000 ? 'قطعی' : 'قابل تجدیدنظرخواهی استان';
                     details = 'در مبالغ مازاد بر ۱۰۰ میلیون تومان، صلاحیت منحصراً با دادگاه خانواده است.';
+                    peaceEligible = true;
                 } else {
                     competentCourt = 'منحصراً دادگاه خانواده';
                     finality = 'قابل تجدیدنظرخواهی در دادگاه تجدیدنظر استان (۲۰ روز)';
                     details = 'دعاوی خانواده با بهای خواسته بیش از ۱۰۰ میلیون تومان در صلاحیت محاکم خانواده است.';
+                    generalEligible = true;
                 }
             } else {
                 competentCourt = 'دادگاه عمومی حقوقی محل وقوع ملک';
                 finality = 'قابل تجدیدنظر در دادگاه تجدیدنظر استان';
                 details = 'دعاوی خلع ید با اختلاف در مالکیت و اصل اثبات مالکیت املاک غیرمنقول در صلاحیت دادگاه عمومی است.';
+                generalEligible = true;
             }
 
             if (resBox) {
                 resBox.innerHTML = `
-                    <div class="court-receipt p-4 space-y-2 text-xs relative">
+                    <div class="court-receipt p-4 space-y-3 text-xs relative">
                         <div class="flex justify-between items-center border-b border-white/10 pb-2 relative z-10">
                             <span class="font-bold text-amber-400 flex items-center">
                                 <i class="fa-solid fa-stamp ml-1 text-emerald-400"></i> مرجع صالح قضایی تعیین‌شده
                             </span>
-                            <span class="hologram-badge px-2 py-0.5 rounded text-[8px] text-black font-black uppercase">معتبر سامانه</span>
+                            <span class="hologram-badge px-2 py-0.5 rounded text-[8px] text-black font-black uppercase">قانون ۱۴۰۲</span>
                         </div>
                         <div class="font-black text-emerald-400 text-sm leading-relaxed relative z-10">${escapeHTML(competentCourt)}</div>
                         <div class="text-amber-300 font-bold relative z-10">وضعیت قطعیت رأی: ${escapeHTML(finality)}</div>
-                        <p class="text-slate-300 m-0 leading-relaxed pt-1 border-t border-white/5 relative z-10">${escapeHTML(details)}</p>
+                        
+                        <!-- مقایسه‌گر دوشاخه‌ای وضعیت صلاحیت -->
+                        <div class="grid grid-cols-2 gap-2 pt-2 border-t border-white/10 text-[10px] relative z-10">
+                            <div class="p-2.5 rounded-xl ${peaceEligible ? 'bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 font-bold' : 'bg-black/20 border border-white/5 text-slate-400'}">
+                                <div class="flex items-center space-x-1 space-x-reverse mb-1">
+                                    <i class="fa-solid ${peaceEligible ? 'fa-circle-check text-emerald-400' : 'fa-circle-xmark text-slate-500'}"></i>
+                                    <span>دادگاه صلح</span>
+                                </div>
+                                <span class="text-[9px] block">دعاوی تا سقف ۱۰۰ میلیون، تخلیه، حصر وراثت و تصادفات بدون سقف.</span>
+                            </div>
+                            <div class="p-2.5 rounded-xl ${generalEligible ? 'bg-blue-500/20 border border-blue-500/40 text-blue-300 font-bold' : 'bg-black/20 border border-white/5 text-slate-400'}">
+                                <div class="flex items-center space-x-1 space-x-reverse mb-1">
+                                    <i class="fa-solid ${generalEligible ? 'fa-circle-check text-blue-400' : 'fa-circle-xmark text-slate-500'}"></i>
+                                    <span>دادگاه عمومی حقوقی</span>
+                                </div>
+                                <span class="text-[9px] block">دعاوی مازاد بر ۱۰۰ میلیون، اثبات مالکیت و دعاوی غیرمالی پیچیده.</span>
+                            </div>
+                        </div>
+
+                        <p class="text-slate-300 m-0 leading-relaxed pt-1 relative z-10">${escapeHTML(details)}</p>
                         <div class="perforated-line"></div>
                         <div class="flex justify-between items-center text-[9px] text-slate-400 pt-1 relative z-10">
                             <span>کد استناد: ISF-JUR-${Date.now().toString(36).toUpperCase()}</span>
@@ -2800,9 +2884,14 @@
             }
         };
 
-        // ۲. محاسبه تأخیر تأدیه
+        // ۲. محاسبه خسارت تأخیر تأدیه با نرخ تورم و نرخ سود بانکی
+        window.toggleDelayMethodOptions = function(method) {
+            document.getElementById('customRateBox')?.classList.toggle('hidden', method !== 'custom_rate');
+        };
+
         window.calculateDelayCompensationMonthly = function() {
             const principal = getNumericValueFromMasked('principalAmount');
+            const method = document.getElementById('delayCalculationMethod')?.value || 'cpi_monthly';
             const startYear = parseInt(document.getElementById('delayStartYear')?.value);
             const startMonth = parseInt(document.getElementById('delayStartMonth')?.value);
             const endYear = parseInt(document.getElementById('delayEndYear')?.value);
@@ -2815,28 +2904,47 @@
                 return;
             }
 
-            const cpiStart = getMonthlyCpi(startYear, startMonth);
-            const cpiEnd = getMonthlyCpi(endYear, endMonth);
-            const totalValueAtEnd = (principal * cpiEnd) / cpiStart;
-            const pureDelay = totalValueAtEnd - principal;
+            let totalValueAtEnd = 0;
+            let pureDelay = 0;
+            let methodTitle = '';
+            let methodSub = '';
+
+            const totalMonths = Math.max(1, ((endYear - startYear) * 12) + (endMonth - startMonth));
+
+            if (method === 'cpi_monthly') {
+                const cpiStart = getMonthlyCpi(startYear, startMonth);
+                const cpiEnd = getMonthlyCpi(endYear, endMonth);
+                totalValueAtEnd = (principal * cpiEnd) / cpiStart;
+                pureDelay = totalValueAtEnd - principal;
+                methodTitle = 'رسید محاسبه رسمی ماده ۵۲۲ ق.آ.د.م (تورمی بانک مرکزی)';
+                methodSub = `شاخص سررسید (${startYear}/${startMonth}): ${cpiStart} | شاخص تسویه (${endYear}/${endMonth}): ${cpiEnd}`;
+            } else {
+                let annualRate = 0.23;
+                if (method === 'custom_rate') {
+                    const custom = parseFloat(document.getElementById('customDelayRate')?.value);
+                    if (custom && custom > 0) annualRate = custom / 100;
+                }
+                const yearsFraction = totalMonths / 12;
+                pureDelay = principal * annualRate * yearsFraction;
+                totalValueAtEnd = principal + pureDelay;
+                methodTitle = method === 'custom_rate' ? `خسارت توافقی قراردادی (${(annualRate * 100).toFixed(1)}٪ سالانه)` : 'خسارت بر پایه نرخ مصوب بانکی (۲۳٪ سالانه)';
+                methodSub = `مدت تأخیر: ${totalMonths} ماه معادل ${yearsFraction.toFixed(2)} سال`;
+            }
 
             if (resBox) {
                 resBox.innerHTML = `
                     <div class="court-receipt p-4 space-y-2 text-xs relative">
                         <div class="flex justify-between items-center border-b border-white/10 pb-2 text-amber-400 font-bold relative z-10">
-                            <span><i class="fa-solid fa-file-invoice-dollar ml-1"></i> رسید رسمی محاسبه ماده ۵۲۲ ق.آ.د.م</span>
-                            <span class="hologram-badge px-2 py-0.5 rounded text-[8px] text-black font-black uppercase">نرخ رسمی</span>
+                            <span><i class="fa-solid fa-file-invoice-dollar ml-1"></i> ${escapeHTML(methodTitle)}</span>
+                            <span class="hologram-badge px-2 py-0.5 rounded text-[8px] text-black font-black uppercase">معتبر سامانه</span>
                         </div>
-                        <div class="grid grid-cols-2 gap-2 text-[10px] text-slate-400 pb-1 border-b border-white/5 relative z-10">
-                            <div>شاخص سررسید (${startYear}/${startMonth}): <span class="font-bold text-white font-mono tabular-nums">${cpiStart}</span></div>
-                            <div class="text-left">شاخص تسویه (${endYear}/${endMonth}): <span class="font-bold text-white font-mono tabular-nums">${cpiEnd}</span></div>
-                        </div>
+                        <div class="text-[10px] text-slate-400 pb-1 border-b border-white/5 relative z-10">${escapeHTML(methodSub)}</div>
                         <div class="flex justify-between text-slate-200 relative z-10">
                             <span>اصل مبلغ دین:</span>
                             <span class="font-bold font-mono tabular-nums">${formatToman(principal)}</span>
                         </div>
                         <div class="flex justify-between text-rose-400 font-bold relative z-10">
-                            <span>خسارت کاهش ارزش پول (تورم):</span>
+                            <span>خسارت کاهش ارزش پول / وجه التزام:</span>
                             <span class="font-mono tabular-nums">${formatToman(pureDelay)}</span>
                         </div>
                         <div class="pt-2 border-t border-dashed border-white/20 flex justify-between text-emerald-400 font-black text-sm relative z-10">
@@ -2846,7 +2954,7 @@
                         <div class="perforated-line"></div>
                         <div class="flex justify-between items-center text-[9px] text-slate-400 pt-1 relative z-10">
                             <span>شناسه سند: ISF-522-${Date.now().toString(36).toUpperCase()}</span>
-                            <span>استناد رسمی بانک مرکزی</span>
+                            <span>استناد رسمی آیین دادرسی مدنی</span>
                         </div>
                     </div>
                 `;
@@ -3053,7 +3161,7 @@
             btns?.classList.remove('hidden');
         };
 
-        // ۶. ارث و ترکه با تفکیک عرصه و اعیان (اصلاحیه ماده ۹۴۶ ق.م)
+        // ۶. سهم‌الارث و تقسیم ترکه
         window.handleInheritanceHeirsChange = function(val) {
             document.getElementById('maternalHajibNote')?.classList.toggle('hidden', val !== 'only_parents_with_hajib');
         };
@@ -3181,7 +3289,7 @@
             btns?.classList.remove('hidden');
         };
 
-        // ۷. دیات و ارش با قاعده تغلیظ توأم ماه حرام (ماده ۵۵۵ ق.م.ا)
+        // ۷. دیات و ارش با قاعده تغلیظ
         window.handleDiyehSelectorChange = function(val) {
             document.getElementById('customArshBox')?.classList.toggle('hidden', !val.startsWith('custom_arsh'));
         };
@@ -3437,7 +3545,7 @@
             }
         };
 
-        // ۱۱. مواعد قانونی دادرسی با احتساب سال کبیسه دقیق
+        // ۱۱. مواعد دادرسی با روزشمار معکوس و فایل تقویم ICS
         function isPersianLeapYear(y) {
             const matches = [1, 5, 9, 13, 17, 22, 26, 30];
             return matches.includes((y + 38) * 31 % 128);
@@ -3479,6 +3587,8 @@
                 }
             }
 
+            const targetDateStr = `${year}/${String(month).padStart(2,'0')}/${String(day).padStart(2,'0')}`;
+
             if (resBox) {
                 resBox.innerHTML = `
                     <div class="court-receipt p-4 space-y-2 text-xs relative">
@@ -3490,8 +3600,17 @@
                         <div class="text-[10px] text-slate-300 relative z-10">روز ابلاغ و اقدام در موعد محاسبه نمی‌گردد. در صورت مصادفت با تعطیلی رسمی، روز بعد ملاک است.</div>
                         <div class="pt-2 border-t border-dashed border-white/20 flex justify-between text-emerald-400 font-bold text-sm relative z-10">
                             <span>آخرین روز مجاز ثبت لایحه:</span>
-                            <span class="font-mono tabular-nums">${year}/${String(month).padStart(2,'0')}/${String(day).padStart(2,'0')}</span>
+                            <span class="font-mono tabular-nums">${targetDateStr}</span>
                         </div>
+
+                        <!-- دکمه استخراج فایل تقویم ICS برای تلفن همراه -->
+                        <div class="pt-2 flex justify-end relative z-10">
+                            <button onclick="downloadDeadlineICS('${escapeHTML(title)}', '${targetDateStr}');" class="bg-blue-600/20 hover:bg-blue-600 hover:text-white text-blue-400 border border-blue-500/30 px-3 py-1.5 rounded-xl text-[10px] font-bold cursor-pointer transition flex items-center space-x-1.5 space-x-reverse btn-spring">
+                                <i class="fa-solid fa-calendar-plus text-xs ml-1"></i>
+                                <span>افزودن یادآور به تقویم گوشی (.ICS)</span>
+                            </button>
+                        </div>
+
                         <div class="perforated-line"></div>
                         <div class="flex justify-between items-center text-[9px] text-slate-400 pt-1 relative z-10">
                             <span>کد اخطاریه: ISF-NOT-${Date.now().toString(36).toUpperCase()}</span>
@@ -3500,6 +3619,37 @@
                     </div>
                 `;
             }
+        };
+
+        window.downloadDeadlineICS = function(title, dateStr) {
+            const now = new Date();
+            const future = new Date(now.getTime() + (20 * 24 * 60 * 60 * 1000));
+            const startStr = future.toISOString().replace(/-|:|\.\d+/g, '').substring(0, 15) + 'Z';
+            const icsContent = [
+                'BEGIN:VCALENDAR',
+                'VERSION:2.0',
+                'PRODID:-//ISF Legal Assistant//FA',
+                'BEGIN:VEVENT',
+                `SUMMARY:آخرین مهلت قانونی: ${title}`,
+                `DESCRIPTION:موعد قانونی دادرسی طبق سامانه قضایی ISF. موعد پایانی: ${dateStr}`,
+                `DTSTART:${startStr}`,
+                `DTEND:${startStr}`,
+                'STATUS:CONFIRMED',
+                'BEGIN:VALARM',
+                'TRIGGER:-P1D',
+                'ACTION:DISPLAY',
+                'DESCRIPTION:یادآوری آخرین روز مهلت ثبت لایحه قضایی',
+                'END:VALARM',
+                'END:VEVENT',
+                'END:VCALENDAR'
+            ].join('\r\n');
+
+            const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `legal-deadline-${Date.now()}.ics`;
+            link.click();
+            window.showToast('فایل تقویم با موفقیت دانلود شد', 'success');
         };
 
         // ۱۲. اعسار مهریه
@@ -3601,7 +3751,7 @@
             }
         };
 
-        // ۱۴. تفکیک عدل‌ایران
+        // ۱۴. تفکیک‌کننده عدل‌ایران
         window.formatForAdliranPortal = function() {
             const subj = document.getElementById('adliranSubject')?.value || '';
             const p = document.getElementById('adliranPlaintiff')?.value || '';
@@ -3654,7 +3804,7 @@
             }
         };
 
-        // ۱۵. فرم‌ساز قراردادها و امضای لمسی کانواس
+        // ۱۵. فرم‌ساز قراردادها، تحلیل شروط و پد امضای چندطرفه
         let sigCanvas = null;
         let sigCtx = null;
         let isDrawingSig = false;
@@ -3695,7 +3845,12 @@
                 sigCtx.stroke();
             }
 
-            function endDraw() { isDrawingSig = false; }
+            function endDraw() {
+                if (isDrawingSig) {
+                    isDrawingSig = false;
+                    saveCurrentPartySignature();
+                }
+            }
 
             sigCanvas.addEventListener('mousedown', startDraw);
             sigCanvas.addEventListener('mousemove', draw);
@@ -3704,6 +3859,30 @@
             sigCanvas.addEventListener('touchstart', (e) => { e.preventDefault(); startDraw(e); }, { passive: false });
             sigCanvas.addEventListener('touchmove', (e) => { e.preventDefault(); draw(e); }, { passive: false });
             window.addEventListener('touchend', endDraw);
+        }
+
+        function saveCurrentPartySignature() {
+            if (!sigCanvas) return;
+            const party = document.getElementById('signaturePartySelector')?.value || 'party1';
+            savedContractSignatures[party] = sigCanvas.toDataURL('image/png');
+            renderSignaturesPreview();
+        }
+
+        function renderSignaturesPreview() {
+            const previewBox = document.getElementById('savedSignaturesPreview');
+            if (!previewBox) return;
+            const partyNames = {
+                party1: 'طرف اول',
+                party2: 'طرف دوم',
+                witness1: 'شاهد ۱',
+                witness2: 'شاهد ۲'
+            };
+            previewBox.innerHTML = Object.keys(savedContractSignatures).map(key => `
+                <div class="bg-black/30 p-1.5 rounded-xl border border-white/10 text-center">
+                    <span class="text-[9px] text-amber-500 block font-bold">${partyNames[key] || key}</span>
+                    <img src="${savedContractSignatures[key]}" class="h-8 max-w-full mx-auto object-contain">
+                </div>
+            `).join('');
         }
 
         window.setSignatureInkColor = function(color) {
@@ -3715,6 +3894,9 @@
         window.clearSignatureCanvas = function() {
             if (sigCanvas && sigCtx) {
                 sigCtx.clearRect(0, 0, sigCanvas.width, sigCanvas.height);
+                const party = document.getElementById('signaturePartySelector')?.value || 'party1';
+                delete savedContractSignatures[party];
+                renderSignaturesPreview();
                 window.showToast('امضا پاک شد');
             }
         };
@@ -3728,14 +3910,28 @@
             const arb = document.getElementById('arbitrationClauseCheck')?.checked;
             const waive = document.getElementById('waiveAllOptionsCheck')?.checked;
             const box = document.getElementById('contractOutputBox');
+            const riskBox = document.getElementById('contractRiskAnalysisBox');
 
             let title = type === 'sale' ? 'مبایعه‌نامه قطعی انتقال مال و بیع' : (type === 'settlement' ? 'سازش‌نامه و صلح‌نامه حقوقی رسمی' : 'قرارداد اجاره اماکن مسکونی');
 
-            const contractText = `بسمه تعالی\n${title}\n\nماده ۱ - طرفین قرارداد:\nطرف اول: ${p1}\nطرف دوم: ${p2}\n\nماده ۲ - مبلغ قرارداد:\nمبلغ کل این توافق برابر است با: ${formatToman(amt)} که نحوه پرداخت آن بر مبنای توافق طرفین خواهد بود.\n\nماده ۳ - وجه التزام و خسارت تأخیر:\nدر صورت استنکاف از اجرای تعهدات، طرف متخلف مکلف است روزانه مبلغ ${formatToman(penalty)} خسارت تأخیر بپردازد.\n\n${waive ? 'ماده ۴ - اسقاط خیارات:\nطرفین کافه خیارات قانونی ولو خیار غبن فاحش یا افحش را اسقاط نمودند.\n\n' : ''}${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات بدواً از طریق داور مرضی‌الطرفین حل‌وفصل خواهد شد.\n\n' : ''}این سند در ۲ نسخه با اعتبار واحد تنظیم گردید.\nامضای طرف اول                    امضای طرف دوم                    امضای شهود`;
+            const contractText = `بسمه تعالی\n${title}\n\nماده ۱ - طرفین قرارداد:\nطرف اول: ${p1}\nطرف دوم: ${p2}\n\nماده ۲ - مبلغ قرارداد:\nمبلغ کل این توافق برابر است با: ${formatToman(amt)} که نحوه پرداخت آن بر مبنای توافق طرفین خواهد بود.\n\nماده ۳ - وجه التزام و خسارت تأخیر:\nدر صورت استنکاف از اجرای تعهدات، طرف متخلف مکلف است روزانه مبلغ ${formatToman(penalty)} خسارت تأخیر بپردازد.\n\n${waive ? 'ماده ۴ - اسقاط خیارات:\nطرفین کافه خیارات قانونی ولو خیار غبن فاحش یا افحش را اسقاط نمودند به استثنای تدلیس.\n\n' : ''}${arb ? 'ماده ۵ - شرط داوری:\nکلیه اختلافات بدواً از طریق داور مرضی‌الطرفین حل‌وفصل خواهد شد و رأی داور قطعی و لازم‌الاجراست.\n\n' : ''}این سند در ۲ نسخه با اعتبار واحد تنظیم گردید.\nامضای طرف اول                    امضای طرف دوم                    امضای شهود`;
 
             if (box) {
                 box.textContent = contractText;
                 box.classList.remove('hidden');
+            }
+
+            if (riskBox) {
+                riskBox.innerHTML = `
+                    <div class="font-bold text-amber-400 pb-1 border-b border-white/10 flex items-center">
+                        <i class="fa-solid fa-shield-halved ml-1.5 text-rose-500"></i> تحلیل ریسک هوشمند شروط قرارداد:
+                    </div>
+                    <div class="space-y-1 pt-1 text-[11px] text-slate-300">
+                        ${waive ? '<p class="m-0 text-amber-300"><i class="fa-solid fa-triangle-exclamation ml-1 text-xs"></i> <b>شرط اسقاط خیارات:</b> حق فسخ به دلیل ضرر قیمت از بین رفته است؛ اما استثنای تدلیس حفظ گردید.</p>' : '<p class="m-0 text-emerald-400"><i class="fa-solid fa-check ml-1 text-xs"></i> خیارات قانونی اسقاط نشده‌اند؛ طرفین امکان فسخ قانونی را دارند.</p>'}
+                        ${arb ? '<p class="m-0 text-blue-300"><i class="fa-solid fa-gavel ml-1 text-xs"></i> <b>شرط داوری فعال:</b> در صورت بروز اختلاف، دادگاه دعوا را رد و به داور ارجاع می‌دهد.</p>' : '<p class="m-0 text-slate-400"><i class="fa-solid fa-info-circle ml-1 text-xs"></i> مرجع حل اختلاف محاکم صالح دادگستری خواهند بود.</p>'}
+                    </div>
+                `;
+                riskBox.classList.remove('hidden');
             }
         };
 
@@ -3766,13 +3962,20 @@
                 container.style.whiteSpace = 'pre-wrap';
                 container.textContent = text;
 
-                if (sigCanvas) {
-                    const sigImg = document.createElement('img');
-                    sigImg.src = sigCanvas.toDataURL('image/png');
-                    sigImg.style.maxHeight = '80px';
-                    sigImg.style.display = 'block';
-                    sigImg.style.marginTop = '20px';
-                    container.appendChild(sigImg);
+                const sigsGrid = document.createElement('div');
+                sigsGrid.style.display = 'flex';
+                sigsGrid.style.justifyContent = 'space-around';
+                sigsGrid.style.marginTop = '28px';
+
+                Object.keys(savedContractSignatures).forEach(key => {
+                    const img = document.createElement('img');
+                    img.src = savedContractSignatures[key];
+                    img.style.maxHeight = '65px';
+                    sigsGrid.appendChild(img);
+                });
+
+                if (Object.keys(savedContractSignatures).length > 0) {
+                    container.appendChild(sigsGrid);
                 }
 
                 document.body.appendChild(container);
@@ -3782,9 +3985,9 @@
                 const { jsPDF } = window.jspdf;
                 const pdf = new jsPDF('p', 'mm', 'a4');
                 pdf.addImage(imgData, 'PNG', 0, 0, 210, (canvas.height * 210) / canvas.width);
-                pdf.save('sijt-contract.pdf');
+                pdf.save('isf-smart-contract.pdf');
                 container.remove();
-                window.showToast('فایل PDF قرارداد دانلود شد', 'success');
+                window.showToast('فایل PDF قرارداد استاندارد دانلود شد', 'success');
             } catch (err) {
                 window.showToast('خطا در صدور فایل PDF', 'error');
             }
@@ -4176,7 +4379,7 @@
             else window.open(shareUrl, '_blank');
         };
 
-        /* ۱۲. استریم زنده و پلیر صوتی شناور */
+        /* ۱۲. استریم زنده، پلیر صوتی و مودال‌ها */
         window.playLiveHlsStream = async function(titleEnc, urlEnc, fallbackEnc) {
             const title = decodeURIComponent(titleEnc || '');
             let primaryUrl = decodeURIComponent(urlEnc || '');
@@ -4852,7 +5055,7 @@
             }
         };
 
-        /* ۱۴. جستجوی سراسری و صدور کارت دادگاه */
+        /* ۱۴. جستجوی سراسری و صدور کارت رسمی */
         let searchDebounceTimer = null;
         window.debouncedSearch = function(query) {
             clearTimeout(searchDebounceTimer);
@@ -4977,7 +5180,7 @@
             }
         };
 
-        /* ۱۵. تنظیمات، تم، آب‌وهوا و چرخه حیات سامانه */
+        /* ۱۵. تنظیمات، تم، آب‌وهوا و راه‌اندازی */
         window.toggleTheme = async function() {
             const isDark = document.documentElement.classList.toggle('dark');
             await AppStorage.set('sijt_theme', isDark ? 'dark' : 'light');
@@ -5075,7 +5278,7 @@
         };
 
         window.exportAppBackup = async function() {
-            const data = { bookmarks, lawBookmarks, personalNotes };
+            const data = { bookmarks, lawBookmarks, personalNotes, savedContractSignatures };
             const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
             const link = document.createElement('a');
             link.href = URL.createObjectURL(blob);
@@ -5094,6 +5297,10 @@
                     if (data.bookmarks) bookmarks = data.bookmarks;
                     if (data.lawBookmarks) lawBookmarks = data.lawBookmarks;
                     if (data.personalNotes) personalNotes = data.personalNotes;
+                    if (data.savedContractSignatures) {
+                        savedContractSignatures = data.savedContractSignatures;
+                        renderSignaturesPreview();
+                    }
 
                     await AppStorage.set('sijt_bookmarks', bookmarks);
                     await AppStorage.set('sijt_law_bookmarks', lawBookmarks);
@@ -5274,7 +5481,6 @@
             }, 100);
         };
 
-        // رفتار اسکرول: محو کردن نوار جستجو در اسکرول به پایین و دکمه پرش به بالا
         let lastScrollY = window.scrollY;
         window.addEventListener('scroll', () => {
             const currentScrollY = window.scrollY;
