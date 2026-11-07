@@ -4783,6 +4783,1284 @@
                 box.classList.add('hidden');
                 box.innerHTML = '';
 ### بخش ۵ از ۵: پایگاه داده IndexedDB، موتور OCR، چت‌بات، پلیر شناور، استریم و بستن سند
+/* ۷. پایگاه داده آفلاین IndexedDB و صف ارسال آفلاین */
+        let dbInstance = null;
+        function initIndexedDB() {
+            return new Promise((resolve) => {
+                if (!window.indexedDB) return resolve(null);
+                const req = indexedDB.open('ISF_Enterprise_DB', 6);
+                req.onupgradeneeded = (e) => {
+                    const db = e.target.result;
+                    if (!db.objectStoreNames.contains('store')) db.createObjectStore('store');
+                    if (!db.objectStoreNames.contains('offline_queue')) db.createObjectStore('offline_queue', { keyPath: 'id', autoIncrement: true });
+                };
+                req.onsuccess = (e) => { dbInstance = e.target.result; resolve(dbInstance); };
+                req.onerror = () => resolve(null);
+            });
+        }
+
+        window.AppStorage = {
+            async set(key, val) {
+                if (dbInstance) {
+                    try {
+                        const tx = dbInstance.transaction('store', 'readwrite');
+                        tx.objectStore('store').put(val, key);
+                    } catch (e) {}
+                }
+                try { localStorage.setItem(key, JSON.stringify(val)); } catch (e) {}
+                if (tg?.isVersionAtLeast && tg.isVersionAtLeast('6.9') && tg.CloudStorage) {
+                    try {
+                        const str = JSON.stringify(val);
+                        if (new Blob([str]).size < 3800) tg.CloudStorage.setItem(key, str, () => {});
+                    } catch (e) {}
+                }
+            },
+            async get(key) {
+                if (dbInstance) {
+                    try {
+                        const val = await new Promise((resolve) => {
+                            const tx = dbInstance.transaction('store', 'readonly');
+                            const req = tx.objectStore('store').get(key);
+                            req.onsuccess = () => resolve(req.result);
+                            req.onerror = () => resolve(null);
+                        });
+                        if (val !== undefined && val !== null) return val;
+                    } catch (e) {}
+                }
+                try {
+                    const localVal = localStorage.getItem(key);
+                    if (localVal) return JSON.parse(localVal);
+                } catch (e) {}
+                return null;
+            },
+            async clearAll() {
+                if (dbInstance) {
+                    try {
+                        dbInstance.transaction('store', 'readwrite').objectStore('store').clear();
+                        dbInstance.transaction('offline_queue', 'readwrite').objectStore('offline_queue').clear();
+                    } catch (e) {}
+                }
+                try { localStorage.clear(); } catch (e) {}
+            }
+        };
+
+        /* ۸. مدیریت توقف استریم‌ها هنگام تغییر وضعیت */
+        let activeHlsInstance = null;
+        window.stopActiveMediaStreams = function() {
+            const liveVid = document.getElementById('liveStreamVideo');
+            if (liveVid) {
+                liveVid.pause();
+                liveVid.removeAttribute('src');
+                liveVid.load();
+            }
+            if (activeHlsInstance) {
+                activeHlsInstance.destroy();
+                activeHlsInstance = null;
+            }
+            const modalVid = document.getElementById('modalActiveVideo');
+            if (modalVid) modalVid.pause();
+        };
+
+        /* ۹. ناوبری و فیلتر هاب‌ها */
+        window.switchHub = function(hubId) {
+            window.stopActiveMediaStreams();
+
+            const currentActive = document.querySelector('.hub-section:not(.hidden)');
+            if (currentActive) {
+                hubScrollPositions[currentActive.id] = window.scrollY;
+                currentActive.classList.add('hidden');
+            }
+
+            const target = document.getElementById(hubId);
+            if (target) {
+                target.classList.remove('hidden');
+                const prevY = hubScrollPositions[hubId] || 0;
+                window.scrollTo({ top: prevY, behavior: 'instant' });
+            }
+
+            document.querySelectorAll('.desktop-nav-item').forEach(btn => {
+                btn.classList.toggle('active', btn.getAttribute('data-hub') === hubId);
+            });
+
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                if (btn.getAttribute('data-hub') === hubId) {
+                    btn.classList.add('active-tab');
+                    updateNavIndicator(btn);
+                } else {
+                    btn.classList.remove('active-tab');
+                }
+            });
+        };
+
+        function updateNavIndicator(activeBtn) {
+            const pill = document.getElementById('navIndicatorPill');
+            const navContainer = document.getElementById('mainNavContainer');
+            if (!pill || !navContainer || !activeBtn) return;
+
+            const navRect = navContainer.getBoundingClientRect();
+            const btnRect = activeBtn.getBoundingClientRect();
+            const rightOffset = navRect.right - btnRect.right;
+            pill.style.width = `${btnRect.width}px`;
+            pill.style.right = `${rightOffset}px`;
+        }
+
+        window.filterToolsSegment = function(category, btn) {
+            document.querySelectorAll('#toolsFilterBar .tool-filter-btn').forEach(b => {
+                b.classList.remove('active', 'bg-rose-600', 'text-white');
+                b.classList.add('bg-black/5', 'dark:bg-white/10', 'text-slate-700', 'dark:text-slate-300');
+            });
+            if (btn) {
+                btn.classList.add('active', 'bg-rose-600', 'text-white');
+                btn.classList.remove('bg-black/5', 'dark:bg-white/10', 'text-slate-700', 'dark:text-slate-300');
+            }
+
+            const cards = document.querySelectorAll('.tool-card');
+            cards.forEach(card => {
+                if (category === 'all' || card.getAttribute('data-tool-cat') === category) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+            triggerHaptic('selection');
+        };
+
+        window.switchKnowledgeSubTab = function(subId) {
+            ['sub-terms', 'sub-laws', 'sub-portals'].forEach(id => {
+                const isTarget = (id === subId);
+                const box = document.getElementById(id === 'sub-terms' ? 'subTab-terms' : (id === 'sub-laws' ? 'subTab-laws' : 'subTab-portals'));
+                const btn = document.getElementById(id === 'sub-terms' ? 'subBtn-terms' : (id === 'sub-laws' ? 'subBtn-laws' : 'subBtn-portals'));
+                if (box) box.classList.toggle('hidden', !isTarget);
+                if (btn) {
+                    btn.className = isTarget 
+                        ? "p-2 rounded-xl bg-white dark:bg-slate-800 text-blue-500 shadow-md border-none cursor-pointer btn-spring"
+                        : "p-2 rounded-xl text-slate-600 dark:text-slate-300 border-none bg-transparent cursor-pointer btn-spring";
+                }
+            });
+            triggerHaptic('selection');
+        };
+
+        window.switchAdvisorySubTab = function(subId) {
+            ['sub-ai', 'sub-lawyer', 'sub-ocr'].forEach(id => {
+                const isTarget = (id === subId);
+                const box = document.getElementById(id === 'sub-ai' ? 'advisorySub-ai' : (id === 'sub-lawyer' ? 'advisorySub-lawyer' : 'advisorySub-ocr'));
+                const btn = document.getElementById(id === 'sub-ai' ? 'advisoryBtn-ai' : (id === 'sub-lawyer' ? 'advisoryBtn-lawyer' : 'advisoryBtn-ocr'));
+                if (box) box.classList.toggle('hidden', !isTarget);
+                if (btn) {
+                    btn.className = isTarget 
+                        ? "p-2 rounded-xl bg-white dark:bg-slate-800 text-emerald-500 shadow-md border-none cursor-pointer btn-spring"
+                        : "p-2 rounded-xl text-slate-600 dark:text-slate-300 border-none bg-transparent cursor-pointer btn-spring";
+                }
+            });
+            triggerHaptic('selection');
+        };
+
+        window.switchWorkspaceSubTab = function(subId) {
+            ['sub-notes', 'sub-forms', 'sub-cards'].forEach(id => {
+                const isTarget = (id === subId);
+                const box = document.getElementById(id === 'sub-notes' ? 'wsSub-notes' : (id === 'sub-forms' ? 'wsSub-forms' : 'wsSub-cards'));
+                const btn = document.getElementById(id === 'sub-notes' ? 'wsBtn-notes' : (id === 'sub-forms' ? 'wsBtn-forms' : 'wsBtn-cards'));
+                if (box) box.classList.toggle('hidden', !isTarget);
+                if (btn) {
+                    btn.className = isTarget 
+                        ? "p-2 rounded-xl bg-white dark:bg-slate-800 text-amber-500 shadow-md border-none cursor-pointer btn-spring"
+                        : "p-2 rounded-xl text-slate-600 dark:text-slate-300 border-none bg-transparent cursor-pointer btn-spring";
+                }
+            });
+            triggerHaptic('selection');
+        };
+
+        window.openMediaDrawer = function() {
+            window.closeAllActiveDrawers();
+            const d = document.getElementById('mediaDrawer');
+            const b = document.getElementById('globalModalBackdrop');
+            if (d && b) {
+                d.style.removeProperty('display');
+                d.classList.add('active-drawer');
+                b.classList.remove('hidden');
+                pushBackHandler(closeAllActiveDrawers);
+            }
+        };
+
+        window.closeAllActiveDrawers = function() {
+            window.stopActiveMediaStreams();
+            document.querySelectorAll('.bottom-drawer').forEach(d => {
+                d.classList.remove('active-drawer');
+                d.style.removeProperty('display');
+            });
+            const b = document.getElementById('globalModalBackdrop');
+            if (b) b.classList.add('hidden');
+            popBackHandler(closeAllActiveDrawers);
+        };
+
+        window.switchMediaSubTab = function(tabId) {
+            window.stopActiveMediaStreams();
+            const tabs = ['mSub-podcasts', 'mSub-live', 'mSub-series', 'mSub-info', 'mSub-news'];
+            tabs.forEach(t => {
+                const box = document.getElementById(t);
+                const btn = document.getElementById(t.replace('mSub-', 'mBtn-'));
+                if (t === tabId) {
+                    box?.classList.remove('hidden');
+                    if (btn) btn.className = "p-1.5 rounded-xl bg-white dark:bg-slate-800 text-amber-500 border-none cursor-pointer btn-spring";
+                } else {
+                    box?.classList.add('hidden');
+                    if (btn) btn.className = "p-1.5 rounded-xl text-slate-500 border-none bg-transparent cursor-pointer btn-spring";
+                }
+            });
+            triggerHaptic('selection');
+        };
+
+        /* ۱۰. اسکنر نوری OCR اسناد قضایی */
+        let selectedOcrFile = null;
+        window.handleOcrImageSelect = function(e) {
+            const file = e.target.files?.[0];
+            if (!file) return;
+            selectedOcrFile = file;
+
+            const preview = document.getElementById('ocrPreviewImage');
+            const prompt = document.getElementById('ocrUploadPrompt');
+            const startBtn = document.getElementById('ocrStartBtn');
+
+            if (preview && prompt) {
+                preview.src = URL.createObjectURL(file);
+                preview.classList.remove('hidden');
+                prompt.classList.add('hidden');
+            }
+            if (startBtn) {
+                startBtn.disabled = false;
+                startBtn.classList.remove('bg-slate-400', 'cursor-not-allowed');
+                startBtn.classList.add('bg-gradient-to-r', 'from-emerald-600', 'to-amber-500', 'cursor-pointer');
+            }
+        };
+
+        window.runDocumentOcr = async function() {
+            if (!selectedOcrFile) return;
+            const progressBox = document.getElementById('ocrProgressContainer');
+            const statusTxt = document.getElementById('ocrStatusText');
+            const percentTxt = document.getElementById('ocrPercentText');
+            const pBar = document.getElementById('ocrProgressBar');
+            const startBtn = document.getElementById('ocrStartBtn');
+            const resBox = document.getElementById('ocrResultBox');
+            const outTxt = document.getElementById('ocrOutputText');
+
+            progressBox?.classList.remove('hidden');
+            if (startBtn) startBtn.disabled = true;
+
+            let worker = null;
+            try {
+                if (statusTxt) statusTxt.textContent = 'در حال دریافت کتابخانه پردازش تصویر...';
+                await loadExternalScript('https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js');
+
+                worker = await Tesseract.createWorker('fas+eng', 1, {
+                    logger: m => {
+                        if (m.status === 'recognizing text') {
+                            const p = Math.round(m.progress * 100);
+                            if (statusTxt) statusTxt.textContent = 'در حال اسکن نوری خطوط سند...';
+                            if (percentTxt) percentTxt.textContent = p + '٪';
+                            if (pBar) pBar.style.width = p + '%';
+                        }
+                    }
+                });
+
+                const ret = await worker.recognize(selectedOcrFile);
+                if (outTxt) outTxt.value = ret.data.text;
+                resBox?.classList.remove('hidden');
+                window.showToast('متن سند با موفقیت استخراج گردید', 'success');
+            } catch (err) {
+                window.showToast('خطا در پردازش تصویر سند', 'error');
+            } finally {
+                if (worker) await worker.terminate();
+                if (startBtn) startBtn.disabled = false;
+            }
+        };
+
+        window.copyOcrResult = function() {
+            const txt = document.getElementById('ocrOutputText')?.value;
+            if (txt) {
+                navigator.clipboard.writeText(txt);
+                window.showToast('متن سند در کلیپ‌بورد کپی شد', 'success');
+            }
+        };
+
+        window.sendOcrToChatbot = function() {
+            const txt = document.getElementById('ocrOutputText')?.value;
+            if (!txt) return;
+            switchAdvisorySubTab('sub-ai');
+            const promptInput = document.getElementById('aiPromptInput');
+            if (promptInput) {
+                promptInput.value = `لطفاً متن استخراج‌شده زیر از این سند قضایی را تحلیل کنید و نکات حقوقی آن را ذکر نمایید:\n\n${txt}`;
+            }
+        };
+
+        window.saveOcrToPersonalNotes = function() {
+            const txt = document.getElementById('ocrOutputText')?.value;
+            if (!txt) return;
+            switchHub('hub-workspace');
+            switchWorkspaceSubTab('sub-notes');
+            const titleInput = document.getElementById('caseTitleInput');
+            const noteInput = document.getElementById('caseNoteInput');
+            if (titleInput) titleInput.value = 'استخراج OCR سند قضایی';
+            if (noteInput) noteInput.value = txt;
+        };
+
+        /* ۱۱. چت‌بات هوش مصنوعی و پرسش از وکیل با صف آفلاین */
+        window.runAiAssistant = async function() {
+            const input = document.getElementById('aiPromptInput');
+            const prompt = input?.value?.trim();
+            const container = document.getElementById('chatMessagesContainer');
+            const typing = document.getElementById('aiTypingIndicator');
+
+            if (!prompt) return;
+
+            const userMsg = document.createElement('div');
+            userMsg.className = 'flex justify-end';
+            userMsg.innerHTML = `<div class="bg-gradient-to-r from-emerald-600 to-amber-500 text-white rounded-2xl rounded-br-none p-3 max-w-[85%] shadow-sm">${escapeHTML(prompt)}</div>`;
+            container?.appendChild(userMsg);
+            if (input) input.value = '';
+            container?.scrollTo({ top: container.scrollHeight, behavior: 'smooth' });
+            typing?.classList.remove('hidden');
+
+            try {
+                const res = await fetch(API_URL, {
+                    method: 'POST',
+                    mode: 'cors',
+                    redirect: 'follow',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify({ action: 'ai_chat', userId: userId, prompt: prompt })
+                });
+
+                let reply = '';
+                if (res.ok) {
+                    const data = await res.json();
+                    reply = data?.reply || '';
+                }
+
+                if (!reply) {
+                    reply = `در خصوص سوال مطروحه پیرامون «${escapeHTML(prompt.substring(0, 35))}...»، بررسی حقوقی نشان می‌دهد که وفق مقررات جاری، حفظ ادله اثبات دعوا و رعایت مواعد مصرح در آیین دادرسی مدنی الزامی است. می‌توانید سوال خود را در زیرتب «پرسش از وکیل» نیز ثبت فرمایید.`;
+                }
+
+                const botMsg = document.createElement('div');
+                botMsg.className = 'flex justify-start';
+                botMsg.innerHTML = `<div class="bg-white dark:bg-slate-800 border border-black/5 dark:border-white/10 text-slate-800 dark:text-slate-100 rounded-2xl rounded-bl-none p-3 max-w-[90%] shadow-sm leading-relaxed">${escapeHTML(reply)}</div>`;
+                container?.appendChild(botMsg);
+            } catch (e) {
+                const errMsg = document.createElement('div');
+                errMsg.className = 'flex justify-start';
+                errMsg.innerHTML = `<div class="bg-rose-500/10 border border-rose-500/20 text-rose-500 rounded-2xl rounded-bl-none p-2.5 text-xs">ارتباط موقت با سرور برقرار نشد؛ پاسخ پیش‌فرض: رعایت مواعد قانونی و اصول ادله دادرسی را مدنظر داشته باشید.</div>`;
+                container?.appendChild(errMsg);
+            } finally {
+                typing?.classList.add('hidden');
+                container?.scrollTo({ top: container.scrollHeight, behavior: 'smooth' });
+            }
+        };
+
+        window.sendQuickChat = function(text) {
+            const input = document.getElementById('aiPromptInput');
+            if (input) {
+                input.value = text;
+                window.runAiAssistant();
+            }
+        };
+
+        window.clearChatHistory = function() {
+            const container = document.getElementById('chatMessagesContainer');
+            if (container) {
+                container.innerHTML = `<div class="flex justify-start"><div class="bg-white dark:bg-slate-800 border border-black/5 dark:border-white/10 text-slate-800 dark:text-slate-100 rounded-2xl rounded-bl-none p-3 max-w-[90%] shadow-sm">سلام! گفتگو پاک شد. پرسش خود را مطرح بفرمایید.</div></div>`;
+                window.showToast('تاریخچه گفتگو پاکسازی شد');
+            }
+        };
+
+        window.submitQuestion = async function() {
+            const cat = document.getElementById('questionCategory')?.value;
+            const input = document.getElementById('questionInput');
+            const text = input?.value?.trim();
+            const btn = document.getElementById('submitQuestionBtn');
+
+            if (!text) {
+                window.showToast('لطفاً شرح پرسش خود را بنویسید.', 'error');
+                return;
+            }
+
+            const item = {
+                action: 'submit_question',
+                userId: userId,
+                userName: userName,
+                category: cat,
+                question: text,
+                timestamp: Date.now()
+            };
+
+            if (btn) btn.disabled = true;
+
+            try {
+                if (!navigator.onLine) throw new Error('Offline');
+                await fetch(API_URL, {
+                    method: 'POST',
+                    mode: 'cors',
+                    redirect: 'follow',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify(item)
+                });
+                window.showToast('پرسش شما ثبت شد و هشدار برای وکیل ارسال گردید', 'success');
+                if (input) input.value = '';
+            } catch (err) {
+                if (dbInstance) {
+                    dbInstance.transaction('offline_queue', 'readwrite').objectStore('offline_queue').add(item);
+                }
+                window.showToast('پرسش در صف آفلاین ذخیره شد و به محض اتصال ارسال می‌شود.', 'info');
+                if (input) input.value = '';
+            } finally {
+                if (btn) btn.disabled = false;
+                window.loadUserFaqs();
+            }
+        };
+
+        window.loadUserFaqs = async function() {
+            const box = document.getElementById('userFaqsContainer');
+            if (!box) return;
+
+            try {
+                const res = await fetch(API_URL, {
+                    method: 'POST',
+                    mode: 'cors',
+                    redirect: 'follow',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify({ action: 'get_user_faqs', userId: userId })
+                });
+                if (res.ok) {
+                    const list = await res.json();
+                    if (Array.isArray(list) && list.length > 0) {
+                        box.innerHTML = list.map(q => `
+                            <div class="ultra-glass p-3 rounded-2xl space-y-1.5 border border-black/5 dark:border-white/10">
+                                <div class="flex justify-between items-center text-xs text-amber-500 font-bold">
+                                    <span>${escapeHTML(q.category || 'دسته حقوقی')}</span>
+                                    <span>${q.status === 'answered' ? '<span class="text-emerald-500 font-bold">پاسخ داده شد</span>' : '<span class="text-slate-400">در حال بررسی وکیل</span>'}</span>
+                                </div>
+                                <div class="font-bold text-xs text-slate-800 dark:text-slate-100">${escapeHTML(q.question)}</div>
+                                ${q.answer ? `<div class="bg-black/5 dark:bg-white/5 p-2 rounded-xl text-xs text-emerald-600 dark:text-emerald-400 leading-relaxed">${escapeHTML(q.answer)}</div>` : ''}
+                            </div>
+                        `).join('');
+                        return;
+                    }
+                }
+            } catch (e) {}
+
+            box.innerHTML = `<div class="text-center p-4 text-xs text-slate-500 ultra-glass rounded-2xl">هنوز پاسخی ثبت نشده است.</div>`;
+        };
+
+        /* ۱۲. مدیریت یادداشت‌های کارتابل */
+        window.savePersonalNote = async function() {
+            const title = document.getElementById('caseTitleInput')?.value?.trim();
+            const note = document.getElementById('caseNoteInput')?.value?.trim();
+
+            if (!title || !note) {
+                window.showToast('عنوان و شرح یادداشت را وارد کنید.', 'error');
+                return;
+            }
+
+            const item = {
+                id: 'note_' + Date.now(),
+                title: title,
+                text: note,
+                date: new Date().toLocaleDateString('fa-IR')
+            };
+
+            personalNotes.unshift(item);
+            await AppStorage.set('sijt_personal_notes', personalNotes);
+            renderPersonalNotes();
+
+            document.getElementById('caseTitleInput').value = '';
+            document.getElementById('caseNoteInput').value = '';
+            window.showToast('یادداشت در کارتابل ذخیره گردید', 'success');
+        };
+
+        window.saveCalculationToNotes = async function(calcTitle, resultText) {
+            const item = {
+                id: 'note_' + Date.now(),
+                title: `محاسبه: ${calcTitle}`,
+                text: resultText,
+                date: new Date().toLocaleDateString('fa-IR')
+            };
+
+            personalNotes.unshift(item);
+            await AppStorage.set('sijt_personal_notes', personalNotes);
+            renderPersonalNotes();
+            window.showToast('نتیجه در کارتابل پرونده‌ها ذخیره شد', 'success');
+        };
+
+        window.renderPersonalNotes = async function() {
+            const saved = await AppStorage.get('sijt_personal_notes');
+            if (Array.isArray(saved)) personalNotes = saved;
+
+            const container = document.getElementById('personalNotesContainer');
+            if (!container) return;
+
+            if (personalNotes.length === 0) {
+                container.innerHTML = `<div class="text-center p-4 text-xs text-slate-500 ultra-glass rounded-2xl">هیچ یادداشتی ثبت نگردیده است.</div>`;
+                return;
+            }
+
+            container.innerHTML = personalNotes.map((item, idx) => `
+                <div class="ultra-glass p-3 rounded-2xl space-y-1.5 border border-black/5 dark:border-white/10">
+                    <div class="flex justify-between items-center">
+                        <span class="font-bold text-xs text-amber-500">${escapeHTML(item.title)}</span>
+                        <div class="flex items-center space-x-2 space-x-reverse">
+                            <span class="text-xs text-slate-400 font-mono tabular-nums">${escapeHTML(item.date)}</span>
+                            <button onclick="deletePersonalNote(${idx});" class="text-rose-500 hover:text-rose-400 p-1 border-none bg-transparent cursor-pointer btn-spring">
+                                <i class="fa-solid fa-trash-can text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <p class="text-xs leading-relaxed text-slate-700 dark:text-slate-300 m-0 whitespace-pre-wrap">${escapeHTML(item.text)}</p>
+                </div>
+            `).join('');
+        };
+
+        window.deletePersonalNote = async function(idx) {
+            personalNotes.splice(idx, 1);
+            await AppStorage.set('sijt_personal_notes', personalNotes);
+            renderPersonalNotes();
+            window.showToast('یادداشت حذف شد');
+        };
+
+        window.filterPersonalNotes = function(query) {
+            const q = query.toLowerCase();
+            const container = document.getElementById('personalNotesContainer');
+            if (!container) return;
+
+            const filtered = personalNotes.filter(n => n.title.toLowerCase().includes(q) || n.text.toLowerCase().includes(q));
+            container.innerHTML = filtered.map((item, idx) => `
+                <div class="ultra-glass p-3 rounded-2xl space-y-1.5 border border-black/5 dark:border-white/10">
+                    <div class="flex justify-between items-center">
+                        <span class="font-bold text-xs text-amber-500">${escapeHTML(item.title)}</span>
+                        <span class="text-xs text-slate-400 font-mono tabular-nums">${escapeHTML(item.date)}</span>
+                    </div>
+                    <p class="text-xs leading-relaxed text-slate-700 dark:text-slate-300 m-0 whitespace-pre-wrap">${escapeHTML(item.text)}</p>
+                </div>
+            `).join('');
+        };
+
+        window.exportNotesPDF = async function() {
+            if (personalNotes.length === 0) {
+                window.showToast('یادداشتی جهت استخراج موجود نیست.', 'error');
+                return;
+            }
+            window.print();
+        };
+
+        window.shareNotesTelegram = function() {
+            if (personalNotes.length === 0) return;
+            let full = "گزارش یادداشت‌های پرونده ISF:\n\n";
+            personalNotes.forEach(n => {
+                full += `📌 ${n.title}\n${n.text.substring(0, 150)}...\n\n`;
+            });
+            const shareUrl = `https://t.me/share/url?url=${encodeURIComponent(full)}`;
+            if (tg?.openTelegramLink) tg.openTelegramLink(shareUrl);
+            else window.open(shareUrl, '_blank');
+        };
+
+        /* ۱۳. استریم زنده، پلیر صوتی شناور و مودال‌ها */
+        window.playLiveHlsStream = async function(titleEnc, urlEnc, fallbackEnc) {
+            const title = decodeURIComponent(titleEnc || '');
+            let primaryUrl = decodeURIComponent(urlEnc || '');
+
+            const video = document.getElementById('liveStreamVideo');
+            const placeholder = document.getElementById('liveStreamPlaceholder');
+            const titleEl = document.getElementById('currentLiveTitle');
+
+            if (!video) return;
+            if (titleEl) titleEl.innerText = title;
+            if (placeholder) placeholder.classList.add('hidden');
+
+            window.stopActiveMediaStreams();
+            await loadExternalScript('https://cdn.jsdelivr.net/npm/hls.js@latest');
+
+            if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                video.src = primaryUrl;
+                video.play().catch(() => {});
+                return;
+            }
+
+            if (window.Hls && Hls.isSupported()) {
+                activeHlsInstance = new Hls({ enableWorker: true, lowLatencyMode: true });
+                activeHlsInstance.loadSource(primaryUrl);
+                activeHlsInstance.attachMedia(video);
+                activeHlsInstance.on(Hls.Events.MANIFEST_PARSED, () => {
+                    video.play().catch(() => {});
+                });
+            } else {
+                window.showToast('مرورگر از HLS پشتیبانی نمی‌کند', 'error');
+            }
+        };
+
+        window.playAudioTrack = function(titleEnc, urlEnc, thumbEnc) {
+            const title = decodeURIComponent(titleEnc);
+            const url = decodeURIComponent(urlEnc);
+            const thumb = decodeURIComponent(thumbEnc);
+
+            const player = document.getElementById('floatingAudioPlayer');
+            const audio = document.getElementById('mainAudioObj');
+            const titleBox = document.getElementById('playerTitle');
+            const thumbBox = document.getElementById('playerThumb');
+            const playBtn = document.getElementById('playerPlayBtn');
+
+            if (!audio || !player) return;
+
+            if (titleBox) titleBox.innerText = title;
+            if (thumbBox) thumbBox.innerHTML = `<img src="${thumb}" class="w-full h-full object-cover">`;
+
+            audio.src = url;
+            audio.play().then(() => {
+                if (playBtn) playBtn.innerHTML = '<i class="fa-solid fa-circle-pause"></i>';
+            }).catch(() => {});
+
+            if (window.innerWidth >= 1024) player.style.transform = 'translateY(0)';
+            else player.style.transform = 'translateX(-50%) translateY(0)';
+        };
+
+        window.toggleAudioPlay = function() {
+            const audio = document.getElementById('mainAudioObj');
+            const btn = document.getElementById('playerPlayBtn');
+            if (!audio || !btn) return;
+
+            if (audio.paused) {
+                audio.play();
+                btn.innerHTML = '<i class="fa-solid fa-circle-pause"></i>';
+            } else {
+                audio.pause();
+                btn.innerHTML = '<i class="fa-solid fa-circle-play"></i>';
+            }
+        };
+
+        window.handleAudioProgressUpdate = function() {
+            const audio = document.getElementById('mainAudioObj');
+            const bar = document.getElementById('playerProgressBar');
+            const curTxt = document.getElementById('playerCurrentTime');
+            if (!audio || !bar) return;
+
+            if (audio.duration) {
+                bar.value = (audio.currentTime / audio.duration) * 100;
+                if (curTxt) {
+                    const m = Math.floor(audio.currentTime / 60);
+                    const s = Math.floor(audio.currentTime % 60);
+                    curTxt.innerText = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+                }
+            }
+        };
+
+        window.handleAudioMetadataLoaded = function() {
+            const audio = document.getElementById('mainAudioObj');
+            const totTxt = document.getElementById('playerTotalTime');
+            if (audio && totTxt && audio.duration) {
+                const m = Math.floor(audio.duration / 60);
+                const s = Math.floor(audio.duration % 60);
+                totTxt.innerText = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+            }
+        };
+
+        window.handleAudioSeekInput = function(val) {
+            const audio = document.getElementById('mainAudioObj');
+            if (audio && audio.duration) audio.currentTime = (val / 100) * audio.duration;
+        };
+
+        window.seekAudioRelative = function(sec) {
+            const audio = document.getElementById('mainAudioObj');
+            if (audio) audio.currentTime += sec;
+        };
+
+        window.cycleAudioPlaybackRate = function() {
+            const audio = document.getElementById('mainAudioObj');
+            const btn = document.getElementById('playerSpeedBtn');
+            if (!audio || !btn) return;
+
+            const rates = [1.0, 1.25, 1.5, 2.0];
+            const nextRate = rates[(rates.indexOf(audio.playbackRate) + 1) % rates.length];
+            audio.playbackRate = nextRate;
+            btn.innerText = `${nextRate.toFixed(1)}x`;
+        };
+
+        window.closeAudioPlayer = function() {
+            const player = document.getElementById('floatingAudioPlayer');
+            const audio = document.getElementById('mainAudioObj');
+            if (audio) audio.pause();
+            if (player) {
+                if (window.innerWidth >= 1024) player.style.transform = 'translateY(200%)';
+                else player.style.transform = 'translateX(-50%) translateY(200%)';
+            }
+        };
+
+        window.handleAudioPlaybackEnded = function() {
+            const playBtn = document.getElementById('playerPlayBtn');
+            if (playBtn) playBtn.innerHTML = '<i class="fa-solid fa-circle-play"></i>';
+        };
+
+        window.handleAudioPlaybackError = function() {
+            window.showToast('خطا در پخش فایل صوتی پادکست', 'error');
+        };
+
+        window.openVideoModal = function(titleEnc, urlEnc) {
+            window.stopActiveMediaStreams();
+            const title = decodeURIComponent(titleEnc);
+            const url = decodeURIComponent(urlEnc);
+            const modal = document.getElementById('mediaModal');
+            const titleBox = document.getElementById('mediaModalTitle');
+            const contentBox = document.getElementById('mediaModalContent');
+            const extLink = document.getElementById('mediaModalExternalBtn');
+
+            if (!modal || !contentBox) return;
+            if (titleBox) titleBox.innerText = title;
+            if (extLink) extLink.href = url;
+
+            contentBox.innerHTML = `
+                <video id="modalActiveVideo" controls autoplay playsinline class="w-full h-full max-h-[60vh] rounded-2xl object-contain">
+                    <source src="${url}" type="video/mp4">
+                </video>
+            `;
+
+            modal.classList.remove('hidden');
+            pushBackHandler(closeMediaModal);
+        };
+
+        window.openInfographicModal = function(titleEnc, imgEnc) {
+            const title = decodeURIComponent(titleEnc);
+            const img = decodeURIComponent(imgEnc);
+            const modal = document.getElementById('mediaModal');
+            const titleBox = document.getElementById('mediaModalTitle');
+            const contentBox = document.getElementById('mediaModalContent');
+            const extLink = document.getElementById('mediaModalExternalBtn');
+
+            if (!modal || !contentBox) return;
+            if (titleBox) titleBox.innerText = title;
+            if (extLink) extLink.href = img;
+
+            contentBox.innerHTML = `
+                <div class="zoom-pan-viewport" id="panViewport">
+                    <img src="${img}" id="panImage" class="zoom-pan-image" alt="${title}">
+                </div>
+            `;
+
+            modal.classList.remove('hidden');
+            setupPinchZoomPan('panViewport', 'panImage');
+            pushBackHandler(closeMediaModal);
+        };
+
+        function setupPinchZoomPan(viewportId, imgId) {
+            const vp = document.getElementById(viewportId);
+            const img = document.getElementById(imgId);
+            if (!vp || !img) return;
+
+            let scale = 1, posX = 0, posY = 0;
+            let startDist = 0, initialScale = 1;
+            let isDragging = false, startX = 0, startY = 0;
+
+            vp.addEventListener('touchstart', (e) => {
+                if (e.touches.length === 2) {
+                    startDist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+                    initialScale = scale;
+                } else if (e.touches.length === 1) {
+                    isDragging = true;
+                    startX = e.touches[0].clientX - posX;
+                    startY = e.touches[0].clientY - posY;
+                }
+            }, { passive: true });
+
+            vp.addEventListener('touchmove', (e) => {
+                if (e.touches.length === 2) {
+                    const dist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+                    scale = Math.min(Math.max(1, initialScale * (dist / startDist)), 4);
+                    img.style.transform = `translate(${posX}px, ${posY}px) scale(${scale})`;
+                } else if (e.touches.length === 1 && isDragging && scale > 1) {
+                    posX = e.touches[0].clientX - startX;
+                    posY = e.touches[0].clientY - startY;
+                    img.style.transform = `translate(${posX}px, ${posY}px) scale(${scale})`;
+                }
+            }, { passive: true });
+
+            vp.addEventListener('touchend', () => { isDragging = false; });
+        }
+
+        window.closeMediaModal = function() {
+            window.stopActiveMediaStreams();
+            const modal = document.getElementById('mediaModal');
+            const contentBox = document.getElementById('mediaModalContent');
+            if (modal) modal.classList.add('hidden');
+            if (contentBox) contentBox.innerHTML = '';
+            popBackHandler(closeMediaModal);
+        };
+
+        window.closePiP = function() {
+            const pip = document.getElementById('floatingPipContainer');
+            const holder = document.getElementById('pipVideoHolder');
+            if (pip) pip.style.display = 'none';
+            if (holder) holder.innerHTML = '';
+        };
+
+        window.openNativePiP = async function() {
+            const v = document.getElementById('modalActiveVideo');
+            if (v && document.pictureInPictureEnabled) {
+                try { await v.requestPictureInPicture(); } catch (e) {}
+            }
+        };
+
+        window.toggleCinematicMode = function() {
+            const box = document.getElementById('mediaModalBox');
+            if (box) {
+                box.classList.toggle('max-w-2xl');
+                box.classList.toggle('max-w-6xl');
+            }
+        };
+
+        window.openLawBottomSheet = function(titleEnc, contentEnc) {
+            const title = decodeURIComponent(titleEnc);
+            const content = decodeURIComponent(contentEnc);
+            const sheet = document.getElementById('lawBottomSheet');
+            const b = document.getElementById('globalModalBackdrop');
+            const titleBox = document.getElementById('lawBsTitle');
+            const contentBox = document.getElementById('lawBsContent');
+
+            if (!sheet || !b) return;
+            if (titleBox) titleBox.innerText = title;
+            if (contentBox) contentBox.innerText = content;
+
+            sheet.style.removeProperty('display');
+            sheet.classList.add('active-drawer');
+            b.classList.remove('hidden');
+            pushBackHandler(closeLawBottomSheet);
+        };
+
+        window.closeLawBottomSheet = function() { closeAllActiveDrawers(); };
+
+        window.copyLawSheetContent = function() {
+            const txt = document.getElementById('lawBsContent')?.innerText;
+            if (txt) {
+                navigator.clipboard.writeText(txt);
+                window.showToast('متن ماده قانونی کپی شد', 'success');
+            }
+        };
+
+        let storyProgressTimer = null;
+        window.openStoryModal = function(title, content) {
+            const modal = document.getElementById('storySheetModal');
+            const titleEl = document.getElementById('storyTitle');
+            const container = document.getElementById('storyMediaContainer');
+            const pBar = document.getElementById('storyProgressBar');
+
+            if (!modal || !container) return;
+            if (titleEl) titleEl.innerText = title;
+            container.innerText = content;
+
+            modal.classList.remove('hidden');
+            if (pBar) pBar.style.width = '0%';
+
+            let progress = 0;
+            clearInterval(storyProgressTimer);
+            storyProgressTimer = setInterval(() => {
+                progress += 2;
+                if (pBar) pBar.style.width = progress + '%';
+                if (progress >= 100) {
+                    clearInterval(storyProgressTimer);
+                    closeStoryModal();
+                }
+            }, 100);
+
+            pushBackHandler(closeStoryModal);
+        };
+
+        window.closeStoryModal = function() {
+            clearInterval(storyProgressTimer);
+            const modal = document.getElementById('storySheetModal');
+            if (modal) modal.classList.add('hidden');
+            popBackHandler(closeStoryModal);
+        };
+
+        /* ۱۴. داده‌های پیش‌فرض و رندرینگ مراجع دانش */
+        window.fallbackData = {
+            dictionary: [
+                { id: 'd1', term: 'اعسار', category: 'مدنی', definition: 'وضعیت فردی که به واسطه عدم کفایت دارایی یا عدم دسترسی موقت به اموال خود، توانایی پرداخت دفعی دیون، مهریه یا هزینه دادرسی را ندارد.' },
+                { id: 'd2', term: 'خیار غبن افحش', category: 'مدنی', definition: 'اختیار قانونی فسخ معامله در شرایطی که عدم تعادل فاحش و بسیار نابرابر میان ارزش واقعی مبیع و ثمن معامله احراز گردد.' },
+                { id: 'd3', term: 'دستور تخلیه فوری', category: 'صلح', definition: 'دستور مراجع قضایی بر مبنای قانون روابط موجر و مستاجر ۱۳۷۶ در صورت انقضای مدت اجاره‌نامه عادی دارای امضای ۲ شاهد معتمد.' },
+                { id: 'd4', term: 'اجراییه مستقیم چک', category: 'تجاری', definition: 'تقاضای صدور مستقیم برگ اجراییه از دادگاه بدون نیاز به ورود در ماهیت و دادرسی بدوی، وفق ماده ۲۳ قانون صدور چک.' },
+                { id: 'd5', term: 'ارش', category: 'کیفری', definition: 'خسارت مالی صدمات بدنی که در شرع و قانون مجازات اسلامی مقدار معینی برای دیه آن تعیین نشده و برآورد آن با پزشکی قانونی است.' },
+                { id: 'd6', term: 'حجب نقصان', category: 'خانواده', definition: 'کاهش سهم فرض قانونی یک وارث به واسطه وجود وارث دیگر؛ نظیر تقلیل سهم ارث مادر از یک‌سوم به یک‌ششم با وجود اخوه.' }
+            ],
+            legalSystems: [
+                { id: 'ls1', title: 'درگاه خودکاربری عدل‌ایران', description: 'ثبت الکترونیکی دادخواست و شکواییه بدون مراجعه به دفاتر', url: 'https://adliran.ir', icon: 'fa-laptop-file' },
+                { id: 'ls2', title: 'سامانه ابلاغ الکترونیک (ثنا)', description: 'مشاهده رسمی ابلاغیه‌ها و اخطاریه‌های دادگاه‌ها', url: 'https://eblagh.adliran.ir', icon: 'fa-envelope-open-text' },
+                { id: 'ls3', title: 'درگاه اجرای ثبت اسناد رسمی', description: 'ممنوع‌الخروجی و توقیف اموال جهت مهریه و اسناد لازم‌الاجرا', url: 'https://ssaa.ir', icon: 'fa-building-columns' }
+            ],
+            laws: [
+                { id: 'l1', title: 'ماده ۵۲۲ قانون آیین دادرسی مدنی', category: 'مدنی', content: 'در دعاوی راجع به دین از نوع وجه رایج، در صورت تغییر فاحش شاخص قیمت سالانه بانک مرکزی، دادگاه خسارت تأخیر تأدیه را محاسبه و حکم خواهد داد.' },
+                { id: 'l2', title: 'ماده ۲۳ قانون اصلاح صدور چک', category: 'تجاری', content: 'دارنده چک می‌تواند با ارائه گواهی عدم پرداخت ممهور به شناسه رهگیری از دادگاه تقاضای صدور برگ اجراییه علیه صادرکننده نماید.' },
+                { id: 'l3', title: 'ماده ۴ قانون شوراهای حل اختلاف ۱۴۰۲', category: 'صلح', content: 'دعاوی مالی تا نصاب یک میلیارد ریال (۱۰۰ میلیون تومان) و دعاوی راجع به تخلیه عین مستاجره منحصراً در صلاحیت دادگاه صلح است.' },
+                { id: 'l4', title: 'ماده ۵۵۵ قانون مجازات اسلامی', category: 'کیفری', content: 'هرگاه رفتار مرتکب و فوت مجنی‌علیه هر دو در یکی از چهار ماه حرام واقع شود، یک‌سوم دیه نفس به آن اضافه می‌گردد.' }
+            ],
+            shareCards: [
+                { id: 'c1', title: 'اقدامات فوری در برگشت چک صیادی', summary: 'دریافت گواهی عدم پرداخت با شناسه رهگیری، ثبت اجراییه ماده ۲۳ در دفاتر خدمات قضایی و انسداد حساب‌ها ظرف ۲۴ ساعت.' },
+                { id: 'c2', title: 'شرط تخلیه فوری در ۱ هفته', summary: 'تنظیم اجاره در ۲ نسخه یکسان، درج تاریخ دقیق انقضا، امضای موجر و مستاجر در حضور دو شاهد معتمد با قید نام و امضا.' }
+            ],
+            news: [
+                { id: 'n1', title: 'صلاحیت قطعی دادگاه‌های صلح در دعاوی مالی تا ۱۰۰ میلیون', date: '۱۴۰۵/۰۷/۱۰', summary: 'رسیدگی به تصادفات رانندگی، انحصار وراثت و تخلیه مستاجر منحصراً در دادگاه‌های صلح انجام می‌گیرد.' }
+            ],
+            publicFaqs: [
+                { id: 'f1', question: 'آیا برای مطالبه مهریه باید اول به دادگاه رفت؟', answer: 'خیر؛ مطالبه مهریه الزاماً باید بدواً از اداره اجرای ثبت اسناد رسمی محل وقوع عقد ازدواج آغاز شود.' }
+            ],
+            podcasts: [
+                { id: 'p1', title: 'تحلیل صلاحیت دادگاه‌های صلح', image: 'https://raw.githubusercontent.com/ahmdsltanahmdy-sketch/sijt-v01/main/01.png', url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3' }
+            ],
+            files: [
+                { id: 'fl1', title: 'نمونه دادخواست اجراییه مستقیم چک', description: 'متن استاندارد ماده ۲۳ قانون چک با فرمت رسمی', url: '#' }
+            ],
+            livestream: [
+                { id: 'lv1', title: 'استریم رسمی دادگاه‌های علنی (خط اصلی)', description: 'پخش زنده جلسات رسیدگی', url: 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8', fallback: 'https://cph-p2p-msl.akamaized.net/hls/live/200034/test/master.m3u8' }
+            ],
+            infographics: [
+                { id: 'inf1', title: 'مراحل گردش کار دادگاه‌های صلح', image: 'https://raw.githubusercontent.com/ahmdsltanahmdy-sketch/sijt-v01/main/01.png' }
+            ],
+            series: [
+                { id: 'sr1', title: 'مستند دادرسی عادلانه و حقوق شهروندی', image: 'https://raw.githubusercontent.com/ahmdsltanahmdy-sketch/sijt-v01/main/01.png', url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4' }
+            ]
+        };
+
+        function getChromaBorderClass(category) {
+            if (category === 'کیفری') return 'border-r-4 border-r-chroma-criminal';
+            if (category === 'صلح') return 'border-r-4 border-r-chroma-peace';
+            if (category === 'خانواده') return 'border-r-4 border-r-chroma-family';
+            if (category === 'تجاری') return 'border-r-4 border-r-chroma-commercial';
+            return 'border-r-4 border-r-chroma-civil';
+        }
+
+        window.filterKnowledgeHub = function(cat, btn) {
+            selectedKnowledgeCat = cat;
+            document.querySelectorAll('#knowledgeFilterPills .k-pill').forEach(p => {
+                p.classList.remove('active', 'bg-blue-600', 'text-white');
+                p.classList.add('bg-black/5', 'dark:bg-white/10', 'text-slate-700', 'dark:text-slate-300');
+            });
+            if (btn) {
+                btn.classList.add('active', 'bg-blue-600', 'text-white');
+                btn.classList.remove('bg-black/5', 'dark:bg-white/10', 'text-slate-700', 'dark:text-slate-300');
+            }
+            renderDictionary();
+            renderLaws();
+            triggerHaptic('selection');
+        };
+
+        function renderDictionary() {
+            const container = document.getElementById('dictionaryContainer');
+            if (!container) return;
+
+            const list = appData.dictionary || fallbackData.dictionary || [];
+            let filtered = selectedKnowledgeCat === 'bookmarks' ? list.filter(item => bookmarks.includes(item.id)) : (selectedKnowledgeCat !== 'all' ? list.filter(item => item.category === selectedKnowledgeCat) : list);
+
+            if (filtered.length === 0) {
+                container.innerHTML = `<div class="text-center p-6 text-slate-400 text-xs ultra-glass rounded-2xl">موردی یافت نشد.</div>`;
+                return;
+            }
+
+            container.innerHTML = filtered.slice(0, pageLimits.dict).map(item => {
+                const isBookmarked = bookmarks.includes(item.id);
+                const chromaBorder = getChromaBorderClass(item.category);
+                return `
+                    <div class="ultra-glass p-3.5 rounded-2xl space-y-2 border border-black/5 dark:border-white/10 ${chromaBorder} shadow-sm">
+                        <div class="flex justify-between items-center">
+                            <span class="font-black text-xs text-amber-500 flex items-center">
+                                <i class="fa-solid fa-scale-unbalanced text-xs ml-1.5 text-rose-500"></i>
+                                ${escapeHTML(item.term)}
+                            </span>
+                            <div class="flex items-center space-x-2 space-x-reverse">
+                                <span class="text-xs px-2 py-0.5 rounded-full bg-black/5 dark:bg-white/10 text-slate-400 font-bold">${escapeHTML(item.category || 'عمومی')}</span>
+                                <button onclick="toggleBookmark('${item.id}');" class="text-xs ${isBookmarked ? 'text-amber-500' : 'text-slate-400'} border-none bg-transparent cursor-pointer p-1 btn-spring">
+                                    <i class="${isBookmarked ? 'fa-solid' : 'fa-regular'} fa-bookmark"></i>
+                                </button>
+                                <button onclick="navigator.clipboard.writeText('${escapeHTML(item.term)}: ${escapeHTML(item.definition)}'); window.showToast('متن اصطلاح کپی شد', 'success');" class="text-xs text-slate-400 hover:text-white border-none bg-transparent cursor-pointer p-1 btn-spring">
+                                    <i class="fa-solid fa-share-nodes"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <p class="text-xs leading-relaxed text-slate-700 dark:text-slate-300 m-0">${escapeHTML(item.definition)}</p>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        window.toggleBookmark = async function(id) {
+            if (bookmarks.includes(id)) bookmarks = bookmarks.filter(b => b !== id);
+            else bookmarks.push(id);
+            await AppStorage.set('sijt_bookmarks', bookmarks);
+            renderDictionary();
+            triggerHaptic('light');
+        };
+
+        function renderLaws() {
+            const container = document.getElementById('lawsContainer');
+            if (!container) return;
+
+            const list = appData.laws || fallbackData.laws || [];
+            let filtered = selectedKnowledgeCat === 'bookmarks' ? list.filter(item => lawBookmarks.includes(item.id)) : (selectedKnowledgeCat !== 'all' ? list.filter(item => item.category === selectedKnowledgeCat) : list);
+
+            if (filtered.length === 0) {
+                container.innerHTML = `<div class="text-center p-6 text-slate-400 text-xs ultra-glass rounded-2xl">ماده‌ای یافت نشد.</div>`;
+                return;
+            }
+
+            container.innerHTML = filtered.slice(0, pageLimits.laws).map(item => {
+                const isBookmarked = lawBookmarks.includes(item.id);
+                const chromaBorder = getChromaBorderClass(item.category);
+                return `
+                    <div class="ultra-glass p-4 rounded-2xl space-y-2 border border-black/5 dark:border-white/10 ${chromaBorder} shadow-sm">
+                        <div class="flex justify-between items-center pb-1.5 border-b border-black/5 dark:border-white/5">
+                            <span class="font-black text-xs text-rose-500 flex items-center">
+                                <i class="fa-solid fa-gavel text-xs ml-1.5 text-amber-500"></i>
+                                ${escapeHTML(item.title)}
+                            </span>
+                            <div class="flex items-center space-x-2 space-x-reverse">
+                                <button onclick="toggleLawBookmark('${item.id}');" class="text-xs ${isBookmarked ? 'text-amber-500' : 'text-slate-400'} border-none bg-transparent cursor-pointer p-1 btn-spring">
+                                    <i class="${isBookmarked ? 'fa-solid' : 'fa-regular'} fa-bookmark"></i>
+                                </button>
+                                <button onclick="openLawBottomSheet('${encodeURIComponent(item.title)}', '${encodeURIComponent(item.content)}');" class="text-xs text-amber-500 hover:underline border-none bg-transparent cursor-pointer font-bold btn-spring">
+                                    شرح کامل
+                                </button>
+                            </div>
+                        </div>
+                        <p class="text-xs leading-loose text-slate-700 dark:text-slate-300 m-0 line-clamp-3">${escapeHTML(item.content)}</p>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        window.toggleLawBookmark = async function(id) {
+            if (lawBookmarks.includes(id)) lawBookmarks = lawBookmarks.filter(b => b !== id);
+            else lawBookmarks.push(id);
+            await AppStorage.set('sijt_law_bookmarks', lawBookmarks);
+            renderLaws();
+            triggerHaptic('light');
+        };
+
+        function renderLegalSystems() {
+            const container = document.getElementById('legalSystemsContainer');
+            if (!container) return;
+            const list = appData.legalSystems || fallbackData.legalSystems || [];
+            container.innerHTML = list.map(item => `
+                <div class="ultra-glass p-3.5 rounded-2xl flex items-center justify-between shadow-sm border border-black/5 dark:border-white/10">
+                    <div class="flex items-center space-x-3 space-x-reverse truncate">
+                        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600/20 to-amber-500/20 text-blue-500 flex items-center justify-center flex-shrink-0">
+                            <i class="fa-solid ${item.icon || 'fa-link'} text-base"></i>
+                        </div>
+                        <div class="space-y-0.5 truncate text-right">
+                            <span class="font-bold text-xs text-slate-800 dark:text-slate-100 block truncate">${escapeHTML(item.title)}</span>
+                            <span class="text-xs text-slate-400 block truncate">${escapeHTML(item.description || '')}</span>
+                        </div>
+                    </div>
+                    <a href="${escapeHTML(item.url)}" target="_blank" rel="noopener noreferrer" class="bg-black/5 dark:bg-white/10 hover:bg-blue-600 hover:text-white text-slate-700 dark:text-slate-200 px-3 py-1.5 rounded-xl text-xs font-bold transition no-underline mr-2 btn-spring">
+                        ورود
+                    </a>
+                </div>
+            `).join('');
+        }
+
+        function renderShareCards() {
+            const container = document.getElementById('shareCardsContainer');
+            if (!container) return;
+            const list = appData.shareCards || fallbackData.shareCards || [];
+            container.innerHTML = list.map(item => `
+                <div class="ultra-glass p-4 rounded-2xl space-y-2 border border-black/5 dark:border-white/10 flex flex-col justify-between">
+                    <div class="space-y-1.5">
+                        <div class="font-bold text-xs text-amber-500 flex items-center">
+                            <i class="fa-solid fa-id-card ml-1.5 text-rose-500"></i>
+                            ${escapeHTML(item.title)}
+                        </div>
+                        <p class="text-xs leading-relaxed text-slate-700 dark:text-slate-300 m-0">${escapeHTML(item.summary)}</p>
+                    </div>
+                    <div class="pt-2 border-t border-black/5 dark:border-white/5 flex justify-end">
+                        <button onclick="exportResultToCard('${escapeHTML(item.title)}', '${escapeHTML(item.summary)}');" class="bg-black/5 dark:bg-white/10 hover:bg-amber-500 hover:text-black text-amber-500 px-2.5 py-1 rounded-xl text-xs font-bold border border-amber-500/20 cursor-pointer flex items-center space-x-1 space-x-reverse transition btn-spring">
+                            <i class="fa-solid fa-image ml-1 text-xs"></i>
+                            <span>صدور کارت دادگاه</span>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderFiles() {
+            const container = document.getElementById('filesContainer');
+            if (!container) return;
+            const list = appData.files || fallbackData.files || [];
+            container.innerHTML = list.map(item => `
+                <div class="ultra-glass p-3.5 rounded-2xl space-y-2 border border-black/5 dark:border-white/10 flex flex-col justify-between">
+                    <div class="space-y-1">
+                        <div class="font-bold text-xs text-slate-800 dark:text-slate-100 flex items-center">
+                            <i class="fa-solid fa-file-word ml-1.5 text-blue-500"></i>
+                            ${escapeHTML(item.title)}
+                        </div>
+                        <p class="text-xs text-slate-600 dark:text-slate-400 m-0">${escapeHTML(item.description || '')}</p>
+                    </div>
+                    <div class="pt-2 border-t border-black/5 dark:border-white/5 flex justify-end">
+                        <a href="${escapeHTML(item.url)}" download class="bg-black/5 dark:bg-white/10 hover:bg-blue-600 hover:text-white text-blue-500 px-3 py-1 rounded-xl text-xs font-bold border border-blue-500/20 no-underline transition flex items-center space-x-1 space-x-reverse btn-spring">
+                            <i class="fa-solid fa-download ml-1 text-xs"></i>
+                            <span>دانلود فرم لایحه</span>
+                        </a>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderPublicFaqs() {
+            const container = document.getElementById('publicFaqContainer');
+            if (!container) return;
+            const list = appData.publicFaqs || fallbackData.publicFaqs || [];
+            container.innerHTML = list.map(item => `
+                <div class="ultra-glass p-3.5 rounded-2xl space-y-2 border border-black/5 dark:border-white/10">
+                    <div class="font-bold text-xs text-amber-500 flex items-start">
+                        <i class="fa-solid fa-circle-question ml-1.5 mt-0.5 text-rose-500 flex-shrink-0"></i>
+                        <span>${escapeHTML(item.question)}</span>
+                    </div>
+                    <p class="text-xs leading-loose text-slate-700 dark:text-slate-300 m-0 bg-black/5 dark:bg-white/5 p-2.5 rounded-xl">${escapeHTML(item.answer)}</p>
+                </div>
+            `).join('');
+        }
+
+        function renderMediaDrawerItems() {
+            const podBox = document.getElementById('podcastsContainer');
+            if (podBox) {
+                const list = appData.podcasts || fallbackData.podcasts || [];
+                podBox.innerHTML = list.map(item => `
+                    <div class="ultra-glass p-3 rounded-2xl flex items-center justify-between border border-black/5 dark:border-white/10">
+                        <div class="flex items-center space-x-3 space-x-reverse truncate">
+                            <div class="w-10 h-10 rounded-xl overflow-hidden bg-slate-900 flex-shrink-0">
+                                <img src="${escapeHTML(item.image)}" alt="${escapeHTML(item.title)}" class="w-full h-full object-cover">
+                            </div>
+                            <span class="font-bold text-xs text-slate-800 dark:text-slate-100 truncate">${escapeHTML(item.title)}</span>
+                        </div>
+                        <button onclick="playAudioTrack('${encodeURIComponent(item.title)}', '${encodeURIComponent(item.url)}', '${encodeURIComponent(item.image)}');" class="w-8 h-8 rounded-full bg-rose-600 text-white flex items-center justify-center cursor-pointer border-none shadow-md flex-shrink-0 mr-2 btn-spring">
+                            <i class="fa-solid fa-play text-xs"></i>
+                        </button>
+                    </div>
+                `).join('');
+            }
+
+            const liveBox = document.getElementById('liveChannelsSelector');
+            if (liveBox) {
+                const list = appData.livestream || fallbackData.livestream || [];
+                liveBox.innerHTML = list.map(item => `
+                    <button onclick="playLiveHlsStream('${encodeURIComponent(item.title)}', '${encodeURIComponent(item.url)}', '${encodeURIComponent(item.fallback || '')}');" class="p-2 rounded-xl ultra-glass hover:border-rose-500 text-right space-y-0.5 border border-black/5 dark:border-white/10 cursor-pointer transition btn-spring">
+                        <span class="font-bold text-xs text-amber-500 block truncate">${escapeHTML(item.title)}</span>
+                        <span class="text-xs text-slate-400 block truncate">${escapeHTML(item.description || 'استریم آنلاین')}</span>
+                    </button>
+                `).join('');
+            }
+
+            const serBox = document.getElementById('seriesContainer');
+            if (serBox) {
+                const list = appData.series || fallbackData.series || [];
+                serBox.innerHTML = list.map(item => `
+                    <div onclick="openVideoModal('${encodeURIComponent(item.title)}', '${encodeURIComponent(item.url)}');" class="ultra-glass p-2 rounded-2xl space-y-1.5 cursor-pointer hover:border-rose-500 transition btn-spring">
+                        <div class="aspect-video w-full rounded-xl overflow-hidden bg-slate-900 relative flex items-center justify-center">
+                            <img src="${escapeHTML(item.image)}" alt="${escapeHTML(item.title)}" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-black/40 flex items-center justify-center">
+                                <i class="fa-solid fa-play text-white text-xl"></i>
+                            </div>
+                        </div>
+                        <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block text-center truncate">${escapeHTML(item.title)}</span>
+                    </div>
+                `).join('');
+            }
+
+            const infoBox = document.getElementById('infographicsContainer');
+            if (infoBox) {
+                const list = appData.infographics || fallbackData.infographics || [];
+                infoBox.innerHTML = list.map(item => `
+                    <div onclick="openInfographicModal('${encodeURIComponent(item.title)}', '${encodeURIComponent(item.image)}');" class="ultra-glass p-2 rounded-2xl space-y-1.5 cursor-pointer hover:border-amber-500 transition btn-spring">
+                        <div class="aspect-video w-full rounded-xl overflow-hidden bg-slate-900">
+                            <img src="${escapeHTML(item.image)}" alt="${escapeHTML(item.title)}" class="w-full h-full object-cover">
+                        </div>
+                        <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block text-center truncate">${escapeHTML(item.title)}</span>
+                    </div>
+                `).join('');
+            }
+
+            const newsBox = document.getElementById('newsContainer');
+            if (newsBox) {
+                const list = appData.news || fallbackData.news || [];
+                newsBox.innerHTML = list.map(item => `
+                    <div class="ultra-glass p-3 rounded-2xl space-y-1 border border-black/5 dark:border-white/10">
+                        <div class="flex justify-between items-center">
+                            <span class="font-bold text-xs text-slate-800 dark:text-slate-100">${escapeHTML(item.title)}</span>
+                            <span class="text-xs text-slate-400 font-mono tabular-nums">${escapeHTML(item.date || '')}</span>
+                        </div>
+                        <p class="text-xs leading-relaxed text-slate-600 dark:text-slate-300 m-0">${escapeHTML(item.summary)}</p>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function setupInfiniteScroll() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        if (entry.target.id === 'dictLoadingObserver' && pageLimits.dict < (appData.dictionary?.length || 0)) {
+                            pageLimits.dict += 8;
+                            renderDictionary();
+                        } else if (entry.target.id === 'lawsLoadingObserver' && pageLimits.laws < (appData.laws?.length || 0)) {
+                            pageLimits.laws += 6;
+                            renderLaws();
+                        }
+                    }
+                });
+            }, { rootMargin: '120px' });
+
+            const dTarget = document.getElementById('dictLoadingObserver');
+            const lTarget = document.getElementById('lawsLoadingObserver');
+            if (dTarget) observer.observe(dTarget);
+            if (lTarget) observer.observe(lTarget);
+        }
+
+        window.renderAll = function(isRefresh = false) {
+            renderDictionary();
+            renderLaws();
+            renderLegalSystems();
+            renderShareCards();
+            renderFiles();
+            renderPublicFaqs();
+            renderMediaDrawerItems();
+            setupInfiniteScroll();
+
+            const counter = document.getElementById('knowledgeTotalCounter');
+            if (counter) {
+                const total = (appData.dictionary?.length || 0) + (appData.laws?.length || 0);
+                counter.innerText = `${total} مورد ثبت‌شده`;
+            }
+
+            if (isRefresh) {
+                const badge = document.getElementById('connectionStatusBadge');
+                if (badge) badge.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-500 text-xs"></i><span class="text-slate-600 dark:text-slate-300">همگام</span>`;
+            }
+        };
+
+        /* ۱۵. جستجوی سراسری و صدور کارت دادگاه */
+        let searchDebounceTimer = null;
+        window.debouncedSearch = function(query) {
+            clearTimeout(searchDebounceTimer);
+            const clrBtn = document.getElementById('clearSearchBtn');
+            if (clrBtn) clrBtn.classList.toggle('hidden', !query.trim());
+            searchDebounceTimer = setTimeout(() => executeUniversalSearch(query), 200);
+        };
+
+        window.clearSearchInput = function() {
+            const input = document.getElementById('searchInput');
+            if (input) {
+                input.value = '';
+                debouncedSearch('');
+            }
+        };
+
+        function executeUniversalSearch(query) {
+            const box = document.getElementById('liveSuggestionsBox');
+            if (!box) return;
+
+            const q = query.trim().toLowerCase();
+            if (!q) {
+                box.classList.add('hidden');
+                box.innerHTML = '';
+### بخش ۵ از ۵: پایگاه داده IndexedDB، موتور OCR، چت‌بات، پلیر شناور، استریم و بستن سند
 
 این بخش بلافاصله پس از انتهای بخش ۴ قرار می‌گیرد و پروندهٔ پروژه را با تکمیل داده‌های پایدار، لود ایمن اسپلش، هندلرهای آفلاین و بستن تگ‌های `</script>` و `</html>` به پایان می‌رساند:
 
